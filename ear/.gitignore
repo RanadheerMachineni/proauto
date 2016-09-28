@@ -1,0 +1,14 @@
+target/
+.svn/
+.idea/
+*.iml/
+*.swp/
+*/.project/
+.settings/
+*/.classpath
+.metadata/
+bin/
+.project
+test-output/
+/.DS_Store/
+.DS_Store/
