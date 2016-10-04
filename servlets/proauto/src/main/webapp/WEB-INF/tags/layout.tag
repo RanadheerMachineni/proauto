@@ -23,8 +23,9 @@
 </head>
 <body>
 	<!-- Header -->
-	<div>
-		<div>
+	
+	<div class="container">
+		<div class="form-group">
 			<img class="logo-customer" alt=""
 				src="../../../${pageContext.request.contextPath}/images/customerlogo.png">
 			<img class="logo-proauto" alt=""
@@ -35,11 +36,8 @@
 					<h3>Ennem Excel Engineering(P) Limited</h3>
 				</div>
 			</center>
-
+			<div class="straightLine"></div>
 		</div>
-
-		<div class="straightLine"></div>
-
 	</div>
 	<br />
 	<br />
