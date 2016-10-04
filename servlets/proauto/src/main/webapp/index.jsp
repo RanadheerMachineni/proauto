@@ -3,7 +3,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <t:layout>
 	<jsp:body>
-<div class="container">
+<div class="formcenter container">
   <form method="post" action="AuthenticateUser">
     <div class="form-group">
       <label for="userid">User Id:</label>
