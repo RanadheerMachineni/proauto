@@ -1,0 +1,27 @@
+.straightLine {
+	border-top: 1px solid black;
+}
+
+
+.logo-customer {
+	padding-top: 30px;
+	display: inline-block;
+	margin-left: 100px;
+}
+
+.logo-proauto {
+	padding-top: 30px;
+	display: inline-block;
+	margin-right: 100px;
+	float: right;
+}
+
+.headerContent {
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-weight: normal;
+	text-align: center;
+	font-family: 'Exo', sans-serif;
+	font-size: 50px;
+	font-weight: 200;
+	color: #990000 !important;
+}
