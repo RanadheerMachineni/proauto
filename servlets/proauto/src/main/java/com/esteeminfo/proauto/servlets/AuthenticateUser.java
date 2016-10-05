@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.esteeminfo.prouto.dao.EmployeeDAO;
+
 /**
  * Servlet implementation class AuthenticateUser
  */
@@ -32,8 +34,16 @@ public class AuthenticateUser extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		
-			
+		String userid = request.getParameter("userid");
+		String password = request.getParameter("password");
+		String role=null;
+		try {
+			role = EmployeeDAO.authenticateUser(userid, password);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("********************* "+role);
 		
 	}
 
@@ -41,12 +51,6 @@ public class AuthenticateUser extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userid = request.getParameter("userid");
-		String password = request.getParameter("password");
-		System.out.println(userid+" ********************************************** "+password);
-
-		request.getSession().setAttribute("userid", userid);
-		
 		doGet(request, response);
 	}
 
