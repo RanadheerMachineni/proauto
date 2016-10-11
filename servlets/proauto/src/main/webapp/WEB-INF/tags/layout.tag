@@ -39,8 +39,6 @@
 			<div class="straightLine"></div>
 		</div>
 	</div>
-	<br />
-	<br />
 	</div>
 	<div id="body">
 		<jsp:doBody />
