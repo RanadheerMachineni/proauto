@@ -36,7 +36,10 @@
 	  <div class="tab-pane" id="dmstab">Document Management System</div>
 	  <div class="tab-pane" id="costingtab">Costing Application.</div>
 	
-	  <div class="tab-pane" id="eregtab">Employee Registration </div>
+	  <div class="tab-pane" id="eregtab">
+	  Employee Registration 
+	  </div>
+	  
 	  <div class="tab-pane" id="vregtab">Vendor Registration </div>
 	  <div class="tab-pane" id="cregtab">Customer Registration</div>  
 	  

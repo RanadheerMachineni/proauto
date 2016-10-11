@@ -3,10 +3,6 @@
 <%@attribute name="footer" fragment="true"%>
 <html>
 <body>
-	<div id="pageheader">
-
-		<html>
-<head>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=1">
@@ -20,7 +16,6 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
-</head>
 <body>
 	<!-- Header -->
 	
@@ -31,27 +26,18 @@
 			<img class="logo-proauto" alt=""
 				src="../../../${pageContext.request.contextPath}/images/proautologo.png">
 
-			<center>
 				<div class="headerContent">
 					<h3>Ennem Excel Engineering(P) Limited</h3>
 				</div>
-			</center>
 			<div class="straightLine"></div>
 		</div>
-	</div>
 	</div>
 	<div id="body">
 		<jsp:doBody />
 	</div>
 
-	<div id="pagefooter">
-		<br /> <br />
-		<center>
+	<!-- <div id="pagefooter">
 			<p>Copyright © 2016</p>
-		</center>
-</body>
-</html>
-</div>
-
+	</div> -->
 </body>
 </html>
