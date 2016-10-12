@@ -2,10 +2,10 @@
 	pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <t:layout>
-<jsp:body>
+	<jsp:body>
 <div class="container">
 
-	dashboard jsp
+	creg jsp
 </div>
 </jsp:body>
 </t:layout>

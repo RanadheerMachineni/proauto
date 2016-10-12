@@ -4,8 +4,8 @@
 <t:layout>
 <jsp:body>
 <div class="container">
-
-	dashboard jsp
+	
+	jobcard jsp
 </div>
 </jsp:body>
 </t:layout>

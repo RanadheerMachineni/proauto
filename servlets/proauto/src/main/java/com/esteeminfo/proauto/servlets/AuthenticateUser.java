@@ -42,6 +42,7 @@ public class AuthenticateUser extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("role in servlet  = "+role);
 		if (null != role && role.length() > 0) {
 			request.getSession().setAttribute("role", role);
 		}

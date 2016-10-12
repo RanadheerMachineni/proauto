@@ -19,10 +19,8 @@ public class EmployeeDAO extends BaseDAO {
 		String retString = null;
 		Connection conn = getConnection();
 		Statement st = conn.createStatement();
-		ResultSet res = st.executeQuery("SELECT * FROM EMPLOYEE");
+		ResultSet res = st.executeQuery("SELECT * FROM EMPLOYEE WHERE employee_name='"+uname+"' and password='"+pwd+"'");
 		while (res.next()) {
-			int id = res.getInt("employee_id");
-			String empName = res.getString("employee_name");
 			String role = res.getString("role");
 			retString = role;
 		}

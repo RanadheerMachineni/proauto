@@ -43,6 +43,7 @@ CREATE TABLE employee_roles
 insert into employee_roles(role_id,role,role_desc) values(1,'admin', 'Administrator');
 insert into employee_roles(role_id,role,role_desc) values(2,'jobcard','JobCard User');
 insert into employee_roles(role_id,role,role_desc) values(3,'costing','Costing User');
+insert into employee_roles(role_id,role,role_desc) values(4,'dms','dms User');
 
 drop table employee;
 CREATE TABLE employee
@@ -59,3 +60,6 @@ CREATE TABLE employee
 	CONSTRAINT fk_employee_role FOREIGN KEY (role) REFERENCES employee_roles(role)
 )
 insert into employee(employee_id,employee_name,role,password) values(1,'admin', 'admin','admin');
+insert into employee(employee_id,employee_name,role,password) values(2,'jobcard', 'jobcard','jobcard');
+insert into employee(employee_id,employee_name,role,password) values(3,'costing', 'costing','costing');
+insert into employee(employee_id,employee_name,role,password) values(4,'dms', 'dms','dms');

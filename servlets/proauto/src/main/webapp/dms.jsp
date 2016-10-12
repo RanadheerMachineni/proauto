@@ -5,7 +5,7 @@
 <jsp:body>
 <div class="container">
 
-	dashboard jsp
+	dms jsp
 </div>
 </jsp:body>
 </t:layout>

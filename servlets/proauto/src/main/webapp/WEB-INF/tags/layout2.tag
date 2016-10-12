@@ -33,81 +33,61 @@
 			<div class="straightLine"></div>
 
 			<%
-				String roleOfUser = null;
-				roleOfUser = (String) session.getAttribute("role");
-				System.out.println("role in tmplate  = " + roleOfUser);
+				String role = null;
+				role = (String) session.getAttribute("role");
+				System.out.println("role in tmplate  = " + role);
 			%>
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs" role="tablist">
 
 				<%
-					if (roleOfUser != null) {
+					if (role != null) {
 				%>
-				<li class="active"><a
-					href="#dashboardtab" role="tab"
+				<li class="active"><a href="${pageContext.request.contextPath}/dashboard.jsp" role="tab"
 					data-toggle="tab">Dashboard</a></li>
 				<%
 					}
 				%>
 				<%
-					if (roleOfUser != null
-							&& (roleOfUser.equalsIgnoreCase("admin") || roleOfUser.equalsIgnoreCase("jobcard"))) {
+					if (role != null && (role.equalsIgnoreCase("admin") || role.equalsIgnoreCase("jobcard"))) {
 				%>
-				<li><a href="#jobcardtab"
-					role="tab" data-toggle="tab">Job Card</a></li>
+				<li><a href="${pageContext.request.contextPath}/jobcard.jsp" role="tab" data-toggle="tab">Job
+						Card</a></li>
 				<%
 					}
 				%>
 				<%
-					if (roleOfUser != null && (roleOfUser.equalsIgnoreCase("admin") || roleOfUser.equalsIgnoreCase("dms"))) {
+					if (role != null && (role.equalsIgnoreCase("admin") || role.equalsIgnoreCase("dms"))) {
 				%>
-				<li><a href="#dmstab"
-					role="tab" data-toggle="tab">DMS</a></li>
+				<li><a href="${pageContext.request.contextPath}/dms.jsp" role="tab" data-toggle="tab">DMS</a></li>
 				<%
 					}
 				%>
 				<%
-					if (roleOfUser != null
-							&& (roleOfUser.equalsIgnoreCase("admin") || roleOfUser.equalsIgnoreCase("costing"))) {
+					if (role != null && (role.equalsIgnoreCase("admin") || role.equalsIgnoreCase("costing"))) {
 				%>
-				<li><a href="#costingtab"
-					role="tab" data-toggle="tab">Costing</a></li>
+				<li><a href="${pageContext.request.contextPath}/costing.jsp" role="tab" data-toggle="tab">Costing</a></li>
 				<%
 					}
 				%>
 				<%
-					if (roleOfUser != null && roleOfUser.equalsIgnoreCase("admin")) {
+					if (role != null && role.equalsIgnoreCase("admin")) {
 				%>
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#">Registration Forms <b
 						class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#eregtab"
-							role="tab" data-toggle="tab">Employee Registration</a></li>
-						<li><a href="#vregtab"
-							role="tab" data-toggle="tab">Vendor Registration</a></li>
-						<li><a href="#cregtab"
-							role="tab" data-toggle="tab">Customer Registration</a></li>
+						<li><a href="${pageContext.request.contextPath}/ereg.jsp" role="tab" data-toggle="tab">Employee
+								Registration</a></li>
+						<li><a href="${pageContext.request.contextPath}/vreg.jsp" role="tab" data-toggle="tab">Vendor
+								Registration</a></li>
+						<li><a href="${pageContext.request.contextPath}/creg.jsp" role="tab" data-toggle="tab">Customer
+								Registration</a></li>
 					</ul></li>
 				<%
 					}
 				%>
 			</ul>
-
-			<!-- Tab panes -->
-			<div class="tab-content">
-				<div class="tab-pane active" id="dashboardtab">Dashboard comes
-					here.......</div>
-				<div class="tab-pane" id="jobcardtab">job card application</div>
-				<div class="tab-pane" id="dmstab">Document Management System</div>
-				<div class="tab-pane" id="costingtab">Costing Application.</div>
-
-				<div class="tab-pane" id="eregtab">Employee Registration</div>
-
-				<div class="tab-pane" id="vregtab">Vendor Registration</div>
-				<div class="tab-pane" id="cregtab">Customer Registration</div>
-
-			</div>
 		</div>
 	</div>
 	<div id="body">
