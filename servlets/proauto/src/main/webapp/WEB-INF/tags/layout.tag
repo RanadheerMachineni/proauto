@@ -32,82 +32,55 @@
 			</div>
 			<div class="straightLine"></div>
 
-			<%
-				String roleOfUser = null;
-				roleOfUser = (String) session.getAttribute("role");
-				System.out.println("role in tmplate  = " + roleOfUser);
-			%>
-			<!-- Nav tabs -->
-			<ul class="nav nav-tabs" role="tablist">
+			<jstl:if test="${not empty role}">
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
 
-				<%
-					if (roleOfUser != null) {
-				%>
-				<li class="active"><a
-					href="#dashboardtab" role="tab"
-					data-toggle="tab">Dashboard</a></li>
-				<%
-					}
-				%>
-				<%
-					if (roleOfUser != null
-							&& (roleOfUser.equalsIgnoreCase("admin") || roleOfUser.equalsIgnoreCase("jobcard"))) {
-				%>
-				<li><a href="#jobcardtab"
-					role="tab" data-toggle="tab">Job Card</a></li>
-				<%
-					}
-				%>
-				<%
-					if (roleOfUser != null && (roleOfUser.equalsIgnoreCase("admin") || roleOfUser.equalsIgnoreCase("dms"))) {
-				%>
-				<li><a href="#dmstab"
-					role="tab" data-toggle="tab">DMS</a></li>
-				<%
-					}
-				%>
-				<%
-					if (roleOfUser != null
-							&& (roleOfUser.equalsIgnoreCase("admin") || roleOfUser.equalsIgnoreCase("costing"))) {
-				%>
-				<li><a href="#costingtab"
-					role="tab" data-toggle="tab">Costing</a></li>
-				<%
-					}
-				%>
-				<%
-					if (roleOfUser != null && roleOfUser.equalsIgnoreCase("admin")) {
-				%>
-				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#">Registration Forms <b
-						class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="#eregtab"
-							role="tab" data-toggle="tab">Employee Registration</a></li>
-						<li><a href="#vregtab"
-							role="tab" data-toggle="tab">Vendor Registration</a></li>
-						<li><a href="#cregtab"
-							role="tab" data-toggle="tab">Customer Registration</a></li>
-					</ul></li>
-				<%
-					}
-				%>
-			</ul>
 
-			<!-- Tab panes -->
-			<div class="tab-content">
-				<div class="tab-pane active" id="dashboardtab">Dashboard comes
-					here.......</div>
-				<div class="tab-pane" id="jobcardtab">job card application</div>
-				<div class="tab-pane" id="dmstab">Document Management System</div>
-				<div class="tab-pane" id="costingtab">Costing Application.</div>
+					<li class="active"><a href="#dashboardtab" role="tab"
+						data-toggle="tab">Dashboard</a></li>
 
-				<div class="tab-pane" id="eregtab">Employee Registration</div>
+					<li><a href="#jobcardtab" role="tab" data-toggle="tab">Job
+							Card</a></li>
 
-				<div class="tab-pane" id="vregtab">Vendor Registration</div>
-				<div class="tab-pane" id="cregtab">Customer Registration</div>
+					<li><a href="#dmstab" role="tab" data-toggle="tab">DMS</a></li>
 
-			</div>
+					<li><a href="#costingtab" role="tab" data-toggle="tab">Costing</a></li>
+
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#">Registration Forms <b
+							class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#eregtab" role="tab" data-toggle="tab">Employee
+									Registration</a></li>
+							<li><a href="#vregtab" role="tab" data-toggle="tab">Vendor
+									Registration</a></li>
+							<li><a href="#cregtab" role="tab" data-toggle="tab">Customer
+									Registration</a></li>
+						</ul></li>
+
+				</ul>
+
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div class="tab-pane active" id="dashboardtab">Dashboard
+						comes here.......</div>
+					<div class="tab-pane" id="jobcardtab">job card application</div>
+					<div class="tab-pane" id="dmstab">Document Management System</div>
+					<div class="tab-pane" id="costingtab">Costing Application.</div>
+
+					<div class="tab-pane" id="eregtab">Employee Registration</div>
+
+					<div class="tab-pane" id="vregtab">Vendor Registration</div>
+					<div class="tab-pane" id="cregtab">Customer Registration</div>
+
+				</div>
+			</jstl:if>
+			<jstl:if test="${empty role}">
+				<p>You're not logged in!</p>
+			</jstl:if>
+
+
 		</div>
 	</div>
 	<div id="body">
