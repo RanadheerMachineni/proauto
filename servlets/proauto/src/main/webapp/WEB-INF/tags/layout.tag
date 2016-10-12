@@ -76,9 +76,7 @@
 
 				</div>
 			</jstl:if>
-			<jstl:if test="${empty role}">
-				<p>You're not logged in!</p>
-			</jstl:if>
+		
 
 
 		</div>
