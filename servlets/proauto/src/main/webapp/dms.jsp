@@ -8,8 +8,9 @@
 	<jstl:if test="${empty role}">
 		<p>You are not logged in. Go to the <a href="${pageContext.request.contextPath}/index.jsp">Login</a>.</p>
 	</jstl:if>
-		<jstl:if test="${not empty role}">
-		dms jsp
+	<jstl:if test="${not empty role}">
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;dms app comes here....
 	</jstl:if>
 </div>
 </jsp:body>

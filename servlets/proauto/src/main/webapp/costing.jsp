@@ -9,7 +9,8 @@
 		<p>You are not logged in. Go to the <a href="${pageContext.request.contextPath}/index.jsp">Login</a>.</p>
 	</jstl:if>	
 	<jstl:if test="${not empty role}">
-		costing jsp
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;costing app comes here.....
 	</jstl:if>	
 	
 </div>

@@ -11,6 +11,7 @@
 						href="${pageContext.request.contextPath}/index.jsp">Login</a>.</p>
 	</jstl:if>
 	<jstl:if test="${not empty role}">
+		<br>
 		<div class="pageHeadings"> Employee Registration</div>
 		<form role="form" action="Registrations" method="post">  
 		    <input type="hidden" name="regType" value="employee">

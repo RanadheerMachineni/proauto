@@ -75,8 +75,7 @@
 					<li id="costingli"><a
 						href="${pageContext.request.contextPath}/costing.jsp">Costing</a></li>
 
-					<li id="regli" class="dropdownmenu"><a class="dropbtn"
-						href="#">Registration Forms</a>
+					<li id="regli" class="dropdownmenu"><a class="dropbtn">Registration Forms</a>
 						<div class="dropdown-content">
 							<a href="${pageContext.request.contextPath}/ereg.jsp">Employee
 								Registration</a> <a
