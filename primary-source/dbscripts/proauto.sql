@@ -6,8 +6,8 @@ FLUSH PRIVILEGES;
 create database proauto_db;
 grant all privileges on proauto_db.* to 'proauto'@'localhost'
 
-drop table customers;
-CREATE TABLE customers
+drop table customer;
+CREATE TABLE customer
 ( 
 	customer_id int AUTO_INCREMENT NOT NULL,
 	customer_name char(50) NOT NULL,
@@ -15,8 +15,12 @@ CREATE TABLE customers
 	city char(50),
 	state char(25),
 	zip_code char(10),
+	customer_email char(50),
+	customer_first_contact char(100) NOT NULL,
+    customer_second_contact char(100),
+    customer_third_contact char(100),
 	create_date DATE,
-	CONSTRAINT customers_pk PRIMARY KEY (customer_id)
+	CONSTRAINT customer_pk PRIMARY KEY (customer_id)
 );
 
 drop table vendor;
@@ -45,7 +49,7 @@ CREATE TABLE raw_material
 	length int NOT NUll,
     create_date DATE NOT NUll,
 	customer_id int NOT NULL,
-	CONSTRAINT fk_rm_customer FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+	CONSTRAINT fk_rm_customer FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
 )
 
 drop table employee_roles;

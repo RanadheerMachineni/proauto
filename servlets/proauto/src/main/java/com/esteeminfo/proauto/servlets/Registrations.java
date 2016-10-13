@@ -54,6 +54,16 @@ public class Registrations extends HttpServlet {
 			registered = CommonDAO.registerVendor(vName,vAddress,vEmail,vFirstContact,vSecondContact,vThirdContact);
 			request.getSession().setAttribute("registered", registered);
 			response.sendRedirect("vreg.jsp");
+		}else if(regType.equalsIgnoreCase("customer")){
+			String cName = request.getParameter("cName");
+			String cAddress = request.getParameter("cAddress");
+			String cEmail = request.getParameter("cEmail");
+			String cFirstContact = request.getParameter("cFirstContact");
+			String cSecondContact = request.getParameter("cSecondContact");
+			String cThirdContact = request.getParameter("cThirdContact");
+			registered = CommonDAO.registerCustomer(cName,cAddress,cEmail,cFirstContact,cSecondContact,cThirdContact);
+			request.getSession().setAttribute("registered", registered);
+			response.sendRedirect("creg.jsp");
 		}
 		
 	}

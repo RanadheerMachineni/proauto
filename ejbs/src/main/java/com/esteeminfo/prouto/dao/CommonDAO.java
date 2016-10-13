@@ -113,4 +113,45 @@ public class CommonDAO extends BaseDAO {
 		}
 		return registered;
 	}
+
+	public static boolean registerCustomer(String cName, String cAddress, String cEmail, String cFirstContact,
+			String cSecondContact, String cThirdContact) {
+		Connection conn;
+		boolean registered = false;
+		try {
+			
+			if(customerExist(cName)) return registered;
+			Calendar calendar = Calendar.getInstance();
+			java.sql.Date currentTime = new java.sql.Date(calendar.getTime().getTime());
+
+			conn = getConnection();
+			String query= "INSERT INTO CUSTOMER(customer_name,address,customer_email,customer_first_contact,customer_second_contact,customer_third_contact,create_date) values(?,?,?,?,?,?,?)";
+			PreparedStatement preparedStmt = conn.prepareStatement(query);
+	        preparedStmt.setString(1, cName);
+	        preparedStmt.setString(2, cAddress);
+	        preparedStmt.setString(3, cEmail);
+	        preparedStmt.setString(4, cFirstContact);
+	        preparedStmt.setString(5, cSecondContact);
+	        preparedStmt.setString(6, cThirdContact);
+	        preparedStmt.setDate(7, currentTime	);
+	        int count = preparedStmt.executeUpdate();
+	        registered = (count > 0);
+	        conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return registered;
+	}
+
+	private static boolean customerExist(String cName) throws SQLException {
+		boolean customerExist = false;
+		Connection conn = getConnection();
+		Statement st = conn.createStatement();
+		ResultSet res = st.executeQuery("SELECT * FROM customer WHERE customer_name='"+cName+"'");
+		while (res.next()) {
+			customerExist = true;
+		}
+		conn.close();
+		return customerExist;
+	}
 }
