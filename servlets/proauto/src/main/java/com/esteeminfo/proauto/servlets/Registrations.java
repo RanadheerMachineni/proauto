@@ -41,7 +41,9 @@ public class Registrations extends HttpServlet {
 		System.out.println("empPassword = "+empPassword);
 		System.out.println("empEmail = "+empEmail);
 		System.out.println("empRole = "+empRole);
-
+		boolean registered = EmployeeDAO.registerEmployee(empName,empPassword,empEmail,empRole);
+		System.out.println("registered in servlet ="+registered);
+		request.getSession().setAttribute("registered", registered);
 		response.sendRedirect("ereg.jsp");
 	}
 

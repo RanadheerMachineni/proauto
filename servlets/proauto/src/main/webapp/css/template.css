@@ -33,6 +33,18 @@
 	color: black;
 }
 
+.informativeText{
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-weight: normal;
+	font-family: 'Exo', sans-serif;
+	font-size: 14px;
+	color: black;
+}
+
+.centerAligned{
+	text-align: center;
+}
+
 .formcenter {
 	 margin: 0 auto;
 	 width:60%

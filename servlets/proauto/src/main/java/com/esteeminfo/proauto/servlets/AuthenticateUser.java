@@ -31,7 +31,7 @@ public class AuthenticateUser extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws IOException {
 
 		String userid = request.getParameter("userid");
 		String password = request.getParameter("password");

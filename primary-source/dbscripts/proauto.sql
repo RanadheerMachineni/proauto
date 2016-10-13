@@ -9,7 +9,7 @@ grant all privileges on proauto_db.* to 'proauto'@'localhost'
 drop table customers;
 CREATE TABLE customers
 ( 
-	customer_id int NOT NULL,
+	customer_id int AUTO_INCREMENT NOT NULL,
 	customer_name char(50) NOT NULL,
 	address char(50),
 	city char(50),
@@ -48,7 +48,7 @@ insert into employee_roles(role_id,role,role_desc) values(4,'dms','dms User');
 drop table employee;
 CREATE TABLE employee
 (
-	employee_id int NOT NULL,
+	employee_id int AUTO_INCREMENT NOT NULL,
 	employee_name char(50) NOT NULL,
 	password char(50) NOT NULL,
 	role char(50) NOT NULL,
@@ -57,9 +57,10 @@ CREATE TABLE employee
 	state char(25),
 	zip_code char(10),
 	create_date DATE,
+	primary key (employee_id),
 	CONSTRAINT fk_employee_role FOREIGN KEY (role) REFERENCES employee_roles(role)
 )
-insert into employee(employee_id,employee_name,role,password) values(1,'admin', 'admin','admin');
-insert into employee(employee_id,employee_name,role,password) values(2,'jobcard', 'jobcard','jobcard');
-insert into employee(employee_id,employee_name,role,password) values(3,'costing', 'costing','costing');
-insert into employee(employee_id,employee_name,role,password) values(4,'dms', 'dms','dms');
+insert into employee(employee_name,role,password) values('admin', 'admin','admin');
+insert into employee(employee_name,role,password) values('jobcard', 'jobcard','jobcard');
+insert into employee(employee_name,role,password) values('costing', 'costing','costing');
+insert into employee(employee_name,role,password) values('dms', 'dms','dms');
