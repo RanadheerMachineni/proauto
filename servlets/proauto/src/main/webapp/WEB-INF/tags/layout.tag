@@ -43,15 +43,21 @@
 	<!-- Header -->
 
 	<div class="container">
-		<div class="form-group">
-			<img class="logo-customer" alt=""
-				src="../../../${pageContext.request.contextPath}/images/customerlogo.png">
-			<img class="logo-proauto" alt=""
-				src="../../../${pageContext.request.contextPath}/images/proautologo.png">
-
-			<div class="headerContent">
-				<h3>Ennem Excel Engineering(P) Limited</h3>
-			</div>
+			<div class="col-md-12 col-sm-12 col-xs-12">
+	 	 		<div class="row">
+ 	  		   		<div class="col-sm-2 col-md-2">
+	      			<img class="logo-customer" alt="" src="../../../${pageContext.request.contextPath}/images/customerlogo.png">
+	    		</div>
+	    		<div class="col-sm-8 col-md-8">
+	      				<div class="customerHeaderContent">
+							<h3>Ennem Excel Engineering(P) Limited</h3>
+						</div>
+	    		</div>
+	   		 	<div class="col-sm-2 col-md-2">
+	      			<img class="logo-proauto" alt="" src="../../../${pageContext.request.contextPath}/images/proautologo.png">
+	    	 	</div>
+ 	  		</div>
+			
 			<div class="straightLine"></div>
 			<jstl:if test="${not empty role}">
 				<!-- Nav tabs -->
