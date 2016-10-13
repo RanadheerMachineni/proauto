@@ -45,8 +45,10 @@ public class AuthenticateUser extends HttpServlet {
 		System.out.println("role in servlet  = "+role);
 		if (null != role && role.length() > 0) {
 			request.getSession().setAttribute("role", role);
+			response.sendRedirect("dashboard.jsp");
+		}else{
+			response.sendRedirect("index.jsp");
 		}
-		response.sendRedirect("dashboard.jsp");
 	}
 
 	/**

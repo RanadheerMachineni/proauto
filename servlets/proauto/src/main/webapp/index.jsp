@@ -4,21 +4,37 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl"%>
 <t:layout>
 	<jsp:body>
-<div class="formcenter container">
+<div class="container">
 	<jstl:if test="${empty role}">
-	  <form method="post" action="AuthenticateUser">
-	    <div class="form-group">
-	      <label for="userid">User Id:</label>
-	      <input type="text" class="form-control" id="userid"
+	  <form role="form" method="post" action="AuthenticateUser">
+		  <div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4">
+		   	<br></br>
+		  	<div class="row">
+				<div class="col-sm-4 col-md-4">
+		      		<label for="userid">User Id:</label>
+		    	</div>
+		   		 <div class="col-sm-6 col-md-6">
+		      		<input type="text" class="form-control" id="userid"
 								placeholder="Enter UserId" name="userid">
-	    </div>
-	    <div class="form-group">
-	      <label for="pwd">Password:</label>
-	      <input type="password" class="form-control" id="password"
+		    	</div>
+		  	</div>
+		  	<br></br>
+		  	<div class="row">
+				<div class="col-sm-4 col-md-4">
+		      		<label for="pwd">Password:</label>
+		    	</div>
+		   		 <div class="col-sm-6 col-md-6">
+		      		<input type="password" class="form-control" id="password"
 								placeholder="Enter password" name="password">
-	    </div>
-	    
-		<input type=submit value="Login">
+		    	</div>
+		  	</div>
+		  	<br></br>
+		  	<div class="row">
+		   		 <div class="col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4">
+					<input type=submit value="Login">
+		    	 </div>
+		  	</div>
+		  </div>
 	  </form>			
   </jstl:if>
 </div>    

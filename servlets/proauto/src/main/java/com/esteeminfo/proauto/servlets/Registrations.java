@@ -33,14 +33,14 @@ public class Registrations extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String userName = request.getParameter("userName");
-		String userPass = request.getParameter("userPass");
-		String userEmail = request.getParameter("userEmail");
-		String userRole = request.getParameter("userRole");
-		System.out.println("userName = "+userName);
-		System.out.println("userPass = "+userPass);
-		System.out.println("userEmail = "+userEmail);
-		System.out.println("userRole = "+userRole);
+		String empName = request.getParameter("empName");
+		String empPassword = request.getParameter("empPassword");
+		String empEmail = request.getParameter("empEmail");
+		String empRole = request.getParameter("empRole");
+		System.out.println("empName = "+empName);
+		System.out.println("empPassword = "+empPassword);
+		System.out.println("empEmail = "+empEmail);
+		System.out.println("empRole = "+empRole);
 
 		response.sendRedirect("ereg.jsp");
 	}
