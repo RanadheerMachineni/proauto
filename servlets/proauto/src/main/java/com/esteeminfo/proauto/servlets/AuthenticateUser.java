@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.esteeminfo.prouto.dao.EmployeeDAO;
+import com.esteeminfo.prouto.dao.CommonDAO;
 
 /**
  * Servlet implementation class AuthenticateUser
@@ -37,7 +37,7 @@ public class AuthenticateUser extends HttpServlet {
 		String password = request.getParameter("password");
 		String role = null;
 		try {
-			role = EmployeeDAO.authenticateUser(userid, password);
+			role = CommonDAO.authenticateUser(userid, password);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -13,6 +13,7 @@
 	<jstl:if test="${not empty role}">
 		<div class="pageHeadings"> Employee Registration</div>
 		<form role="form" action="Registrations" method="post">  
+		    <input type="hidden" name="regType" value="employee">
 			<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4">
 			   <br>
   	  		   <div class="row">

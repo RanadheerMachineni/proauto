@@ -19,6 +19,23 @@ CREATE TABLE customers
 	CONSTRAINT customers_pk PRIMARY KEY (customer_id)
 );
 
+drop table vendor;
+CREATE TABLE vendor
+( 
+	vendor_id int AUTO_INCREMENT NOT NULL,
+	vendor_name char(50) NOT NULL,
+	address char(50),
+	vendor_email char(50),
+	city char(50),
+	state char(25),
+	zip_code char(10),
+	create_date DATE,
+    vendor_first_contact char(100) NOT NULL,
+    vendor_second_contact char(100),
+    vendor_third_contact char(100),
+	CONSTRAINT vendor_pk PRIMARY KEY (vendor_id)
+);
+
 drop table raw_material;
 CREATE TABLE raw_material
 (

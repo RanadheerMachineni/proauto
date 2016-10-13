@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.esteeminfo.prouto.dao.EmployeeDAO;
+import com.esteeminfo.prouto.dao.CommonDAO;
 
 /**
  * Servlet implementation class Registrations
@@ -33,18 +33,29 @@ public class Registrations extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String empName = request.getParameter("empName");
-		String empPassword = request.getParameter("empPassword");
-		String empEmail = request.getParameter("empEmail");
-		String empRole = request.getParameter("empRole");
-		System.out.println("empName = "+empName);
-		System.out.println("empPassword = "+empPassword);
-		System.out.println("empEmail = "+empEmail);
-		System.out.println("empRole = "+empRole);
-		boolean registered = EmployeeDAO.registerEmployee(empName,empPassword,empEmail,empRole);
-		System.out.println("registered in servlet ="+registered);
-		request.getSession().setAttribute("registered", registered);
-		response.sendRedirect("ereg.jsp");
+		String regType = request.getParameter("regType");
+		boolean registered = false;
+		if(regType.equalsIgnoreCase("employee")){
+			String empName = request.getParameter("empName");
+			String empPassword = request.getParameter("empPassword");
+			String empEmail = request.getParameter("empEmail");
+			String empRole = request.getParameter("empRole");
+			registered = CommonDAO.registerEmployee(empName,empPassword,empEmail,empRole);
+			System.out.println("registered in servlet ="+registered);
+			request.getSession().setAttribute("registered", registered);
+			response.sendRedirect("ereg.jsp");
+		}else if(regType.equalsIgnoreCase("vendor")){
+			String vName = request.getParameter("vName");
+			String vAddress = request.getParameter("vAddress");
+			String vEmail = request.getParameter("vEmail");
+			String vFirstContact = request.getParameter("vFirstContact");
+			String vSecondContact = request.getParameter("vSecondContact");
+			String vThirdContact = request.getParameter("vThirdContact");
+			registered = CommonDAO.registerVendor(vName,vAddress,vEmail,vFirstContact,vSecondContact,vThirdContact);
+			request.getSession().setAttribute("registered", registered);
+			response.sendRedirect("vreg.jsp");
+		}
+		
 	}
 
 	/**
