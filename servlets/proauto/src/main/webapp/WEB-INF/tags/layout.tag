@@ -57,8 +57,10 @@
 	      			<img class="logo-proauto" alt="" src="../../../${pageContext.request.contextPath}/images/proautologo.png">
 	    	 	</div>
  	  		</div>
+			<jstl:if test="${empty role}">
+						<div class="straightLine"></div>
+			</jstl:if>
 			
-			<div class="straightLine"></div>
 			<jstl:if test="${not empty role}">
 				<!-- Nav tabs -->
 
