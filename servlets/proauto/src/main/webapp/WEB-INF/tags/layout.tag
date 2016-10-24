@@ -4,8 +4,8 @@
 <%@ attribute name="header" fragment="true"%>
 <%@ attribute name="footer" fragment="true"%>
 <html>
-<body>
 <head>
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
@@ -41,7 +41,10 @@
 
 <body>
 	<!-- Header -->
-
+    <div id="pageheader">
+      <jsp:invoke fragment="header"/>
+    </div>
+    
 	<div class="container">
 			<div class="col-md-12 col-sm-12 col-xs-12">
 	 	 		<div class="row">

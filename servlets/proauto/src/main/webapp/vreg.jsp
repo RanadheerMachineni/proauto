@@ -2,8 +2,16 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <t:layout>
+	<jsp:attribute name="header">
+<script>
+	$(document).ready(function() {
+		
+	});
+</script>
+    </jsp:attribute>
+
 	<jsp:body>
 <div class="container">
 	<jstl:if test="${empty role}">
@@ -111,7 +119,7 @@
 				        user="proauto" password="proauto"
 				/>
      
-   				<sql:query var="listVendors"   dataSource="${proauto_db}">
+   				<sql:query var="listVendors" dataSource="${proauto_db}">
         			select vendor_name,address,vendor_email,vendor_first_contact,vendor_second_contact,vendor_third_contact,create_date from vendor;
    				</sql:query>
 	  			<div class="row">
