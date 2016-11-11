@@ -5,10 +5,21 @@
 <t:layout>
 	<jsp:body>
 <div class="container">
-	<jstl:if test="${empty role}">
-	  <form role="form" method="post" action="AuthenticateUser">
+	  <form role="form" action="<jstl:url value='j_spring_security_check' />" method='POST'>
 		  <div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4">
 		   	<br></br>
+		   	
+		   	<div class="row">
+		   		<div class="col-sm-10 col-md-10">
+				   	<jstl:if test="${not empty error}">
+						<div class="error">${error}</div>
+					</jstl:if>
+					<jstl:if test="${not empty msg}">
+						<div class="msg">${msg}</div>
+					</jstl:if>
+				</div>
+			</div>
+			<br>
 		  	<div class="row">
 				<div class="col-sm-4 col-md-4">
 		      		<label for="userid">User Id:</label>
@@ -35,8 +46,9 @@
 		    	 </div>
 		  	</div>
 		  </div>
+		  <input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 	  </form>			
-  </jstl:if>
 </div>    
 </jsp:body>
 </t:layout>

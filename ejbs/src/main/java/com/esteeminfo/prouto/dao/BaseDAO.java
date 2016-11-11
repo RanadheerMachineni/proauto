@@ -6,8 +6,7 @@ import java.sql.SQLException;
 
 public class BaseDAO {
 	public static Connection getConnection() throws SQLException {
-		String url = "jdbc:mysql://localhost:3306/";
-		String dbName = "proauto_db";
+		String url = "jdbc:mysql://localhost:3306/proauto_db?autoReconnect=true&useSSL=false";
 		String driver = "com.mysql.jdbc.Driver";
 		String userName = "proauto";
 		String password = "proauto";
@@ -15,7 +14,7 @@ public class BaseDAO {
 		try {
 			Class.forName(driver).newInstance();
 			conn = DriverManager
-					.getConnection(url + dbName, userName, password);
+					.getConnection(url, userName, password);
 
 		} catch (Exception e) {
 			e.printStackTrace();

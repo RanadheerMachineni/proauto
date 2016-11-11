@@ -5,13 +5,29 @@
 <t:layout>
 <jsp:body>
 <div class="container">
-	<jstl:if test="${empty role}">
-		<p>You are not logged in. Go to the <a href="${pageContext.request.contextPath}/index.jsp">Login</a>.</p>
-	</jstl:if>
-	<jstl:if test="${not empty role}">
+	
 		<br>
-		&nbsp;&nbsp;&nbsp;&nbsp;dms app comes here....
-	</jstl:if>
+		<jstl:if test="${pageContext.request.userPrincipal.name == null}">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+		 	 		<div class="row">
+	 	  		   		<div class="col-sm-2 col-md-2">
+		    			</div>
+		    			<div class="col-sm-7 col-md-7">
+		      				
+		    			</div>
+		   		 		<div class="col-sm-3 col-md-3">
+							<p>
+								You are not logged in.  | <a
+										href="${pageContext.request.contextPath}/login.jsp">Please Login</a>
+							</p>
+		    	 		</div>
+	 	  			</div>
+	 	  		</div>
+			</jstl:if>
+			<jstl:if test="${pageContext.request.userPrincipal.name != null}">
+					&nbsp;&nbsp;&nbsp;&nbsp;dms app comes here....
+			</jstl:if>
+					
 </div>
 </jsp:body>
 </t:layout>

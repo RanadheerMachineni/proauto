@@ -6,11 +6,11 @@
 <t:layout>
 	<jsp:body>
 <div class="container">
-	<jstl:if test="${empty role}">
+	<jstl:if test="${pageContext.request.userPrincipal.name == null}">
 		<p>You are not logged in. Go to the <a
 						href="${pageContext.request.contextPath}/index.jsp">Login</a>.</p>
 	</jstl:if>
-	<jstl:if test="${not empty role}">
+	<jstl:if test="${pageContext.request.userPrincipal.name != null}">
 		<br>
 		<div class="pageHeadings"> Employee Registration</div>
 		<form role="form" action="Registrations" method="post">  
@@ -70,53 +70,7 @@
   	  		</div>
 		</form>	
 		
-		<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4">
-		
-			<div class="row">
-	   		 		<div class="col-sm-10 col-md-10">
-						<jstl:if test="${not empty registered and registered}">
-							<div class="informativeText centerAligned">Employee registered successfully</div>
-						</jstl:if>
-						<jstl:if test="${not empty registered and !registered}">
-							<div class="informativeText centerAligned">Employee registration failed</div>
-						</jstl:if>
-	    	 		</div>
-	  			</div>
-	  			<br>
-	  			<div class="row">
-	   		 		<div class="informativeText">List of existing employees</div>
-	  			</div>
-	  			<br>
-	  			<sql:setDataSource
-				        var="proauto_db"
-				        driver="com.mysql.jdbc.Driver"
-				        url="jdbc:mysql://localhost:3306/proauto_db"
-				        user="proauto" password="proauto"
-				/>
-     
-   				<sql:query var="listEmployees"   dataSource="${proauto_db}">
-        			select employee_name,role from employee;
-   				</sql:query>
-	  			<div class="row">
-	   		 		<table class="table table-bordered">
-					    <thead>
-					      <tr>
-					        <th>Employee Name</th>
-					        <th>Role</th>
-					      </tr>
-					    </thead>
-					    <tbody>
-					      <jstl:forEach var="employee" items="${listEmployees.rows}">
-				                <tr>
-				                    <td><jstl:out value="${employee.employee_name}" /></td>
-				                    <td><jstl:out value="${employee.role}" /></td>
-				                </tr>
-				            </jstl:forEach>
-					    </tbody>
-					  </table>
-
-	  			</div>
-		</div>
+	
 		
 		
 		

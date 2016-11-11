@@ -9,16 +9,21 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
+	function formSubmit() {
+		document.getElementById("logoutForm").submit();
+	}
 	$(document).ready(function() {
 		var url = window.location.href;
 		var lielement;
 	    var res = url.split("/");
 
-		for (i = 0; i < res.length; i++) { 
+	    lielement=res[res.length-1];
+	    
+		/*for (i = 0; i < res.length; i++) { 
 		    if(res[i].endsWith(".jsp")){
 	    	    lielement=res[i].substring(0,res[i].indexOf(".jsp"))
 	    	}
-		}
+		}*/
 
 		if(lielement=="ereg" || lielement=="vreg" || lielement=="creg"){
 			lielement ="reg";
@@ -60,33 +65,48 @@
 	      			<img class="logo-proauto" alt="" src="../../../${pageContext.request.contextPath}/images/proautologo.png">
 	    	 	</div>
  	  		</div>
-			<jstl:if test="${empty role}">
+			<jstl:if test="${pageContext.request.userPrincipal.name == null}">
 						<div class="straightLine"></div>
+						<!-- <div class="col-md-12 col-sm-12 col-xs-12">
+		 	 		<div class="row">
+	 	  		   		<div class="col-sm-2 col-md-2">
+		    			</div>
+		    			<div class="col-sm-7 col-md-7">
+		      				
+		    			</div>
+		   		 		<div class="col-sm-3 col-md-3">
+							<p>
+								You are not logged in.  | <a
+										href="${pageContext.request.contextPath}/login.jsp">Please Login</a>
+							</p>
+		    	 		</div>
+	 	  			</div>
+	 	  		</div> -->
 			</jstl:if>
 			
-			<jstl:if test="${not empty role}">
+			<jstl:if test="${pageContext.request.userPrincipal.name != null}">
 				<!-- Nav tabs -->
 
 				<ul>
 					<li id="dashboardli"><a
-						href="${pageContext.request.contextPath}/dashboard.jsp">Dashboard</a></li>
+						href="${pageContext.request.contextPath}/dashboard">Dashboard</a></li>
 
 					<li id="jobcardli"><a
-						href="${pageContext.request.contextPath}/jobcard.jsp">Job Card</a></li>
+						href="${pageContext.request.contextPath}/jobcard">Job Card</a></li>
 
 					<li id="dmsli"><a
-						href="${pageContext.request.contextPath}/dms.jsp">DMS</a></li>
+						href="${pageContext.request.contextPath}/dms">DMS</a></li>
 
 					<li id="costingli"><a
-						href="${pageContext.request.contextPath}/costing.jsp">Costing</a></li>
+						href="${pageContext.request.contextPath}/costing">Costing</a></li>
 
 					<li id="regli" class="dropdownmenu"><a class="dropbtn">Registration Forms</a>
 						<div class="dropdown-content">
-							<a href="${pageContext.request.contextPath}/ereg.jsp">Employee
+							<a href="${pageContext.request.contextPath}/ereg">Employee
 								Registration</a> <a
-								href="${pageContext.request.contextPath}/vreg.jsp">Vendor
+								href="${pageContext.request.contextPath}/vreg">Vendor
 								Registration</a> <a
-								href="${pageContext.request.contextPath}/creg.jsp">Customer
+								href="${pageContext.request.contextPath}/creg">Customer
 								Registration</a>
 						</div></li>
 
@@ -94,12 +114,34 @@
 
 			</jstl:if>
 
-
+			<jstl:url value="/logout" var="logoutUrl" />
+			<form action="${logoutUrl}" method="post" id="logoutForm">
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}" />
+			</form>
+			<jstl:if test="${pageContext.request.userPrincipal.name != null}">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+		 	 		<div class="row">
+	 	  		   		<div class="col-sm-2 col-md-2">
+		    			</div>
+		    			<div class="col-sm-7 col-md-7">
+		      				
+		    			</div>
+		   		 		<div class="col-sm-3 col-md-3">
+							<p>
+								Welcome : ${pageContext.request.userPrincipal.name} | <a
+										href="javascript:formSubmit()"> Logout</a>
+							</p>
+		    	 		</div>
+	 	  			</div>
+	 	  		</div>
+			</jstl:if>
 
 		</div>
 	</div>
 	<div id="body">
 		<jsp:doBody />
+		
 	</div>
 
 	<!-- <div id="pagefooter">
