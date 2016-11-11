@@ -89,6 +89,8 @@ public class AppController {
 	@RequestMapping(value = { "creg"}, method = RequestMethod.POST)
 	public String postcregPage(Model model, HttpServletRequest request, HttpServletResponse response) {
 		String create = request.getParameter("create");
+		
+		String cid = request.getParameter("cid");
 
 		String cName = request.getParameter("cName");
 		String cAddress = request.getParameter("cAddress");
@@ -136,7 +138,7 @@ public class AppController {
 		logger.info("***************************** creg Post cName= "+cName+",create = "+create);
 		
 		try {
-			CommonDAO.registerCustomer(create, cName, cAddress, nameOne, phoneOne, emailOne, nameTwo, phonTwo, emailTwo, namethree, phonethree, emailthree, namefour, phonefour, emailfour,
+			CommonDAO.registerCustomer(create,cid, cName, cAddress, nameOne, phoneOne, emailOne, nameTwo, phonTwo, emailTwo, namethree, phonethree, emailthree, namefour, phonefour, emailfour,
 					namefive, phonefive, emailfive, namesix, phonesix, emailsix, nameseven, phoneseven, emailseven, nameeight, phoneeight, emaileight, namenine, phonenine, emailnine,
 					nameten, phoneten, emailten);
 		} catch (Exception e) {
@@ -164,9 +166,8 @@ public class AppController {
 	
 	@RequestMapping(value = { "/vreg"}, method = RequestMethod.POST)
 	public String postvregPage(Model model, HttpServletRequest request, HttpServletResponse response) {
-		logger.info("***************************** vreg Post");
 		String create = request.getParameter("create");
-		logger.info("***************************** vreg Post create = "+create);
+		String vid = request.getParameter("vid");
 
 		String vName = request.getParameter("vName");
 		String vAddress = request.getParameter("vAddress");
@@ -214,7 +215,7 @@ public class AppController {
 		logger.info("***************************** vreg Post "+vName);
 		
 		try {
-			CommonDAO.registerVendor(create, vName, vAddress, nameOne, phoneOne, emailOne, nameTwo, phonTwo, emailTwo, namethree, phonethree, emailthree, namefour, phonefour, emailfour,
+			CommonDAO.registerVendor(create, vid, vName, vAddress, nameOne, phoneOne, emailOne, nameTwo, phonTwo, emailTwo, namethree, phonethree, emailthree, namefour, phonefour, emailfour,
 					namefive, phonefive, emailfive, namesix, phonesix, emailsix, nameseven, phoneseven, emailseven, nameeight, phoneeight, emaileight, namenine, phonenine, emailnine,
 					nameten, phoneten, emailten);
 		} catch (Exception e) {

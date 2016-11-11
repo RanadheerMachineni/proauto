@@ -85,6 +85,7 @@ function ValidateForm(form){
 		<form id="vendorRegForm" role="form" action="vreg" method="post" onsubmit="return ValidateForm(this);">  
 		    <input type="hidden" name="regType" value="vendor">
 			   <br>
+			   		    <input type="hidden" name="vid" id="vid" value="${vendorSelected.vendorId}">
 			   
   	  		   <div class="row">
   	  		   		<div class="col-sm-4 col-md-4">

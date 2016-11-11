@@ -261,7 +261,7 @@ public class CommonDAO extends BaseDAO {
 		return customerExist;
 	}
 
-	public static void registerVendor(String create, String vName, String vAddress, String nameOne, String phoneOne,
+	public static void registerVendor(String create, String vid, String vName, String vAddress, String nameOne, String phoneOne,
 			String emailOne, String nameTwo, String phonTwo, String emailTwo, String namethree, String phonethree,
 			String emailthree, String namefour, String phonefour, String emailfour, String namefive, String phonefive,
 			String emailfive, String namesix, String phonesix, String emailsix, String nameseven, String phoneseven,
@@ -278,12 +278,12 @@ public class CommonDAO extends BaseDAO {
 			if (create.equalsIgnoreCase("true") && vendorExist) {
 				throw new Exception("Vendor already exist. Please select from existing Vendors and update");
 			}
-			if (create.equalsIgnoreCase("false")) {
+			if (create.equalsIgnoreCase("false") && vid!=null) {
 
 				String query = "UPDATE VENDOR set vendor_name=?,address=?, create_date=?, name_one=?,phone_one=?,email_one=?,name_two=?,phone_two=?,email_two=?,name_three=?,"
 						+ "phone_three=?,email_three=?,name_four=?,phone_four=?,email_four=?,name_five=?,phone_five=?,email_five=?,name_six=?,phone_six=?,email_six=?,name_seven=?,phone_seven=?,email_seven=?,"
-						+ "name_eight=?,phone_eight=?,email_eight=?,name_nine=?,phone_nine=?,email_nine=?,name_ten=?,phone_ten=?,email_ten=? where vendor_name='"
-						+ vName + "'";
+						+ "name_eight=?,phone_eight=?,email_eight=?,name_nine=?,phone_nine=?,email_nine=?,name_ten=?,phone_ten=?,email_ten=? where vendor_id="
+						+ vid;
 				PreparedStatement preparedStmt = conn.prepareStatement(query);
 				preparedStmt.setString(1, vName);
 				preparedStmt.setString(2, vAddress);
@@ -561,7 +561,7 @@ public class CommonDAO extends BaseDAO {
 
 	}
 
-	public static void registerCustomer(String create, String cName, String cAddress, String nameOne, String phoneOne,
+	public static void registerCustomer(String create, String cid, String cName, String cAddress, String nameOne, String phoneOne,
 			String emailOne, String nameTwo, String phonTwo, String emailTwo, String namethree, String phonethree,
 			String emailthree, String namefour, String phonefour, String emailfour, String namefive, String phonefive,
 			String emailfive, String namesix, String phonesix, String emailsix, String nameseven, String phoneseven,
@@ -579,11 +579,11 @@ public class CommonDAO extends BaseDAO {
 			if (create.equalsIgnoreCase("true") && customerExist) {
 				throw new Exception("Customer already exist. Please select from existing Customers and update");
 			}
-			if (create.equalsIgnoreCase("false")) {
+			if (create.equalsIgnoreCase("false") && cid!=null) {
 				String query = "UPDATE Customer set customer_name=?,address=?, create_date=?, name_one=?,phone_one=?,email_one=?,name_two=?,phone_two=?,email_two=?,name_three=?,"
 						+ "phone_three=?,email_three=?,name_four=?,phone_four=?,email_four=?,name_five=?,phone_five=?,email_five=?,name_six=?,phone_six=?,email_six=?,name_seven=?,phone_seven=?,email_seven=?,"
-						+ "name_eight=?,phone_eight=?,email_eight=?,name_nine=?,phone_nine=?,email_nine=?,name_ten=?,phone_ten=?,email_ten=? where customer_name='"
-						+ cName + "'";
+						+ "name_eight=?,phone_eight=?,email_eight=?,name_nine=?,phone_nine=?,email_nine=?,name_ten=?,phone_ten=?,email_ten=? where customer_id="
+						+ cid;
 				PreparedStatement preparedStmt = conn.prepareStatement(query);
 				preparedStmt.setString(1, cName);
 				preparedStmt.setString(2, cAddress);

@@ -83,6 +83,7 @@
 						onsubmit="return ValidateForm(this);">  
 		    <input type="hidden" name="regType" value="customer">
 			   <br>
+			   			   		    <input type="hidden" name="cid" id="cid" value="${customerSelected.customerId}">
 			   
   	  		   <div class="row">
   	  		   		<div class="col-sm-4 col-md-4">
