@@ -11,15 +11,51 @@ CREATE TABLE customer
 ( 
 	customer_id int AUTO_INCREMENT NOT NULL,
 	customer_name char(50) NOT NULL,
-	address char(50),
+	address char(255),
 	city char(50),
 	state char(25),
 	zip_code char(10),
-	customer_email char(50),
-	customer_first_contact char(100) NOT NULL,
-    customer_second_contact char(100),
-    customer_third_contact char(100),
 	create_date DATE,
+	
+	 name_one char(100) NOT NULL,
+    phone_one char(100) NOT NULL,
+    email_one char(100) NOT NULL,
+    
+    name_two char(100),
+    phone_two char(100),
+    email_two char(100),
+    
+    name_three char(100),
+    phone_three char(100),
+    email_three char(100),
+
+    name_four char(100),
+    phone_four char(100),
+    email_four char(100),
+
+    name_five char(100),
+    phone_five char(100),
+    email_five char(100),
+
+    name_six char(100),
+    phone_six char(100),
+    email_six char(100),
+
+    name_seven char(100),
+    phone_seven char(100),
+    email_seven char(100),
+
+   	name_eight char(100),
+    phone_eight char(100),
+    email_eight char(100),
+
+    name_nine char(100),
+    phone_nine char(100),
+    email_nine char(100),
+
+    name_ten char(100),
+    phone_ten char(100),
+    email_ten char(100),
 	CONSTRAINT customer_pk PRIMARY KEY (customer_id)
 );
 

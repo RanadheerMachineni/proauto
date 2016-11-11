@@ -11,12 +11,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.Vendor;
 import com.esteeminfo.prouto.dao.CommonDAO;
 
@@ -73,10 +73,79 @@ public class AppController {
 	}
 
 	@RequestMapping(value = { "/creg"}, method = RequestMethod.GET)
-	public ModelAndView cregPage() {
-		ModelAndView model = new ModelAndView();
-		model.setViewName("creg");
-		return model;
+	public String showcregPage(Model model, @RequestParam(value="customerSelected", required=false) String customerSelected, HttpServletRequest request, HttpServletResponse response) {
+		logger.info("***************************** creg GET customerSelected = "+customerSelected);
+		Customer customer = new Customer();
+		if(customerSelected!=null){
+			customer = CommonDAO.retrieveCustomer(customerSelected);
+		}
+		String customerSearched = request.getParameter("searchCustomerInput");
+		List<Customer> customerList = CommonDAO.retrieveAllCustomers(customerSearched);
+		model.addAttribute("customerSelected", customer);
+		model.addAttribute("customerList", customerList);
+		return "creg";
+	}
+	
+	@RequestMapping(value = { "creg"}, method = RequestMethod.POST)
+	public String postcregPage(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String create = request.getParameter("create");
+
+		String cName = request.getParameter("cName");
+		String cAddress = request.getParameter("cAddress");
+
+		String nameOne = request.getParameter("name_one");
+		String phoneOne = request.getParameter("phone_one");
+		String emailOne = request.getParameter("email_one");
+
+		String nameTwo = request.getParameter("name_two");
+		String phonTwo = request.getParameter("phone_two");
+		String emailTwo = request.getParameter("email_two");
+
+		String namethree = request.getParameter("name_three");
+		String phonethree = request.getParameter("phone_three");
+		String emailthree = request.getParameter("email_three");
+
+		String namefour = request.getParameter("name_four");
+		String phonefour = request.getParameter("phone_four");
+		String emailfour = request.getParameter("email_four");
+
+		String namefive = request.getParameter("name_five");
+		String phonefive = request.getParameter("phone_five");
+		String emailfive = request.getParameter("email_five");
+
+		String namesix = request.getParameter("name_six");
+		String phonesix = request.getParameter("phone_six");
+		String emailsix = request.getParameter("email_six");
+
+		String nameseven = request.getParameter("name_seven");
+		String phoneseven = request.getParameter("phone_seven");
+		String emailseven = request.getParameter("email_seven");
+
+		String nameeight = request.getParameter("name_eight");
+		String phoneeight = request.getParameter("phone_eight");
+		String emaileight = request.getParameter("email_eight");
+
+		String namenine = request.getParameter("name_nine");
+		String phonenine = request.getParameter("phone_nine");
+		String emailnine = request.getParameter("email_nine");
+
+		String nameten = request.getParameter("name_ten");
+		String phoneten = request.getParameter("phone_ten");
+		String emailten = request.getParameter("email_ten");
+
+		logger.info("***************************** creg Post cName= "+cName+",create = "+create);
+		
+		try {
+			CommonDAO.registerCustomer(create, cName, cAddress, nameOne, phoneOne, emailOne, nameTwo, phonTwo, emailTwo, namethree, phonethree, emailthree, namefour, phonefour, emailfour,
+					namefive, phonefive, emailfive, namesix, phonesix, emailsix, nameseven, phoneseven, emailseven, nameeight, phoneeight, emaileight, namenine, phonenine, emailnine,
+					nameten, phoneten, emailten);
+		} catch (Exception e) {
+			model.addAttribute("error", e.getMessage());
+		}
+		
+		List<Customer> customerList =CommonDAO.retrieveAllCustomers(null);
+		model.addAttribute("customerList", customerList);
+		return "creg";
 	}
 	
 	@RequestMapping(value = { "/vreg"}, method = RequestMethod.GET)

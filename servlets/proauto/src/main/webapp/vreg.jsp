@@ -19,6 +19,13 @@ function ValidateForm(form){
  		return false;
  	}
  	
+ 	var pattern = /[0-9\-\(\)\s]+/;
+    if(!vPhoneOne || (vPhoneOne.length < 10) || (!pattern.test(vPhoneOne)))
+    {
+         alert('Please enter a valid phone number(First row).');
+	 	 return false;
+    }
+    
     var emailRe = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
  	if(!vEmailOne || !emailRe.test(vEmailOne))
  	{
@@ -26,12 +33,7 @@ function ValidateForm(form){
 	 	return false;
 
  	}
- 	var pattern = /[0-9\-\(\)\s]+/;
-    if(!vPhoneOne || (vPhoneOne.length < 10) || (!pattern.test(vPhoneOne)))
-    {
-         alert('Please enter a valid phone number(First row).');
-	 	 return false;
-    }
+ 	
 	return true;
 }
 
