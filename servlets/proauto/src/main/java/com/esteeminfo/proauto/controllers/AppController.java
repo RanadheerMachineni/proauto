@@ -272,7 +272,7 @@ public class AppController {
 		String ePhone = request.getParameter("ePhone");
 		String eEmail = request.getParameter("eEmail");
 
-		logger.info("***************************** ereg Post eName= "+eName+",eRole = "+eRole);
+		logger.info("***************************** ereg Post eName= "+eName+",eRole = "+eRole+", eUserId = "+eUserId);
 		
 		try {
 			CommonDAO.registerEmployee(create, eid, eName, eRole, eUserId, password, eAddress, ePhone, eEmail);

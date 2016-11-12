@@ -144,9 +144,9 @@ drop table employee;
 CREATE TABLE employee
 (
 	employee_id int AUTO_INCREMENT NOT NULL,
-	user_id char(50) NOT NULL,
-	password char(50) NOT NULL,
 	employee_name char(50) NOT NULL,
+	user_id char(50) NULL,
+	password char(50),
 	address char(255),
 	city char(50),
 	phone char(50),
@@ -154,9 +154,8 @@ CREATE TABLE employee
 	state char(25),
 	zip_code char(10),
 	create_date DATE,
-	CONSTRAINT employee_pk primary key (employee_id),
-	CONSTRAINT employee_user_id_uk UNIQUE (user_id)
-)
+	CONSTRAINT employee_pk primary key (employee_id)
+);
 
 insert into employee(employee_name,user_id,password) values('admin','admin','admin');
 insert into employee(employee_name,user_id,password) values('dms','dms','dms');
@@ -169,7 +168,7 @@ CREATE TABLE employee_role
 (
 	user_id char(50) NOT NULL,
 	role char(50) NOT NULL
-)
+);
 
 insert into employee_role(user_id,role) values('admin','ROLE_admin');
 insert into employee_role(user_id,role) values('dms','ROLE_dms');

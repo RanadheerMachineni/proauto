@@ -701,8 +701,8 @@ public class CommonDAO extends BaseDAO {
 
 			conn = getConnection();
 			stmt = conn.createStatement();
-			String query = "select e.employee_id,e.employee_name,e.user_id,e.password,e.address,e.phone,e.email,er.role "
-					+ "from employee e,employee_role er where e.user_id=er.user_id and e.employee_name='"
+			String query = "select e.employee_id,e.employee_name,e.user_id,e.password,e.address,e.phone,e.email "
+					+ "from employee e where e.employee_name='"
 					+ employeeSelected + "'";
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -715,8 +715,15 @@ public class CommonDAO extends BaseDAO {
 				String password = rs.getString("password");
 				String phone = rs.getString("phone");
 				String email = rs.getString("email");
-				String role = rs.getString("role");
-
+				String role = "ROLE_norole";
+				if(userId!=null && userId.length()>0){
+					String query1 = "select role from employee_role where user_id='"
+							+ userId + "'";
+					ResultSet rs1 = stmt.executeQuery(query1);
+					while (rs1.next()) {
+						role = rs1.getString("role");
+					}
+				}
 				// Display values
 
 				employee.setEmployeeId(id);
@@ -748,10 +755,9 @@ public class CommonDAO extends BaseDAO {
 			conn = getConnection();
 			stmt = conn.createStatement();
 			
-			String query = "select e.employee_id,e.employee_name,e.phone,r.role_desc from employee e,employee_role er,roles r "
-					+ "where e.user_id=er.user_id and er.role=r.role";
+			String query = "select e.employee_id,e.employee_name,e.phone,e.user_id from employee e";
 			if (employeeSearched != null && employeeSearched.length() > 0) {
-				query += " and e.employee_name LIKE '" + employeeSearched + "%'";
+				query += " where e.employee_name LIKE '" + employeeSearched + "%'";
 			}
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -760,12 +766,12 @@ public class CommonDAO extends BaseDAO {
 				int id = rs.getInt("employee_id");
 				String empName = rs.getString("employee_name");
 				String phone = rs.getString("phone");
-				String role = rs.getString("role_desc");
+				String userId = rs.getString("user_id");
 
 				emp.setEmployeeId(id);
 				emp.setEmployeeName(empName);
 				emp.setPhone(phone);
-				emp.setRole(role);
+				emp.setUserId(userId);
 				employees.add(emp);
 
 			}
@@ -793,7 +799,8 @@ public class CommonDAO extends BaseDAO {
 				throw new Exception("Employee with given UserId already exist. Please select other UserId");
 			}
 			if (create.equalsIgnoreCase("false") && eid != null) {
-
+				
+				System.out.println("********************************************** updating");
 				String query = "UPDATE EMPLOYEE set employee_name=?,user_id=?, password=?, address=?,phone=?,email=?,create_date=? where employee_id="
 						+ eid;
 				PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -808,11 +815,17 @@ public class CommonDAO extends BaseDAO {
 
 				int count = preparedStmt.executeUpdate();
 
-				insertEmployeeRole(eUserId, eRole);
-
+				deleteEmployeeRole(eUserId);
+				
+				if(eUserId!=null && eUserId.length()>0 && eRole!=null && eRole!="ROLE_norole") {
+					insertEmployeeRole(eUserId, eRole);
+				}
+				
 				registered = (count > 0);
 
 			} else {
+				System.out.println("********************************************** inserting");
+
 				String query = "INSERT INTO EMPLOYEE(employee_name,user_id, password, address,phone,email,create_date) values(?,?,?,?,?,?,?)";
 				PreparedStatement preparedStmt = conn.prepareStatement(query);
 
@@ -827,7 +840,9 @@ public class CommonDAO extends BaseDAO {
 
 				int count = preparedStmt.executeUpdate();
 
-				insertEmployeeRole(eUserId, eRole);
+				if(eUserId!=null && eUserId.length()>0 && eRole!=null && eRole!="ROLE_norole") {
+					insertEmployeeRole(eUserId, eRole);
+				}	
 				registered = (count > 0);
 			}
 
@@ -840,22 +855,24 @@ public class CommonDAO extends BaseDAO {
 
 	private static void insertEmployeeRole(String eUserId, String eRole) throws SQLException {
 		Connection conn = getConnection();
-		Statement st = conn.createStatement();
-		String sql = "DELETE FROM employee_role WHERE user_id='" + eUserId + "'";
-		st.executeUpdate(sql);
-
 		String query = "INSERT INTO employee_role(user_id,role) values(?,?)";
 		PreparedStatement preparedStmt = conn.prepareStatement(query);
 		preparedStmt.setString(1, eUserId);
 		preparedStmt.setString(2, eRole);
-
 		int count = preparedStmt.executeUpdate();
 		conn.close();
 
 	}
 
+	private static void deleteEmployeeRole(String eUserId) throws SQLException{
+		Connection conn = getConnection();
+		Statement st = conn.createStatement();
+		String sql = "DELETE FROM employee_role WHERE user_id='" + eUserId + "'";
+		st.executeUpdate(sql);
+	}
+	
 	private static boolean empoyeeExist(String userId) throws SQLException {
-
+		if(userId==null || userId.trim().length()==0) return false;
 		boolean employeeExist = false;
 		Connection conn = getConnection();
 		Statement st = conn.createStatement();
