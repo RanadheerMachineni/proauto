@@ -200,14 +200,15 @@
   	  		   <br>
   	  		   <br>
 			   <div class="row">
-	   		 		<div class="col-sm-4 col-md-4">
+	   		 		<div class="col-sm-8 col-md-8">
 	   		 			<jstl:if test="${employeeSelected.employeeName == null}">
 	   		 				  <input type="hidden" name="create" value="true">
 						      <input id="createEmployeeSubmit" type=submit value="Create">
 						</jstl:if>
 						<jstl:if test="${employeeSelected.employeeName != null}">
 							  <input type="hidden" name="create" value="false">
-						      <input id="createEmployeeSubmit" type=submit value="Update">
+						      <input id="createEmployeeSubmit" type=submit value="Update"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						      <a class="btn btn-default" href="${pageContext.request.contextPath}/ereg" role="button">Cancel</a>
 						</jstl:if>
 	    	 		</div>
 	  			</div>

@@ -213,7 +213,7 @@
   	  		   </div>
   	  		   <br>
 			   <div class="row">
-	   		 		<div class="col-sm-4 col-md-4">
+	   		 		<div class="col-sm-8 col-md-8">
 	   		 			<jstl:if test="${customerSelected.customerName == null}">
 	   		 				  <input type="hidden" name="create" value="true">
 						      <input id="createCustomerSubmit" type=submit value="Create">
@@ -221,6 +221,8 @@
 						<jstl:if test="${customerSelected.customerName != null}">
 							  <input type="hidden" name="create" value="false">
 						      <input id="createCustomerSubmit" type=submit value="Update">
+						      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						      <a class="btn btn-default" href="${pageContext.request.contextPath}/creg" role="button">Cancel</a>
 						</jstl:if>
 	    	 		</div>
 	  			</div>
