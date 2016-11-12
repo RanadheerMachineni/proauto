@@ -246,7 +246,7 @@
 								    <thead>
 								      <tr>
 								        <th>Employee Name</th>
-								        <th>Address</th>
+								        <th>Role</th>
 			   					        <th>Phone</th>
 								      </tr>
 								    </thead>
@@ -259,7 +259,7 @@
 								                    	<jstl:out value="${employee.employeeName}" />
 								                    </a>
 												</td>
-							                    <td><jstl:out value="${employee.userId}" /></td>
+							                    <td><jstl:out value="${employee.role}" /></td>
 							                    <td><jstl:out
 											value="${employee.phone}" /></td>
 							                </tr>
