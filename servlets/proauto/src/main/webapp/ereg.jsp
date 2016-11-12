@@ -62,6 +62,7 @@
 
 		return true;
 	}
+
 </script>
     </jsp:attribute>
 
@@ -77,7 +78,7 @@
 		    			<div class="col-sm-7 col-md-7">
 		      				
 		    			</div>
-		   		 		<div class="col-sm-3 col-md-3">
+	 	   		 		<div class="col-sm-3 col-md-3">
 							<p>
 								You are not logged in.  | <a
 									href="${pageContext.request.contextPath}/login.jsp">Please Login</a>
@@ -132,7 +133,7 @@
 		   		 	<div class="col-sm-6 col-md-6">
 		 			<select name="eRole" id="eRole" onchange="roleChanged();">
   						<jstl:forEach items="${roles}" var="role">
-  				  			<option value="${role.key}" ${param.employeeSelectedRole}==${role.key}?'selected':''>${role.value}</option>
+  				  			<option value="${role.key}" ${employeeSelectedRole == role.key ? 'selected' : ''}>${role.value}</option>
   						</jstl:forEach>
 					</select>
 		    	 	</div>
@@ -266,5 +267,7 @@
 		
 </div>
 </jsp:body>
+
+
 </t:layout>
 

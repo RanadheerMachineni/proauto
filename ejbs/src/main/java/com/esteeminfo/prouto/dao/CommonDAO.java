@@ -699,9 +699,6 @@ public class CommonDAO extends BaseDAO {
 		Employee employee = null;
 		try {
 
-			if (!empoyeeExist(employeeSelected))
-				return null;
-
 			conn = getConnection();
 			stmt = conn.createStatement();
 			String query = "select e.employee_id,e.employee_name,e.user_id,e.password,e.address,e.phone,e.email,er.role "
@@ -790,9 +787,9 @@ public class CommonDAO extends BaseDAO {
 			Calendar calendar = Calendar.getInstance();
 			java.sql.Date currentTime = new java.sql.Date(calendar.getTime().getTime());
 			conn = getConnection();
-			boolean empoyeeExist = empoyeeExist(eName);
+			boolean empoyeeExist = empoyeeExist(eUserId);
 			if (create.equalsIgnoreCase("true") && empoyeeExist) {
-				throw new Exception("Employee already exist. Please select from existing Employees and update");
+				throw new Exception("Employee with given UserId already exist. Please select other UserId");
 			}
 			if (create.equalsIgnoreCase("false") && eid != null) {
 
@@ -856,12 +853,12 @@ public class CommonDAO extends BaseDAO {
 
 	}
 
-	private static boolean empoyeeExist(String eName) throws SQLException {
+	private static boolean empoyeeExist(String userId) throws SQLException {
 
 		boolean employeeExist = false;
 		Connection conn = getConnection();
 		Statement st = conn.createStatement();
-		ResultSet res = st.executeQuery("SELECT * FROM employee WHERE employee_name='" + eName + "'");
+		ResultSet res = st.executeQuery("SELECT * FROM employee WHERE user_id='" + userId + "'");
 		while (res.next()) {
 			employeeExist = true;
 		}
