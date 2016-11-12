@@ -26,9 +26,9 @@ public class ProautoSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		auth.jdbcAuthentication().dataSource(dataSource)
 			.usersByUsernameQuery(
-				"select user_name,password,true from users where user_name=?")
+				"select user_id,password,true from employee where user_id=?")
 			.authoritiesByUsernameQuery(
-				"select user_name,role from user_role where user_name=?");
+				"select user_id,role from employee_role where user_id=?");
 		/*auth.inMemoryAuthentication().withUser("admin").password("admin").roles("admin").and()
 		.withUser("dms").password("dms").roles("dms").and()
 		.withUser("jobcard").password("jobcard").roles("jobcard").and()

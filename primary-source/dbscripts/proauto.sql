@@ -137,55 +137,44 @@ CREATE TABLE roles
 insert into roles(role_id,role,role_desc) values(1,'ROLE_admin', 'Administrator');
 insert into roles(role_id,role,role_desc) values(2,'ROLE_jobcard','JobCard User');
 insert into roles(role_id,role,role_desc) values(3,'ROLE_costing','Costing User');
-insert into roles(role_id,role,role_desc) values(4,'ROLE_dms','dms User');
+insert into roles(role_id,role,role_desc) values(4,'ROLE_dms','Dms User');
+insert into roles(role_id,role,role_desc) values(5,'ROLE_norole','- Not user');
 
 drop table employee;
 CREATE TABLE employee
 (
 	employee_id int AUTO_INCREMENT NOT NULL,
+	user_id char(50) NOT NULL,
+	password char(50) NOT NULL,
 	employee_name char(50) NOT NULL,
-	address char(50),
+	address char(255),
 	city char(50),
+	phone char(50),
+	email char(50),
 	state char(25),
 	zip_code char(10),
 	create_date DATE,
-	CONSTRAINT employee_pk primary key (employee_id)
+	CONSTRAINT employee_pk primary key (employee_id),
+	CONSTRAINT employee_user_id_uk UNIQUE (user_id)
 )
 
-insert into employee(employee_name) values('admin');
-insert into employee(employee_name) values('jobcard');
-insert into employee(employee_name) values('costing');
-insert into employee(employee_name) values('dms');
+insert into employee(employee_name,user_id,password) values('admin','admin','admin');
+insert into employee(employee_name,user_id,password) values('dms','dms','dms');
+insert into employee(employee_name,user_id,password) values('costing','costing','costing');
+insert into employee(employee_name,user_id,password) values('jobcard','jobcard','jobcard');
 
 
-drop table users;
-CREATE TABLE users
+drop table employee_role;
+CREATE TABLE employee_role
 (
-	user_id int AUTO_INCREMENT NOT NULL,
-	user_name char(50) NOT NULL,
-	password char(50) NOT NULL,
-	employee_id int NOT NULL,
-	CONSTRAINT users_pk primary key (user_id),
-	CONSTRAINT users_user_name_uk UNIQUE (user_name),
-	CONSTRAINT users_employee_id_fk FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
-)
-
-insert into users(user_name,password,employee_id) values('admin','admin', 1);
-insert into users(user_name,password,employee_id) values('jobcard','jobcard', 2);
-insert into users(user_name,password,employee_id) values('costing','costing', 3);
-insert into users(user_name,password,employee_id) values('dms','dms', 4);
-
-drop table user_role;
-CREATE TABLE user_role
-(
-	user_name char(50) NOT NULL,
+	user_id char(50) NOT NULL,
 	role char(50) NOT NULL,
-	CONSTRAINT user_role_user_name_fk FOREIGN KEY (user_name) REFERENCES users(user_name),
-	CONSTRAINT user_role_role_fk FOREIGN KEY (role) REFERENCES roles(role)
+	CONSTRAINT employee_role_user_id_fk FOREIGN KEY (user_id) REFERENCES employee(user_id),
+	CONSTRAINT employee_role_role_fk FOREIGN KEY (role) REFERENCES roles(role)
+)
 
-);
-insert into user_role(user_name , role) values('admin', 'ROLE_admin');
-insert into user_role(user_name , role) values('jobcard', 'ROLE_jobcard');
-insert into user_role(user_name , role) values('costing', 'ROLE_costing');
-insert into user_role(user_name , role) values('dms', 'ROLE_dms');
+insert into employee_role(user_id,role) values('admin','ROLE_admin');
+insert into employee_role(user_id,role) values('dms','ROLE_dms');
+insert into employee_role(user_id,role) values('costing','ROLE_costing');
+insert into employee_role(user_id,role) values('jobcard','ROLE_jobcard');
 

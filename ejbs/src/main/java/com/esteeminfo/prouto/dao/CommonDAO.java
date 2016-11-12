@@ -8,8 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import com.esteeminfo.proauto.entity.Customer;
+import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.Vendor;
 
 public class CommonDAO extends BaseDAO {
@@ -27,34 +29,6 @@ public class CommonDAO extends BaseDAO {
 		}
 		conn.close();
 		return retString;
-	}
-
-	public static boolean registerEmployee(String empName, String empPassword, String empEmail, String empRole) {
-		Connection conn;
-		boolean registered = false;
-		try {
-
-			if (userExist(empName))
-				return registered;
-			Calendar calendar = Calendar.getInstance();
-			java.sql.Date currentTime = new java.sql.Date(calendar.getTime().getTime());
-
-			conn = getConnection();
-			String query = "INSERT INTO EMPLOYEE(employee_name,password,role,create_date) values(?,?,?,?)";
-			PreparedStatement preparedStmt = conn.prepareStatement(query);
-			preparedStmt.setString(1, empName);
-			preparedStmt.setString(2, empPassword);
-			preparedStmt.setString(3, empRole);
-			preparedStmt.setDate(4, currentTime);
-
-			int count = preparedStmt.executeUpdate();
-			registered = (count > 0);
-			conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return registered;
 	}
 
 	public static boolean userExist(String uname) throws SQLException {
@@ -82,7 +56,7 @@ public class CommonDAO extends BaseDAO {
 		conn.close();
 		return vendorExist;
 	}
-	
+
 	public static Vendor retrieveVendor(String vName) {
 		Connection conn;
 		Statement stmt = null;
@@ -261,12 +235,13 @@ public class CommonDAO extends BaseDAO {
 		return customerExist;
 	}
 
-	public static void registerVendor(String create, String vid, String vName, String vAddress, String nameOne, String phoneOne,
-			String emailOne, String nameTwo, String phonTwo, String emailTwo, String namethree, String phonethree,
-			String emailthree, String namefour, String phonefour, String emailfour, String namefive, String phonefive,
-			String emailfive, String namesix, String phonesix, String emailsix, String nameseven, String phoneseven,
-			String emailseven, String nameeight, String phoneeight, String emaileight, String namenine,
-			String phonenine, String emailnine, String nameten, String phoneten, String emailten) throws Exception {
+	public static void registerVendor(String create, String vid, String vName, String vAddress, String nameOne,
+			String phoneOne, String emailOne, String nameTwo, String phonTwo, String emailTwo, String namethree,
+			String phonethree, String emailthree, String namefour, String phonefour, String emailfour, String namefive,
+			String phonefive, String emailfive, String namesix, String phonesix, String emailsix, String nameseven,
+			String phoneseven, String emailseven, String nameeight, String phoneeight, String emaileight,
+			String namenine, String phonenine, String emailnine, String nameten, String phoneten, String emailten)
+			throws Exception {
 		Connection conn;
 		boolean registered = false;
 		try {
@@ -278,7 +253,7 @@ public class CommonDAO extends BaseDAO {
 			if (create.equalsIgnoreCase("true") && vendorExist) {
 				throw new Exception("Vendor already exist. Please select from existing Vendors and update");
 			}
-			if (create.equalsIgnoreCase("false") && vid!=null) {
+			if (create.equalsIgnoreCase("false") && vid != null) {
 
 				String query = "UPDATE VENDOR set vendor_name=?,address=?, create_date=?, name_one=?,phone_one=?,email_one=?,name_two=?,phone_two=?,email_two=?,name_three=?,"
 						+ "phone_three=?,email_three=?,name_four=?,phone_four=?,email_four=?,name_five=?,phone_five=?,email_five=?,name_six=?,phone_six=?,email_six=?,name_seven=?,phone_seven=?,email_seven=?,"
@@ -561,12 +536,13 @@ public class CommonDAO extends BaseDAO {
 
 	}
 
-	public static void registerCustomer(String create, String cid, String cName, String cAddress, String nameOne, String phoneOne,
-			String emailOne, String nameTwo, String phonTwo, String emailTwo, String namethree, String phonethree,
-			String emailthree, String namefour, String phonefour, String emailfour, String namefive, String phonefive,
-			String emailfive, String namesix, String phonesix, String emailsix, String nameseven, String phoneseven,
-			String emailseven, String nameeight, String phoneeight, String emaileight, String namenine,
-			String phonenine, String emailnine, String nameten, String phoneten, String emailten) throws Exception {
+	public static void registerCustomer(String create, String cid, String cName, String cAddress, String nameOne,
+			String phoneOne, String emailOne, String nameTwo, String phonTwo, String emailTwo, String namethree,
+			String phonethree, String emailthree, String namefour, String phonefour, String emailfour, String namefive,
+			String phonefive, String emailfive, String namesix, String phonesix, String emailsix, String nameseven,
+			String phoneseven, String emailseven, String nameeight, String phoneeight, String emaileight,
+			String namenine, String phonenine, String emailnine, String nameten, String phoneten, String emailten)
+			throws Exception {
 
 		Connection conn;
 		boolean registered = false;
@@ -579,7 +555,7 @@ public class CommonDAO extends BaseDAO {
 			if (create.equalsIgnoreCase("true") && customerExist) {
 				throw new Exception("Customer already exist. Please select from existing Customers and update");
 			}
-			if (create.equalsIgnoreCase("false") && cid!=null) {
+			if (create.equalsIgnoreCase("false") && cid != null) {
 				String query = "UPDATE Customer set customer_name=?,address=?, create_date=?, name_one=?,phone_one=?,email_one=?,name_two=?,phone_two=?,email_two=?,name_three=?,"
 						+ "phone_three=?,email_three=?,name_four=?,phone_four=?,email_four=?,name_five=?,phone_five=?,email_five=?,name_six=?,phone_six=?,email_six=?,name_seven=?,phone_seven=?,email_seven=?,"
 						+ "name_eight=?,phone_eight=?,email_eight=?,name_nine=?,phone_nine=?,email_nine=?,name_ten=?,phone_ten=?,email_ten=? where customer_id="
@@ -689,6 +665,208 @@ public class CommonDAO extends BaseDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+	}
+
+	public static void loadRoleMap(Map<String, String> roleMap) {
+
+		Connection conn;
+		Statement stmt = null;
+
+		try {
+
+			conn = getConnection();
+			stmt = conn.createStatement();
+			String query = "select role,role_desc from roles order by role_desc asc";
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				String role = rs.getString("role");
+				String roleDescription = rs.getString("role_desc");
+				roleMap.put(role, roleDescription);
+			}
+			rs.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Employee retrieveEmployee(String employeeSelected) {
+
+		Connection conn;
+		Statement stmt = null;
+
+		Employee employee = null;
+		try {
+
+			if (!empoyeeExist(employeeSelected))
+				return null;
+
+			conn = getConnection();
+			stmt = conn.createStatement();
+			String query = "select e.employee_id,e.employee_name,e.user_id,e.password,e.address,e.phone,e.email,er.role "
+					+ "from employee e,employee_role er where e.user_id=er.user_id and e.employee_name='"
+					+ employeeSelected + "'";
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				// Retrieve by column name
+				employee = new Employee();
+				int id = rs.getInt("employee_id");
+				String employeeName = rs.getString("employee_name");
+				String userId = rs.getString("user_id");
+				String address = rs.getString("address");
+				String password = rs.getString("password");
+				String phone = rs.getString("phone");
+				String email = rs.getString("email");
+				String role = rs.getString("role");
+
+				// Display values
+
+				employee.setEmployeeId(id);
+				employee.setEmployeeName(employeeName);
+				employee.setUserId(userId);
+				employee.setAddress(address);
+				employee.setPassword(password);
+				employee.setPhone(phone);
+				employee.setEmail(email);
+				employee.setRole(role);
+			}
+			rs.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return employee;
+
+	}
+
+	public static List<Employee> retrieveAllEmployees(String employeeSearched) {
+
+		Connection conn;
+		Statement stmt = null;
+
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+
+			conn = getConnection();
+			stmt = conn.createStatement();
+			String query = "select employee_id,employee_name,user_id,phone from employee";
+			if (employeeSearched != null && employeeSearched.length() > 0) {
+				query += " where employee_name LIKE '" + employeeSearched + "%'";
+			}
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				// Retrieve by column name
+				Employee emp = new Employee();
+				int id = rs.getInt("employee_id");
+				String empName = rs.getString("employee_name");
+				String userId = rs.getString("user_id");
+				String phone = rs.getString("phone");
+
+				emp.setEmployeeId(id);
+				emp.setEmployeeName(empName);
+				emp.setUserId(userId);
+				emp.setPhone(phone);
+
+				employees.add(emp);
+
+			}
+			rs.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return employees;
+
+	}
+
+	public static void registerEmployee(String create, String eid, String eName, String eRole, String eUserId,
+			String password, String eAddress, String ePhone, String eEmail) throws Exception {
+
+		Connection conn;
+		boolean registered = false;
+		try {
+
+			Calendar calendar = Calendar.getInstance();
+			java.sql.Date currentTime = new java.sql.Date(calendar.getTime().getTime());
+			conn = getConnection();
+			boolean empoyeeExist = empoyeeExist(eName);
+			if (create.equalsIgnoreCase("true") && empoyeeExist) {
+				throw new Exception("Employee already exist. Please select from existing Employees and update");
+			}
+			if (create.equalsIgnoreCase("false") && eid != null) {
+
+				String query = "UPDATE EMPLOYEE set employee_name=?,user_id=?, password=?, address=?,phone=?,email=?,create_date=? where employee_id="
+						+ eid;
+				PreparedStatement preparedStmt = conn.prepareStatement(query);
+				preparedStmt.setString(1, eName);
+				preparedStmt.setString(2, eUserId);
+				preparedStmt.setString(3, password);
+
+				preparedStmt.setString(4, eAddress);
+				preparedStmt.setString(5, ePhone);
+				preparedStmt.setString(6, eEmail);
+				preparedStmt.setDate(7, currentTime);
+
+				int count = preparedStmt.executeUpdate();
+
+				insertEmployeeRole(eUserId, eRole);
+
+				registered = (count > 0);
+
+			} else {
+				String query = "INSERT INTO EMPLOYEE(employee_name,user_id, password, address,phone,email,create_date) values(?,?,?,?,?,?,?)";
+				PreparedStatement preparedStmt = conn.prepareStatement(query);
+
+				preparedStmt.setString(1, eName);
+				preparedStmt.setString(2, eUserId);
+				preparedStmt.setString(3, password);
+
+				preparedStmt.setString(4, eAddress);
+				preparedStmt.setString(5, ePhone);
+				preparedStmt.setString(6, eEmail);
+				preparedStmt.setDate(7, currentTime);
+
+				int count = preparedStmt.executeUpdate();
+
+				insertEmployeeRole(eUserId, eRole);
+				registered = (count > 0);
+			}
+
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private static void insertEmployeeRole(String eUserId, String eRole) throws SQLException {
+		Connection conn = getConnection();
+		Statement st = conn.createStatement();
+		String sql = "DELETE FROM employee_role WHERE user_id='" + eUserId + "'";
+		st.executeUpdate(sql);
+
+		String query = "INSERT INTO employee_role(user_id,role) values(?,?)";
+		PreparedStatement preparedStmt = conn.prepareStatement(query);
+		preparedStmt.setString(1, eUserId);
+		preparedStmt.setString(2, eRole);
+
+		int count = preparedStmt.executeUpdate();
+		conn.close();
+
+	}
+
+	private static boolean empoyeeExist(String eName) throws SQLException {
+
+		boolean employeeExist = false;
+		Connection conn = getConnection();
+		Statement st = conn.createStatement();
+		ResultSet res = st.executeQuery("SELECT * FROM employee WHERE employee_name='" + eName + "'");
+		while (res.next()) {
+			employeeExist = true;
+		}
+		conn.close();
+		return employeeExist;
 
 	}
 }

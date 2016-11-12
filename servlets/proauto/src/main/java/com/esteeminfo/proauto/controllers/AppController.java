@@ -1,6 +1,8 @@
 package com.esteeminfo.proauto.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esteeminfo.proauto.entity.Customer;
+import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.Vendor;
 import com.esteeminfo.prouto.dao.CommonDAO;
 
@@ -228,11 +231,63 @@ public class AppController {
 	}
 	
 	@RequestMapping(value = { "/ereg"}, method = RequestMethod.GET)
-	public ModelAndView eregPage() {
-		ModelAndView model = new ModelAndView();
-		model.setViewName("ereg");
-		return model;
+	public String showeregPage(Model model, @RequestParam(value="employeeSelected", required=false) String employeeSelected, HttpServletRequest request, HttpServletResponse response) {
+		logger.info("***************************** ereg GET employeeSelected = "+employeeSelected);
+		
+		Employee employee = new Employee();
+		if(employeeSelected!=null){
+			employee = CommonDAO.retrieveEmployee(employeeSelected);
+			model.addAttribute("employeeSelectedRole", employee.getRole());
+			logger.info("***************************** ereg GET employeeSelectedRole = "+employee.getRole());
+
+		}else{
+			model.addAttribute("employeeSelectedRole", "ROLE_norole");
+		}
+		String employeeSearched = request.getParameter("searchEmployeeInput");
+		List<Employee> employeeList = CommonDAO.retrieveAllEmployees(employeeSearched);
+		model.addAttribute("employeeSelected", employee);
+
+		model.addAttribute("employeeList", employeeList);
+		
+		Map<String, String> roleMap = new HashMap<String, String>(); 
+		CommonDAO.loadRoleMap(roleMap);
+		/*roleMap.put("ROLE_norole", "- Not user");
+		roleMap.put("ROLE_admin", "Administrator");
+		roleMap.put("ROLE_dms", "DMS user");*/
+		model.addAttribute("roles", roleMap);
+		return "ereg";
 	}
+	
+	@RequestMapping(value = { "ereg"}, method = RequestMethod.POST)
+	public String posteregPage(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String create = request.getParameter("create");
+		
+		String eid = request.getParameter("eid");
+
+		String eName = request.getParameter("eName");
+		String eRole = request.getParameter("eRole");
+		String eUserId = request.getParameter("eUserId");
+		String password = request.getParameter("ePassword");
+		String eAddress = request.getParameter("eAddress");
+		String ePhone = request.getParameter("ePhone");
+		String eEmail = request.getParameter("eEmail");
+
+		logger.info("***************************** ereg Post eName= "+eName+",eRole = "+eRole);
+		
+		try {
+			CommonDAO.registerEmployee(create, eid, eName, eRole, eUserId, password, eAddress, ePhone, eEmail);
+		} catch (Exception e) {
+			model.addAttribute("error", e.getMessage());
+		}
+		Map<String, String> roleMap = new HashMap<String, String>(); 
+		CommonDAO.loadRoleMap(roleMap);
+		model.addAttribute("roles", roleMap);
+		model.addAttribute("employeeSelectedRole", "ROLE_norole");
+		List<Employee> employeeList =CommonDAO.retrieveAllEmployees(null);
+		model.addAttribute("employeeList", employeeList);
+		return "ereg";
+	}
+
 	
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public ModelAndView logoutPage() {

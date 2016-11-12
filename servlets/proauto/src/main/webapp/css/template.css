@@ -129,3 +129,10 @@ li.dropdownmenu {
 	
 }
 
+.hide{
+	display :none;	
+}
+
+.show{
+	display :block;	
+}
