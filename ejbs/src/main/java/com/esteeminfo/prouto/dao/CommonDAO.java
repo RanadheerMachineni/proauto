@@ -747,9 +747,11 @@ public class CommonDAO extends BaseDAO {
 
 			conn = getConnection();
 			stmt = conn.createStatement();
-			String query = "select employee_id,employee_name,user_id,phone from employee";
+			
+			String query = "select e.employee_id,e.employee_name,e.phone,r.role_desc from employee e,employee_role er,roles r "
+					+ "where e.user_id=er.user_id and er.role=r.role";
 			if (employeeSearched != null && employeeSearched.length() > 0) {
-				query += " where employee_name LIKE '" + employeeSearched + "%'";
+				query += " and e.employee_name LIKE '" + employeeSearched + "%'";
 			}
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -757,14 +759,13 @@ public class CommonDAO extends BaseDAO {
 				Employee emp = new Employee();
 				int id = rs.getInt("employee_id");
 				String empName = rs.getString("employee_name");
-				String userId = rs.getString("user_id");
 				String phone = rs.getString("phone");
+				String role = rs.getString("role_desc");
 
 				emp.setEmployeeId(id);
 				emp.setEmployeeName(empName);
-				emp.setUserId(userId);
 				emp.setPhone(phone);
-
+				emp.setRole(role);
 				employees.add(emp);
 
 			}

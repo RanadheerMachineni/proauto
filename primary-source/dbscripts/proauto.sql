@@ -168,9 +168,7 @@ drop table employee_role;
 CREATE TABLE employee_role
 (
 	user_id char(50) NOT NULL,
-	role char(50) NOT NULL,
-	CONSTRAINT employee_role_user_id_fk FOREIGN KEY (user_id) REFERENCES employee(user_id),
-	CONSTRAINT employee_role_role_fk FOREIGN KEY (role) REFERENCES roles(role)
+	role char(50) NOT NULL
 )
 
 insert into employee_role(user_id,role) values('admin','ROLE_admin');
