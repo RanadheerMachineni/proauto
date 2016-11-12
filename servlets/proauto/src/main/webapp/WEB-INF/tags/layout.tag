@@ -44,7 +44,7 @@
 
 </head>
 
-<body>
+<body onload="customLoad()">
 	<!-- Header -->
     <div id="pageheader">
       <jsp:invoke fragment="header"/>

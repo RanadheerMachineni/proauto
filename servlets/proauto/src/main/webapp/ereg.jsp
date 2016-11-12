@@ -6,6 +6,10 @@
 <t:layout>
 	<jsp:attribute name="header">
 <script>
+	function customLoad(){
+		roleChanged();
+	}
+	
 	function roleChanged() {
 		var roleSelect = document.getElementById("eRole");
 		var role = roleSelect.options[roleSelect.selectedIndex].value;
