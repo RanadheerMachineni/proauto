@@ -131,8 +131,8 @@
 		    		</div>
 		   		 	<div class="col-sm-6 col-md-6">
 		 			<select name="eRole" id="eRole" onchange="roleChanged();">
-  						<jstl:forEach items="${roles}" var="eRole">
-  				  			<option value="${eRole.key}" ${param.employeeSelectedRole}==${eRole.key}?'selected':''>${eRole.value}</option>
+  						<jstl:forEach items="${roles}" var="role">
+  				  			<option value="${role.key}" ${param.employeeSelectedRole}==${role.key}?'selected':''>${role.value}</option>
   						</jstl:forEach>
 					</select>
 		    	 	</div>
