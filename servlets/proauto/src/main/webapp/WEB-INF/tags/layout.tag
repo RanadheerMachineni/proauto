@@ -100,14 +100,14 @@
 					<li id="costingli"><a
 						href="${pageContext.request.contextPath}/costing">Costing</a></li>
 
-					<li id="regli" class="dropdownmenu"><a class="dropbtn">Registration Forms</a>
+					<li id="regli" class="dropdownmenu"><a class="dropbtn">Masters</a>
 						<div class="dropdown-content">
 							<a href="${pageContext.request.contextPath}/ereg">Employee
-								Registration</a> <a
+								Master</a> <a
 								href="${pageContext.request.contextPath}/vreg">Vendor
-								Registration</a> <a
+								Master</a> <a
 								href="${pageContext.request.contextPath}/creg">Customer
-								Registration</a>
+								Master</a>
 						</div></li>
 
 				</ul>
