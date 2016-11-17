@@ -5,9 +5,6 @@
 <%@ attribute name="footer" fragment="true"%>
 <html>
 <head>
-
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
 	function formSubmit() {
 		document.getElementById("logoutForm").submit();
@@ -25,23 +22,27 @@
 	    	}
 		}*/
 
-		if(lielement=="ereg" || lielement=="vreg" || lielement=="creg"){
+		if(lielement=="ereg" || lielement=="vreg" || lielement=="creg" || lielement=="rmat"){
 			lielement ="reg";
 		}
 		$("#"+lielement+"li").addClass('active').siblings().removeClass('active');
 	});
 </script>
+<script	src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	
+<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+
+<link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/template.css">
+
+<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+
+
 <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-	href="../../../${pageContext.request.contextPath}/css/template.css">
-
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
 </head>
 
 <body onload="customLoad()">
@@ -104,10 +105,12 @@
 						<div class="dropdown-content">
 							<a href="${pageContext.request.contextPath}/ereg">Employee
 								Master</a> <a
+								href="${pageContext.request.contextPath}/creg">Customer
+								Master</a><a
 								href="${pageContext.request.contextPath}/vreg">Vendor
 								Master</a> <a
-								href="${pageContext.request.contextPath}/creg">Customer
-								Master</a>
+								href="${pageContext.request.contextPath}/rmat">Raw Material
+								</a>
 						</div></li>
 
 				</ul>

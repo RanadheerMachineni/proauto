@@ -113,18 +113,6 @@ CREATE TABLE vendor
     CONSTRAINT vendor_pk PRIMARY KEY (vendor_id)
 );
 
-drop table raw_material;
-CREATE TABLE raw_material
-(
-	number_ofbars int NOT NUll,
-	height int NOT NUll,
-	width int NOT NUll,
-	length int NOT NUll,
-    create_date DATE NOT NUll,
-	customer_id int NOT NULL,
-	CONSTRAINT fk_rm_customer FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
-)
-
 drop table roles;
 CREATE TABLE roles
 (
@@ -175,3 +163,27 @@ insert into employee_role(user_id,role) values('dms','ROLE_dms');
 insert into employee_role(user_id,role) values('costing','ROLE_costing');
 insert into employee_role(user_id,role) values('jobcard','ROLE_jobcard');
 
+drop table customer_raw_material;
+CREATE TABLE customer_raw_material
+(
+	number_ofbars int NOT NUll,
+	height int NOT NUll,
+	width int NOT NUll,
+	length int NOT NUll,
+    create_date DATE NOT NUll,
+	customer_id int NOT NULL,
+	CONSTRAINT fk_rm_customer FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+)
+
+drop table raw_material;
+CREATE TABLE raw_material
+(
+	number_ofbars int NOT NUll,
+	height int NOT NUll,
+	width int NOT NUll,
+	length int NOT NUll,
+    create_date DATE NOT NUll,
+	vendor_id int NOT NULL,
+	customer_id int NULL,
+	CONSTRAINT fk_rm_vendor FOREIGN KEY (vendor_id) REFERENCES vendor(vendor_id)
+)

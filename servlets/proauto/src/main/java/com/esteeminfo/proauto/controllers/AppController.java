@@ -1,5 +1,6 @@
 package com.esteeminfo.proauto.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esteeminfo.proauto.entity.Customer;
@@ -47,6 +49,18 @@ public class AppController {
 
 	}
 	
+	@RequestMapping(value = "/get_provider_list", method = RequestMethod.GET, headers="Accept=*/*")
+	public @ResponseBody List<String> getProviderList(@RequestParam("provider") String provider, @RequestParam("starts") String starts) {
+		logger.info("************* get_provider_list, provider = "+provider+",starts = "+starts);
+		List<String> li = new ArrayList<String>();
+		li.add("a");
+		li.add("ab");
+		li.add("ac");
+		li.add("ad");
+
+		return li;
+	}
+	
 	@RequestMapping(value = { "/dashboard"}, method = RequestMethod.GET)
 	public ModelAndView homePage() {
 		ModelAndView model = new ModelAndView();
@@ -75,6 +89,12 @@ public class AppController {
 		return model;
 	}
 
+	@RequestMapping(value = { "/rmat"}, method = RequestMethod.GET)
+	public String rmatPage(Model model, HttpServletRequest request, HttpServletResponse response) {
+		return "rmat";
+	}
+
+	
 	@RequestMapping(value = { "/creg"}, method = RequestMethod.GET)
 	public String showcregPage(Model model, @RequestParam(value="customerSelected", required=false) String customerSelected, HttpServletRequest request, HttpServletResponse response) {
 		logger.info("***************************** creg GET customerSelected = "+customerSelected);
@@ -288,7 +308,6 @@ public class AppController {
 		return "ereg";
 	}
 
-	
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public ModelAndView logoutPage() {
 		ModelAndView model = new ModelAndView();
