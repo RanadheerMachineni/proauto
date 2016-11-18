@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import javax.sql.DataSource;
 
 @EnableWebMvc
 @Configuration
@@ -19,7 +20,7 @@ import org.springframework.web.servlet.view.JstlView;
 public class WebConfig extends WebMvcConfigurerAdapter{
 
 	@Bean(name = "dataSource")
-	public DriverManagerDataSource dataSource() {
+	public DataSource dataSource() {
 	    DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
 	    driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
 	    driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/proauto_db?autoReconnect=true&useSSL=false");

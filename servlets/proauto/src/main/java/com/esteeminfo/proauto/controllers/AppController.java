@@ -265,6 +265,8 @@ public class AppController {
 		}
 		String employeeSearched = request.getParameter("searchEmployeeInput");
 		List<Employee> employeeList = CommonDAO.retrieveAllEmployees(employeeSearched);
+		logger.info("***************************** ereg GET employeeSelected empid = "+employee.getEmployeeId());
+
 		model.addAttribute("employeeSelected", employee);
 
 		model.addAttribute("employeeList", employeeList);
@@ -284,18 +286,31 @@ public class AppController {
 		
 		String eid = request.getParameter("eid");
 
-		String eName = request.getParameter("eName");
+		String efirstName = request.getParameter("efirstName");
+		String eLastName = request.getParameter("eLastName");
+		String gender = request.getParameter("gender");
+		String eQualification = request.getParameter("eQualification");
+		String eExperience = request.getParameter("eExperience");
+		String married = request.getParameter("married");
+		String eDesignation = request.getParameter("eDesignation");
+		String eDob = request.getParameter("eDob");
+		String eDoj = request.getParameter("eDoj");
 		String eRole = request.getParameter("eRole");
 		String eUserId = request.getParameter("eUserId");
 		String password = request.getParameter("ePassword");
-		String eAddress = request.getParameter("eAddress");
 		String ePhone = request.getParameter("ePhone");
 		String eEmail = request.getParameter("eEmail");
+		String ePassport = request.getParameter("ePassport");
+		String eEmergencyContact = request.getParameter("eEmergencyContact");
+		String eCAddress = request.getParameter("eCAddress");
+		String ePAddress = request.getParameter("ePAddress");
+		String eNotes = request.getParameter("eNotes");
 
-		logger.info("***************************** ereg Post eName= "+eName+",eRole = "+eRole+", eUserId = "+eUserId);
+		logger.info("***************************** ereg Post efirstName= "+efirstName+",eRole = "+eRole+", gender = "+gender+", eDob"+eDob+", married"+married);
 		
 		try {
-			CommonDAO.registerEmployee(create, eid, eName, eRole, eUserId, password, eAddress, ePhone, eEmail);
+			CommonDAO.registerEmployee(create, eid, efirstName, eLastName, gender, eQualification, eExperience, married, eDesignation, eDob,eDoj, eRole, eUserId, password,
+					ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes);
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 		}

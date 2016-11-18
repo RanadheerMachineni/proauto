@@ -129,26 +129,39 @@ insert into roles(role_id,role,role_desc) values(4,'ROLE_dms','Dms User');
 insert into roles(role_id,role,role_desc) values(5,'ROLE_norole','- Not user');
 
 drop table employee;
+
 CREATE TABLE employee
 (
 	employee_id int AUTO_INCREMENT NOT NULL,
-	employee_name char(50) NOT NULL,
-	user_id char(50) NULL,
+	first_name char(50) NOT NULL,
+	last_name char(50) NOT NULL,
+	gender CHAR(1) NOT NULL,
+	designation char(50),
+	dob DATE,
+	doj date,
+	qualification char(50),
+	experience char(50),
+	married CHAR(1),                 
+	passport char(50),
+	emergency_contact char(50),
+	user_id char(50),
 	password char(50),
-	address char(255),
+	current_address char(255),
+	permanent_address char(255),
 	city char(50),
 	phone char(50),
 	email char(50),
 	state char(25),
 	zip_code char(10),
 	create_date DATE,
+	notes char(255),
 	CONSTRAINT employee_pk primary key (employee_id)
 );
 
-insert into employee(employee_name,user_id,password) values('admin','admin','admin');
-insert into employee(employee_name,user_id,password) values('dms','dms','dms');
-insert into employee(employee_name,user_id,password) values('costing','costing','costing');
-insert into employee(employee_name,user_id,password) values('jobcard','jobcard','jobcard');
+insert into employee(first_name,last_name,gender,user_id,password,dob,doj) values('admin','admin','m','admin','admin','2016-11-01','2016-11-01');
+insert into employee(first_name,last_name,gender,user_id,password,dob,doj) values('dms','dms','m','dms','dms','2016-11-01','2016-11-01');
+insert into employee(first_name,last_name,gender,user_id,password,dob,doj) values('costing','costing','f','costing','costing','2016-11-01','2016-11-01');
+insert into employee(first_name,last_name,gender,user_id,password,dob,doj) values('jobcard','jobcard','f','jobcard','jobcard','2016-11-01','2016-11-01');
 
 
 drop table employee_role;

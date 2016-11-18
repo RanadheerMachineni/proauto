@@ -1,10 +1,12 @@
 package com.esteeminfo.prouto.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -15,6 +17,7 @@ import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.Vendor;
 
 public class CommonDAO extends BaseDAO {
+	public static SimpleDateFormat ui_date_format =  new SimpleDateFormat("MM/dd/yyyy");
 
 	public static String authenticateUser(String uname, String pwd) throws SQLException {
 
@@ -695,31 +698,45 @@ public class CommonDAO extends BaseDAO {
 
 		Connection conn;
 		Statement stmt = null;
-
+		Statement stmt2 = null;
 		Employee employee = null;
 		try {
-
 			conn = getConnection();
 			stmt = conn.createStatement();
-			String query = "select e.employee_id,e.employee_name,e.user_id,e.password,e.address,e.phone,e.email "
-					+ "from employee e where e.employee_name='"
-					+ employeeSelected + "'";
+			stmt2 = conn.createStatement();
+			String query = "select employee_id, first_name,last_name,gender, designation, dob,	doj, qualification, experience,	married, passport ,"
+					+ "	emergency_contact ,	user_id ,password ,current_address,	permanent_address,	city ,phone ,email , state ,zip_code, create_date ,"
+					+ "	notes from employee where employee_id="+ employeeSelected;
+			
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				// Retrieve by column name
 				employee = new Employee();
 				int id = rs.getInt("employee_id");
-				String employeeName = rs.getString("employee_name");
+				String firstName = rs.getString("first_name");
+				String lastName = rs.getString("last_name");
+				String gender = rs.getString("gender");
+				String designation = rs.getString("designation");
+				Date dob = rs.getDate("dob");
+				Date doj = rs.getDate("doj");
+				String qualification = rs.getString("qualification");
+				String experience = rs.getString("experience");
+				String married = rs.getString("married");
+				String passport = rs.getString("passport");
+				String emergencyContact = rs.getString("emergency_contact");
 				String userId = rs.getString("user_id");
-				String address = rs.getString("address");
 				String password = rs.getString("password");
+				String currentAddress = rs.getString("current_address");
+				String permanentAddress = rs.getString("permanent_address");
 				String phone = rs.getString("phone");
 				String email = rs.getString("email");
+				String notes = rs.getString("notes");
+
 				String role = "ROLE_norole";
 				if(userId!=null && userId.length()>0){
 					String query1 = "select role from employee_role where user_id='"
 							+ userId + "'";
-					ResultSet rs1 = stmt.executeQuery(query1);
+					ResultSet rs1 = stmt2.executeQuery(query1);
 					while (rs1.next()) {
 						role = rs1.getString("role");
 					}
@@ -727,13 +744,25 @@ public class CommonDAO extends BaseDAO {
 				// Display values
 
 				employee.setEmployeeId(id);
-				employee.setEmployeeName(employeeName);
+				employee.setFirstName(firstName);
+				employee.setLastName(lastName);
+				employee.setGender(gender);
+				employee.setDesignation(designation);
+				employee.setDob(ui_date_format.format(dob));
+				employee.setDoj(ui_date_format.format(doj));
+				employee.setQualification(qualification);
+				employee.setExperience(experience);
+				employee.setMarried(married);
+				employee.setPassport(passport);
+				employee.setEmergencyContact(emergencyContact);
 				employee.setUserId(userId);
-				employee.setAddress(address);
 				employee.setPassword(password);
 				employee.setPhone(phone);
 				employee.setEmail(email);
 				employee.setRole(role);
+				employee.setCurrentAddress(currentAddress);
+				employee.setPermanentAddress(permanentAddress);
+				employee.setNotes(notes);
 			}
 			rs.close();
 			conn.close();
@@ -741,6 +770,7 @@ public class CommonDAO extends BaseDAO {
 			e.printStackTrace();
 		}
 		return employee;
+
 
 	}
 
@@ -755,24 +785,34 @@ public class CommonDAO extends BaseDAO {
 			conn = getConnection();
 			stmt = conn.createStatement();
 			
-			String query = "select e.employee_id,e.employee_name,e.phone,e.user_id from employee e";
+			String query = "select employee_id, first_name,last_name,gender, designation, phone, user_id, emergency_contact from employee";
 			if (employeeSearched != null && employeeSearched.length() > 0) {
-				query += " where e.employee_name LIKE '" + employeeSearched + "%'";
+				query += " where first_name LIKE '" + employeeSearched + "%'";
 			}
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				// Retrieve by column name
 				Employee emp = new Employee();
 				int id = rs.getInt("employee_id");
-				String empName = rs.getString("employee_name");
+				String firstName = rs.getString("first_name");
+				String lastName = rs.getString("last_name");
+				String gender = rs.getString("gender");
+				String designation = rs.getString("designation");
 				String phone = rs.getString("phone");
 				String userId = rs.getString("user_id");
+				String emergencyContact = rs.getString("emergency_contact");
 
 				emp.setEmployeeId(id);
-				emp.setEmployeeName(empName);
+				emp.setFirstName(firstName);
+				emp.setLastName(lastName);
+				emp.setGender(gender);
+				emp.setDesignation(designation);
 				emp.setPhone(phone);
 				emp.setUserId(userId);
+				emp.setEmergencyContact(emergencyContact);
+				
 				employees.add(emp);
+
 
 			}
 			rs.close();
@@ -782,76 +822,10 @@ public class CommonDAO extends BaseDAO {
 		}
 		return employees;
 
-	}
-
-	public static void registerEmployee(String create, String eid, String eName, String eRole, String eUserId,
-			String password, String eAddress, String ePhone, String eEmail) throws Exception {
-
-		Connection conn;
-		boolean registered = false;
-		try {
-
-			Calendar calendar = Calendar.getInstance();
-			java.sql.Date currentTime = new java.sql.Date(calendar.getTime().getTime());
-			conn = getConnection();
-			boolean empoyeeExist = empoyeeExist(eUserId);
-			if (create.equalsIgnoreCase("true") && empoyeeExist) {
-				throw new Exception("Employee with given UserId already exist. Please select other UserId");
-			}
-			if (create.equalsIgnoreCase("false") && eid != null) {
-				
-				System.out.println("********************************************** updating");
-				String query = "UPDATE EMPLOYEE set employee_name=?,user_id=?, password=?, address=?,phone=?,email=?,create_date=? where employee_id="
-						+ eid;
-				PreparedStatement preparedStmt = conn.prepareStatement(query);
-				preparedStmt.setString(1, eName);
-				preparedStmt.setString(2, eUserId);
-				preparedStmt.setString(3, password);
-
-				preparedStmt.setString(4, eAddress);
-				preparedStmt.setString(5, ePhone);
-				preparedStmt.setString(6, eEmail);
-				preparedStmt.setDate(7, currentTime);
-
-				int count = preparedStmt.executeUpdate();
-
-				deleteEmployeeRole(eUserId);
-				
-				if(eUserId!=null && eUserId.length()>0 && eRole!=null && eRole!="ROLE_norole") {
-					insertEmployeeRole(eUserId, eRole);
-				}
-				
-				registered = (count > 0);
-
-			} else {
-				System.out.println("********************************************** inserting");
-
-				String query = "INSERT INTO EMPLOYEE(employee_name,user_id, password, address,phone,email,create_date) values(?,?,?,?,?,?,?)";
-				PreparedStatement preparedStmt = conn.prepareStatement(query);
-
-				preparedStmt.setString(1, eName);
-				preparedStmt.setString(2, eUserId);
-				preparedStmt.setString(3, password);
-
-				preparedStmt.setString(4, eAddress);
-				preparedStmt.setString(5, ePhone);
-				preparedStmt.setString(6, eEmail);
-				preparedStmt.setDate(7, currentTime);
-
-				int count = preparedStmt.executeUpdate();
-
-				if(eUserId!=null && eUserId.length()>0 && eRole!=null && eRole!="ROLE_norole") {
-					insertEmployeeRole(eUserId, eRole);
-				}	
-				registered = (count > 0);
-			}
-
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 
 	}
+
+	
 
 	private static void insertEmployeeRole(String eUserId, String eRole) throws SQLException {
 		Connection conn = getConnection();
@@ -882,6 +856,116 @@ public class CommonDAO extends BaseDAO {
 		}
 		conn.close();
 		return employeeExist;
+
+	}
+
+	public static void registerEmployee(String create, String eid, String efirstName, String eLastName, String gender,
+			String eQualification, String eExperience, String married, String eDesignation, String eDob, String eDoj,
+			String eRole, String eUserId, String password, String ePhone, String eEmail, String ePassport,
+			String eEmergencyContact, String eCAddress, String ePAddress, String eNotes) throws Exception{
+		Connection conn;
+		boolean registered = false;
+		try {
+
+			Calendar calendar = Calendar.getInstance();
+			java.sql.Date currentTime = new java.sql.Date(calendar.getTime().getTime());
+			conn = getConnection();
+			boolean empoyeeExist = empoyeeExist(eUserId);
+			if (create.equalsIgnoreCase("true") && empoyeeExist) {
+				throw new Exception("Employee with given UserId already exist. Please select other UserId");
+			}
+			java.util.Date javaDateDob = ui_date_format.parse(eDob) ;
+			java.util.Date javaDateDoj = ui_date_format.parse(eDoj) ;
+
+			if (create.equalsIgnoreCase("false") && eid != null) {
+				
+				System.out.println("********************************************** updating");
+				String query = "UPDATE EMPLOYEE set first_name=?,last_name=?,gender=?, designation=?, dob=?,doj=?, qualification=?, experience=?,married=?, passport=? ,"
+					+ "	emergency_contact=? ,user_id=? ,password=? ,current_address=?,	permanent_address=?,phone =?,email=? ,create_date=? ,"
+					+ "	notes=? where employee_id="
+						+ eid;
+				PreparedStatement preparedStmt = conn.prepareStatement(query);
+				preparedStmt.setString(1, efirstName);
+				preparedStmt.setString(2, eLastName);
+				preparedStmt.setString(3, gender);
+
+				preparedStmt.setString(4, eDesignation);
+				preparedStmt.setDate(5, new java.sql.Date(javaDateDob.getTime()));
+				preparedStmt.setDate(6, new java.sql.Date(javaDateDoj.getTime()));
+				preparedStmt.setString(7, eQualification);
+
+				preparedStmt.setString(8, eExperience);
+				preparedStmt.setString(9, married);
+				preparedStmt.setString(10, ePassport);
+				preparedStmt.setString(11, eEmergencyContact);
+				
+				preparedStmt.setString(12, eUserId);
+				preparedStmt.setString(13, password);
+				preparedStmt.setString(14, eCAddress);
+				preparedStmt.setString(15, ePAddress);
+				
+				preparedStmt.setString(16, ePhone);
+				preparedStmt.setString(17, eEmail);
+				preparedStmt.setDate(18, currentTime);
+				preparedStmt.setString(19, eNotes);
+
+				int count = preparedStmt.executeUpdate();
+
+				deleteEmployeeRole(eUserId);
+				
+				if(eUserId!=null && eUserId.length()>0 && eRole!=null && eRole!="ROLE_norole") {
+					insertEmployeeRole(eUserId, eRole);
+				}
+				
+				registered = (count > 0);
+
+			} else {
+				System.out.println("********************************************** inserting");
+	
+				String query = "INSERT INTO EMPLOYEE(first_name,last_name,gender, designation, dob,doj, qualification, experience,married, passport ,"
+					+ "	emergency_contact ,user_id ,password ,current_address,	permanent_address,phone ,email ,create_date ,"
+					+ "	notes) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				PreparedStatement preparedStmt = conn.prepareStatement(query);
+
+				preparedStmt.setString(1, efirstName);
+				preparedStmt.setString(2, eLastName);
+				preparedStmt.setString(3, gender);
+
+				preparedStmt.setString(4, eDesignation);
+				preparedStmt.setDate(5, new java.sql.Date(javaDateDob.getTime()));
+				preparedStmt.setDate(6, new java.sql.Date(javaDateDoj.getTime()));
+				preparedStmt.setString(7, eQualification);
+
+				preparedStmt.setString(8, eExperience);
+				preparedStmt.setString(9, married);
+				preparedStmt.setString(10, ePassport);
+				preparedStmt.setString(11, eEmergencyContact);
+				
+				preparedStmt.setString(12, eUserId);
+				preparedStmt.setString(13, password);
+				preparedStmt.setString(14, eCAddress);
+				preparedStmt.setString(15, ePAddress);
+				
+				preparedStmt.setString(16, ePhone);
+				preparedStmt.setString(17, eEmail);
+				preparedStmt.setDate(18, currentTime);
+				preparedStmt.setString(19, eNotes);
+
+
+				int count = preparedStmt.executeUpdate();
+
+				if(eUserId!=null && eUserId.length()>0 && eRole!=null && eRole!="ROLE_norole") {
+					insertEmployeeRole(eUserId, eRole);
+				}	
+				registered = (count > 0);
+			}
+
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}catch(Exception gen){
+			gen.printStackTrace();
+		}
 
 	}
 }

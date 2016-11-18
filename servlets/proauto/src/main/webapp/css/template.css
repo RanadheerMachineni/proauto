@@ -27,7 +27,7 @@
 .pageHeadings{
 	font-family: Verdana, Helvetica, Arial, sans-serif;
 	font-weight: normal;
-	text-align: center;
+	text-align: left;
 	font-family: 'Exo', sans-serif;
 	font-size: 20px;
 	font-weight: 200;
@@ -135,4 +135,14 @@ li.dropdownmenu {
 
 .show{
 	display :block;	
+}
+
+.formDiv{
+	border: 1px solid black;
+	border-radius: 25px;
+	padding: 20px;
+}
+
+.rowspace{
+	padding-top: 3px;
 }

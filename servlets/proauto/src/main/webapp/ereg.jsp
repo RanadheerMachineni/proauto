@@ -6,6 +6,61 @@
 <t:layout>
 	<jsp:attribute name="header">
 <script>
+	//$( function() {
+ 	//} );
+  
+	$(document).ready(function () {
+		$( "#eDob" ).datepicker();
+		$( "#eDoj" ).datepicker();
+
+	    $('#employeeRegForm').validate({
+	        rules: {
+	        	efirstName: {
+	                minlength: 2,
+	                required: true
+	            },
+	            eLastName: {
+	                minlength: 2,
+	                required: true
+	            },
+	            gender: {
+	                required: true
+	            },
+	            eUserId: {
+	                required: true
+	            },
+	            ePassword: {
+	                required: true
+	            },
+	            eEmergencyContact: {
+	                required: true
+	            },
+	            ePhone: {
+	                required: true,
+	                minlength: 10,
+	                number: true
+	            },
+	            eEmail: {
+	                required: true,
+	                email: true
+	            },
+	            eDob: {
+	            	required: true
+	            },
+	            eDoj: {
+	            	required: true
+	            }
+	        },
+	        highlight: function (element) {
+	            $(element).closest('.control-group').removeClass('success').addClass('error');
+	        },
+	        success: function (element) {
+	            element.text('OK!').addClass('valid')
+	                .closest('.control-group').removeClass('error').addClass('success');
+	        }
+	    });
+
+	});
 	function customLoad(){
 		roleChanged();
 	}
@@ -48,7 +103,6 @@
 				//event.preventDefault();
 				return false;
 			}
-
 		}
 
 		var pattern = /[0-9\-\(\)\s]+/;
@@ -92,15 +146,14 @@
 	 	  		</div>
 			</jstl:if>
 			<jstl:if test="${pageContext.request.userPrincipal.name != null}">
-		<div class="pageHeadings"> Employee Registration</div>
-		<br>
-					<div
-					class="col-md-4 col-md-offset-1 col-sm-4 col-sm-offset-1 col-xs-4 col-xs-offset-1">
-		
-					<jstl:if test="${employeeSelected.employeeName == null}">
+					<div class="col-md-10 col-sm-10 col-xs-10">
+					<div class="pageHeadings"> Employee Registration</div>
+					<br>
+					<div class="formDiv">
+					<jstl:if test="${employeeSelected.employeeId == null || employeeSelected.employeeId<=0}">
 						      			<label>Create Employee</label>
 					</jstl:if>
-					<jstl:if test="${employeeSelected.employeeName != null}">
+					<jstl:if test="${employeeSelected.employeeId != null && employeeSelected.employeeId > 0}">
 						      			<label>Update Employee</label>
 					</jstl:if>
 					
@@ -114,128 +167,237 @@
 			</div>
 		
 		<form id="employeeRegForm" role="form" action="ereg" method="post"
-						onsubmit="return ValidateForm(this);">  
+							>  
 		    <input type="hidden" name="regType" value="employee">
 			  <input type="hidden" name="eid" id="eid"
-							value="${employeeSelected.employeeId}">
+								value="${employeeSelected.employeeId}">
 			   <br>
 			   
-  	  		   <div class="row">
-  	  		   		<div class="col-sm-4 col-md-4">
-		      			<label for="eName">Employee Name:</label>
-		    		</div>
-		   		 	<div class="col-sm-6 col-md-6">
-		      			<input type="text" class="form-control" id="eName"
-									name="eName" value="${employeeSelected.employeeName}">
+  	  		   <div class="row rowspace">
+  	  		        <div class="control-group">
+	  	  		   		<div class="col-sm-2 col-md-2">
+			      			<label class="control-label" for="efirstName">First Name:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="efirstName"
+											name="efirstName" value="${employeeSelected.firstName}">
+			    	 	</div>
 		    	 	</div>
-  	  		   </div>
-  	  		  <br>
-  	  		  <div class="row">
-  	  		   		<div class="col-sm-4 col-md-4">
+		    	 	
+		    	 	<div class="control-group">
+			    	 	<div class="col-sm-2 col-md-2">
+			      			<label for="eLastName" class="control-label">Last Name:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="eLastName"
+											name="eLastName" value="${employeeSelected.lastName}">
+			    	 	</div>
+			    	 </div>
+		    	 <div class="control-group">
+		    	 	<div class="col-sm-3 col-md-3 controls">
+		      			<label class="radio-inline"><input type="radio" name="gender" value="m" ${employeeSelected.gender == 'm' ? 'checked' : ''}>Male</label>
+    			    	<label class="radio-inline"><input type="radio" name="gender" value="f" ${employeeSelected.gender == 'f' ? 'checked' : ''}>Female</label>
+		    	 	</div>
+		    	 </div>
+  	  		  </div>
+  	  		  	
+  	  		   <div class="row rowspace">
+  	  		   		<div class="col-sm-2 col-md-2">
+		      			<label for="eQualification">Qualification:</label>
+		    		</div>
+		   		 	<div class="col-sm-2 col-md-2">
+		      			<input type="text" class="form-control" id="eQualification"
+										name="eQualification" value="${employeeSelected.qualification}">
+		    	 	</div>
+		    	 	
+		    	 	<div class="col-sm-2 col-md-2">
+		      			<label for="eExperience">Experience:</label>
+		    		</div>
+		   		 	<div class="col-sm-2 col-md-2">
+		      			<input type="text" id="eExperience" class="form-control"
+										name="eExperience" value="${employeeSelected.experience}">
+		    	 	</div>
+		    	 	
+		    	 	<div class="col-sm-3 col-md-3">
+		      			<label class="radio-inline"><input type="radio" name="married" value="s" ${employeeSelected.married == 's' ? 'checked' : ''}>Single</label>
+    			    	<label class="radio-inline"><input type="radio" name="married" value="m" ${employeeSelected.married == 'm' ? 'checked' : ''}>Married</label>
+		    	 	</div>
+		    	 	
+  	  		  </div>
+  	  		  <div class="row rowspace">
+  	  		   		<div class="col-sm-2 col-md-2">
+		      			<label for="eDesignation">Designation:</label>
+		    		</div>
+		   		 	<div class="col-sm-2 col-md-2">
+		      			<input type="text" class="form-control" id="eDesignation"
+										name="eDesignation" value="${employeeSelected.designation}">
+		    	 	</div>
+		    	 	
+		    	 	<div class="control-group">
+			    	 	<div class="col-sm-2 col-md-2">
+			      			<label for="eDob" class="control-label">Date Of Birth:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="eDob"
+											name="eDob"  readonly="true" value="${employeeSelected.dob}">
+			    	 	</div>
+			    	</div>
+		    	 	
+		    	 	<div class="control-group">
+			    	 	<div class="col-sm-2 col-md-2">
+			      			<label for="eDoj" class="control-label">Date Of Joining:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="eDoj"
+											name="eDoj" readonly="true" value="${employeeSelected.doj}">
+			    	 	</div>
+			    	</div>
+  	  		  </div>
+  	  		  
+  	  		  <div class="row rowspace">
+  	  		   		<div class="col-sm-2 col-md-2">
 		      			<label for="eRole">Role:</label>
 		    		</div>
-		   		 	<div class="col-sm-6 col-md-6">
-		 			<select name="eRole" id="eRole" onchange="roleChanged();">
-  						<jstl:forEach items="${roles}" var="role">
-  				  			<option value="${role.key}" ${employeeSelectedRole == role.key ? 'selected' : ''}>${role.value}</option>
-  						</jstl:forEach>
-					</select>
+		   		 	<div class="col-sm-2 col-md-2">
+			 			<select class="form-control" name="eRole" id="eRole" onchange="roleChanged();">
+	  						<jstl:forEach items="${roles}" var="role">
+	  				  			<option value="${role.key}"
+													${employeeSelectedRole == role.key ? 'selected' : ''}>${role.value}</option>
+	  						</jstl:forEach>
+						</select>
 		    	 	</div>
+	  	  		   <div class="control-group">
+		  	  		   	<div class="hide" id="userIdDiv">
+		  	  		   		<div class="col-sm-2 col-md-2">
+				      			<label for="eUserId" class="control-label">User Id:</label>
+				    		</div>
+				 			<div class="col-sm-2 col-md-2 controls">
+				      			<input type="text" class="form-control" id="eUserId"
+											name="eUserId" value="${employeeSelected.userId}">
+				    	 	</div>
+		  	  		   </div>
+	  	  		  
+		  	  		  <div class="hide" id="pwdDiv">
+		  	  		   		<div class="col-sm-2 col-md-2">
+				      			<label for="ePassword" class="control-label">Password:</label>
+				    		</div>
+				 			<div class="col-sm-2 col-md-2 controls">
+				      			<input type="text" class="form-control" id="ePassword"
+											name="ePassword" value="${employeeSelected.password}">
+				    	 	</div>
+		  	  		   </div>
+		  	  		</div>
   	  		   </div>
-  	  		  <br>
   	  		  
-  	  		  <div class="row hide" id="userIdDiv">
-  	  		   		<div class="col-sm-4 col-md-4">
-		      			<label for="eUserId">User Id:</label>
-		    		</div>
-		 			<div class="col-sm-6 col-md-6">
-		      			<input type="text" class="form-control" id="eUserId"
-									name="eUserId" value="${employeeSelected.userId}">
+  	  	
+  	  		  
+  	  		  <div class="row rowspace">
+  	  		  	  	<div class="control-group">
+	  	  		   		<div class="col-sm-2 col-md-2">
+			      			<label for="ePhone" class="control-label">Phone:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="ePhone"
+											name="ePhone" value="${employeeSelected.phone}">
+			    	 	</div>
 		    	 	</div>
-  	  		   </div>
-  	  		  <br>
-  	  		  
-  	  		  <div class="row hide" id="pwdDiv">
-  	  		   		<div class="col-sm-4 col-md-4">
-		      			<label for="ePassword">Password:</label>
-		    		</div>
-		 			<div class="col-sm-6 col-md-6">
-		      			<input type="text" class="form-control" id="ePassword"
-									name="ePassword" value="${employeeSelected.password}">
+		    	 	
+		    	 	<div class="control-group">
+			    	 	<div class="col-sm-2 col-md-2">
+			      			<label for="eEmail" class="control-label">Email:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="eEmail"
+											name="eEmail" value="${employeeSelected.email}">
+			    	 	</div>
 		    	 	</div>
-  	  		   </div>
-  	  		  <br>
+  	  		  </div>
   	  		  
-  	  		  <div class="row">
-  	  		   		<div class="col-sm-4 col-md-4">
-		      			<label for="eAddress">Address:</label>
+  	  		  <div class="row rowspace">
+		    	 	
+		    	 	<div class="col-sm-2 col-md-2">
+		      			<label for="ePassport">Passport:</label>
 		    		</div>
-		   		 	<div class="col-sm-6 col-md-6">
-		      			<textarea class="form-control" id="eAddress" name="eAddress">${employeeSelected.address}</textarea>
+		   		 	<div class="col-sm-2 col-md-2">
+		      			<input type="text" class="form-control" id="ePassport"
+										name="ePassport" value="${employeeSelected.passport}">
 		    	 	</div>
-  	  		   </div>
+		    	 	
+		    	 	<div class="control-group">
+		    	 	
+			    	 	<div class="col-sm-2 col-md-2">
+			      			<label for="eEmergencyContact" class="control-label">Emergency Contact:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="eEmergencyContact"
+											name="eEmergencyContact" value="${employeeSelected.emergencyContact}">
+			    	 	</div>
+		    	 	</div>
+  	  		  </div>
   	  		  
-  	  		  <br>
+  	  		  <div class="row rowspace">
+		    	 	
+		    	 	<div class="col-sm-2 col-md-2">
+		      			<label for="eCAddress">Current Address:</label>
+		    		</div>
+		   		 	<div class="col-sm-2 col-md-2">
+		      			<textarea class="form-control" id="eCAddress" name="eCAddress">${employeeSelected.currentAddress}</textarea>
+		    	 	</div>
+		    	 	
+		    	 	 	<div class="col-sm-2 col-md-2">
+		      			<label for="ePAddress">Permanent Address:</label>
+		    		</div>
+		   		 	<div class="col-sm-2 col-md-2">
+		      			<textarea class="form-control" id="ePAddress" name="ePAddress">${employeeSelected.permanentAddress}</textarea>
+		    	 	</div>
+  	  		  </div>
   	  		  
-  	  		  <div class="row">
-  	  		   		<div class="col-sm-4 col-md-4">
-		      			<label for="ePhone">Phone :</label>
+  	  		  <div class="row rowspace">
+		    	 	
+		    	 	<div class="col-sm-2 col-md-2">
+		      			<label for="eNotes">Notes:</label>
 		    		</div>
-		   		 	<div class="col-sm-6 col-md-6">
-							<input type="text" class="form-control" id="ePhone" name="ePhone"
-									value="${employeeSelected.phone}">		    	 	
-					</div>
-  	  		   </div>
-  	  		   <br>
- 	  		 
- 	  		 <div class="row">
-  	  		   		<div class="col-sm-4 col-md-4">
-		      			<label for="eEmail">Email :</label>
-		    		</div>
-		   		 	<div class="col-sm-6 col-md-6">
-							<input type="text" class="form-control" id="eEmail" name="eEmail"
-									value="${employeeSelected.email}">		    	 	
-					</div>
-  	  		   </div>
-  	  		   <br>
+		   		 	<div class="col-sm-2 col-md-2">
+		      			<textarea class="form-control" id="eNotes" name="eNotes">${employeeSelected.notes}</textarea>
+		    	 	</div>
+  	  		  </div>
   	  		   <br>
 			   <div class="row">
 	   		 		<div class="col-sm-8 col-md-8">
-	   		 			<jstl:if test="${employeeSelected.employeeName == null}">
+						<jstl:if test="${employeeSelected.employeeId == null || employeeSelected.employeeId<=0}">
 	   		 				  <input type="hidden" name="create" value="true">
 						      <input id="createEmployeeSubmit" type=submit value="Create">
 						</jstl:if>
-						<jstl:if test="${employeeSelected.employeeName != null}">
+					<jstl:if test="${employeeSelected.employeeId != null && employeeSelected.employeeId > 0}">
 							  <input type="hidden" name="create" value="false">
 						      <input id="createEmployeeSubmit" type=submit value="Update"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						      <a class="btn btn-default" href="${pageContext.request.contextPath}/ereg" role="button">Cancel</a>
+						      <a class="btn btn-default"
+											href="${pageContext.request.contextPath}/ereg" role="button">Cancel</a>
 						</jstl:if>
 	    	 		</div>
 	  			</div>
 	  			<br>
 	  			<input type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" />
+								value="${_csrf.token}" />
 		</form>	
 		</div>
+		</div>
   	  		
-  	  		
-  	  					<!--  RHS Side -->
+  	  		<!-- List of emps -->
 						<div
-					class="col-md-4 col-md-offset-2 col-sm-4 col-sm-offset-2 col-xs-4 col-xs-offset-2">
+					class="col-md-10 col-sm-10 col-xs-10">
 	   		 					<br>
 	   		 					<form id="employeeSearchForm" role="form" action="ereg"
 						method="GET">  
 	   		 					<div class="row">
-				  	  		   		<div class="col-sm-6 col-md-6">
+				  	  		   		<div class="col-sm-1 col-md-1">
 						      			<label for="searchEmployeeInput">Search Employee</label>
 						    		</div>
-						   		 	<div class="col-sm-6 col-md-6">
+						   		 	<div class="col-sm-2 col-md-2">
 						      			<input type="text" class="form-control"
 									id="searchEmployeeInput" name="searchEmployeeInput">
 						    	 	</div>
-  	  		  					</div>
-  	  		  					 <div class="row">
-						   		 	<div class="col-sm-10 col-md-10">
+						    	 	<div class="col-sm-1 col-md-1">
 						      			<input type=submit value="Search">
 						    	 	</div>
   	  		  					</div>
@@ -247,8 +409,11 @@
 								    <thead>
 								      <tr>
 								        <th>Employee Name</th>
-								        <th>User Id</th>
+										<th>Gender</th>
+										<th>Designation</th>
 			   					        <th>Phone</th>
+										<th>User Id</th>
+										<th>Emergency Contact</th>
 								      </tr>
 								    </thead>
 								    <tbody>
@@ -256,18 +421,22 @@
 							                <tr>
 							                    <td>
 							                    	<a
-										href="${pageContext.request.contextPath}/ereg?employeeSelected=${employee.employeeName}">
-								                    	<jstl:out value="${employee.employeeName}" />
+										href="${pageContext.request.contextPath}/ereg?employeeSelected=${employee.employeeId}">
+								                    	<jstl:out value="${employee.firstName} ${employee.lastName}" />
 								                    </a>
 												</td>
+							                    <td><jstl:out value="${employee.gender}" /></td>
+							                    <td><jstl:out value="${employee.designation}" /></td>
+							                    <td><jstl:out value="${employee.phone}" /></td>
 							                    <td><jstl:out value="${employee.userId}" /></td>
-							                    <td><jstl:out
-											value="${employee.phone}" /></td>
+							                    <td><jstl:out value="${employee.emergencyContact}" /></td>
+							                    
 							                </tr>
 							            </jstl:forEach>
 								    </tbody>
 								  </table>
 						</div>
+  	  		
 					</jstl:if>
 		
 </div>
