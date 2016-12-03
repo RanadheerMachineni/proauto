@@ -1,4 +1,4 @@
-package com.esteeminfo.proauto.appconfig;
+package com.esteeminfo.proauto.web.config;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

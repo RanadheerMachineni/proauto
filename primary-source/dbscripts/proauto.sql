@@ -116,17 +116,16 @@ CREATE TABLE vendor
 drop table roles;
 CREATE TABLE roles
 (
-	role_id int NOT NUll,
-	role char(50) NOT NULL,
-	role_desc char(50) NOT NULL,
-	CONSTRAINT roles_pk PRIMARY KEY (role_id),
-	CONSTRAINT roles_uk UNIQUE (role)
+	role_id char(50) NOT NULL,
+	name char(50) NOT NULL,
+	role_desc char(50),
+	CONSTRAINT roles_pk PRIMARY KEY (role_id)
 );
-insert into roles(role_id,role,role_desc) values(1,'ROLE_admin', 'Administrator');
-insert into roles(role_id,role,role_desc) values(2,'ROLE_jobcard','JobCard User');
-insert into roles(role_id,role,role_desc) values(3,'ROLE_costing','Costing User');
-insert into roles(role_id,role,role_desc) values(4,'ROLE_dms','Dms User');
-insert into roles(role_id,role,role_desc) values(5,'ROLE_norole','- Not user');
+insert into roles(role_id,name) values('ROLE_admin', 'Administrator');
+insert into roles(role_id,name) values('ROLE_jobcard','JobCard User');
+insert into roles(role_id,name) values('ROLE_costing','Costing User');
+insert into roles(role_id,name) values('ROLE_dms','Dms User');
+insert into roles(role_id,name) values('ROLE_norole','- Not user');
 
 drop table employee;
 
@@ -155,7 +154,8 @@ CREATE TABLE employee
 	zip_code char(10),
 	create_date DATE,
 	notes char(255),
-	CONSTRAINT employee_pk primary key (employee_id)
+	CONSTRAINT pk_employee primary key (employee_id),
+	CONSTRAINT uk_user_id UNIQUE (user_id)
 );
 
 insert into employee(first_name,last_name,gender,user_id,password,dob,doj) values('admin','admin','m','admin','admin','2016-11-01','2016-11-01');
@@ -168,15 +168,19 @@ drop table employee_role;
 CREATE TABLE employee_role
 (
 	user_id char(50) NOT NULL,
-	role char(50) NOT NULL
+	role_id char(50) NOT NULL,
+	constraint employee_role_pk primary key (user_id , role_id),
+	CONSTRAINT fk_er_user_id FOREIGN KEY (user_id) REFERENCES employee(user_id),
+	CONSTRAINT fk_er_role FOREIGN KEY (role_id) REFERENCES roles(role_id)
+
 );
 
-insert into employee_role(user_id,role) values('admin','ROLE_admin');
-insert into employee_role(user_id,role) values('dms','ROLE_dms');
-insert into employee_role(user_id,role) values('costing','ROLE_costing');
-insert into employee_role(user_id,role) values('jobcard','ROLE_jobcard');
+insert into employee_role(user_id,role_id) values('admin','ROLE_admin');
+insert into employee_role(user_id,role_id) values('dms','ROLE_dms');
+insert into employee_role(user_id,role_id) values('costing','ROLE_costing');
+insert into employee_role(user_id,role_id) values('jobcard','ROLE_jobcard');
 
-drop table customer_raw_material;
+/*drop table customer_raw_material;
 CREATE TABLE customer_raw_material
 (
 	number_ofbars int NOT NUll,
@@ -199,4 +203,4 @@ CREATE TABLE raw_material
 	vendor_id int NOT NULL,
 	customer_id int NULL,
 	CONSTRAINT fk_rm_vendor FOREIGN KEY (vendor_id) REFERENCES vendor(vendor_id)
-)
+)*/

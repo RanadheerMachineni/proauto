@@ -1,4 +1,4 @@
-package com.esteeminfo.prouto.dao;
+package com.esteeminfo.proauto.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

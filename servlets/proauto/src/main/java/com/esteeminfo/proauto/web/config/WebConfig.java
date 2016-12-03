@@ -1,4 +1,4 @@
-package com.esteeminfo.proauto.appconfig;
+package com.esteeminfo.proauto.web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,16 +19,6 @@ import javax.sql.DataSource;
 @ComponentScan({ "com.esteeminfo.proauto.*" })
 public class WebConfig extends WebMvcConfigurerAdapter{
 
-	@Bean(name = "dataSource")
-	public DataSource dataSource() {
-	    DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-	    driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-	    driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/proauto_db?autoReconnect=true&useSSL=false");
-	    driverManagerDataSource.setUsername("proauto");
-	    driverManagerDataSource.setPassword("proauto");
-	    return driverManagerDataSource;
-	}
-	
 	@Bean
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

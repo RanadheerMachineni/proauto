@@ -1,279 +1,426 @@
 package com.esteeminfo.proauto.entity;
 
+import java.io.Serializable;
+import javax.persistence.*;
 import java.util.Date;
 
-public class Customer {
 
+/**
+ * The persistent class for the customer database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="Customer.findAll", query="SELECT c FROM Customer c")
+public class Customer implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@Column(name="customer_id")
 	private int customerId;
-	private String customerName;
+
 	private String address;
+
 	private String city;
-	private String state;
-	private String zipCode;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="create_date")
 	private Date createDate;
-	
-	private String name_one;
-	private String phone_one;
-	private String email_one;
-	
-	private String name_two;
-	private String phone_two;
-	private String email_two;
 
-	private String name_three;
-	private String phone_three;
-	private String email_three;
+	@Column(name="customer_name")
+	private String customerName;
 
-	private String name_four;
-	private String phone_four;
-	private String email_four;
+	@Column(name="email_eight")
+	private String emailEight;
 
-	private String name_five;
-	private String phone_five;
-	private String email_five;
+	@Column(name="email_five")
+	private String emailFive;
 
-	private String name_six;
-	private String phone_six;
-	private String email_six;
+	@Column(name="email_four")
+	private String emailFour;
 
-	private String name_seven;
-	private String phone_seven;
-	private String email_seven;
+	@Column(name="email_nine")
+	private String emailNine;
 
-	private String name_eight;
-	private String phone_eight;
-	private String email_eight;
+	@Column(name="email_one")
+	private String emailOne;
 
-	private String name_nine;
-	private String phone_nine;
-	private String email_nine;
+	@Column(name="email_seven")
+	private String emailSeven;
 
-	private String name_ten;
-	private String phone_ten;
-	private String email_ten;
-	
-	public int getCustomerId() {
-		return customerId;
+	@Column(name="email_six")
+	private String emailSix;
+
+	@Column(name="email_ten")
+	private String emailTen;
+
+	@Column(name="email_three")
+	private String emailThree;
+
+	@Column(name="email_two")
+	private String emailTwo;
+
+	@Column(name="name_eight")
+	private String nameEight;
+
+	@Column(name="name_five")
+	private String nameFive;
+
+	@Column(name="name_four")
+	private String nameFour;
+
+	@Column(name="name_nine")
+	private String nameNine;
+
+	@Column(name="name_one")
+	private String nameOne;
+
+	@Column(name="name_seven")
+	private String nameSeven;
+
+	@Column(name="name_six")
+	private String nameSix;
+
+	@Column(name="name_ten")
+	private String nameTen;
+
+	@Column(name="name_three")
+	private String nameThree;
+
+	@Column(name="name_two")
+	private String nameTwo;
+
+	@Column(name="phone_eight")
+	private String phoneEight;
+
+	@Column(name="phone_five")
+	private String phoneFive;
+
+	@Column(name="phone_four")
+	private String phoneFour;
+
+	@Column(name="phone_nine")
+	private String phoneNine;
+
+	@Column(name="phone_one")
+	private String phoneOne;
+
+	@Column(name="phone_seven")
+	private String phoneSeven;
+
+	@Column(name="phone_six")
+	private String phoneSix;
+
+	@Column(name="phone_ten")
+	private String phoneTen;
+
+	@Column(name="phone_three")
+	private String phoneThree;
+
+	@Column(name="phone_two")
+	private String phoneTwo;
+
+	private String state;
+
+	@Column(name="zip_code")
+	private String zipCode;
+
+	public Customer() {
 	}
+
+	public int getCustomerId() {
+		return this.customerId;
+	}
+
 	public void setCustomerId(int customerId) {
 		this.customerId = customerId;
 	}
-	public String getCustomerName() {
-		return customerName;
+
+	public String getAddress() {
+		return this.address;
 	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return this.city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public Date getCreateDate() {
+		return this.createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getCustomerName() {
+		return this.customerName;
+	}
+
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getEmailEight() {
+		return this.emailEight;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+
+	public void setEmailEight(String emailEight) {
+		this.emailEight = emailEight;
 	}
-	public String getCity() {
-		return city;
+
+	public String getEmailFive() {
+		return this.emailFive;
 	}
-	public void setCity(String city) {
-		this.city = city;
+
+	public void setEmailFive(String emailFive) {
+		this.emailFive = emailFive;
 	}
+
+	public String getEmailFour() {
+		return this.emailFour;
+	}
+
+	public void setEmailFour(String emailFour) {
+		this.emailFour = emailFour;
+	}
+
+	public String getEmailNine() {
+		return this.emailNine;
+	}
+
+	public void setEmailNine(String emailNine) {
+		this.emailNine = emailNine;
+	}
+
+	public String getEmailOne() {
+		return this.emailOne;
+	}
+
+	public void setEmailOne(String emailOne) {
+		this.emailOne = emailOne;
+	}
+
+	public String getEmailSeven() {
+		return this.emailSeven;
+	}
+
+	public void setEmailSeven(String emailSeven) {
+		this.emailSeven = emailSeven;
+	}
+
+	public String getEmailSix() {
+		return this.emailSix;
+	}
+
+	public void setEmailSix(String emailSix) {
+		this.emailSix = emailSix;
+	}
+
+	public String getEmailTen() {
+		return this.emailTen;
+	}
+
+	public void setEmailTen(String emailTen) {
+		this.emailTen = emailTen;
+	}
+
+	public String getEmailThree() {
+		return this.emailThree;
+	}
+
+	public void setEmailThree(String emailThree) {
+		this.emailThree = emailThree;
+	}
+
+	public String getEmailTwo() {
+		return this.emailTwo;
+	}
+
+	public void setEmailTwo(String emailTwo) {
+		this.emailTwo = emailTwo;
+	}
+
+	public String getNameEight() {
+		return this.nameEight;
+	}
+
+	public void setNameEight(String nameEight) {
+		this.nameEight = nameEight;
+	}
+
+	public String getNameFive() {
+		return this.nameFive;
+	}
+
+	public void setNameFive(String nameFive) {
+		this.nameFive = nameFive;
+	}
+
+	public String getNameFour() {
+		return this.nameFour;
+	}
+
+	public void setNameFour(String nameFour) {
+		this.nameFour = nameFour;
+	}
+
+	public String getNameNine() {
+		return this.nameNine;
+	}
+
+	public void setNameNine(String nameNine) {
+		this.nameNine = nameNine;
+	}
+
+	public String getNameOne() {
+		return this.nameOne;
+	}
+
+	public void setNameOne(String nameOne) {
+		this.nameOne = nameOne;
+	}
+
+	public String getNameSeven() {
+		return this.nameSeven;
+	}
+
+	public void setNameSeven(String nameSeven) {
+		this.nameSeven = nameSeven;
+	}
+
+	public String getNameSix() {
+		return this.nameSix;
+	}
+
+	public void setNameSix(String nameSix) {
+		this.nameSix = nameSix;
+	}
+
+	public String getNameTen() {
+		return this.nameTen;
+	}
+
+	public void setNameTen(String nameTen) {
+		this.nameTen = nameTen;
+	}
+
+	public String getNameThree() {
+		return this.nameThree;
+	}
+
+	public void setNameThree(String nameThree) {
+		this.nameThree = nameThree;
+	}
+
+	public String getNameTwo() {
+		return this.nameTwo;
+	}
+
+	public void setNameTwo(String nameTwo) {
+		this.nameTwo = nameTwo;
+	}
+
+	public String getPhoneEight() {
+		return this.phoneEight;
+	}
+
+	public void setPhoneEight(String phoneEight) {
+		this.phoneEight = phoneEight;
+	}
+
+	public String getPhoneFive() {
+		return this.phoneFive;
+	}
+
+	public void setPhoneFive(String phoneFive) {
+		this.phoneFive = phoneFive;
+	}
+
+	public String getPhoneFour() {
+		return this.phoneFour;
+	}
+
+	public void setPhoneFour(String phoneFour) {
+		this.phoneFour = phoneFour;
+	}
+
+	public String getPhoneNine() {
+		return this.phoneNine;
+	}
+
+	public void setPhoneNine(String phoneNine) {
+		this.phoneNine = phoneNine;
+	}
+
+	public String getPhoneOne() {
+		return this.phoneOne;
+	}
+
+	public void setPhoneOne(String phoneOne) {
+		this.phoneOne = phoneOne;
+	}
+
+	public String getPhoneSeven() {
+		return this.phoneSeven;
+	}
+
+	public void setPhoneSeven(String phoneSeven) {
+		this.phoneSeven = phoneSeven;
+	}
+
+	public String getPhoneSix() {
+		return this.phoneSix;
+	}
+
+	public void setPhoneSix(String phoneSix) {
+		this.phoneSix = phoneSix;
+	}
+
+	public String getPhoneTen() {
+		return this.phoneTen;
+	}
+
+	public void setPhoneTen(String phoneTen) {
+		this.phoneTen = phoneTen;
+	}
+
+	public String getPhoneThree() {
+		return this.phoneThree;
+	}
+
+	public void setPhoneThree(String phoneThree) {
+		this.phoneThree = phoneThree;
+	}
+
+	public String getPhoneTwo() {
+		return this.phoneTwo;
+	}
+
+	public void setPhoneTwo(String phoneTwo) {
+		this.phoneTwo = phoneTwo;
+	}
+
 	public String getState() {
-		return state;
+		return this.state;
 	}
+
 	public void setState(String state) {
 		this.state = state;
 	}
+
 	public String getZipCode() {
-		return zipCode;
+		return this.zipCode;
 	}
+
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
-	}
-	public Date getCreateDate() {
-		return createDate;
-	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-	public String getName_one() {
-		return name_one;
-	}
-	public void setName_one(String name_one) {
-		this.name_one = name_one;
-	}
-	public String getPhone_one() {
-		return phone_one;
-	}
-	public void setPhone_one(String phone_one) {
-		this.phone_one = phone_one;
-	}
-	public String getEmail_one() {
-		return email_one;
-	}
-	public void setEmail_one(String email_one) {
-		this.email_one = email_one;
-	}
-	public String getName_two() {
-		return name_two;
-	}
-	public void setName_two(String name_two) {
-		this.name_two = name_two;
-	}
-	public String getPhone_two() {
-		return phone_two;
-	}
-	public void setPhone_two(String phone_two) {
-		this.phone_two = phone_two;
-	}
-	public String getEmail_two() {
-		return email_two;
-	}
-	public void setEmail_two(String email_two) {
-		this.email_two = email_two;
-	}
-	public String getName_three() {
-		return name_three;
-	}
-	public void setName_three(String name_three) {
-		this.name_three = name_three;
-	}
-	public String getPhone_three() {
-		return phone_three;
-	}
-	public void setPhone_three(String phone_three) {
-		this.phone_three = phone_three;
-	}
-	public String getEmail_three() {
-		return email_three;
-	}
-	public void setEmail_three(String email_three) {
-		this.email_three = email_three;
-	}
-	public String getName_four() {
-		return name_four;
-	}
-	public void setName_four(String name_four) {
-		this.name_four = name_four;
-	}
-	public String getPhone_four() {
-		return phone_four;
-	}
-	public void setPhone_four(String phone_four) {
-		this.phone_four = phone_four;
-	}
-	public String getEmail_four() {
-		return email_four;
-	}
-	public void setEmail_four(String email_four) {
-		this.email_four = email_four;
-	}
-	public String getName_five() {
-		return name_five;
-	}
-	public void setName_five(String name_five) {
-		this.name_five = name_five;
-	}
-	public String getPhone_five() {
-		return phone_five;
-	}
-	public void setPhone_five(String phone_five) {
-		this.phone_five = phone_five;
-	}
-	public String getEmail_five() {
-		return email_five;
-	}
-	public void setEmail_five(String email_five) {
-		this.email_five = email_five;
-	}
-	public String getName_six() {
-		return name_six;
-	}
-	public void setName_six(String name_six) {
-		this.name_six = name_six;
-	}
-	public String getPhone_six() {
-		return phone_six;
-	}
-	public void setPhone_six(String phone_six) {
-		this.phone_six = phone_six;
-	}
-	public String getEmail_six() {
-		return email_six;
-	}
-	public void setEmail_six(String email_six) {
-		this.email_six = email_six;
-	}
-	public String getName_seven() {
-		return name_seven;
-	}
-	public void setName_seven(String name_seven) {
-		this.name_seven = name_seven;
-	}
-	public String getPhone_seven() {
-		return phone_seven;
-	}
-	public void setPhone_seven(String phone_seven) {
-		this.phone_seven = phone_seven;
-	}
-	public String getEmail_seven() {
-		return email_seven;
-	}
-	public void setEmail_seven(String email_seven) {
-		this.email_seven = email_seven;
-	}
-	public String getName_eight() {
-		return name_eight;
-	}
-	public void setName_eight(String name_eight) {
-		this.name_eight = name_eight;
-	}
-	public String getPhone_eight() {
-		return phone_eight;
-	}
-	public void setPhone_eight(String phone_eight) {
-		this.phone_eight = phone_eight;
-	}
-	public String getEmail_eight() {
-		return email_eight;
-	}
-	public void setEmail_eight(String email_eight) {
-		this.email_eight = email_eight;
-	}
-	public String getName_nine() {
-		return name_nine;
-	}
-	public void setName_nine(String name_nine) {
-		this.name_nine = name_nine;
-	}
-	public String getPhone_nine() {
-		return phone_nine;
-	}
-	public void setPhone_nine(String phone_nine) {
-		this.phone_nine = phone_nine;
-	}
-	public String getEmail_nine() {
-		return email_nine;
-	}
-	public void setEmail_nine(String email_nine) {
-		this.email_nine = email_nine;
-	}
-	public String getName_ten() {
-		return name_ten;
-	}
-	public void setName_ten(String name_ten) {
-		this.name_ten = name_ten;
-	}
-	public String getPhone_ten() {
-		return phone_ten;
-	}
-	public void setPhone_ten(String phone_ten) {
-		this.phone_ten = phone_ten;
-	}
-	public String getEmail_ten() {
-		return email_ten;
-	}
-	public void setEmail_ten(String email_ten) {
-		this.email_ten = email_ten;
 	}
 
 }
