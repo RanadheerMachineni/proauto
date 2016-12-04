@@ -35,16 +35,12 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 
 	public Employee findByUser(String user) {
 		EntityManager entityManager = getEntityManager();
-		entityManager.getTransaction().begin();
-		Query q = entityManager.createQuery( "select e from Employee e where e.userId=:userId");
+		Query q = entityManager.createQuery( "select e from Employee e join fetch e.roles where e.userId=:userId");
 		q.setParameter("userId", user);
 		List<Employee> result = q.getResultList();
-		entityManager.getTransaction().commit();
-		entityManager.close();
-		if(result!=null  && result.size()>0){
-			System.out.println("***** EmployeeDaoImpl findByUser = "+result.get(0).getFirstName());
-			return result.get(0);
+		if(result == null || result.size() ==0){
+			return null;
 		}
-		return null;
+		return result.get(0);
 	}
 }

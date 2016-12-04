@@ -24,6 +24,19 @@ public class Role implements Serializable {
 	@Column(name="role_desc")
 	private String roleDesc;
 
+	//bi-directional many-to-many association to Employee
+	@ManyToMany
+	@JoinTable(
+		name="employee_role"
+		, joinColumns={
+			@JoinColumn(name="role_id")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="employee_id")
+			}
+		)
+	private List<Employee> employees;
+
 	public Role() {
 	}
 
@@ -49,6 +62,14 @@ public class Role implements Serializable {
 
 	public void setRoleDesc(String roleDesc) {
 		this.roleDesc = roleDesc;
+	}
+
+	public List<Employee> getEmployees() {
+		return this.employees;
+	}
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
 	}
 
 }

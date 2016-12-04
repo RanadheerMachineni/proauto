@@ -34,29 +34,20 @@ public class CustomUserDetailsService implements UserDetailsService{
 		}else{
 			System.out.println("Employee found, "+employee.getFirstName());
 			listOfRoles = employee.getRoles();
+			System.out.println("roles size = , "+listOfRoles.size());
+
 		}
 		for(Role role : listOfRoles){
+			System.out.println("----------------------------");
+
 			System.out.println("Employee role = "+role.getName()+", "+role.getRoleId());
 		}
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		for(Role role : employee.getRoles()){
-			//authorities.add(new SimpleGrantedAuthority(role.getRoleId()));
+			authorities.add(new SimpleGrantedAuthority(role.getRoleId()));
 		}
-		authorities.add(new SimpleGrantedAuthority("ROLE_admin"));
-
-			return new org.springframework.security.core.userdetails.User(employee.getUserId(), employee.getPassword(), 
+		return new org.springframework.security.core.userdetails.User(employee.getUserId(), employee.getPassword(), 
 				 true, true, true, true, authorities);
 	}
 
-	
-	private List<GrantedAuthority> getGrantedAuthorities(Employee employee){
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		
-		for(Role role : employee.getRoles()){
-			authorities.add(new SimpleGrantedAuthority(role.getRoleId()));
-		}
-		System.out.print("authorities :"+authorities);
-		return authorities;
-	}
-	
 }

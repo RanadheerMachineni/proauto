@@ -3,8 +3,6 @@
 	<persistence-unit name="proauto" transaction-type="RESOURCE_LOCAL">
 		<class>com.esteeminfo.proauto.entity.Customer</class>
 		<class>com.esteeminfo.proauto.entity.Employee</class>
-		<class>com.esteeminfo.proauto.entity.EmployeeRole</class>
-		<class>com.esteeminfo.proauto.entity.EmployeeRolePK</class>
 		<class>com.esteeminfo.proauto.entity.Role</class>
 		<class>com.esteeminfo.proauto.entity.Vendor</class>
 		

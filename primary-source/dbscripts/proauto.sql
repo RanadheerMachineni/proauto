@@ -167,18 +167,18 @@ insert into employee(first_name,last_name,gender,user_id,password,dob,doj) value
 drop table employee_role;
 CREATE TABLE employee_role
 (
-	user_id char(50) NOT NULL,
+	employee_id int NOT NULL,
 	role_id char(50) NOT NULL,
-	constraint employee_role_pk primary key (user_id , role_id),
-	CONSTRAINT fk_er_user_id FOREIGN KEY (user_id) REFERENCES employee(user_id),
+	constraint employee_role_pk primary key (employee_id , role_id),
+	CONSTRAINT fk_er_emp_id FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
 	CONSTRAINT fk_er_role FOREIGN KEY (role_id) REFERENCES roles(role_id)
 
 );
 
-insert into employee_role(user_id,role_id) values('admin','ROLE_admin');
-insert into employee_role(user_id,role_id) values('dms','ROLE_dms');
-insert into employee_role(user_id,role_id) values('costing','ROLE_costing');
-insert into employee_role(user_id,role_id) values('jobcard','ROLE_jobcard');
+insert into employee_role(employee_id,role_id) values(1,'ROLE_admin');
+insert into employee_role(employee_id,role_id) values(2,'ROLE_dms');
+insert into employee_role(employee_id,role_id) values(3,'ROLE_costing');
+insert into employee_role(employee_id,role_id) values(4,'ROLE_jobcard');
 
 /*drop table customer_raw_material;
 CREATE TABLE customer_raw_material

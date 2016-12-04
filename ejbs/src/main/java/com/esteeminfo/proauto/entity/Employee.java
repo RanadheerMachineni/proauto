@@ -2,10 +2,6 @@ package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import java.util.Date;
 import java.util.List;
 
@@ -79,17 +75,7 @@ public class Employee implements Serializable {
 	private String zipCode;
 
 	//bi-directional many-to-many association to Role
-	@OneToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-	@JoinTable(
-		name="employee_role"
-		, joinColumns={
-			@JoinColumn(name="user_id")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="role_id")
-			}
-		)
-	@Fetch(FetchMode.JOIN)
+	@ManyToMany(mappedBy="employees")
 	private List<Role> roles;
 
 	public Employee() {
@@ -286,4 +272,5 @@ public class Employee implements Serializable {
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
+
 }
