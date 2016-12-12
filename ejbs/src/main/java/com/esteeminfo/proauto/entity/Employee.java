@@ -75,7 +75,16 @@ public class Employee implements Serializable {
 	private String zipCode;
 
 	//bi-directional many-to-many association to Role
-	@ManyToMany(mappedBy="employees")
+	@ManyToMany(cascade=CascadeType.ALL)
+	@JoinTable(
+		name="employee_role"
+		, joinColumns={
+			@JoinColumn(name="employee_id")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="role_id")
+			}
+		)
 	private List<Role> roles;
 
 	public Employee() {

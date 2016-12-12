@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.esteeminfo.proauto.dao.CommonDAO;
 import com.esteeminfo.proauto.dao.EmployeeDao;
 import com.esteeminfo.proauto.dto.EmployeeDTO;
 import com.esteeminfo.proauto.entity.Employee;
@@ -36,6 +37,9 @@ public class AppController {
 	
 	@Autowired(required=true)
 	private EmployeeDao employeeDao ;
+	
+	@Autowired(required=true)
+	private CommonDAO commonDAO ;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
@@ -138,10 +142,12 @@ public class AppController {
 		model.addAttribute("employeeList", employeeDTOList);
 		
 		Map<String, String> roleMap = new HashMap<String, String>(); 
-		//CommonDAO.loadRoleMap(roleMap);
+		commonDAO.loadRoleMap(roleMap);
 		roleMap.put("ROLE_norole", "- Not user");
 		roleMap.put("ROLE_admin", "Administrator");
 		roleMap.put("ROLE_dms", "DMS user");
+		roleMap.put("ROLE_jobcard", "Jobcard user");
+		roleMap.put("ROLE_costing", "Costing user");
 		model.addAttribute("roles", roleMap);
 		return "ereg";
 	}
@@ -178,7 +184,48 @@ public class AppController {
 
 	@RequestMapping(value = { "ereg"}, method = RequestMethod.POST)
 	public String posteregPage(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String create = request.getParameter("create");
 		
+		String eid = request.getParameter("eid");
+
+		String efirstName = request.getParameter("efirstName");
+		String eLastName = request.getParameter("eLastName");
+		String gender = request.getParameter("gender");
+		String eQualification = request.getParameter("eQualification");
+		String eExperience = request.getParameter("eExperience");
+		String married = request.getParameter("married");
+		String eDesignation = request.getParameter("eDesignation");
+		String eDob = request.getParameter("eDob");
+		String eDoj = request.getParameter("eDoj");
+		String eRole = request.getParameter("eRole");
+		String eUserId = request.getParameter("eUserId");
+		String password = request.getParameter("ePassword");
+		String ePhone = request.getParameter("ePhone");
+		String eEmail = request.getParameter("eEmail");
+		String ePassport = request.getParameter("ePassport");
+		String eEmergencyContact = request.getParameter("eEmergencyContact");
+		String eCAddress = request.getParameter("eCAddress");
+		String ePAddress = request.getParameter("ePAddress");
+		String eNotes = request.getParameter("eNotes");
+
+		logger.info("***************************** ereg Post efirstName= "+efirstName+",eRole = "+eRole+", gender = "+gender+", eDob"+eDob+", married"+married);
+		
+		try {
+			employeeDao.registerEmployee(create, eid, efirstName, eLastName, gender, eQualification, eExperience, married, eDesignation, eDob,eDoj, eRole, eUserId, password,
+					ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes);
+		} catch (Exception e) {
+			model.addAttribute("error", e.getMessage());
+		}
+		Map<String, String> roleMap = new HashMap<String, String>(); 
+		roleMap.put("ROLE_norole", "- Not user");
+		roleMap.put("ROLE_admin", "Administrator");
+		roleMap.put("ROLE_dms", "DMS user");
+		roleMap.put("ROLE_jobcard", "Jobcard user");
+		roleMap.put("ROLE_costing", "Costing user");
+		model.addAttribute("roles", roleMap);
+		model.addAttribute("employeeSelectedRole", "ROLE_norole");
+		List<Employee> employeeList = employeeDao.retrieveAllEmployees(null);
+		model.addAttribute("employeeList", employeeList);
 		return "ereg";
 	}
 
