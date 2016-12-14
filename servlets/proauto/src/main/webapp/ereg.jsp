@@ -194,10 +194,13 @@
 			    	 	</div>
 			    	 </div>
 		    	 <div class="control-group">
+		    	
 		    	 	<div class="col-sm-3 col-md-3 controls">
 		      			<label class="radio-inline"><input type="radio" name="gender" value="m" ${employeeSelected.gender == 'm' ? 'checked' : ''}>Male</label>
     			    	<label class="radio-inline"><input type="radio" name="gender" value="f" ${employeeSelected.gender == 'f' ? 'checked' : ''}>Female</label>
 		    	 	</div>
+		    	 	<label for="gender" class="error"></label>
+		    	 	
 		    	 </div>
   	  		  </div>
   	  		  	

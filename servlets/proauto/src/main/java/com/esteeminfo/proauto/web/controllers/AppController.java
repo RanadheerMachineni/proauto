@@ -216,17 +216,47 @@ public class AppController {
 		try {
 			employeeDao.registerEmployee(create, eid, efirstName, eLastName, gender, eQualification, eExperience, married, eDesignation, eDob,eDoj, eRole, eUserId, password,
 					ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes);
+			Map<String, String> roleMap = new HashMap<String, String>(); 
+			roleMap.put("ROLE_norole", "- Not user");
+			roleMap.put("ROLE_admin", "Administrator");
+			roleMap.put("ROLE_dms", "DMS user");
+			roleMap.put("ROLE_jobcard", "Jobcard user");
+			roleMap.put("ROLE_costing", "Costing user");
+			model.addAttribute("roles", roleMap);
+			model.addAttribute("employeeSelectedRole", "ROLE_norole");
+
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
+			EmployeeDTO employeeDTO = new EmployeeDTO();
+			employeeDTO.setEmployeeId(Integer.valueOf(eid));
+			employeeDTO.setFirstName(efirstName);
+			employeeDTO.setLastName(eLastName);
+			employeeDTO.setGender(gender);
+			employeeDTO.setDesignation(eDesignation);
+			employeeDTO.setDob(eDob);
+			employeeDTO.setDoj(eDoj);
+			employeeDTO.setQualification(eQualification);
+			employeeDTO.setExperience(eExperience);
+			employeeDTO.setMarried(married);
+			employeeDTO.setPassport(ePassport);
+			employeeDTO.setEmergencyContact(eEmergencyContact);
+			employeeDTO.setUserId(eUserId);
+			employeeDTO.setPassword(password);
+			employeeDTO.setCurrentAddress(eCAddress);
+			employeeDTO.setPermanentAddress(ePAddress);
+			employeeDTO.setPhone(ePhone);
+			employeeDTO.setEmail(eEmail);
+			employeeDTO.setNotes(eNotes);
+			Map<String, String> roleMap = new HashMap<String, String>(); 
+			roleMap.put("ROLE_norole", "- Not user");
+			roleMap.put("ROLE_admin", "Administrator");
+			roleMap.put("ROLE_dms", "DMS user");
+			roleMap.put("ROLE_jobcard", "Jobcard user");
+			roleMap.put("ROLE_costing", "Costing user");
+			model.addAttribute("roles", roleMap);
+			model.addAttribute("employeeSelectedRole", eRole);
+			model.addAttribute("employeeSelected", employeeDTO);
 		}
-		Map<String, String> roleMap = new HashMap<String, String>(); 
-		roleMap.put("ROLE_norole", "- Not user");
-		roleMap.put("ROLE_admin", "Administrator");
-		roleMap.put("ROLE_dms", "DMS user");
-		roleMap.put("ROLE_jobcard", "Jobcard user");
-		roleMap.put("ROLE_costing", "Costing user");
-		model.addAttribute("roles", roleMap);
-		model.addAttribute("employeeSelectedRole", "ROLE_norole");
 		List<Employee> employeeList = employeeDao.retrieveAllEmployees(null);
 		model.addAttribute("employeeList", employeeList);
 		return "ereg";
