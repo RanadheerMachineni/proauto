@@ -15,7 +15,7 @@ import java.util.List;
 public class Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="employee_id")
 	private int employeeId;
 
@@ -75,7 +75,7 @@ public class Employee implements Serializable {
 	private String zipCode;
 
 	//bi-directional many-to-many association to Role
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany
 	@JoinTable(
 		name="employee_role"
 		, joinColumns={

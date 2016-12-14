@@ -21,8 +21,9 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 	public Employee findById(int id) {
 		EntityManager entityManager = getEntityManager();
 		entityManager.getTransaction().begin();
-		Query q = entityManager.createQuery( "select e from Employee e join fetch e.roles where e.employeeId=:eid");
-		q.setParameter("eid", id);
+		Query q = entityManager.createQuery( "select e from Employee e join fetch e.roles where e.userId=:userid");
+		//Query q = entityManager.createQuery( "select e from Employee e where e.userId=:userid");
+		q.setParameter("userid", id);
 		List<Employee> result = q.getResultList();
 		if(result == null || result.size() ==0){
 			return null;
@@ -97,6 +98,7 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			employeeCreated.setFirstName(efirstName);
 			employeeCreated.setLastName(eLastName);
 			employeeCreated.setUserId(eUserId);
+			employeeCreated.setPassword(password);
 			employeeCreated.setGender(gender);
 			employeeCreated.setQualification(eQualification);
 			employeeCreated.setExperience(eExperience);
@@ -104,29 +106,27 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			employeeCreated.setDesignation(eDesignation);
 			employeeCreated.setDob(javaDateDob);
 			employeeCreated.setDoj(javaDateDoj);
+			employeeCreated.setPhone(ePhone);
+			employeeCreated.setEmail(eEmail);
+			employeeCreated.setPassport(ePassport);
+			employeeCreated.setEmergencyContact(eEmergencyContact);
+			employeeCreated.setCurrentAddress(eCAddress);
+			employeeCreated.setPermanentAddress(ePAddress);
+			employeeCreated.setNotes(eNotes);
+			entityManager.persist(employeeCreated);
+			entityManager.flush();
+			System.out.println("EMP created ******** "+employeeCreated.getEmployeeId());
+			
 			Role role = entityManager.find(Role.class, eRole);
 			List<Role> roleList = new ArrayList<Role>();
 			roleList.add(role);
 			employeeCreated.setRoles(roleList);
-			entityManager.persist(employeeCreated);
-			entityManager.persist(role);
+
+			entityManager.merge(role);
 
 			entityManager.flush();
 			entityManager.getTransaction().commit();
 			entityManager.close();
-			/*entityManager.getTransaction().begin();
-			System.out.println("emp Id 1="+employeeCreated.getEmployeeId());
-			entityManager.refresh(employeeCreated);
-			System.out.println("emp Id 2="+employeeCreated.getEmployeeId());
-			Role role = entityManager.find(Role.class, eRole);
-			List<Role> roleList = new ArrayList<Role>();
-			roleList.add(role);
-			employeeCreated.setRoles(roleList);
-			entityManager.merge(employeeCreated);
-			entityManager.flush();
-			entityManager.getTransaction().commit();
-			entityManager.close();*/
-
 		}
 		
 		

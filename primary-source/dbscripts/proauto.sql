@@ -167,6 +167,18 @@ insert into employee(first_name,last_name,gender,user_id,password,dob,doj) value
 drop table employee_role;
 CREATE TABLE employee_role
 (
+	employee_id int NOT NULL,
+	role_id char(50) NOT NULL,
+	constraint employee_role_pk primary key (employee_id , role_id),
+	CONSTRAINT fk_er_employee_id FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
+	CONSTRAINT fk_er_role FOREIGN KEY (role_id) REFERENCES roles(role_id)
+
+);
+
+insert into employee_role(employee_id,role_id) values(1,'ROLE_admin');
+
+CREATE TABLE employee_role
+(
 	user_id char(50) NOT NULL,
 	role_id char(50) NOT NULL,
 	constraint employee_role_pk primary key (user_id , role_id),
@@ -176,6 +188,7 @@ CREATE TABLE employee_role
 );
 
 insert into employee_role(user_id,role_id) values('admin','ROLE_admin');
+
 
 /*drop table customer_raw_material;
 CREATE TABLE customer_raw_material
