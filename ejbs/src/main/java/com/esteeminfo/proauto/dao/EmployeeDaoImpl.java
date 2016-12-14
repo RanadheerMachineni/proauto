@@ -17,13 +17,22 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 
 	public static SimpleDateFormat ui_date_format =  new SimpleDateFormat("MM/dd/yyyy");
 
+	public Employee findByUser(String user) {
+		EntityManager entityManager = getEntityManager();
+		Query q = entityManager.createQuery( "select e from Employee e join fetch e.roles where e.userId=:userId");
+		q.setParameter("userId", user);
+		List<Employee> result = q.getResultList();
+		if(result == null || result.size() ==0){
+			return null;
+		}
+		return result.get(0);
+	}
 	
 	public Employee findById(int id) {
 		EntityManager entityManager = getEntityManager();
 		entityManager.getTransaction().begin();
-		Query q = entityManager.createQuery( "select e from Employee e join fetch e.roles where e.userId=:userid");
-		//Query q = entityManager.createQuery( "select e from Employee e where e.userId=:userid");
-		q.setParameter("userid", id);
+		Query q = entityManager.createQuery( "select e from Employee e join fetch e.roles where e.employeeId=:eid");
+		q.setParameter("eid", id);
 		List<Employee> result = q.getResultList();
 		if(result == null || result.size() ==0){
 			return null;
@@ -38,23 +47,15 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 	public List<Employee> retrieveAllEmployees(String employeeSearched) {
 		EntityManager entityManager = getEntityManager();
 		entityManager.getTransaction().begin();
-		Query q = entityManager.createQuery( "select e from Employee e join fetch e.roles");
+		String query = "select e from Employee e join fetch e.roles";
+		if (employeeSearched != null && employeeSearched.length() > 0) {
+			query += " where e.firstName LIKE '" + employeeSearched + "%'";
+		}
+		Query q = entityManager.createQuery(query);
 		List<Employee> result = q.getResultList();
 		entityManager.getTransaction().commit();
 		entityManager.close();
-		System.out.println("***** EmployeeDaoImpl retrieveAllEmployees = "+result.get(0).getFirstName());
 		return result;
-	}
-
-	public Employee findByUser(String user) {
-		EntityManager entityManager = getEntityManager();
-		Query q = entityManager.createQuery( "select e from Employee e join fetch e.roles where e.userId=:userId");
-		q.setParameter("userId", user);
-		List<Employee> result = q.getResultList();
-		if(result == null || result.size() ==0){
-			return null;
-		}
-		return result.get(0);
 	}
 
 	public boolean registerEmployee(String create, String eid, String efirstName, String eLastName, String gender,
@@ -62,19 +63,33 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			String eRole, String eUserId, String password, String ePhone, String eEmail, String ePassport,
 			String eEmergencyContact, String eCAddress, String ePAddress, String eNotes) throws Exception {
 		
-		Employee existingEmployeeByUser =  findByUser(eUserId);
-		if (create.equalsIgnoreCase("true") && existingEmployeeByUser!=null) {
-			throw new Exception("Employee with given UserId already exist. Please select other UserId");
+		int employeeId = (eid == null || eid.length() == 0 ) ? 0:Integer.valueOf(eid); 
+		if(eUserId!=null){
+			Employee existingEmployeeByUser =  findByUser(eUserId);
+			if (existingEmployeeByUser!=null && (employeeId==0 || (existingEmployeeByUser.getEmployeeId() != employeeId))) {
+				throw new Exception("Employee with given UserId already exist. Please select other UserId");
+			}
 		}
 		java.util.Date javaDateDob = ui_date_format.parse(eDob) ;
 		java.util.Date javaDateDoj = ui_date_format.parse(eDoj) ;
 
-		if (create.equalsIgnoreCase("false") && eid != null) {
+		if (create.equalsIgnoreCase("false") && employeeId > 0 ) {
 			EntityManager entityManager = getEntityManager();
-			Employee existingEmployee =  findById(Integer.valueOf(eid));
+			entityManager.getTransaction().begin();
+			Employee existingEmployee = null;
+			Query q = entityManager.createQuery( "select e from Employee e join fetch e.roles where e.employeeId=:eid");
+			q.setParameter("eid", employeeId);
+			List<Employee> result = q.getResultList();
+			if(result != null || result.size() > 0){
+				existingEmployee = result.get(0);
+			}
+			//Employee existingEmployee =  findById(Integer.valueOf(eid));
+			System.out.println("updating existing emp ******** "+existingEmployee.getEmployeeId());
+
 			existingEmployee.setFirstName(efirstName);
 			existingEmployee.setLastName(eLastName);
 			existingEmployee.setUserId(eUserId);
+			existingEmployee.setPassword(password);
 			existingEmployee.setGender(gender);
 			existingEmployee.setQualification(eQualification);
 			existingEmployee.setExperience(eExperience);
@@ -82,15 +97,23 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			existingEmployee.setDesignation(eDesignation);
 			existingEmployee.setDob(javaDateDob);
 			existingEmployee.setDoj(javaDateDoj);
-			/*Role role = entityManager.find(Role.class, eRole);
-			List<Employee> empList = new ArrayList<Employee>();
-			empList.add(existingEmployee);
-			role.setEmployees(empList);*/
+			existingEmployee.setPhone(ePhone);
+			existingEmployee.setEmail(eEmail);
+			existingEmployee.setPassport(ePassport);
+			existingEmployee.setEmergencyContact(eEmergencyContact);
+			existingEmployee.setCurrentAddress(eCAddress);
+			existingEmployee.setPermanentAddress(ePAddress);
+			existingEmployee.setNotes(eNotes);
+			entityManager.persist(existingEmployee);
+			entityManager.flush();
 			Role role = entityManager.find(Role.class, eRole);
 			List<Role> roleList = new ArrayList<Role>();
 			roleList.add(role);
 			existingEmployee.setRoles(roleList);
-			entityManager.merge(existingEmployee);
+			entityManager.merge(role);
+			entityManager.flush();
+			entityManager.getTransaction().commit();
+			entityManager.close();
 		}else{
 			EntityManager entityManager = getEntityManager();
 			entityManager.getTransaction().begin();
@@ -116,14 +139,11 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			entityManager.persist(employeeCreated);
 			entityManager.flush();
 			System.out.println("EMP created ******** "+employeeCreated.getEmployeeId());
-			
 			Role role = entityManager.find(Role.class, eRole);
 			List<Role> roleList = new ArrayList<Role>();
 			roleList.add(role);
 			employeeCreated.setRoles(roleList);
-
 			entityManager.merge(role);
-
 			entityManager.flush();
 			entityManager.getTransaction().commit();
 			entityManager.close();

@@ -129,8 +129,11 @@ public class AppController {
 		}else{
 			model.addAttribute("employeeSelectedRole", "ROLE_norole");
 		}
+		
+		String employeeSearched = request.getParameter("searchEmployeeInput");
+
 		List<EmployeeDTO> employeeDTOList = new ArrayList<EmployeeDTO>();
-		List<Employee> employeeList = employeeDao.retrieveAllEmployees(null);
+		List<Employee> employeeList = employeeDao.retrieveAllEmployees(employeeSearched);
 
 		for(Employee eachEmployee : employeeList){
 			EmployeeDTO eachEmployeeDTO = new EmployeeDTO();
