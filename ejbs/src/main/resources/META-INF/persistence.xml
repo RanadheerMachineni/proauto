@@ -5,6 +5,8 @@
 		<class>com.esteeminfo.proauto.entity.Employee</class>
 		<class>com.esteeminfo.proauto.entity.Role</class>
 		<class>com.esteeminfo.proauto.entity.Vendor</class>
+		<class>com.esteeminfo.proauto.entity.Section</class>
+		<class>com.esteeminfo.proauto.entity.Department</class>
 		
 		  <properties>
 		       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/proauto_db"/>

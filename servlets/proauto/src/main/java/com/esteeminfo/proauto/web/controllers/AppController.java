@@ -125,7 +125,6 @@ public class AppController {
 			Employee employee = employeeDao.findById(Integer.valueOf(employeeSelected));
 			converEmployeeToDto(employee,employeeDTO);
 			model.addAttribute("employeeSelectedRole", employeeDTO.getRoles().get(0));
-
 		}else{
 			model.addAttribute("employeeSelectedRole", "ROLE_norole");
 		}
@@ -145,13 +144,21 @@ public class AppController {
 		model.addAttribute("employeeList", employeeDTOList);
 		
 		Map<String, String> roleMap = new HashMap<String, String>(); 
-		commonDAO.loadRoleMap(roleMap);
+		//commonDAO.loadRoleMap(roleMap);
 		roleMap.put("ROLE_norole", "- Not user");
 		roleMap.put("ROLE_admin", "Administrator");
 		roleMap.put("ROLE_dms", "DMS user");
 		roleMap.put("ROLE_jobcard", "Jobcard user");
 		roleMap.put("ROLE_costing", "Costing user");
+		
+		Map<String, String> sectionMap = new HashMap<String, String>(); 
+		//commonDAO.loadRoleMap(roleMap);
+		sectionMap.put("Section1", "Section1");
+		sectionMap.put("Section2", "Section2");
+
 		model.addAttribute("roles", roleMap);
+		model.addAttribute("sections", sectionMap);
+
 		return "ereg";
 	}
 	
@@ -173,10 +180,12 @@ public class AppController {
 			employeeDTO.setPassword(employee.getPassword());
 			employeeDTO.setCurrentAddress(employee.getCurrentAddress());
 			employeeDTO.setPermanentAddress(employee.getPermanentAddress());
-			employeeDTO.setCity(employee.getCity());
 			employeeDTO.setPhone(employee.getPhone());
 			employeeDTO.setEmail(employee.getEmail());
 			employeeDTO.setNotes(employee.getNotes());
+			employeeDTO.setStatus(employee.getStatus());
+			employeeDTO.setEmploymentType(employee.getEmployementType());
+			employeeDTO.setSection(employee.getSection().getSectionId());
 			List<String> roles =  new ArrayList<String>();
 			for(Role eachRole : employee.getRoles()){
 				roles.add(eachRole.getRoleId());
@@ -210,12 +219,14 @@ public class AppController {
 		String eCAddress = request.getParameter("eCAddress");
 		String ePAddress = request.getParameter("ePAddress");
 		String eNotes = request.getParameter("eNotes");
+		String eEmploymentType = request.getParameter("eEmploymentType");
+		String eSection = request.getParameter("eSection");
 
 		logger.info("***************************** ereg Post efirstName= "+efirstName+",eRole = "+eRole+", gender = "+gender+", eDob"+eDob+", married"+married);
 		
 		try {
 			employeeDao.registerEmployee(create, eid, efirstName, eLastName, gender, eQualification, eExperience, married, eDesignation, eDob,eDoj, eRole, eUserId, password,
-					ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes);
+					ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes, eEmploymentType, eSection);
 			Map<String, String> roleMap = new HashMap<String, String>(); 
 			roleMap.put("ROLE_norole", "- Not user");
 			roleMap.put("ROLE_admin", "Administrator");
@@ -224,6 +235,11 @@ public class AppController {
 			roleMap.put("ROLE_costing", "Costing user");
 			model.addAttribute("roles", roleMap);
 			model.addAttribute("employeeSelectedRole", "ROLE_norole");
+			
+			Map<String, String> sectionMap = new HashMap<String, String>(); 
+			sectionMap.put("Section1", "Section1");
+			sectionMap.put("Section2", "Section2");
+			model.addAttribute("sections", sectionMap);
 
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
@@ -247,6 +263,9 @@ public class AppController {
 			employeeDTO.setPhone(ePhone);
 			employeeDTO.setEmail(eEmail);
 			employeeDTO.setNotes(eNotes);
+			employeeDTO.setEmploymentType(eEmploymentType);
+			employeeDTO.setSection(eSection);
+
 			Map<String, String> roleMap = new HashMap<String, String>(); 
 			roleMap.put("ROLE_norole", "- Not user");
 			roleMap.put("ROLE_admin", "Administrator");
@@ -256,6 +275,12 @@ public class AppController {
 			model.addAttribute("roles", roleMap);
 			model.addAttribute("employeeSelectedRole", eRole);
 			model.addAttribute("employeeSelected", employeeDTO);
+			
+			Map<String, String> sectionMap = new HashMap<String, String>(); 
+			//commonDAO.loadRoleMap(roleMap);
+			sectionMap.put("Section1", "Section1");
+			sectionMap.put("Section2", "Section2");
+			model.addAttribute("sections", sectionMap);
 		}
 		List<Employee> employeeList = employeeDao.retrieveAllEmployees(null);
 		model.addAttribute("employeeList", employeeList);

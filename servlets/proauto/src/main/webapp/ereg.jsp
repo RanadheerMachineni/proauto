@@ -236,25 +236,24 @@
 										name="eDesignation" value="${employeeSelected.designation}">
 		    	 	</div>
 		    	 	
-		    	 	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="eDob" class="control-label">Date Of Birth:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="eDob"
-											name="eDob"  readonly="true" value="${employeeSelected.dob}">
-			    	 	</div>
-			    	</div>
 		    	 	
-		    	 	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="eDoj" class="control-label">Date Of Joining:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="eDoj"
-											name="eDoj" readonly="true" value="${employeeSelected.doj}">
-			    	 	</div>
-			    	</div>
+		    	 	<div class="col-sm-2 col-md-2">
+		      			<label for="eSection">Section:</label>
+		    		</div>
+		   		 	<div class="col-sm-2 col-md-2">
+			 			<select class="form-control" name="eSection" id="eSection">
+	  						<jstl:forEach items="${sections}" var="section">
+	  				  			<option value="${section.key}"
+													${employeeSelected.section == section.key ? 'selected' : ''}>${section.value}</option>
+	  						</jstl:forEach>
+						</select>
+		    	 	</div>
+		    	 	
+		    		<div class="col-sm-3 col-md-3">
+		      			<label class="radio-inline"><input type="radio" name="eEmploymentType" value="p" ${employeeSelected.employmentType==null || employeeSelected.employmentType == 'p' ? 'checked' : ''}>Permanent</label>
+    			    	<label class="radio-inline"><input type="radio" name="eEmploymentType" value="t" ${employeeSelected.employmentType == 't' ? 'checked' : ''}>Contract</label>
+		    	 	</div>	
+		    	 	
   	  		  </div>
   	  		  
   	  		  <div class="row rowspace">
@@ -314,16 +313,33 @@
 											name="eEmail" value="${employeeSelected.email}">
 			    	 	</div>
 		    	 	</div>
+		    	 	
+		    	 	<div class="control-group">
+			    	 	<div class="col-sm-2 col-md-2">
+		      				<label for="ePassport">Passport:</label>
+		    			</div>
+		   		 		<div class="col-sm-2 col-md-2">
+		      				<input type="text" class="form-control" id="ePassport"
+										name="ePassport" value="${employeeSelected.passport}">
+		    	 		</div>
+		    	 	</div>
   	  		  </div>
   	  		  
+  	  		 
   	  		  <div class="row rowspace">
 		    	 	
 		    	 	<div class="col-sm-2 col-md-2">
-		      			<label for="ePassport">Passport:</label>
+		      			<label for="eCAddress">Current Address:</label>
 		    		</div>
 		   		 	<div class="col-sm-2 col-md-2">
-		      			<input type="text" class="form-control" id="ePassport"
-										name="ePassport" value="${employeeSelected.passport}">
+		      			<textarea class="form-control" id="eCAddress" name="eCAddress">${employeeSelected.currentAddress}</textarea>
+		    	 	</div>
+		    	 	
+		    	 	<div class="col-sm-2 col-md-2">
+		      			<label for="ePAddress">Permanent Address:</label>
+		    		</div>
+		   		 	<div class="col-sm-2 col-md-2">
+		      			<textarea class="form-control" id="ePAddress" name="ePAddress">${employeeSelected.permanentAddress}</textarea>
 		    	 	</div>
 		    	 	
 		    	 	<div class="control-group">
@@ -340,30 +356,37 @@
   	  		  
   	  		  <div class="row rowspace">
 		    	 	
-		    	 	<div class="col-sm-2 col-md-2">
-		      			<label for="eCAddress">Current Address:</label>
-		    		</div>
-		   		 	<div class="col-sm-2 col-md-2">
-		      			<textarea class="form-control" id="eCAddress" name="eCAddress">${employeeSelected.currentAddress}</textarea>
-		    	 	</div>
+		    	 <div class="control-group">
+			    	 	<div class="col-sm-2 col-md-2">
+			      			<label for="eDob" class="control-label">Date Of Birth:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="eDob"
+											name="eDob"  readonly="true" value="${employeeSelected.dob}">
+			    	 	</div>
+			    	</div>
 		    	 	
-		    	 	 	<div class="col-sm-2 col-md-2">
-		      			<label for="ePAddress">Permanent Address:</label>
-		    		</div>
-		   		 	<div class="col-sm-2 col-md-2">
-		      			<textarea class="form-control" id="ePAddress" name="ePAddress">${employeeSelected.permanentAddress}</textarea>
-		    	 	</div>
+		    	 	<div class="control-group">
+			    	 	<div class="col-sm-2 col-md-2">
+			      			<label for="eDoj" class="control-label">Date Of Joining:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="eDoj"
+											name="eDoj" readonly="true" value="${employeeSelected.doj}">
+			    	 	</div>
+			    	</div>
+		    	 	
   	  		  </div>
   	  		  
   	  		  <div class="row rowspace">
-		    	 	
-		    	 	<div class="col-sm-2 col-md-2">
+  	  		 		<div class="col-sm-2 col-md-2">
 		      			<label for="eNotes">Notes:</label>
 		    		</div>
 		   		 	<div class="col-sm-2 col-md-2">
 		      			<textarea class="form-control" id="eNotes" name="eNotes">${employeeSelected.notes}</textarea>
 		    	 	</div>
   	  		  </div>
+  	  		  
   	  		   <br>
 			   <div class="row">
 	   		 		<div class="col-sm-8 col-md-8">

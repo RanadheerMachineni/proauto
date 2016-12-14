@@ -1,5 +1,6 @@
 package com.esteeminfo.proauto.entity;
 
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;

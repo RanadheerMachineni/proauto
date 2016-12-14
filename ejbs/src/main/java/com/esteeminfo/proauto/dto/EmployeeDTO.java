@@ -8,9 +8,13 @@ public class EmployeeDTO {
 	private String firstName;
 	private String lastName;
 	private String gender;
+	private String status;
+	private String employmentType;
+	private String section;
 	private String designation;
 	private String dob;
 	private String doj;
+	private String dot;
 	private String qualification;
 	private String experience;
 	private String married;                 
@@ -18,13 +22,16 @@ public class EmployeeDTO {
 	private String emergencyContact;
 	private String userId;
 	private String password;
-	private String currentAddress;
-	private String permanentAddress;
-	private String city;
 	private String phone;
 	private String email;
-	private String state;
-	private String zipCode;
+	private String currentAddress;
+	private String permanentAddress;
+	private String cityCa;
+	private String stateCa;
+	private String zipCodeCa;
+	private String cityPa;
+	private String statePa;
+	private String zipCodePa;
 	private Date createDate;
 	private String notes;
 	private List<String> roles;
@@ -96,12 +103,6 @@ public class EmployeeDTO {
 	public void setPermanentAddress(String permanentAddress) {
 		this.permanentAddress = permanentAddress;
 	}
-	public String getCity() {
-		return city;
-	}
-	public void setCity(String city) {
-		this.city = city;
-	}
 	public String getPhone() {
 		return phone;
 	}
@@ -113,18 +114,6 @@ public class EmployeeDTO {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public String getState() {
-		return state;
-	}
-	public void setState(String state) {
-		this.state = state;
-	}
-	public String getZipCode() {
-		return zipCode;
-	}
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
 	}
 	public Date getCreateDate() {
 		return createDate;
@@ -173,6 +162,66 @@ public class EmployeeDTO {
 	}
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
+	}
+	public String getDot() {
+		return dot;
+	}
+	public void setDot(String dot) {
+		this.dot = dot;
+	}
+	public String getCityCa() {
+		return cityCa;
+	}
+	public void setCityCa(String cityCa) {
+		this.cityCa = cityCa;
+	}
+	public String getStateCa() {
+		return stateCa;
+	}
+	public void setStateCa(String stateCa) {
+		this.stateCa = stateCa;
+	}
+	public String getZipCodeCa() {
+		return zipCodeCa;
+	}
+	public void setZipCodeCa(String zipCodeCa) {
+		this.zipCodeCa = zipCodeCa;
+	}
+	public String getCityPa() {
+		return cityPa;
+	}
+	public void setCityPa(String cityPa) {
+		this.cityPa = cityPa;
+	}
+	public String getStatePa() {
+		return statePa;
+	}
+	public void setStatePa(String statePa) {
+		this.statePa = statePa;
+	}
+	public String getZipCodePa() {
+		return zipCodePa;
+	}
+	public void setZipCodePa(String zipCodePa) {
+		this.zipCodePa = zipCodePa;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getEmploymentType() {
+		return employmentType;
+	}
+	public void setEmploymentType(String employmentType) {
+		this.employmentType = employmentType;
+	}
+	public String getSection() {
+		return section;
+	}
+	public void setSection(String section) {
+		this.section = section;
 	}
 	
 	

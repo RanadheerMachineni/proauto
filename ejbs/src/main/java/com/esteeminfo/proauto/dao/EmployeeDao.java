@@ -16,7 +16,7 @@ public interface EmployeeDao {
 	boolean registerEmployee(String create, String eid, String efirstName, String eLastName, String gender,
 			String eQualification, String eExperience, String married, String eDesignation, String eDob, String eDoj,
 			String eRole, String eUserId, String password, String ePhone, String eEmail, String ePassport,
-			String eEmergencyContact, String eCAddress, String ePAddress, String eNotes) throws Exception;
+			String eEmergencyContact, String eCAddress, String ePAddress, String eNotes, String eEmploymentType, String eSection) throws Exception;
 	
 }
 

@@ -127,8 +127,27 @@ insert into roles(role_id,name) values('ROLE_costing','Costing User');
 insert into roles(role_id,name) values('ROLE_dms','Dms User');
 insert into roles(role_id,name) values('ROLE_norole','- Not user');
 
-drop table employee;
+drop table section;
+CREATE TABLE section
+(
+	section_id char(50) NOT NULL,
+	section_desc char(50),
+	CONSTRAINT section_pk PRIMARY KEY (section_id)
+);
+insert into section(section_id,section_desc) values('Section1', 'Section1');
+insert into section(section_id,section_desc) values('Section2', 'Section2');
 
+drop table department;
+CREATE TABLE department
+(
+	department_id char(50) NOT NULL,
+	department_desc char(50),
+	CONSTRAINT department_pk PRIMARY KEY (department_id)
+);
+insert into department(department_id,department_desc) values('dept1', 'dept1');
+insert into department(department_id,department_desc) values('dept2', 'dept2');
+
+drop table employee;
 CREATE TABLE employee
 (
 	employee_id int AUTO_INCREMENT NOT NULL,
@@ -138,6 +157,7 @@ CREATE TABLE employee
 	designation char(50),
 	dob DATE,
 	doj date,
+	dot date,
 	qualification char(50),
 	experience char(50),
 	married CHAR(1),                 
@@ -145,17 +165,26 @@ CREATE TABLE employee
 	emergency_contact char(50),
 	user_id char(50),
 	password char(50),
-	current_address char(255),
-	permanent_address char(255),
-	city char(50),
 	phone char(50),
 	email char(50),
-	state char(25),
-	zip_code char(10),
+	current_address char(255),
+	permanent_address char(255),
+	city_ca char(50),
+	state_ca char(25),
+	zip_code_ca char(10),
+	city_pa char(50),
+	state_pa char(25),
+	zip_code_pa char(10),
 	create_date DATE,
+	status CHAR(1) NOT NULL DEFAULT 'a',
 	notes char(255),
+	department_id char(50) NOT NULL DEFAULT 'dept1',
+	section_id char(50) NOT NULL DEFAULT 'Section1',
+	employement_type CHAR(1) NOT NULL DEFAULT 'p',
 	CONSTRAINT pk_employee primary key (employee_id),
-	CONSTRAINT uk_user_id UNIQUE (user_id)
+	CONSTRAINT uk_user_id UNIQUE (user_id),
+	CONSTRAINT fk_dept_id FOREIGN KEY (department_id) REFERENCES department(department_id),
+	CONSTRAINT fk_sec_id FOREIGN KEY (section_id) REFERENCES section(section_id)
 );
 
 insert into employee(first_name,last_name,gender,user_id,password,dob,doj) values('admin','admin','m','admin','admin','2016-11-01','2016-11-01');
@@ -176,18 +205,6 @@ CREATE TABLE employee_role
 );
 
 insert into employee_role(employee_id,role_id) values(1,'ROLE_admin');
-
-CREATE TABLE employee_role
-(
-	user_id char(50) NOT NULL,
-	role_id char(50) NOT NULL,
-	constraint employee_role_pk primary key (user_id , role_id),
-	CONSTRAINT fk_er_user_id FOREIGN KEY (user_id) REFERENCES employee(user_id),
-	CONSTRAINT fk_er_role FOREIGN KEY (role_id) REFERENCES roles(role_id)
-
-);
-
-insert into employee_role(user_id,role_id) values('admin','ROLE_admin');
 
 
 /*drop table customer_raw_material;

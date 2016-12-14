@@ -19,7 +19,11 @@ public class Employee implements Serializable {
 	@Column(name="employee_id")
 	private int employeeId;
 
-	private String city;
+	@Column(name="city_ca")
+	private String cityCa;
+
+	@Column(name="city_pa")
+	private String cityPa;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="create_date")
@@ -36,10 +40,16 @@ public class Employee implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date doj;
 
+	@Temporal(TemporalType.DATE)
+	private Date dot;
+
 	private String email;
 
 	@Column(name="emergency_contact")
 	private String emergencyContact;
+
+	@Column(name="employement_type")
+	private String employementType;
 
 	private String experience;
 
@@ -66,13 +76,32 @@ public class Employee implements Serializable {
 
 	private String qualification;
 
-	private String state;
+	@Column(name="state_ca")
+	private String stateCa;
+
+	@Column(name="state_pa")
+	private String statePa;
+
+	private String status;
 
 	@Column(name="user_id")
 	private String userId;
 
-	@Column(name="zip_code")
-	private String zipCode;
+	@Column(name="zip_code_ca")
+	private String zipCodeCa;
+
+	@Column(name="zip_code_pa")
+	private String zipCodePa;
+
+	//bi-directional many-to-one association to Department
+	@ManyToOne
+	@JoinColumn(name="department_id")
+	private Department department;
+
+	//bi-directional many-to-one association to Section
+	@ManyToOne
+	@JoinColumn(name="section_id")
+	private Section section;
 
 	//bi-directional many-to-many association to Role
 	@ManyToMany
@@ -98,12 +127,20 @@ public class Employee implements Serializable {
 		this.employeeId = employeeId;
 	}
 
-	public String getCity() {
-		return this.city;
+	public String getCityCa() {
+		return this.cityCa;
 	}
 
-	public void setCity(String city) {
-		this.city = city;
+	public void setCityCa(String cityCa) {
+		this.cityCa = cityCa;
+	}
+
+	public String getCityPa() {
+		return this.cityPa;
+	}
+
+	public void setCityPa(String cityPa) {
+		this.cityPa = cityPa;
 	}
 
 	public Date getCreateDate() {
@@ -144,6 +181,14 @@ public class Employee implements Serializable {
 
 	public void setDoj(Date doj) {
 		this.doj = doj;
+	}
+
+	public Date getDot() {
+		return this.dot;
+	}
+
+	public void setDot(Date dot) {
+		this.dot = dot;
 	}
 
 	public String getEmail() {
@@ -250,12 +295,28 @@ public class Employee implements Serializable {
 		this.qualification = qualification;
 	}
 
-	public String getState() {
-		return this.state;
+	public String getStateCa() {
+		return this.stateCa;
 	}
 
-	public void setState(String state) {
-		this.state = state;
+	public void setStateCa(String stateCa) {
+		this.stateCa = stateCa;
+	}
+
+	public String getStatePa() {
+		return this.statePa;
+	}
+
+	public void setStatePa(String statePa) {
+		this.statePa = statePa;
+	}
+
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getUserId() {
@@ -266,12 +327,36 @@ public class Employee implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getZipCode() {
-		return this.zipCode;
+	public String getZipCodeCa() {
+		return this.zipCodeCa;
 	}
 
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
+	public void setZipCodeCa(String zipCodeCa) {
+		this.zipCodeCa = zipCodeCa;
+	}
+
+	public String getZipCodePa() {
+		return this.zipCodePa;
+	}
+
+	public void setZipCodePa(String zipCodePa) {
+		this.zipCodePa = zipCodePa;
+	}
+
+	public Department getDepartment() {
+		return this.department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public Section getSection() {
+		return this.section;
+	}
+
+	public void setSection(Section section) {
+		this.section = section;
 	}
 
 	public List<Role> getRoles() {
@@ -280,6 +365,14 @@ public class Employee implements Serializable {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	public String getEmployementType() {
+		return this.employementType;
+	}
+
+	public void setEmployementType(String employementType) {
+		this.employementType = employementType;
 	}
 
 }

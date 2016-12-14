@@ -9,8 +9,10 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import com.esteeminfo.proauto.entity.Department;
 import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.Role;
+import com.esteeminfo.proauto.entity.Section;
 
 @Repository("employeeDao")
 public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
@@ -61,7 +63,7 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 	public boolean registerEmployee(String create, String eid, String efirstName, String eLastName, String gender,
 			String eQualification, String eExperience, String married, String eDesignation, String eDob, String eDoj,
 			String eRole, String eUserId, String password, String ePhone, String eEmail, String ePassport,
-			String eEmergencyContact, String eCAddress, String ePAddress, String eNotes) throws Exception {
+			String eEmergencyContact, String eCAddress, String ePAddress, String eNotes, String eEmploymentType, String eSection) throws Exception {
 		
 		int employeeId = (eid == null || eid.length() == 0 ) ? 0:Integer.valueOf(eid); 
 		if(eUserId!=null){
@@ -104,6 +106,10 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			existingEmployee.setCurrentAddress(eCAddress);
 			existingEmployee.setPermanentAddress(ePAddress);
 			existingEmployee.setNotes(eNotes);
+			existingEmployee.setEmployementType(eEmploymentType);
+			existingEmployee.setSection(entityManager.find(Section.class, eSection));
+			existingEmployee.setDepartment(entityManager.find(Department.class, "dept1"));
+			existingEmployee.setStatus("a");
 			entityManager.persist(existingEmployee);
 			entityManager.flush();
 			Role role = entityManager.find(Role.class, eRole);
@@ -136,6 +142,10 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			employeeCreated.setCurrentAddress(eCAddress);
 			employeeCreated.setPermanentAddress(ePAddress);
 			employeeCreated.setNotes(eNotes);
+			employeeCreated.setDepartment(entityManager.find(Department.class, "dept1"));
+			employeeCreated.setStatus("a");
+			employeeCreated.setEmployementType(eEmploymentType);
+			employeeCreated.setSection(entityManager.find(Section.class, eSection));
 			entityManager.persist(employeeCreated);
 			entityManager.flush();
 			System.out.println("EMP created ******** "+employeeCreated.getEmployeeId());
