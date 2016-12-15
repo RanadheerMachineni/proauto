@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esteeminfo.proauto.dao.CommonDAO;
@@ -195,7 +196,21 @@ public class AppController {
 	}
 
 	@RequestMapping(value = { "ereg"}, method = RequestMethod.POST)
-	public String posteregPage(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public String posteregPage(Model model, @RequestParam("file") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) {
+		
+		if(files!=null){
+			System.out.println("no of files "+files.length);
+			
+			for (int i = 0; i < files.length; i++) {
+				MultipartFile file = files[i];
+				try {
+					byte[] bytes = file.getBytes();
+					// Creating the directory to store file
+					
+				} catch (Exception e) {
+				}
+			}
+		}
 		String create = request.getParameter("create");
 		
 		String eid = request.getParameter("eid");

@@ -167,8 +167,7 @@
 					</div>
 			</div>
 		
-		<form id="employeeRegForm" role="form" action="ereg" method="post"
-							>  
+		<form id="employeeRegForm" role="form" action="ereg" method="post" enctype="multipart/form-data">  
 		    <input type="hidden" name="regType" value="employee">
 			  <input type="hidden" name="eid" id="eid"
 								value="${employeeSelected.employeeId}">
@@ -380,6 +379,23 @@
 				    	 	</div>
 		  	  		   </div>
 		  	  		</div>
+  	  		   </div>
+  	  		   
+  	  		   <div class="row rowspace">
+  	  		   		Upload File : <input type="file" name="file" multiple>
+	   				<jstl:forEach var="eachFile" items="${filesUploaded}">
+		                <tr>
+		                    <td>
+		                    	<a href="${eachFile}"> 	
+		                    		<jstl:out value="${eachFile}" />
+								</a>
+		                    </td>
+		                    
+		                    <td>
+		                    	Delete comes here
+		                    </td>
+		                </tr>
+	           		 </jstl:forEach>
   	  		   </div>
   	  		   <br>
 			   <div class="row">
