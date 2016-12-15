@@ -10,6 +10,7 @@
  	//} );
   
 	$(document).ready(function () {
+		
 		$( "#eDob" ).datepicker();
 		$( "#eDoj" ).datepicker();
 
@@ -59,7 +60,7 @@
 	                .closest('.control-group').removeClass('error').addClass('success');
 	        }
 	    });
-
+	   
 	});
 	function customLoad(){
 		roleChanged();
@@ -380,18 +381,21 @@
 		  	  		   </div>
 		  	  		</div>
   	  		   </div>
-  	  		
-  	  		  
   	  		   <br>
 			   <div class="row">
 	   		 		<div class="col-sm-8 col-md-8">
 						<jstl:if test="${employeeSelected.employeeId == null || employeeSelected.employeeId<=0}">
 	   		 				  <input type="hidden" name="create" value="true">
-						      <input id="createEmployeeSubmit" type=submit value="Create">
+						      <!--  <input id="createEmployeeSubmit" type=submit value="Create">-->
+						      <button id="createEmployeeSubmit" type="submit" class="btn btn-primary">Create</button>
+						      
 						</jstl:if>
 					<jstl:if test="${employeeSelected.employeeId != null && employeeSelected.employeeId > 0}">
 							  <input type="hidden" name="create" value="false">
-						      <input id="createEmployeeSubmit" type=submit value="Update"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						      <!-- <input id="createEmployeeSubmit" type=submit value="Update"> -->
+						      <button id="createEmployeeSubmit" type="submit" class="btn btn-primary">Update</button>
+						      
+						       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						      <a class="btn btn-default"
 											href="${pageContext.request.contextPath}/ereg" role="button">Cancel</a>
 						</jstl:if>

@@ -28,6 +28,7 @@
 		$("#"+lielement+"li").addClass('active').siblings().removeClass('active');
 	});
 </script>
+
 <script	type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery-1.12.4.js"></script>
 	
 <script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery-ui.js"></script>
@@ -40,9 +41,16 @@
 
 <link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/bootstrap.css">
 
+<link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/fileinput.css">
+
 <link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/template.css">
 
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/fileinput.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/theme.js"></script>
+
 <script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/bootstrap.js"></script>
+
 
 
 <meta charset="utf-8">
