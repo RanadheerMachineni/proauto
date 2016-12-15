@@ -2,6 +2,8 @@ package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+
 import java.util.Date;
 import java.util.List;
 
@@ -115,6 +117,19 @@ public class Employee implements Serializable {
 			}
 		)
 	private List<Role> roles;
+	
+	//uni-directional many-to-many association to FilesUpload
+	@ManyToMany
+	@JoinTable(
+		name="employee_files"
+		, joinColumns={
+			@JoinColumn(name="employee_id")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="upload_id")
+			}
+		)
+	private List<FilesUpload> filesUploads;
 
 	public Employee() {
 	}
@@ -375,4 +390,11 @@ public class Employee implements Serializable {
 		this.employementType = employementType;
 	}
 
+	public List<FilesUpload> getFilesUploads() {
+		return this.filesUploads;
+	}
+
+	public void setFilesUploads(List<FilesUpload> filesUploads) {
+		this.filesUploads = filesUploads;
+	}
 }

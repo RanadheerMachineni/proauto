@@ -7,6 +7,7 @@
 		<class>com.esteeminfo.proauto.entity.Vendor</class>
 		<class>com.esteeminfo.proauto.entity.Section</class>
 		<class>com.esteeminfo.proauto.entity.Department</class>
+		<class>com.esteeminfo.proauto.entity.FilesUpload</class>
 		
 		  <properties>
 		       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/proauto_db"/>

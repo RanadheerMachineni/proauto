@@ -206,6 +206,23 @@ CREATE TABLE employee_role
 
 insert into employee_role(employee_id,role_id) values(1,'ROLE_admin');
 
+CREATE TABLE files_upload (
+ 	upload_id  int AUTO_INCREMENT NOT NULL,
+    file_name varchar(128) DEFAULT NULL,
+    file_data longblob,
+	CONSTRAINT pk_files_upload primary key (upload_id)
+)
+
+CREATE TABLE employee_files
+(
+	employee_id int NOT NULL,
+	upload_id int NOT NULL,
+	constraint employee_files_pk primary key (employee_id , upload_id),
+	CONSTRAINT fk_ef_employee_id FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
+	CONSTRAINT fk_ef_upload_id FOREIGN KEY (upload_id) REFERENCES files_upload(upload_id)
+
+);
+
 
 /*drop table customer_raw_material;
 CREATE TABLE customer_raw_material

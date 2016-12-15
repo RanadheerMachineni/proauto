@@ -255,44 +255,7 @@
 		    	 	</div>	
 		    	 	
   	  		  </div>
-  	  		  
-  	  		  <div class="row rowspace">
-  	  		   		<div class="col-sm-2 col-md-2">
-		      			<label for="eRole">Role:</label>
-		    		</div>
-		   		 	<div class="col-sm-2 col-md-2">
-			 			<select class="form-control" name="eRole" id="eRole" onchange="roleChanged();">
-	  						<jstl:forEach items="${roles}" var="role">
-	  				  			<option value="${role.key}"
-													${employeeSelectedRole == role.key ? 'selected' : ''}>${role.value}</option>
-	  						</jstl:forEach>
-						</select>
-		    	 	</div>
-	  	  		   <div class="control-group">
-		  	  		   	<div class="hide" id="userIdDiv">
-		  	  		   		<div class="col-sm-2 col-md-2">
-				      			<label for="eUserId" class="control-label">User Id:</label>
-				    		</div>
-				 			<div class="col-sm-2 col-md-2 controls">
-				      			<input type="text" class="form-control" id="eUserId"
-											name="eUserId" value="${employeeSelected.userId}">
-				    	 	</div>
-		  	  		   </div>
-	  	  		  
-		  	  		  <div class="hide" id="pwdDiv">
-		  	  		   		<div class="col-sm-2 col-md-2">
-				      			<label for="ePassword" class="control-label">Password:</label>
-				    		</div>
-				 			<div class="col-sm-2 col-md-2 controls">
-				      			<input type="text" class="form-control" id="ePassword"
-											name="ePassword" value="${employeeSelected.password}">
-				    	 	</div>
-		  	  		   </div>
-		  	  		</div>
-  	  		   </div>
-  	  		  
-  	  	
-  	  		  
+
   	  		  <div class="row rowspace">
   	  		  	  	<div class="control-group">
 	  	  		   		<div class="col-sm-2 col-md-2">
@@ -315,42 +278,13 @@
 		    	 	</div>
 		    	 	
 		    	 	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
+			    	 	<div class="col-sm-1 col-md-1">
 		      				<label for="ePassport">Passport:</label>
 		    			</div>
 		   		 		<div class="col-sm-2 col-md-2">
 		      				<input type="text" class="form-control" id="ePassport"
 										name="ePassport" value="${employeeSelected.passport}">
 		    	 		</div>
-		    	 	</div>
-  	  		  </div>
-  	  		  
-  	  		 
-  	  		  <div class="row rowspace">
-		    	 	
-		    	 	<div class="col-sm-2 col-md-2">
-		      			<label for="eCAddress">Current Address:</label>
-		    		</div>
-		   		 	<div class="col-sm-2 col-md-2">
-		      			<textarea class="form-control" id="eCAddress" name="eCAddress">${employeeSelected.currentAddress}</textarea>
-		    	 	</div>
-		    	 	
-		    	 	<div class="col-sm-2 col-md-2">
-		      			<label for="ePAddress">Permanent Address:</label>
-		    		</div>
-		   		 	<div class="col-sm-2 col-md-2">
-		      			<textarea class="form-control" id="ePAddress" name="ePAddress">${employeeSelected.permanentAddress}</textarea>
-		    	 	</div>
-		    	 	
-		    	 	<div class="control-group">
-		    	 	
-			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="eEmergencyContact" class="control-label">Emergency Contact:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="eEmergencyContact"
-											name="eEmergencyContact" value="${employeeSelected.emergencyContact}">
-			    	 	</div>
 		    	 	</div>
   	  		  </div>
   	  		  
@@ -376,16 +310,77 @@
 			    	 	</div>
 			    	</div>
 		    	 	
+		    	 	<div class="control-group">
+		    	 	
+			    	 	<div class="col-sm-1 col-md-1">
+			      			<label for="eEmergencyContact" class="control-label">Emergency Contact:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="eEmergencyContact"
+											name="eEmergencyContact" value="${employeeSelected.emergencyContact}">
+			    	 	</div>
+		    	 	</div>
   	  		  </div>
   	  		  
   	  		  <div class="row rowspace">
-  	  		 		<div class="col-sm-2 col-md-2">
+		    	 	
+		    	 	<div class="col-sm-2 col-md-2">
+		      			<label for="eCAddress">Current Address:</label>
+		    		</div>
+		   		 	<div class="col-sm-2 col-md-2">
+		      			<textarea class="form-control" id="eCAddress" name="eCAddress">${employeeSelected.currentAddress}</textarea>
+		    	 	</div>
+		    	 	
+		    	 	<div class="col-sm-2 col-md-2">
+		      			<label for="ePAddress">Permanent Address:</label>
+		    		</div>
+		   		 	<div class="col-sm-2 col-md-2">
+		      			<textarea class="form-control" id="ePAddress" name="ePAddress">${employeeSelected.permanentAddress}</textarea>
+		    	 	</div>
+		    	 	
+		    	 	<div class="col-sm-1 col-md-1">
 		      			<label for="eNotes">Notes:</label>
 		    		</div>
 		   		 	<div class="col-sm-2 col-md-2">
 		      			<textarea class="form-control" id="eNotes" name="eNotes">${employeeSelected.notes}</textarea>
 		    	 	</div>
+		    	 	
   	  		  </div>
+  	  		   <div class="row rowspace">
+  	  		   		<div class="col-sm-2 col-md-2">
+		      			<label for="eRole">Role:</label>
+		    		</div>
+		   		 	<div class="col-sm-2 col-md-2">
+			 			<select class="form-control" name="eRole" id="eRole" onchange="roleChanged();">
+	  						<jstl:forEach items="${roles}" var="role">
+	  				  			<option value="${role.key}"
+													${employeeSelectedRole == role.key ? 'selected' : ''}>${role.value}</option>
+	  						</jstl:forEach>
+						</select>
+		    	 	</div>
+	  	  		   <div class="control-group">
+		  	  		   	<div class="hide" id="userIdDiv">
+		  	  		   		<div class="col-sm-2 col-md-2">
+				      			<label for="eUserId" class="control-label">User Id:</label>
+				    		</div>
+				 			<div class="col-sm-2 col-md-2 controls">
+				      			<input type="text" class="form-control" id="eUserId"
+											name="eUserId" value="${employeeSelected.userId}">
+				    	 	</div>
+		  	  		   </div>
+	  	  		  
+		  	  		  <div class="hide" id="pwdDiv">
+		  	  		   		<div class="col-sm-1 col-md-1">
+				      			<label for="ePassword" class="control-label">Password:</label>
+				    		</div>
+				 			<div class="col-sm-2 col-md-2 controls">
+				      			<input type="text" class="form-control" id="ePassword"
+											name="ePassword" value="${employeeSelected.password}">
+				    	 	</div>
+		  	  		   </div>
+		  	  		</div>
+  	  		   </div>
+  	  		
   	  		  
   	  		   <br>
 			   <div class="row">
