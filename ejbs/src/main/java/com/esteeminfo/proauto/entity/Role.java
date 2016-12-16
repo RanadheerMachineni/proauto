@@ -24,10 +24,6 @@ public class Role implements Serializable {
 	@Column(name="role_desc")
 	private String roleDesc;
 
-	//bi-directional many-to-many association to Employee
-	@ManyToMany(mappedBy="roles")
-	private List<Employee> employees;
-
 	public Role() {
 	}
 
@@ -53,14 +49,6 @@ public class Role implements Serializable {
 
 	public void setRoleDesc(String roleDesc) {
 		this.roleDesc = roleDesc;
-	}
-
-	public List<Employee> getEmployees() {
-		return this.employees;
-	}
-
-	public void setEmployees(List<Employee> employees) {
-		this.employees = employees;
 	}
 
 }
