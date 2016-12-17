@@ -38,9 +38,6 @@ public class AppController {
 	
 	@Autowired(required=true)
 	private EmployeeDao employeeDao ;
-	
-	@Autowired(required=true)
-	private CommonDAO commonDAO ;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
@@ -196,10 +193,10 @@ public class AppController {
 	}
 
 	@RequestMapping(value = { "ereg"}, method = RequestMethod.POST)
-	public String posteregPage(Model model, /*@RequestParam("file") MultipartFile[] files, */HttpServletRequest request, HttpServletResponse response) {
+	public String posteregPage(Model model, @RequestParam("file") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("**********************posteregPage ");
 		
-		/*if(files!=null){
+		if(files!=null){
 			System.out.println("no of files "+files.length);
 			
 			for (int i = 0; i < files.length; i++) {
@@ -211,7 +208,7 @@ public class AppController {
 				} catch (Exception e) {
 				}
 			}
-		}*/
+		}
 		String create = request.getParameter("create");
 		
 		String eid = request.getParameter("eid");
