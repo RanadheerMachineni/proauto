@@ -1,4 +1,4 @@
-package com.esteeminfo.proauto.web.config;
+package com.esteeminfo.proauto.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

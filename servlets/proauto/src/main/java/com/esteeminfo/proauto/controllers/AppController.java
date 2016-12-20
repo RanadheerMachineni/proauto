@@ -1,6 +1,5 @@
-package com.esteeminfo.proauto.web.controllers;
+package com.esteeminfo.proauto.controllers;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,21 +22,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.esteeminfo.proauto.dao.CommonDAO;
-import com.esteeminfo.proauto.dao.EmployeeDao;
 import com.esteeminfo.proauto.dto.EmployeeDTO;
 import com.esteeminfo.proauto.entity.Employee;
-import com.esteeminfo.proauto.entity.Role;
+import com.esteeminfo.proauto.service.EmployeeService;
 
 @Controller
 public class AppController {
 	
-	public static SimpleDateFormat ui_date_format =  new SimpleDateFormat("MM/dd/yyyy");
 	
 	final static Logger logger = Logger.getLogger(AppController.class);
 	
 	@Autowired(required=true)
-	private EmployeeDao employeeDao ;
+	private EmployeeService employeeService ;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
@@ -120,8 +116,8 @@ public class AppController {
 		
 		EmployeeDTO employeeDTO = new EmployeeDTO();
 		if(employeeSelected!=null){
-			Employee employee = employeeDao.findById(Integer.valueOf(employeeSelected));
-			converEmployeeToDto(employee,employeeDTO);
+			Employee employee = employeeService.findById(Integer.valueOf(employeeSelected));
+			employeeDTO = employeeService.converEmployeeToDto(employee);
 			model.addAttribute("employeeSelectedRole", employeeDTO.getRoles().get(0));
 		}else{
 			model.addAttribute("employeeSelectedRole", "ROLE_norole");
@@ -130,11 +126,10 @@ public class AppController {
 		String employeeSearched = request.getParameter("searchEmployeeInput");
 
 		List<EmployeeDTO> employeeDTOList = new ArrayList<EmployeeDTO>();
-		List<Employee> employeeList = employeeDao.retrieveAllEmployees(employeeSearched);
+		List<Employee> employeeList = employeeService.retrieveAllEmployees(employeeSearched);
 
 		for(Employee eachEmployee : employeeList){
-			EmployeeDTO eachEmployeeDTO = new EmployeeDTO();
-			converEmployeeToDto(eachEmployee,eachEmployeeDTO);
+			EmployeeDTO eachEmployeeDTO = employeeService.converEmployeeToDto(eachEmployee);
 			employeeDTOList.add(eachEmployeeDTO);
 		}
 		model.addAttribute("employeeSelected", employeeDTO);
@@ -160,47 +155,17 @@ public class AppController {
 		return "ereg";
 	}
 	
-	private void converEmployeeToDto(Employee employee, EmployeeDTO employeeDTO) {
-		if(employee.getEmployeeId()>0){
-			employeeDTO.setEmployeeId(employee.getEmployeeId());
-			employeeDTO.setFirstName(employee.getFirstName());
-			employeeDTO.setLastName(employee.getLastName());
-			employeeDTO.setGender(employee.getGender());
-			employeeDTO.setDesignation(employee.getDesignation());
-			employeeDTO.setDob(ui_date_format.format(employee.getDob()));
-			employeeDTO.setDoj(ui_date_format.format(employee.getDoj()));
-			employeeDTO.setQualification(employee.getQualification());
-			employeeDTO.setExperience(employee.getExperience());
-			employeeDTO.setMarried(employee.getMarried());
-			employeeDTO.setPassport(employee.getPassport());
-			employeeDTO.setEmergencyContact(employee.getEmergencyContact());
-			employeeDTO.setUserId(employee.getUserId());
-			employeeDTO.setPassword(employee.getPassword());
-			employeeDTO.setCurrentAddress(employee.getCurrentAddress());
-			employeeDTO.setPermanentAddress(employee.getPermanentAddress());
-			employeeDTO.setPhone(employee.getPhone());
-			employeeDTO.setEmail(employee.getEmail());
-			employeeDTO.setNotes(employee.getNotes());
-			employeeDTO.setStatus(employee.getStatus());
-			employeeDTO.setEmploymentType(employee.getEmployementType());
-			employeeDTO.setSection(employee.getSection().getSectionId());
-			List<String> roles =  new ArrayList<String>();
-			for(Role eachRole : employee.getRoles()){
-				roles.add(eachRole.getRoleId());
-			}
-			employeeDTO.setRoles(roles);
-		}
-	}
+	
 
 	@RequestMapping(value = { "ereg"}, method = RequestMethod.POST)
 	public String posteregPage(Model model, @RequestParam("file") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("**********************posteregPage ");
+   	 System.out.println("in posteregPage "+ request.getParameter("guid"));
 		
 		if(files!=null){
-			System.out.println("no of files "+files.length);
-			
+
 			for (int i = 0; i < files.length; i++) {
 				MultipartFile file = files[i];
+				logger.info("uploading file "+file.getOriginalFilename());
 				try {
 					byte[] bytes = file.getBytes();
 					// Creating the directory to store file
@@ -238,7 +203,7 @@ public class AppController {
 		logger.info("***************************** ereg Post efirstName= "+efirstName+",eRole = "+eRole+", gender = "+gender+", eDob"+eDob+", married"+married);
 		
 		try {
-			employeeDao.registerEmployee(create, eid, efirstName, eLastName, gender, eQualification, eExperience, married, eDesignation, eDob,eDoj, eRole, eUserId, password,
+			Employee employeeCreated = employeeService.registerEmployee(create, eid, efirstName, eLastName, gender, eQualification, eExperience, married, eDesignation, eDob,eDoj, eRole, eUserId, password,
 					ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes, eEmploymentType, eSection);
 			Map<String, String> roleMap = new HashMap<String, String>(); 
 			roleMap.put("ROLE_norole", "- Not user");
@@ -295,8 +260,14 @@ public class AppController {
 			sectionMap.put("Section2", "Section2");
 			model.addAttribute("sections", sectionMap);
 		}
-		List<Employee> employeeList = employeeDao.retrieveAllEmployees(null);
-		model.addAttribute("employeeList", employeeList);
+		List<EmployeeDTO> employeeDTOList = new ArrayList<EmployeeDTO>();
+		List<Employee> employeeList = employeeService.retrieveAllEmployees(null);
+
+		for(Employee eachEmployee : employeeList){
+			EmployeeDTO eachEmployeeDTO = employeeService.converEmployeeToDto(eachEmployee);
+			employeeDTOList.add(eachEmployeeDTO);
+		}
+		model.addAttribute("employeeList", employeeDTOList);
 		return "ereg";
 	}
 

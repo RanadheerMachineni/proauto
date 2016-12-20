@@ -9,8 +9,9 @@
 	//$( function() {
  	//} );
   
+
 	$(document).ready(function () {
-		
+
 		$( "#eDob" ).datepicker();
 		$( "#eDoj" ).datepicker();
 
@@ -168,6 +169,9 @@
 			</div>
 		
 		<form id="employeeRegForm" role="form" action="ereg?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">  
+			<jsp:useBean id="guidGenerator" class="com.esteeminfo.proauto.utils.GUIDGenerator" scope="application" />
+			<input type="hidden" name="guid" value="${guidGenerator.getNextGuid()}">
+		
 		    <input type="hidden" name="regType" value="employee">
 			  <input type="hidden" name="eid" id="eid"
 								value="${employeeSelected.employeeId}">
@@ -382,10 +386,17 @@
   	  		   </div>
   	  		   
   	  		   <div class="row rowspace">
-  	  		   		<label class="btn btn-default btn-file">
-  						Browse <input type="file" name="file" multiple>
-					</label>
-	   				<jstl:forEach var="eachFile" items="${filesUploaded}">
+  	  		   		
+	  		   		<div class="col-sm-2 col-md-2">
+				      			<label for="eFile" class="control-label">Upload file/s:
+				      			</label>
+				    </div>
+				    		
+				   <div class="col-sm-2 col-md-2">
+			 			<input type="file" class="btn" id="eFile" name="eFile">
+		    	   </div>
+
+	   			   <jstl:forEach var="eachFile" items="${filesUploaded}">
 		                <tr>
 		                    <td>
 		                    	<a href="${eachFile}"> 	

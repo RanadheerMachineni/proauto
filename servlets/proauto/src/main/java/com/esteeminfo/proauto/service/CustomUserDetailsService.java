@@ -1,4 +1,4 @@
-package com.esteeminfo.proauto.web.service;
+package com.esteeminfo.proauto.service;
 
 import java.util.ArrayList;
 import java.util.List;

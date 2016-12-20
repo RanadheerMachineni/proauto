@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.esteeminfo.proauto.entity.Department;
@@ -60,18 +61,19 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 		return result;
 	}
 
-	public boolean registerEmployee(String create, String eid, String efirstName, String eLastName, String gender,
+	public Employee registerEmployee(String create, String eid, String efirstName, String eLastName, String gender,
 			String eQualification, String eExperience, String married, String eDesignation, String eDob, String eDoj,
 			String eRole, String eUserId, String password, String ePhone, String eEmail, String ePassport,
 			String eEmergencyContact, String eCAddress, String ePAddress, String eNotes, String eEmploymentType, String eSection) throws Exception {
 		
 		int employeeId = (eid == null || eid.length() == 0 ) ? 0:Integer.valueOf(eid); 
-		if(eUserId!=null){
+		if(eUserId!=null && eUserId.length()>0){
 			Employee existingEmployeeByUser =  findByUser(eUserId);
 			if (existingEmployeeByUser!=null && (employeeId==0 || (existingEmployeeByUser.getEmployeeId() != employeeId))) {
 				throw new Exception("Employee with given UserId already exist. Please select other UserId");
 			}
 		}
+		if(eUserId==null || eUserId.length() == 0)eUserId=null;
 		java.util.Date javaDateDob = ui_date_format.parse(eDob) ;
 		java.util.Date javaDateDoj = ui_date_format.parse(eDoj) ;
 
@@ -120,6 +122,7 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			entityManager.flush();
 			entityManager.getTransaction().commit();
 			entityManager.close();
+			return existingEmployee;
 		}else{
 			EntityManager entityManager = getEntityManager();
 			entityManager.getTransaction().begin();
@@ -157,13 +160,9 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			entityManager.flush();
 			entityManager.getTransaction().commit();
 			entityManager.close();
+			return employeeCreated;
 		}
 		
-		
-		return true;
 	}
 	
-	private static void deleteEmployeeRole(String eUserId){
-		
-	}
 }

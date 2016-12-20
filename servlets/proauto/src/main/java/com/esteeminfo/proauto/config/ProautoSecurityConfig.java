@@ -1,4 +1,4 @@
-package com.esteeminfo.proauto.web.config;
+package com.esteeminfo.proauto.config;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
