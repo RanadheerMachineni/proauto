@@ -155,25 +155,22 @@ public class AppController {
 		return "ereg";
 	}
 	
-	
+	@RequestMapping(value = { "fileupload"}, method = RequestMethod.POST)
+	public void uploadFile(Model model, @RequestParam("eFiles") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("in uploadFile "+ request.getParameter("guid"));
 
-	@RequestMapping(value = { "ereg"}, method = RequestMethod.POST)
-	public String posteregPage(Model model, @RequestParam("file") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) {
-   	 System.out.println("in posteregPage "+ request.getParameter("guid"));
-		
 		if(files!=null){
-
 			for (int i = 0; i < files.length; i++) {
 				MultipartFile file = files[i];
-				logger.info("uploading file "+file.getOriginalFilename());
-				try {
-					byte[] bytes = file.getBytes();
-					// Creating the directory to store file
-					
-				} catch (Exception e) {
-				}
+				logger.info("Received file "+file.getOriginalFilename());
 			}
 		}
+	}
+
+	@RequestMapping(value = { "ereg"}, method = RequestMethod.POST)
+	public String posteregPage(Model model, @RequestParam("eFiles") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) {
+		//System.out.println("in posteregPage "+ request.getParameter("guid"));
+		
 		String create = request.getParameter("create");
 		
 		String eid = request.getParameter("eid");
@@ -204,7 +201,7 @@ public class AppController {
 		
 		try {
 			Employee employeeCreated = employeeService.registerEmployee(create, eid, efirstName, eLastName, gender, eQualification, eExperience, married, eDesignation, eDob,eDoj, eRole, eUserId, password,
-					ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes, eEmploymentType, eSection);
+					ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes, eEmploymentType, eSection,files);
 			Map<String, String> roleMap = new HashMap<String, String>(); 
 			roleMap.put("ROLE_norole", "- Not user");
 			roleMap.put("ROLE_admin", "Administrator");

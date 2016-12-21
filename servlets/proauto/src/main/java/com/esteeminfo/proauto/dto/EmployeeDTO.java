@@ -35,6 +35,7 @@ public class EmployeeDTO {
 	private Date createDate;
 	private String notes;
 	private List<String> roles;
+	private List<String> files;
 
 	public int getEmployeeId() {
 		return employeeId;
@@ -222,6 +223,12 @@ public class EmployeeDTO {
 	}
 	public void setSection(String section) {
 		this.section = section;
+	}
+	public List<String> getFiles() {
+		return files;
+	}
+	public void setFiles(List<String> files) {
+		this.files = files;
 	}
 	
 	

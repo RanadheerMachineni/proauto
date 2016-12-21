@@ -3,9 +3,11 @@ package com.esteeminfo.proauto.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -116,7 +118,8 @@ public class Employee implements Serializable {
 			@JoinColumn(name="role_id")
 			}
 		)
-	private List<Role> roles;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private Set<Role> roles;
 	
 	//uni-directional many-to-many association to FilesUpload
 	@ManyToMany
@@ -129,7 +132,8 @@ public class Employee implements Serializable {
 			@JoinColumn(name="upload_id")
 			}
 		)
-	private List<FilesUpload> filesUploads;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private Set<FilesUpload> filesUploads;
 
 	public Employee() {
 	}
@@ -374,11 +378,11 @@ public class Employee implements Serializable {
 		this.section = section;
 	}
 
-	public List<Role> getRoles() {
+	public Set<Role> getRoles() {
 		return this.roles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 
@@ -390,11 +394,11 @@ public class Employee implements Serializable {
 		this.employementType = employementType;
 	}
 
-	public List<FilesUpload> getFilesUploads() {
+	public Set<FilesUpload> getFilesUploads() {
 		return this.filesUploads;
 	}
 
-	public void setFilesUploads(List<FilesUpload> filesUploads) {
+	public void setFilesUploads(Set<FilesUpload> filesUploads) {
 		this.filesUploads = filesUploads;
 	}
 }

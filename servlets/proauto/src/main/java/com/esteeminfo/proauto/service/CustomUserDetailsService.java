@@ -2,6 +2,7 @@ package com.esteeminfo.proauto.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String ssoId)
 			throws UsernameNotFoundException {
 		Employee employee = employeeDao.findByUser(ssoId);
-		List<Role> listOfRoles = null;
+		Set<Role> listOfRoles = null;
 		if(employee==null){
 			System.out.println("Employee not found");
 			throw new UsernameNotFoundException("Employee not found");

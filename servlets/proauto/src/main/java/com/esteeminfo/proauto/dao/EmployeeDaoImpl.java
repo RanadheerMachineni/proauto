@@ -2,27 +2,38 @@ package com.esteeminfo.proauto.dao;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.esteeminfo.proauto.entity.Department;
 import com.esteeminfo.proauto.entity.Employee;
+import com.esteeminfo.proauto.entity.FilesUpload;
 import com.esteeminfo.proauto.entity.Role;
 import com.esteeminfo.proauto.entity.Section;
+import com.esteeminfo.proauto.service.EmployeeServiceImpl;
 
 @Repository("employeeDao")
 public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 
+	final static Logger logger = Logger.getLogger(EmployeeDaoImpl.class);
+
 	public static SimpleDateFormat ui_date_format =  new SimpleDateFormat("MM/dd/yyyy");
+	
+	@Autowired(required=true)
+	private FileUploadDAO fileUploadDAO;
 
 	public Employee findByUser(String user) {
 		EntityManager entityManager = getEntityManager();
-		Query q = entityManager.createQuery( "select e from Employee e join fetch e.roles where e.userId=:userId");
+		Query q = entityManager.createQuery( "select e from Employee e where e.userId=:userId");
 		q.setParameter("userId", user);
 		List<Employee> result = q.getResultList();
 		if(result == null || result.size() ==0){
@@ -34,7 +45,7 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 	public Employee findById(int id) {
 		EntityManager entityManager = getEntityManager();
 		entityManager.getTransaction().begin();
-		Query q = entityManager.createQuery( "select e from Employee e join fetch e.roles where e.employeeId=:eid");
+		Query q = entityManager.createQuery( "select e from Employee e where e.employeeId=:eid");
 		q.setParameter("eid", id);
 		List<Employee> result = q.getResultList();
 		if(result == null || result.size() ==0){
@@ -50,7 +61,7 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 	public List<Employee> retrieveAllEmployees(String employeeSearched) {
 		EntityManager entityManager = getEntityManager();
 		entityManager.getTransaction().begin();
-		String query = "select e from Employee e join fetch e.roles";
+		String query = "select e from Employee e";
 		if (employeeSearched != null && employeeSearched.length() > 0) {
 			query += " where e.firstName LIKE '" + employeeSearched + "%'";
 		}
@@ -81,7 +92,7 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			EntityManager entityManager = getEntityManager();
 			entityManager.getTransaction().begin();
 			Employee existingEmployee = null;
-			Query q = entityManager.createQuery( "select e from Employee e join fetch e.roles where e.employeeId=:eid");
+			Query q = entityManager.createQuery( "select e from Employee e where e.employeeId=:eid");
 			q.setParameter("eid", employeeId);
 			List<Employee> result = q.getResultList();
 			if(result != null || result.size() > 0){
@@ -115,7 +126,7 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			entityManager.persist(existingEmployee);
 			entityManager.flush();
 			Role role = entityManager.find(Role.class, eRole);
-			List<Role> roleList = new ArrayList<Role>();
+			Set<Role> roleList = new HashSet<Role>();
 			roleList.add(role);
 			existingEmployee.setRoles(roleList);
 			entityManager.merge(role);
@@ -153,7 +164,7 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			entityManager.flush();
 			System.out.println("EMP created ******** "+employeeCreated.getEmployeeId());
 			Role role = entityManager.find(Role.class, eRole);
-			List<Role> roleList = new ArrayList<Role>();
+			Set<Role> roleList = new HashSet<Role>();
 			roleList.add(role);
 			employeeCreated.setRoles(roleList);
 			entityManager.merge(role);
@@ -162,7 +173,22 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			entityManager.close();
 			return employeeCreated;
 		}
-		
+	}
+
+	public Employee addFilesToEmployee(int id, Set<FilesUpload> filesUploads) {
+		Employee employee = findById(id);
+		if(employee!=null && employee.getEmployeeId()>0){
+			if(filesUploads.size()>0){
+				EntityManager entityManager = getEntityManager();
+				entityManager.getTransaction().begin();
+				employee.setFilesUploads(filesUploads);	
+				entityManager.merge(employee);
+				entityManager.flush();
+				entityManager.getTransaction().commit();
+				entityManager.close();
+			}
+		}
+		return employee;
 	}
 	
 }

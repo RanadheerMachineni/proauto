@@ -7,64 +7,99 @@
 	<jsp:attribute name="header">
 <script>
 	//$( function() {
- 	//} );
-  
+	//} );
 
-	$(document).ready(function () {
+	$(document)
+			.ready(
+					function() {
+						
+						/*var $input = $("#eFiles");
+						$input.fileinput({
+						    uploadUrl: "http://localhost:8080/proauto/fileupload?${_csrf.parameterName}=${_csrf.token}", // server upload action
+						    uploadAsync: false,
+						    showUpload: false, // hide upload button
+						    showRemove: false // hide remove button
+						   
+						}).on("filebatchselected", function(event, files) {
+						    $input.fileinput("upload");
+						});*/
+						
 
-		$( "#eDob" ).datepicker();
-		$( "#eDoj" ).datepicker();
+						$("#eDob").datepicker();
+						$("#eDoj").datepicker();
 
-	    $('#employeeRegForm').validate({
-	        rules: {
-	        	efirstName: {
-	                minlength: 2,
-	                required: true
-	            },
-	            eLastName: {
-	                minlength: 2,
-	                required: true
-	            },
-	            gender: {
-	                required: true
-	            },
-	            eUserId: {
-	                required: true
-	            },
-	            ePassword: {
-	                required: true
-	            },
-	            eEmergencyContact: {
-	                required: true
-	            },
-	            ePhone: {
-	                required: true,
-	                minlength: 10,
-	                number: true
-	            },
-	            eEmail: {
-	                required: true,
-	                email: true
-	            },
-	            eDob: {
-	            	required: true
-	            },
-	            eDoj: {
-	            	required: true
-	            }
-	        },
-	        highlight: function (element) {
-	            $(element).closest('.control-group').removeClass('success').addClass('error');
-	        },
-	        success: function (element) {
-	            element.text('OK!').addClass('valid')
-	                .closest('.control-group').removeClass('error').addClass('success');
-	        }
-	    });
-	   
-	});
-	function customLoad(){
+						$('#employeeRegForm').validate(
+								{
+									rules : {
+										efirstName : {
+											minlength : 2,
+											required : true
+										},
+										eLastName : {
+											minlength : 2,
+											required : true
+										},
+										gender : {
+											required : true
+										},
+										eUserId : {
+											required : true
+										},
+										ePassword : {
+											required : true
+										},
+										eEmergencyContact : {
+											required : true
+										},
+										ePhone : {
+											required : true,
+											minlength : 10,
+											number : true
+										},
+										eEmail : {
+											required : true,
+											email : true
+										},
+										eDob : {
+											required : true
+										},
+										eDoj : {
+											required : true
+										}
+									},
+									highlight : function(element) {
+										$(element).closest('.control-group')
+												.removeClass('success')
+												.addClass('error');
+									},
+									success : function(element) {
+										element.text('OK!').addClass('valid')
+												.closest('.control-group')
+												.removeClass('error').addClass(
+														'success');
+									}
+								});
+
+					});
+	function customLoad() {
 		roleChanged();
+	}
+
+	function addMoreFiles() {  
+		   var div = document.getElementById('fileuploads');  
+		   var field = div.getElementsByTagName('input')[0];  
+		      
+		    div.appendChild(document.createElement("br"));  
+		    div.appendChild(field.cloneNode(false));  
+	}  
+	
+	function unSelectFiles() {
+		//$("#eFiles").val('');
+		
+		$('input[name="eFiles"]').each(function() {
+		    $(this).val('');
+		});
+
 	}
 	
 	function roleChanged() {
@@ -122,13 +157,12 @@
 
 		return true;
 	}
-
 </script>
     </jsp:attribute>
 
 	<jsp:body>
 <div class="container">
-	
+		<input type="hidden" name="guid" value="${guidGenerator.getNextGuid()}">
 		<br>
 			<jstl:if test="${pageContext.request.userPrincipal.name == null}">
 						<div class="col-md-12 col-sm-12 col-xs-12">
@@ -152,10 +186,12 @@
 					<div class="pageHeadings"> Employee Registration</div>
 					<br>
 					<div class="formDiv">
-					<jstl:if test="${employeeSelected.employeeId == null || employeeSelected.employeeId<=0}">
+					<jstl:if
+							test="${employeeSelected.employeeId == null || employeeSelected.employeeId<=0}">
 						      			<label>Create Employee</label>
 					</jstl:if>
-					<jstl:if test="${employeeSelected.employeeId != null && employeeSelected.employeeId > 0}">
+					<jstl:if
+							test="${employeeSelected.employeeId != null && employeeSelected.employeeId > 0}">
 						      			<label>Update Employee</label>
 					</jstl:if>
 					
@@ -166,11 +202,15 @@
 						</jstl:if>
 			
 					</div>
-			</div>
+					</div>
 		
-		<form id="employeeRegForm" role="form" action="ereg?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">  
-			<jsp:useBean id="guidGenerator" class="com.esteeminfo.proauto.utils.GUIDGenerator" scope="application" />
-			<input type="hidden" name="guid" value="${guidGenerator.getNextGuid()}">
+		<form id="employeeRegForm" role="form"
+							action="ereg?${_csrf.parameterName}=${_csrf.token}" method="post"
+							enctype="multipart/form-data">  
+			<jsp:useBean id="guidGenerator"
+								class="com.esteeminfo.proauto.utils.GUIDGenerator"
+								scope="application" />
+		
 		
 		    <input type="hidden" name="regType" value="employee">
 			  <input type="hidden" name="eid" id="eid"
@@ -200,8 +240,12 @@
 		    	 <div class="control-group">
 		    	
 		    	 	<div class="col-sm-3 col-md-3 controls">
-		      			<label class="radio-inline"><input type="radio" name="gender" value="m" ${employeeSelected.gender == 'm' ? 'checked' : ''}>Male</label>
-    			    	<label class="radio-inline"><input type="radio" name="gender" value="f" ${employeeSelected.gender == 'f' ? 'checked' : ''}>Female</label>
+		      			<label class="radio-inline"><input type="radio"
+											name="gender" value="m"
+											${employeeSelected.gender == 'm' ? 'checked' : ''}>Male</label>
+    			    	<label class="radio-inline"><input type="radio"
+											name="gender" value="f"
+											${employeeSelected.gender == 'f' ? 'checked' : ''}>Female</label>
 		    	 	</div>
 		    	 	<label for="gender" class="error"></label>
 		    	 	
@@ -214,7 +258,8 @@
 		    		</div>
 		   		 	<div class="col-sm-2 col-md-2">
 		      			<input type="text" class="form-control" id="eQualification"
-										name="eQualification" value="${employeeSelected.qualification}">
+										name="eQualification"
+										value="${employeeSelected.qualification}">
 		    	 	</div>
 		    	 	
 		    	 	<div class="col-sm-2 col-md-2">
@@ -226,8 +271,12 @@
 		    	 	</div>
 		    	 	
 		    	 	<div class="col-sm-3 col-md-3">
-		      			<label class="radio-inline"><input type="radio" name="married" value="s" ${employeeSelected.married == 's' ? 'checked' : ''}>Single</label>
-    			    	<label class="radio-inline"><input type="radio" name="married" value="m" ${employeeSelected.married == 'm' ? 'checked' : ''}>Married</label>
+		      			<label class="radio-inline"><input type="radio"
+										name="married" value="s"
+										${employeeSelected.married == 's' ? 'checked' : ''}>Single</label>
+    			    	<label class="radio-inline"><input type="radio"
+										name="married" value="m"
+										${employeeSelected.married == 'm' ? 'checked' : ''}>Married</label>
 		    	 	</div>
 		    	 	
   	  		  </div>
@@ -248,14 +297,18 @@
 			 			<select class="form-control" name="eSection" id="eSection">
 	  						<jstl:forEach items="${sections}" var="section">
 	  				  			<option value="${section.key}"
-													${employeeSelected.section == section.key ? 'selected' : ''}>${section.value}</option>
+												${employeeSelected.section == section.key ? 'selected' : ''}>${section.value}</option>
 	  						</jstl:forEach>
 						</select>
 		    	 	</div>
 		    	 	
 		    		<div class="col-sm-3 col-md-3">
-		      			<label class="radio-inline"><input type="radio" name="eEmploymentType" value="p" ${employeeSelected.employmentType==null || employeeSelected.employmentType == 'p' ? 'checked' : ''}>Permanent</label>
-    			    	<label class="radio-inline"><input type="radio" name="eEmploymentType" value="t" ${employeeSelected.employmentType == 't' ? 'checked' : ''}>Contract</label>
+		      			<label class="radio-inline"><input type="radio"
+										name="eEmploymentType" value="p"
+										${employeeSelected.employmentType==null || employeeSelected.employmentType == 'p' ? 'checked' : ''}>Permanent</label>
+    			    	<label class="radio-inline"><input type="radio"
+										name="eEmploymentType" value="t"
+										${employeeSelected.employmentType == 't' ? 'checked' : ''}>Contract</label>
 		    	 	</div>	
 		    	 	
   	  		  </div>
@@ -287,7 +340,7 @@
 		    			</div>
 		   		 		<div class="col-sm-2 col-md-2">
 		      				<input type="text" class="form-control" id="ePassport"
-										name="ePassport" value="${employeeSelected.passport}">
+											name="ePassport" value="${employeeSelected.passport}">
 		    	 		</div>
 		    	 	</div>
   	  		  </div>
@@ -300,7 +353,7 @@
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<input type="text" class="form-control" id="eDob"
-											name="eDob"  readonly="true" value="${employeeSelected.dob}">
+											name="eDob" readonly="true" value="${employeeSelected.dob}">
 			    	 	</div>
 			    	</div>
 		    	 	
@@ -320,8 +373,9 @@
 			      			<label for="eEmergencyContact" class="control-label">Emergency Contact:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="eEmergencyContact"
-											name="eEmergencyContact" value="${employeeSelected.emergencyContact}">
+			      			<input type="text" class="form-control"
+											id="eEmergencyContact" name="eEmergencyContact"
+											value="${employeeSelected.emergencyContact}">
 			    	 	</div>
 		    	 	</div>
   	  		  </div>
@@ -332,14 +386,16 @@
 		      			<label for="eCAddress">Current Address:</label>
 		    		</div>
 		   		 	<div class="col-sm-2 col-md-2">
-		      			<textarea class="form-control" id="eCAddress" name="eCAddress">${employeeSelected.currentAddress}</textarea>
+		      			<textarea class="form-control" id="eCAddress"
+										name="eCAddress">${employeeSelected.currentAddress}</textarea>
 		    	 	</div>
 		    	 	
 		    	 	<div class="col-sm-2 col-md-2">
 		      			<label for="ePAddress">Permanent Address:</label>
 		    		</div>
 		   		 	<div class="col-sm-2 col-md-2">
-		      			<textarea class="form-control" id="ePAddress" name="ePAddress">${employeeSelected.permanentAddress}</textarea>
+		      			<textarea class="form-control" id="ePAddress"
+										name="ePAddress">${employeeSelected.permanentAddress}</textarea>
 		    	 	</div>
 		    	 	
 		    	 	<div class="col-sm-1 col-md-1">
@@ -355,10 +411,11 @@
 		      			<label for="eRole">Role:</label>
 		    		</div>
 		   		 	<div class="col-sm-2 col-md-2">
-			 			<select class="form-control" name="eRole" id="eRole" onchange="roleChanged();">
+			 			<select class="form-control" name="eRole" id="eRole"
+										onchange="roleChanged();">
 	  						<jstl:forEach items="${roles}" var="role">
 	  				  			<option value="${role.key}"
-													${employeeSelectedRole == role.key ? 'selected' : ''}>${role.value}</option>
+												${employeeSelectedRole == role.key ? 'selected' : ''}>${role.value}</option>
 	  						</jstl:forEach>
 						</select>
 		    	 	</div>
@@ -369,7 +426,7 @@
 				    		</div>
 				 			<div class="col-sm-2 col-md-2 controls">
 				      			<input type="text" class="form-control" id="eUserId"
-											name="eUserId" value="${employeeSelected.userId}">
+												name="eUserId" value="${employeeSelected.userId}">
 				    	 	</div>
 		  	  		   </div>
 	  	  		  
@@ -379,78 +436,99 @@
 				    		</div>
 				 			<div class="col-sm-2 col-md-2 controls">
 				      			<input type="text" class="form-control" id="ePassword"
-											name="ePassword" value="${employeeSelected.password}">
+												name="ePassword" value="${employeeSelected.password}">
 				    	 	</div>
 		  	  		   </div>
 		  	  		</div>
   	  		   </div>
   	  		   
-  	  		   <div class="row rowspace">
-  	  		   		
-	  		   		<div class="col-sm-2 col-md-2">
-				      			<label for="eFile" class="control-label">Upload file/s:
-				      			</label>
-				    </div>
-				    		
-				   <div class="col-sm-2 col-md-2">
-			 			<input type="file" class="btn" id="eFile" name="eFile">
-		    	   </div>
-
-	   			   <jstl:forEach var="eachFile" items="${filesUploaded}">
-		                <tr>
-		                    <td>
-		                    	<a href="${eachFile}"> 	
-		                    		<jstl:out value="${eachFile}" />
-								</a>
-		                    </td>
-		                    
-		                    <td>
-		                    	Delete comes here
-		                    </td>
-		                </tr>
-	           		 </jstl:forEach>
-  	  		   </div> 
+  	  		   <jstl:if	test="${employeeSelected.employeeId != null && employeeSelected.employeeId > 0 && employeeSelected.files!=null}">
+	  	  		   <div class="row rowspace">
+	  	  		  		 <div class="col-sm-2 col-md-2">
+			      			<label for="uFiles">Uploaded file/s:</label>
+			    		</div>
+			   		 	<div id="fileuploads" class="col-sm-4 col-md-4">
+				   		 	<jstl:forEach var="eachFile" items="${employeeSelected.files}">
+				                <tr>
+				                    <td>
+				                    	<a href="${eachFile}"> 	
+				                    		<jstl:out value="${eachFile}" />
+										</a>
+				                    </td>
+				                    
+				                    <td>
+				                    	Delete comes here
+				                    </td>
+				                </tr>
+			           		 </jstl:forEach>
+			    	 	</div>
+				   </div>
+				</jstl:if>							
   	  		   
+  	  		   
+  	  		   <div class="row rowspace">
+  	  		  		 <div class="col-sm-2 col-md-2">
+		      			<label for="eFiles">Upload File/s:</label>
+		    		</div>
+		   		 	<div id="fileuploads" class="col-sm-4 col-md-4">
+		           		 <input type="file" name="eFiles" id="eFiles" multiple>
+		    	 	</div>
+		    	 	
+			   </div>
+
+  			   <div class="row rowspace">
+  	  		  		 <div class="col-sm-2 col-md-2">
+		      			    <input type="button" name="addmore" id="addmore" value="Add More" onClick="addMoreFiles();" />  
+		    		</div>
+		    		<div class="col-sm-2 col-md-2">
+		           		 <input type="button" name="unSelectFile" id="unSelectFile" value="Reset file selection" onClick="unSelectFiles();"/>
+		    	 	</div>	
+			  </div>
+			  
   	  		   <br>
 			   <div class="row">
 	   		 		<div class="col-sm-8 col-md-8">
-						<jstl:if test="${employeeSelected.employeeId == null || employeeSelected.employeeId<=0}">
+						<jstl:if
+							test="${employeeSelected.employeeId == null || employeeSelected.employeeId<=0}">
 	   		 				  <input type="hidden" name="create" value="true">
 						      <!--  <input id="createEmployeeSubmit" type=submit value="Create">-->
-						      <button id="createEmployeeSubmit" type="submit" class="btn btn-primary">Create</button>
+						      <button id="createEmployeeSubmit" type="submit"
+								class="btn btn-primary">Create</button>
 						      
 						</jstl:if>
-					<jstl:if test="${employeeSelected.employeeId != null && employeeSelected.employeeId > 0}">
+					<jstl:if
+							test="${employeeSelected.employeeId != null && employeeSelected.employeeId > 0}">
 							  <input type="hidden" name="create" value="false">
 						      <!-- <input id="createEmployeeSubmit" type=submit value="Update"> -->
-						      <button id="createEmployeeSubmit" type="submit" class="btn btn-primary">Update</button>
+						      <button id="createEmployeeSubmit" type="submit"
+								class="btn btn-primary">Update</button>
 						      
 						       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						      <a class="btn btn-default"
-											href="${pageContext.request.contextPath}/ereg" role="button">Cancel</a>
+								href="${pageContext.request.contextPath}/ereg" role="button">Cancel</a>
 						</jstl:if>
 	    	 		</div>
 	  			</div>
 	  			<br>
 	  			<input type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" />
+					value="${_csrf.token}" />
 		</form>	
+		
 		</div>
 		</div>
   	  		
   	  		<!-- List of emps -->
-						<div
-					class="col-md-10 col-sm-10 col-xs-10">
+						<div class="col-md-10 col-sm-10 col-xs-10">
 	   		 					<br>
 	   		 					<form id="employeeSearchForm" role="form" action="ereg"
-						method="GET">  
+				method="GET">  
 	   		 					<div class="row">
 				  	  		   		<div class="col-sm-1 col-md-1">
 						      			<label for="searchEmployeeInput">Search Employee</label>
 						    		</div>
 						   		 	<div class="col-sm-2 col-md-2">
 						      			<input type="text" class="form-control"
-									id="searchEmployeeInput" name="searchEmployeeInput">
+							id="searchEmployeeInput" name="searchEmployeeInput">
 						    	 	</div>
 						    	 	<div class="col-sm-1 col-md-1">
 						      			<input type=submit value="Search">
@@ -476,15 +554,18 @@
 							                <tr>
 							                    <td>
 							                    	<a
-										href="${pageContext.request.contextPath}/ereg?employeeSelected=${employee.employeeId}">
-								                    	<jstl:out value="${employee.firstName} ${employee.lastName}" />
+								href="${pageContext.request.contextPath}/ereg?employeeSelected=${employee.employeeId}">
+								                    	<jstl:out
+										value="${employee.firstName} ${employee.lastName}" />
 								                    </a>
 												</td>
 							                    <td><jstl:out value="${employee.gender}" /></td>
-							                    <td><jstl:out value="${employee.designation}" /></td>
+							                    <td><jstl:out
+									value="${employee.designation}" /></td>
 							                    <td><jstl:out value="${employee.phone}" /></td>
 							                    <td><jstl:out value="${employee.userId}" /></td>
-							                    <td><jstl:out value="${employee.emergencyContact}" /></td>
+							                    <td><jstl:out
+									value="${employee.emergencyContact}" /></td>
 							                    
 							                </tr>
 							            </jstl:forEach>

@@ -29,6 +29,9 @@
 	});
 </script>
 
+
+<link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/all-krajee.css">
+
 <script	type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery-1.12.4.js"></script>
 	
 <script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery-ui.js"></script>
@@ -41,6 +44,8 @@
 
 <link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/bootstrap.css">
 
+<link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/dropzone.css">
+
 <link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/fileinput.css">
 
 <link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/template.css">
@@ -51,7 +56,59 @@
 
 <script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/bootstrap.js"></script>
 
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/bootstrap-dialog.min.js"></script>
 
+<!--
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/dropzone.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/app.js"></script>
+  
+<link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/style.css">
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/dropzone-amd-module.js"></script>
+
+<link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/jquery.fileupload.css">
+
+<link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/jquery.fileupload-noscript.css">
+
+<link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/demo.css">
+
+<link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/demo-ie8.css">
+
+<link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/jquery.fileupload-ui.css">
+
+<link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/jquery.fileupload-ui-noscript.css">
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/cors/jquery.postmessage-transport.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/cors/jquery.xdr-transport.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/vendor/jquery.ui.widget.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/app.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery.fileupload.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery.fileupload-angular.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery.fileupload-audio.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery.fileupload-image.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery.fileupload-jquery-ui.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery.fileupload-process.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery.fileupload-ui.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery.fileupload-validate.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery.fileupload-video.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery.iframe-transport.js"></script>
+
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/main.js"></script>-->
 
 <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=1">
