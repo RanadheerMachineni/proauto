@@ -1,5 +1,6 @@
 package com.esteeminfo.proauto.service;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,25 +51,36 @@ public class EmployeeServiceImpl implements EmployeeService {
 			String eQualification, String eExperience, String married, String eDesignation, String eDob, String eDoj,
 			String eRole, String eUserId, String password, String ePhone, String eEmail, String ePassport,
 			String eEmergencyContact, String eCAddress, String ePAddress, String eNotes, String eEmploymentType,
-			String eSection,MultipartFile[] files) throws Exception {
+			String eSection,MultipartFile[] files,List<String> uploadedFiles) throws Exception {
 		Employee empCreated = employeeDao.registerEmployee(create, eid, efirstName, eLastName, gender, eQualification, eExperience, married, eDesignation, eDob, eDoj, eRole, eUserId, password, ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes, eEmploymentType, eSection);
 		
 		Set<FilesUpload> filesUploads = new HashSet<FilesUpload>();
 		if(files!=null){
 			for (int i = 0; i < files.length; i++) {
 				MultipartFile file = files[i];
-				logger.info("uploading file "+file.getOriginalFilename());
+				if(file.getOriginalFilename()!=null && file.getOriginalFilename().length()>0){
+					logger.info("uploading file "+file.getOriginalFilename());
 					try {
 						byte[] bytes = file.getBytes();
 						FilesUpload filesUpload =  fileUploadDAO.saveFile(file.getOriginalFilename(), bytes);
 						filesUploads.add(filesUpload);
 						
 					} catch (Exception e) {
-					}
+					}	
+				}
+				
 			}
 		}
-		
-		employeeDao.addFilesToEmployee(empCreated.getEmployeeId(), filesUploads);
+		Set<FilesUpload> existingFiles = empCreated.getFilesUploads();
+		Set<FilesUpload> existingFilesNew = new HashSet<FilesUpload>();
+
+		for(FilesUpload existingFile : existingFiles){
+			if(uploadedFiles.contains(existingFile.getFileName())){
+				existingFilesNew.add(existingFile);
+			}
+		}
+		filesUploads.addAll(existingFilesNew);
+		empCreated = employeeDao.addFilesToEmployee(empCreated.getEmployeeId(), filesUploads);
 		return empCreated;
 	}
 
@@ -111,6 +123,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 			}
 		//}
 		return employeeDTO;
+	}
+
+	public FilesUpload findFile(Integer eid, String fname) {
+		Employee e = findById(eid);
+		Set<FilesUpload> files = e.getFilesUploads();
+		for(FilesUpload filesUpload : files){
+			if(filesUpload.getFileName().equalsIgnoreCase(fname)){
+				return filesUpload;
+			}
+		}
+		return null;
 	}
 	
 }

@@ -102,6 +102,9 @@
 
 	}
 	
+	function removeFile(){
+		alert("removeFile");
+	}
 	function roleChanged() {
 		var roleSelect = document.getElementById("eRole");
 		var role = roleSelect.options[roleSelect.selectedIndex].value;
@@ -212,9 +215,11 @@
 								scope="application" />
 		
 		
-		    <input type="hidden" name="regType" value="employee">
+		      <input type="hidden" name="regType" value="employee">
 			  <input type="hidden" name="eid" id="eid"
 								value="${employeeSelected.employeeId}">
+			  <input type="hidden" name="uploadedFiles" id="uploadedFiles"
+								value="${employeeSelected.files}">								
 			   <br>
 			   
   	  		   <div class="row rowspace">
@@ -447,20 +452,25 @@
 	  	  		  		 <div class="col-sm-2 col-md-2">
 			      			<label for="uFiles">Uploaded file/s:</label>
 			    		</div>
-			   		 	<div id="fileuploads" class="col-sm-4 col-md-4">
+			   		 	<div id="areadyUploadedFiles" class="col-sm-4 col-md-4">
+			   		 		<table>
 				   		 	<jstl:forEach var="eachFile" items="${employeeSelected.files}">
 				                <tr>
 				                    <td>
-				                    	<a href="${eachFile}"> 	
+				                    	<a href="filedownload/employee/${employeeSelected.employeeId}/${eachFile}"> 	
 				                    		<jstl:out value="${eachFile}" />
 										</a>
 				                    </td>
 				                    
-				                    <td>
-				                    	Delete comes here
+				                    <td style="padding: 3px;">
+				                    	<button class="btn btn-default btn-sm" name="deleteFile" id="deleteFile" onClick="removeFile();">
+        									 <span class="glyphicon glyphicon-remove"></span> Remove 
+        								</button>
+				                   		<!--  <input type="button" name="deleteFile" id="deleteFile" value="Delete" onClick="deleteFile(${employeeSelected.employeeId},${eachFile});" > -->
 				                    </td>
 				                </tr>
 			           		 </jstl:forEach>
+			           		 </table>
 			    	 	</div>
 				   </div>
 				</jstl:if>							

@@ -1,20 +1,27 @@
 package com.esteeminfo.proauto.controllers;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.apache.taglibs.standard.tag.common.core.ForEachSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.esteeminfo.proauto.dto.EmployeeDTO;
 import com.esteeminfo.proauto.entity.Employee;
+import com.esteeminfo.proauto.entity.FilesUpload;
 import com.esteeminfo.proauto.service.EmployeeService;
 
 @Controller
@@ -166,6 +174,47 @@ public class AppController {
 			}
 		}
 	}
+	
+	
+	@RequestMapping (value = "/delete/{regType}/{id}/{fname}.{ext}", method = RequestMethod.DELETE)
+	public void delete(Model model,@PathVariable("regType") String regType,
+			@PathVariable("id") String id,
+			@PathVariable("fname") String fname,@PathVariable("ext") String ext,HttpServletRequest request, HttpServletResponse response){
+		
+	    /*ModelAndView view = new ModelAndView(VIEW);
+	    service.delete(file + "." + ext);
+	    view.addObject("success", Boolean.TRUE);
+	    return view;*/
+	}
+	
+	@RequestMapping(value = { "/filedownload/{regType}/{id}/{fname}.{ext}"}, method = RequestMethod.GET)
+	public void downloadFile(Model model, @PathVariable("regType") String regType,
+			@PathVariable("id") String id,
+			@PathVariable("fname") String fname,@PathVariable("ext") String ext,
+			HttpServletRequest request, HttpServletResponse response) {
+		logger.info("in downloadFile "+ regType +" , "+id+" , "+fname);
+		String fileNameFromUI = fname+ "." + ext;
+		FilesUpload filesUpload = employeeService.findFile(Integer.valueOf(id),fileNameFromUI);
+		if(filesUpload!=null){
+			 byte[] data = filesUpload.getFileData();
+			 String fileName = filesUpload.getFileName();
+			 response.setContentType("application/pdf"); 
+			 response.setHeader("Content-disposition", "attachment; filename=\""+fileName+"\""); // The Save As popup magic is done here. You can give it any filename you want, this only won't work in MSIE, it will use current request URL as filename instead.
+
+			    // Write file to response.
+			    OutputStream output;
+				try {
+					output = response.getOutputStream();
+					output.write(data);
+					output.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			   
+		}
+
+	}
 
 	@RequestMapping(value = { "ereg"}, method = RequestMethod.POST)
 	public String posteregPage(Model model, @RequestParam("eFiles") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) {
@@ -196,12 +245,24 @@ public class AppController {
 		String eNotes = request.getParameter("eNotes");
 		String eEmploymentType = request.getParameter("eEmploymentType");
 		String eSection = request.getParameter("eSection");
+		String[] uploadedFilesArray = request.getParameterValues("uploadedFiles");
+		List<String> uploadedFiles = new ArrayList<String>();;
 
-		logger.info("***************************** ereg Post efirstName= "+efirstName+",eRole = "+eRole+", gender = "+gender+", eDob"+eDob+", married"+married);
-		
+		if(uploadedFilesArray!=null && uploadedFilesArray.length>0){
+			for(String s: uploadedFilesArray){
+				if(s!=null && s.length()>0){
+					s = s.replaceAll("[\\[\\]]","");
+					uploadedFiles.addAll(Arrays.asList(s.split(",")));
+				}
+			}
+		}
+		List<String> uploadedFilesTrimmed = new ArrayList<String>();;
+		for(String s: uploadedFiles){
+			uploadedFilesTrimmed.add(s.trim());
+		}
 		try {
 			Employee employeeCreated = employeeService.registerEmployee(create, eid, efirstName, eLastName, gender, eQualification, eExperience, married, eDesignation, eDob,eDoj, eRole, eUserId, password,
-					ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes, eEmploymentType, eSection,files);
+					ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes, eEmploymentType, eSection,files, uploadedFilesTrimmed);
 			Map<String, String> roleMap = new HashMap<String, String>(); 
 			roleMap.put("ROLE_norole", "- Not user");
 			roleMap.put("ROLE_admin", "Administrator");
