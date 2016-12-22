@@ -102,8 +102,8 @@
 
 	}
 	
-	function removeFile(){
-		alert("removeFile");
+	function removeFile(fileName){
+		alert(fileName);
 	}
 	function roleChanged() {
 		var roleSelect = document.getElementById("eRole");
@@ -463,7 +463,7 @@
 				                    </td>
 				                    
 				                    <td style="padding: 3px;">
-				                    	<button class="btn btn-default btn-sm" name="deleteFile" id="deleteFile" onClick="removeFile();">
+				                    	<button type="button" class="btn btn-default btn-sm" name="deleteFile" id="deleteFile" onClick="removeFile('${eachFile}');">
         									 <span class="glyphicon glyphicon-remove"></span> Remove 
         								</button>
 				                   		<!--  <input type="button" name="deleteFile" id="deleteFile" value="Delete" onClick="deleteFile(${employeeSelected.employeeId},${eachFile});" > -->
