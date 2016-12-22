@@ -103,7 +103,16 @@
 	}
 	
 	function removeFile(fileName){
-		alert(fileName);
+		//alert(fileName);
+		var existingInputValue = $('input#uploadedFiles').val();
+		var newValue = existingInputValue.replace(fileName, "");
+		$('input#uploadedFiles').val(newValue);
+		$('#alreadyUploadedFiles tr').each(function() {
+		    var href = $(this).find("td:first").find("a").attr('href');  
+		    if (href.toLowerCase().indexOf(fileName.toLowerCase()) >= 0){
+		        $(this).closest('tr').remove();
+		    }
+		});
 	}
 	function roleChanged() {
 		var roleSelect = document.getElementById("eRole");
@@ -452,7 +461,7 @@
 	  	  		  		 <div class="col-sm-2 col-md-2">
 			      			<label for="uFiles">Uploaded file/s:</label>
 			    		</div>
-			   		 	<div id="areadyUploadedFiles" class="col-sm-4 col-md-4">
+			   		 	<div id="alreadyUploadedFiles" class="col-sm-4 col-md-4">
 			   		 		<table>
 				   		 	<jstl:forEach var="eachFile" items="${employeeSelected.files}">
 				                <tr>
