@@ -73,14 +73,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		Set<FilesUpload> existingFiles = empCreated.getFilesUploads();
 		Set<FilesUpload> existingFilesNew = new HashSet<FilesUpload>();
-
-		for(FilesUpload existingFile : existingFiles){
-			if(uploadedFiles.contains(existingFile.getFileName())){
-				existingFilesNew.add(existingFile);
+		if(existingFiles!=null){
+			for(FilesUpload existingFile : existingFiles){
+				if(uploadedFiles.contains(existingFile.getFileName())){
+					existingFilesNew.add(existingFile);
+				}
 			}
 		}
 		filesUploads.addAll(existingFilesNew);
-		empCreated = employeeDao.addFilesToEmployee(empCreated.getEmployeeId(), filesUploads);
+		if(filesUploads.size()>0){
+			empCreated = employeeDao.addFilesToEmployee(empCreated.getEmployeeId(), filesUploads);
+		}
 		return empCreated;
 	}
 

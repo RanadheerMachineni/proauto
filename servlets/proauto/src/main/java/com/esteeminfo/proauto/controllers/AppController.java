@@ -280,7 +280,9 @@ public class AppController {
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 			EmployeeDTO employeeDTO = new EmployeeDTO();
-			employeeDTO.setEmployeeId(Integer.valueOf(eid));
+			if(eid!=null && eid.length()>0){
+				employeeDTO.setEmployeeId(Integer.valueOf(eid));
+			}
 			employeeDTO.setFirstName(efirstName);
 			employeeDTO.setLastName(eLastName);
 			employeeDTO.setGender(gender);
