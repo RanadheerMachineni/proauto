@@ -5,29 +5,7 @@
 <%@ attribute name="footer" fragment="true"%>
 <html>
 <head>
-<script>
-	function formSubmit() {
-		document.getElementById("logoutForm").submit();
-	}
-	$(document).ready(function() {
-		var url = window.location.href;
-		var lielement;
-	    var res = url.split("/");
 
-	    lielement=res[res.length-1];
-	    
-		/*for (i = 0; i < res.length; i++) { 
-		    if(res[i].endsWith(".jsp")){
-	    	    lielement=res[i].substring(0,res[i].indexOf(".jsp"))
-	    	}
-		}*/
-
-		if(lielement=="ereg" || lielement=="vreg" || lielement=="creg" || lielement=="rmat"){
-			lielement ="reg";
-		}
-		$("#"+lielement+"li").addClass('active').siblings().removeClass('active');
-	});
-</script>
 
 
 <link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/all-krajee.css">
@@ -109,6 +87,25 @@
 <script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/jquery.iframe-transport.js"></script>
 
 <script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/main.js"></script>-->
+
+
+<script>
+	function formSubmit() {
+		document.getElementById("logoutForm").submit();
+	}
+	$(document).ready(function() {
+		var url = window.location.href;
+		var lielement;
+	    var res = url.split("/");
+
+	    lielement=res[res.length-1];
+	    
+		if(lielement=="ereg" || lielement=="vreg" || lielement=="creg" || lielement=="rmat"){
+			lielement ="reg";
+		}
+		$("#"+lielement+"li").addClass('active').siblings().removeClass('active');
+	});
+</script>
 
 <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=1">
