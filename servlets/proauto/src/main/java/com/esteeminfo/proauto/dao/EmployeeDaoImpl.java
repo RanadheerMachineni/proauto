@@ -178,7 +178,6 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 	public Employee addFilesToEmployee(int id, Set<FilesUpload> filesUploads) {
 		Employee employee = findById(id);
 		if(employee!=null && employee.getEmployeeId()>0){
-			if(filesUploads.size()>0){
 				EntityManager entityManager = getEntityManager();
 				entityManager.getTransaction().begin();
 				employee.setFilesUploads(filesUploads);	
@@ -186,9 +185,29 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 				entityManager.flush();
 				entityManager.getTransaction().commit();
 				entityManager.close();
-			}
 		}
+		cleanUpFiles();
 		return employee;
+	}
+
+	public void cleanUpFiles() {
+		EntityManager entityManager = getEntityManager();
+		entityManager.getTransaction().begin();
+		
+		Query q1 = entityManager.createQuery("select fu.uploadId from FilesUpload fu left join employee e on "
+				+ "ef.employeeId = fu.employeeId where ef.upload_id is null");
+		List<Integer> list= q1.getResultList();
+				
+		logger.info("list "+list);
+
+				
+		Query q = entityManager.createQuery("delete from FilesUpload fu_delete where fu_delete.uploadId in (select fu.uploadId from FilesUpload fu left join employee_files ef on "
+				+ "ef.upload_id = fu.upload_id where ef.upload_id is null)");
+		int deletedCound = q.executeUpdate();
+		logger.info("deleted files "+deletedCound);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+
 	}
 
 

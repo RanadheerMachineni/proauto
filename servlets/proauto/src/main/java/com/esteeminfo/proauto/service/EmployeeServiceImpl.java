@@ -81,9 +81,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			}
 		}
 		filesUploads.addAll(existingFilesNew);
-		if(filesUploads.size()>0){
-			empCreated = employeeDao.addFilesToEmployee(empCreated.getEmployeeId(), filesUploads);
-		}
+		empCreated = employeeDao.addFilesToEmployee(empCreated.getEmployeeId(), filesUploads);
 		return empCreated;
 	}
 

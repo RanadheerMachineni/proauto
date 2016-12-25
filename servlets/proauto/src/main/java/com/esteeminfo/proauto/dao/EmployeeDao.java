@@ -23,5 +23,7 @@ public interface EmployeeDao {
 	
 	Employee addFilesToEmployee(int id, Set<FilesUpload> filesUploads);
 
+	void  cleanUpFiles();
+
 }
 
