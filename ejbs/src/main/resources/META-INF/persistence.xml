@@ -2,6 +2,7 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="proauto" transaction-type="RESOURCE_LOCAL">
 		<class>com.esteeminfo.proauto.entity.Customer</class>
+		<class>com.esteeminfo.proauto.entity.Contact</class>
 		<class>com.esteeminfo.proauto.entity.Employee</class>
 		<class>com.esteeminfo.proauto.entity.Role</class>
 		<class>com.esteeminfo.proauto.entity.Vendor</class>

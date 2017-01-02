@@ -6,113 +6,6 @@ FLUSH PRIVILEGES;
 create database proauto_db;
 grant all privileges on proauto_db.* to 'proauto'@'localhost'
 
-drop table customer;
-CREATE TABLE customer
-( 
-	customer_id int AUTO_INCREMENT NOT NULL,
-	customer_name char(50) NOT NULL,
-	address char(255),
-	city char(50),
-	state char(25),
-	zip_code char(10),
-	create_date DATE,
-	
-	 name_one char(100) NOT NULL,
-    phone_one char(100) NOT NULL,
-    email_one char(100) NOT NULL,
-    
-    name_two char(100),
-    phone_two char(100),
-    email_two char(100),
-    
-    name_three char(100),
-    phone_three char(100),
-    email_three char(100),
-
-    name_four char(100),
-    phone_four char(100),
-    email_four char(100),
-
-    name_five char(100),
-    phone_five char(100),
-    email_five char(100),
-
-    name_six char(100),
-    phone_six char(100),
-    email_six char(100),
-
-    name_seven char(100),
-    phone_seven char(100),
-    email_seven char(100),
-
-   	name_eight char(100),
-    phone_eight char(100),
-    email_eight char(100),
-
-    name_nine char(100),
-    phone_nine char(100),
-    email_nine char(100),
-
-    name_ten char(100),
-    phone_ten char(100),
-    email_ten char(100),
-	CONSTRAINT customer_pk PRIMARY KEY (customer_id)
-);
-
-drop table vendor;
-CREATE TABLE vendor
-( 
-	vendor_id int AUTO_INCREMENT NOT NULL,
-	vendor_name char(50) NOT NULL,
-	address char(255),
-	city char(50),
-	state char(25),
-	zip_code char(10),
-	create_date DATE,
-	
-    name_one char(100) NOT NULL,
-    phone_one char(100) NOT NULL,
-    email_one char(100) NOT NULL,
-    
-    name_two char(100),
-    phone_two char(100),
-    email_two char(100),
-    
-    name_three char(100),
-    phone_three char(100),
-    email_three char(100),
-
-    name_four char(100),
-    phone_four char(100),
-    email_four char(100),
-
-    name_five char(100),
-    phone_five char(100),
-    email_five char(100),
-
-    name_six char(100),
-    phone_six char(100),
-    email_six char(100),
-
-    name_seven char(100),
-    phone_seven char(100),
-    email_seven char(100),
-
-   	name_eight char(100),
-    phone_eight char(100),
-    email_eight char(100),
-
-    name_nine char(100),
-    phone_nine char(100),
-    email_nine char(100),
-
-    name_ten char(100),
-    phone_ten char(100),
-    email_ten char(100),
-
-    CONSTRAINT vendor_pk PRIMARY KEY (vendor_id)
-);
-
 drop table roles;
 CREATE TABLE roles
 (
@@ -248,3 +141,52 @@ CREATE TABLE raw_material
 	customer_id int NULL,
 	CONSTRAINT fk_rm_vendor FOREIGN KEY (vendor_id) REFERENCES vendor(vendor_id)
 )*/
+
+
+drop table customer;
+CREATE TABLE customer
+( 
+	customer_id int AUTO_INCREMENT NOT NULL,
+	customer_name char(50) NOT NULL,
+	address char(255),
+	city char(50),
+	state char(25),
+	zip_code char(10),
+	create_date DATE,
+	CONSTRAINT customer_pk PRIMARY KEY (customer_id)
+);
+
+drop table vendor;
+CREATE TABLE vendor
+( 
+	vendor_id int AUTO_INCREMENT NOT NULL,
+	vendor_name char(50) NOT NULL,
+	address char(255),
+	city char(50),
+	state char(25),
+	zip_code char(10),
+	create_date DATE,
+    CONSTRAINT vendor_pk PRIMARY KEY (vendor_id)
+);
+
+drop table contact;
+CREATE TABLE contact
+( 
+	contact_id int AUTO_INCREMENT NOT NULL,
+	name char(100) NOT NULL,
+    phone char(100) NOT NULL,
+    email char(100) NOT NULL,
+	fax char(100) NOT NULL,
+	notes char(100) NOT NULL,
+    CONSTRAINT vendor_pk PRIMARY KEY (contact_id)
+);
+
+drop table customer_contacts;
+CREATE TABLE customer_contacts
+(
+	customer_id int NOT NULL,
+	contact_id int NOT NULL,
+	constraint customer_contacts_pk primary key (customer_id , contact_id),
+	CONSTRAINT fk_cc_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+	CONSTRAINT fk_cc_contact_id FOREIGN KEY (contact_id) REFERENCES contact(contact_id)
+);
