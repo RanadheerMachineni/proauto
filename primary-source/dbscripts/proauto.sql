@@ -142,7 +142,6 @@ CREATE TABLE raw_material
 	CONSTRAINT fk_rm_vendor FOREIGN KEY (vendor_id) REFERENCES vendor(vendor_id)
 )*/
 
-
 drop table customer;
 CREATE TABLE customer
 ( 
@@ -176,9 +175,9 @@ CREATE TABLE contact
 	name char(100) NOT NULL,
     phone char(100) NOT NULL,
     email char(100) NOT NULL,
-	fax char(100) NOT NULL,
-	notes char(100) NOT NULL,
-    CONSTRAINT vendor_pk PRIMARY KEY (contact_id)
+	fax char(100),
+	notes char(100),
+    CONSTRAINT contact_pk PRIMARY KEY (contact_id)
 );
 
 drop table customer_contacts;
@@ -190,3 +189,35 @@ CREATE TABLE customer_contacts
 	CONSTRAINT fk_cc_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
 	CONSTRAINT fk_cc_contact_id FOREIGN KEY (contact_id) REFERENCES contact(contact_id)
 );
+
+drop table purchase_order;
+CREATE TABLE purchase_order
+(
+	po_id int NOT NULL,
+	po_version int NOT NULL,
+	pdate DATE,
+	vno_sender char(50),
+	sender_contact char(50),
+	sender_email char(50),
+	sender_phone char(50),
+	sender_fax char(50),
+	notes char(200) NULL,
+	mat_no char(50) NOT NULL,
+	mat_desc char(50) NULL,
+	mat_unitprice char(50),
+	mat_quantiy int,
+	mat_value char(50) NOT NULL,
+    CONSTRAINT po_pk PRIMARY KEY (po_id)
+);
+
+drop table machines;
+CREATE TABLE machines
+(
+	machine_id char(50) not null,
+	machine_desc char(50),
+	machine_cost char(50),
+	machine_code_type char(50),
+	machine_axle char(50),
+    CONSTRAINT machine_pk PRIMARY KEY (machine_id)
+)
+

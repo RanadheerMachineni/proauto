@@ -15,7 +15,7 @@ import java.util.List;
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
 	@Column(name="customer_id")
 	private int customerId;
 
@@ -40,10 +40,10 @@ public class Customer implements Serializable {
 	@JoinTable(
 		name="customer_contacts"
 		, joinColumns={
-			@JoinColumn(name="contact_id")
+			@JoinColumn(name="customer_id")
 			}
 		, inverseJoinColumns={
-			@JoinColumn(name="customer_id")
+			@JoinColumn(name="contact_id")
 			}
 		)
 	private List<Contact> contacts;

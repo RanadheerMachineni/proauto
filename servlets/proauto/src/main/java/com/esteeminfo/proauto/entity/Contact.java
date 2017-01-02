@@ -14,7 +14,7 @@ import java.util.List;
 public class Contact implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
 	@Column(name="contact_id")
 	private int contactId;
 
