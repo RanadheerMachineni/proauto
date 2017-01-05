@@ -37,19 +37,27 @@
 
 		}
 		
-		$(document).ready(function(){
-			
-		$("#customFields").on('click','.addCF',function(){
-			$("#customFields").append('<tr valign="top"><td><input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp; <input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp; <input type="text" class="contactField" id="email" name="email" value="" placeholder="Email"/>&nbsp; <input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" />&nbsp; <input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" /> &nbsp;<a href="javascript:void(0);" class="remCF">Remove</a></td></tr>');
-		});		
-		/*$(".addCF").click(function(){
-			$("#customFields").append('<tr valign="top"><td><input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp; <input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp; <input type="text" class="contactField" id="email" name="email" value="" placeholder="Email"/>&nbsp; <input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" />&nbsp; <input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" /> &nbsp;<a href="javascript:void(0);" class="remCF">Remove</a></td></tr>');
-		});*/
-	    $("#customFields").on('click','.remCF',function(){
+		function GetDynamicTextBox(value){
+		    return '<tr valign="top"><td><input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp; <input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp; <input type="text" class="contactField" id="email" name="email" value="" placeholder="Email"/>&nbsp; <input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" />&nbsp; <input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" />' +
+		            '<input type="button" value="Remove" onclick = "RemoveTextBox(this)" /></td></tr>'
+		}
+		function AddTextBox() {
+		    var div = document.createElement('DIV');
+		    div.innerHTML = GetDynamicTextBox("");
+		    document.getElementById("customFields").appendChild(div);
+		}
+		 
+		function RemoveTextBox(div) {
+		    document.getElementById("customFields").removeChild(div.parentNode);
+		}
+		
+		/*function RemoveExistingTextBox(div) {
+		    document.getElementById("customFieldsExisting").removeChild(div.parentNode);
+		}*/
+
+		$("#customFieldsExisting").on('click','.remCF',function(){
 				 $(this).parent().parent().remove();
 		});	
-		
-		});
 	</script>
 
     </jsp:attribute>
@@ -136,7 +144,7 @@
   	  		   <jstl:if	test="${customerSelected.customerId != null && customerSelected.customerId > 0 && customerSelected.contacts!=null}">
 	  	  		   <div class="row rowspace">
 			   		 	<div id="alreadySavedContacts" class="col-sm-12 col-md-12">
-			   		 		<table class="form-table" id="customFields">
+			   		 		<table class="form-table" id="customFieldsExisting">
 				   		 	<jstl:forEach var="eachContact" items="${customerSelected.contacts}">
 				   			 	<jstl:set var="splittedString" value="${fn:split(eachContact, '[|]')}" />
 				                <tr>
@@ -146,7 +154,6 @@
 								<input type="text" class="contactField" id="email" name="email" value="${splittedString[2]}" placeholder="Email" /> &nbsp;
 								<input type="text" class="contactField" id="fax" name="fax" value="${splittedString[3]}" placeholder="Fax" /> &nbsp;
 								<input type="text" class="contactField" id="notes" name="notes" value="${splittedString[4]}" placeholder="Notes" /> &nbsp;
-								<a href="javascript:void(0);" class="remCF">Remove</a>
 								</td>
 				                </tr>
 			           		 </jstl:forEach>
@@ -168,7 +175,7 @@
 								<input type="text" class="contactField" id="email" name="email" value="" placeholder="Email" /> &nbsp;
 								<input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" /> &nbsp;
 								<input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" /> &nbsp;
-								<a href="javascript:void(0);" class="addCF">Add Contact</a>
+								<input id="btnAdd" type="button" value="Add Contact" onclick="AddTextBox()" />
 							</td>
 						</tr>
 					</table>
