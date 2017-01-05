@@ -39,13 +39,16 @@
 		
 		$(document).ready(function(){
 			
-			
-		$(".addCF").click(function(){
+		$("#customFields").on('click','.addCF',function(){
 			$("#customFields").append('<tr valign="top"><td><input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp; <input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp; <input type="text" class="contactField" id="email" name="email" value="" placeholder="Email"/>&nbsp; <input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" />&nbsp; <input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" /> &nbsp;<a href="javascript:void(0);" class="remCF">Remove</a></td></tr>');
-			});
+		});		
+		/*$(".addCF").click(function(){
+			$("#customFields").append('<tr valign="top"><td><input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp; <input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp; <input type="text" class="contactField" id="email" name="email" value="" placeholder="Email"/>&nbsp; <input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" />&nbsp; <input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" /> &nbsp;<a href="javascript:void(0);" class="remCF">Remove</a></td></tr>');
+		});*/
 	    $("#customFields").on('click','.remCF',function(){
 				 $(this).parent().parent().remove();
-			});	
+		});	
+		
 		});
 	</script>
 
@@ -133,21 +136,18 @@
   	  		   <jstl:if	test="${customerSelected.customerId != null && customerSelected.customerId > 0 && customerSelected.contacts!=null}">
 	  	  		   <div class="row rowspace">
 			   		 	<div id="alreadySavedContacts" class="col-sm-12 col-md-12">
-			   		 		<table>
+			   		 		<table class="form-table" id="customFields">
 				   		 	<jstl:forEach var="eachContact" items="${customerSelected.contacts}">
 				   			 	<jstl:set var="splittedString" value="${fn:split(eachContact, '[|]')}" />
-				   		 	
 				                <tr>
-				                
 				                <td>
 								<input type="text" class="contactField" id="contactname" name="contactname" value="${splittedString[0]}" placeholder="Name" /> &nbsp;
 								<input type="text" class="contactField" id="phone" name="phone" value="${splittedString[1]}" placeholder="Phone" /> &nbsp;
 								<input type="text" class="contactField" id="email" name="email" value="${splittedString[2]}" placeholder="Email" /> &nbsp;
 								<input type="text" class="contactField" id="fax" name="fax" value="${splittedString[3]}" placeholder="Fax" /> &nbsp;
 								<input type="text" class="contactField" id="notes" name="notes" value="${splittedString[4]}" placeholder="Notes" /> &nbsp;
-								<a href="javascript:void(0);" class="addCF">Add Contact</a>
+								<a href="javascript:void(0);" class="remCF">Remove</a>
 								</td>
-				               
 				                </tr>
 			           		 </jstl:forEach>
 			           		 </table>

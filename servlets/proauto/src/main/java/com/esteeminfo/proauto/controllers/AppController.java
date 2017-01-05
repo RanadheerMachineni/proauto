@@ -191,7 +191,12 @@ public class AppController {
 			HttpServletRequest request, HttpServletResponse response) {
 		logger.info("in downloadFile "+ regType +" , "+id+" , "+fname);
 		String fileNameFromUI = fname+ "." + ext;
-		FilesUpload filesUpload = employeeService.findFile(Integer.valueOf(id),fileNameFromUI);
+		FilesUpload filesUpload = null;
+		if(regType.equalsIgnoreCase("customer")){
+			filesUpload = customerService.findFile(Integer.valueOf(id),fileNameFromUI);
+		}else if(regType.equalsIgnoreCase("employee")){
+			filesUpload = employeeService.findFile(Integer.valueOf(id),fileNameFromUI);
+		}
 		if(filesUpload!=null){
 			 byte[] data = filesUpload.getFileData();
 			 String fileName = filesUpload.getFileName();
