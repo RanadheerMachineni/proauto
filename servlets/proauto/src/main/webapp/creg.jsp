@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <t:layout>
 	<jsp:attribute name="header">
@@ -41,10 +42,10 @@
 			
 		$(".addCF").click(function(){
 			$("#customFields").append('<tr valign="top"><td><input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp; <input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp; <input type="text" class="contactField" id="email" name="email" value="" placeholder="Email"/>&nbsp; <input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" />&nbsp; <input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" /> &nbsp;<a href="javascript:void(0);" class="remCF">Remove</a></td></tr>');
-		});
+			});
 	    $("#customFields").on('click','.remCF',function(){
-	        $(this).parent().parent().remove();
-	    });
+				 $(this).parent().parent().remove();
+			});	
 		});
 	</script>
 
@@ -127,6 +128,34 @@
 		      			<label>Contact details</label>
 		    		</div>
   	  		   </div>
+  	  		  
+  	  		  	 
+  	  		   <jstl:if	test="${customerSelected.customerId != null && customerSelected.customerId > 0 && customerSelected.contacts!=null}">
+	  	  		   <div class="row rowspace">
+			   		 	<div id="alreadySavedContacts" class="col-sm-12 col-md-12">
+			   		 		<table>
+				   		 	<jstl:forEach var="eachContact" items="${customerSelected.contacts}">
+				   			 	<jstl:set var="splittedString" value="${fn:split(eachContact, '[|]')}" />
+				   		 	
+				                <tr>
+				                
+				                <td>
+								<input type="text" class="contactField" id="contactname" name="contactname" value="${splittedString[0]}" placeholder="Name" /> &nbsp;
+								<input type="text" class="contactField" id="phone" name="phone" value="${splittedString[1]}" placeholder="Phone" /> &nbsp;
+								<input type="text" class="contactField" id="email" name="email" value="${splittedString[2]}" placeholder="Email" /> &nbsp;
+								<input type="text" class="contactField" id="fax" name="fax" value="${splittedString[3]}" placeholder="Fax" /> &nbsp;
+								<input type="text" class="contactField" id="notes" name="notes" value="${splittedString[4]}" placeholder="Notes" /> &nbsp;
+								<a href="javascript:void(0);" class="addCF">Add Contact</a>
+								</td>
+				               
+				                </tr>
+			           		 </jstl:forEach>
+			           		 </table>
+			    	 	</div>
+				   </div>
+				</jstl:if>							
+  	  		   
+  	  		   
   	  		   <br>
   	  		   <div class="row">
   	  		   		<div class="col-sm-12 col-md-12">
@@ -139,7 +168,6 @@
 								<input type="text" class="contactField" id="email" name="email" value="" placeholder="Email" /> &nbsp;
 								<input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" /> &nbsp;
 								<input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" /> &nbsp;
-								
 								<a href="javascript:void(0);" class="addCF">Add Contact</a>
 							</td>
 						</tr>

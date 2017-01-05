@@ -254,12 +254,15 @@ public class AppController {
 
 		Map<String,List<String>> contactsMap =  new HashMap<String, List<String>>();
 		for(int i=0;i<contactname.length;i++){
-			List<String> li = new ArrayList<String>();
-			li.add(phone[i]);
-			li.add(email[i]);
-			li.add(fax[i]);
-			li.add(notes[i]);
-			contactsMap.put(contactname[i], li);
+			if(contactname[i]!=null && contactname[i].length()>0){
+				List<String> li = new ArrayList<String>();
+				li.add(phone[i]);
+				li.add(email[i]);
+				li.add(fax[i]);
+				li.add(notes[i]);
+				contactsMap.put(contactname[i], li);
+			}
+		
 		}
 		
 		if(uploadedFilesArray!=null && uploadedFilesArray.length>0){

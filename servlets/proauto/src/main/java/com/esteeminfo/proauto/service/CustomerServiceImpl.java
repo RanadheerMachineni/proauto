@@ -68,7 +68,9 @@ public class CustomerServiceImpl implements CustomerService {
 		if(customer.getContacts()!=null && customer.getContacts().size()>0){
 			List<String> contactss =  new ArrayList<String>();
 			for(Contact contact: customer.getContacts()){
-				contactss.add(contact.getName()+"|"+contact.getPhone()+"|"+contact.getEmail()+"|"+contact.getFax()+"|"+contact.getNotes());
+				if(contact!=null && contact.getName()!=null && contact.getName().length()>0){
+					contactss.add(contact.getName()+"|"+contact.getPhone()+"|"+contact.getEmail()+"|"+contact.getFax()+"|"+contact.getNotes());
+				}
 			}
 			customerDTO.setContacts(contactss);
 		}	
