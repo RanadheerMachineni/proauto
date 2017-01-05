@@ -2,62 +2,92 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <t:layout>
 	<jsp:attribute name="header">
 	<script>
+		$(document).ready(
+				function() {
+					$('#customerRegForm').validate(
+							{
+								rules : {
+									cName : {
+										minlength : 2,
+										required : true
+									},
+									cAddress : {
+										minlength : 2,
+										required : true
+									}
+								},
+								highlight : function(element) {
+									$(element).closest('.control-group')
+											.removeClass('success').addClass(
+													'error');
+								},
+								success : function(element) {
+									element.text('OK!').addClass('valid')
+											.closest('.control-group')
+											.removeClass('error').addClass(
+													'success');
+								}
+							});
+
+				});
+
 		function customLoad() {
 		}
-		
-		function removeFile(fileName){
+
+		function removeFile(fileName) {
 			//alert(fileName);
 			var existingInputValue = $('input#uploadedFiles').val();
 			var newValue = existingInputValue.replace(fileName, "");
 			$('input#uploadedFiles').val(newValue);
 			$('#alreadyUploadedFiles tr').each(function() {
-			    var href = $(this).find("td:first").find("a").attr('href');  
-			    if (href.toLowerCase().indexOf(fileName.toLowerCase()) >= 0){
-			        $(this).closest('tr').remove();
-			    }
+				var href = $(this).find("td:first").find("a").attr('href');
+				if (href.toLowerCase().indexOf(fileName.toLowerCase()) >= 0) {
+					$(this).closest('tr').remove();
+				}
 			});
 		}
-		
-		function addMoreFiles() {  
-			   $("#fileuploads").append(document.createElement("br"));  
-			   $("#fileuploads").append('<input type="file" name="eFiles" id="eFiles" multiple>');  
-		}  
-		
+
+		function addMoreFiles() {
+			$("#fileuploads").append(document.createElement("br"));
+			$("#fileuploads").append(
+					'<input type="file" name="eFiles" id="eFiles" multiple>');
+		}
+
 		function unSelectFiles() {
 			//$("#eFiles").val('');
-			
+
 			$('input[name="eFiles"]').each(function() {
-			    $(this).val('');
+				$(this).val('');
 			});
 
 		}
-		
-		function GetDynamicTextBox(value){
-		    return '<tr valign="top"><td><input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp; <input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp; <input type="text" class="contactField" id="email" name="email" value="" placeholder="Email"/>&nbsp; <input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" />&nbsp; <input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" />' +
-		            '<input type="button" value="Remove" onclick = "RemoveTextBox(this)" /></td></tr>'
+
+		function GetDynamicTextBox(value) {
+			return '<tr valign="top"><td><input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp; <input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp; <input type="text" class="contactField" id="email" name="email" value="" placeholder="Email"/>&nbsp; <input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" />&nbsp; <input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" />'
+					+ '<input type="button" value="Remove" onclick = "RemoveTextBox(this)" /></td></tr>'
 		}
 		function AddTextBox() {
-		    var div = document.createElement('DIV');
-		    div.innerHTML = GetDynamicTextBox("");
-		    document.getElementById("customFields").appendChild(div);
+			var div = document.createElement('DIV');
+			div.innerHTML = GetDynamicTextBox("");
+			document.getElementById("customFields").appendChild(div);
 		}
-		 
+
 		function RemoveTextBox(div) {
-		    document.getElementById("customFields").removeChild(div.parentNode);
+			document.getElementById("customFields").removeChild(div.parentNode);
 		}
-		
+
 		/*function RemoveExistingTextBox(div) {
 		    document.getElementById("customFieldsExisting").removeChild(div.parentNode);
 		}*/
 
-		$("#customFieldsExisting").on('click','.remCF',function(){
-				 $(this).parent().parent().remove();
-		});	
+		$("#customFieldsExisting").on('click', '.remCF', function() {
+			$(this).parent().parent().remove();
+		});
 	</script>
 
     </jsp:attribute>
@@ -106,34 +136,39 @@
 					</div>
 			</div>
 			
-		<form id="customerRegForm" role="form" action="creg?${_csrf.parameterName}=${_csrf.token}" method="post"
-					 enctype="multipart/form-data">  
+		<form id="customerRegForm" role="form"
+							action="creg?${_csrf.parameterName}=${_csrf.token}" method="post"
+							enctype="multipart/form-data">  
 		    <input type="hidden" name="regType" value="customer">
 			   <br>
 			   			   		    <input type="hidden" name="cid" id="cid"
-							value="${customerSelected.customerId}">
+								value="${customerSelected.customerId}">
 			   <input type="hidden" name="uploadedFiles" id="uploadedFiles"
 								value="${customerSelected.files}">		
   	  		   <div class="row">
-  	  		   		<div class="col-sm-2 col-md-2">
-		      			<label for="cName">Customer Name:</label>
-		    		</div>
-		   		 	<div class="col-sm-3 col-md-3">
-		      			<input type="text" class="form-control" id="cName"
-									name="cName" value="${customerSelected.customerName}">
-		    	 	</div>
-  	  		   </div>
+	  	  		   	<div class="control-group">
+	  	  		   		<div class="col-sm-2 col-md-2">
+			      			<label class="control-label" for="cName">Customer Name:</label>
+			    		</div>
+			   		 	<div class="col-sm-3 col-md-3 controls">
+			      			<input type="text" class="form-control" id="cName"
+											name="cName" value="${customerSelected.customerName}">
+			    	 	</div>
+	  	  			  </div>
+	  	  		</div>
   	  		  <br>
   	  		  <div class="row">
+  	  		  	  	  		   	<div class="control-group">
+  	  		  
   	  		   		<div class="col-sm-2 col-md-2">
-		      			<label for="cAddress">Address:</label>
+		      			<label class="control-label" for="cAddress">Address:</label>
 		    		</div>
-		   		 	<div class="col-sm-3 col-md-3">
+		   		 	<div class="col-sm-3 col-md-3 controls">
 		      			<textarea class="form-control" id="cAddress" name="cAddress">${customerSelected.address}</textarea>
 		    	 	</div>
+		    	 	</div>
   	  		   </div>
-  	  		   <br>
- 	  		 
+ 	  		 <br>
  	  		  <div class="row">
   	  		   		<div class="col-sm-12 col-md-12">
 		      			<label>Contact details</label>
@@ -141,19 +176,28 @@
   	  		   </div>
   	  		  
   	  		  	 
-  	  		   <jstl:if	test="${customerSelected.customerId != null && customerSelected.customerId > 0 && customerSelected.contacts!=null}">
+  	  		   <jstl:if
+								test="${customerSelected.customerId != null && customerSelected.customerId > 0 && customerSelected.contacts!=null}">
 	  	  		   <div class="row rowspace">
 			   		 	<div id="alreadySavedContacts" class="col-sm-12 col-md-12">
 			   		 		<table class="form-table" id="customFieldsExisting">
-				   		 	<jstl:forEach var="eachContact" items="${customerSelected.contacts}">
-				   			 	<jstl:set var="splittedString" value="${fn:split(eachContact, '[|]')}" />
+				   		 	<jstl:forEach var="eachContact"
+												items="${customerSelected.contacts}">
+				   			 	<jstl:set var="splittedString"
+													value="${fn:split(eachContact, '[|]')}" />
 				                <tr>
 				                <td>
-								<input type="text" class="contactField" id="contactname" name="contactname" value="${splittedString[0]}" placeholder="Name" /> &nbsp;
-								<input type="text" class="contactField" id="phone" name="phone" value="${splittedString[1]}" placeholder="Phone" /> &nbsp;
-								<input type="text" class="contactField" id="email" name="email" value="${splittedString[2]}" placeholder="Email" /> &nbsp;
-								<input type="text" class="contactField" id="fax" name="fax" value="${splittedString[3]}" placeholder="Fax" /> &nbsp;
-								<input type="text" class="contactField" id="notes" name="notes" value="${splittedString[4]}" placeholder="Notes" /> &nbsp;
+								<input type="text" class="contactField" id="contactname"
+														name="contactname" value="${splittedString[0]}"
+														placeholder="Name" /> &nbsp;
+								<input type="text" class="contactField" id="phone" name="phone"
+														value="${splittedString[1]}" placeholder="Phone" /> &nbsp;
+								<input type="text" class="contactField" id="email" name="email"
+														value="${splittedString[2]}" placeholder="Email" /> &nbsp;
+								<input type="text" class="contactField" id="fax" name="fax"
+														value="${splittedString[3]}" placeholder="Fax" /> &nbsp;
+								<input type="text" class="contactField" id="notes" name="notes"
+														value="${splittedString[4]}" placeholder="Notes" /> &nbsp;
 								</td>
 				                </tr>
 			           		 </jstl:forEach>
@@ -170,12 +214,18 @@
 	  	  		   	<table class="form-table" id="customFields">
 						<tr valign="top">
 							<td>
-								<input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp;
-								<input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp;
-								<input type="text" class="contactField" id="email" name="email" value="" placeholder="Email" /> &nbsp;
-								<input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" /> &nbsp;
-								<input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" /> &nbsp;
-								<input id="btnAdd" type="button" value="Add Contact" onclick="AddTextBox()" />
+								<input type="text" class="contactField" id="contactname"
+												name="contactname" value="" placeholder="Name" /> &nbsp;
+								<input type="text" class="contactField" id="phone" name="phone"
+												value="" placeholder="Phone" /> &nbsp;
+								<input type="text" class="contactField" id="email" name="email"
+												value="" placeholder="Email" /> &nbsp;
+								<input type="text" class="contactField" id="fax" name="fax"
+												value="" placeholder="Fax" /> &nbsp;
+								<input type="text" class="contactField" id="notes" name="notes"
+												value="" placeholder="Notes" /> &nbsp;
+								<input id="btnAdd" type="button" value="Add Contact"
+												onclick="AddTextBox()" />
 							</td>
 						</tr>
 					</table>
@@ -184,23 +234,28 @@
   	  		   </div>
   	  		   <br>
   	  		   
-  	  		   <jstl:if	test="${customerSelected.customerId != null && customerSelected.customerId > 0 && customerSelected.files!=null}">
+  	  		   <jstl:if
+								test="${customerSelected.customerId != null && customerSelected.customerId > 0 && customerSelected.files!=null}">
 	  	  		   <div class="row rowspace">
 	  	  		  		 <div class="col-sm-2 col-md-2">
 			      			<label for="uFiles">Uploaded file/s:</label>
 			    		</div>
 			   		 	<div id="alreadyUploadedFiles" class="col-sm-4 col-md-4">
 			   		 		<table>
-				   		 	<jstl:forEach var="eachFile" items="${customerSelected.files}">
+				   		 	<jstl:forEach var="eachFile"
+												items="${customerSelected.files}">
 				                <tr>
 				                    <td>
-				                    	<a href="filedownload/customer/${customerSelected.customerId}/${eachFile}"> 	
+				                    	<a
+														href="filedownload/customer/${customerSelected.customerId}/${eachFile}"> 	
 				                    		<jstl:out value="${eachFile}" />
 										</a>
 				                    </td>
 				                    
 				                    <td style="padding: 3px;">
-				                    	<button type="button" class="btn btn-default btn-sm" name="deleteFile" id="deleteFile" onClick="removeFile('${eachFile}');">
+				                    	<button type="button"
+															class="btn btn-default btn-sm" name="deleteFile"
+															id="deleteFile" onClick="removeFile('${eachFile}');">
         									 <span class="glyphicon glyphicon-remove"></span> Remove 
         								</button>
 				                   		<!--  <input type="button" name="deleteFile" id="deleteFile" value="Delete" onClick="deleteFile(${employeeSelected.employeeId},${eachFile});" > -->
@@ -225,10 +280,13 @@
 
   			   <div class="row rowspace">
   	  		  		 <div class="col-sm-2 col-md-2">
-		      			    <input type="button" name="addmore" id="addmore" value="Add More" onClick="addMoreFiles();" />  
+		      			    <input type="button" name="addmore" id="addmore"
+										value="Add More" onClick="addMoreFiles();" />  
 		    		</div>
 		    		<div class="col-sm-2 col-md-2">
-		           		 <input type="button" name="unSelectFile" id="unSelectFile" value="Reset file selection" onClick="unSelectFiles();"/>
+		           		 <input type="button" name="unSelectFile"
+										id="unSelectFile" value="Reset file selection"
+										onClick="unSelectFiles();" />
 		    	 	</div>	
 			  </div>
   	  		   <br>
@@ -243,20 +301,19 @@
 						      <input id="createCustomerSubmit" type=submit value="Update">
 						      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						      <a class="btn btn-default"
-										href="${pageContext.request.contextPath}/creg" role="button">Cancel</a>
+											href="${pageContext.request.contextPath}/creg" role="button">Cancel</a>
 						</jstl:if>
 	    	 		</div>
 	  			</div>
 	  			<br>
 	  			<input type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" />
+								value="${_csrf.token}" />
 		</form>	
   	  		</div>
   	  		
   	  		</div>
   	  					<!--  RHS Side -->
-						<div
-					class="col-md-6 col-sm-6 col-xs-6">
+						<div class="col-md-6 col-sm-6 col-xs-6">
 	   		 					<br>
 	   		 					<form id="customerSearchForm" role="form" action="creg"
 						method="GET">  
