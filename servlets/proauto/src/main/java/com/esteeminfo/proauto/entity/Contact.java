@@ -14,7 +14,7 @@ import java.util.List;
 public class Contact implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="contact_id")
 	private int contactId;
 
@@ -27,10 +27,6 @@ public class Contact implements Serializable {
 	private String notes;
 
 	private String phone;
-
-	//bi-directional many-to-many association to Customer
-	@ManyToMany(mappedBy="contacts")
-	private List<Customer> customers;
 
 	public Contact() {
 	}
@@ -81,14 +77,6 @@ public class Contact implements Serializable {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public List<Customer> getCustomers() {
-		return this.customers;
-	}
-
-	public void setCustomers(List<Customer> customers) {
-		this.customers = customers;
 	}
 
 }

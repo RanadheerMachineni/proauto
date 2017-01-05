@@ -124,9 +124,7 @@
 	      			<img class="logo-customer" alt="" src="../../../${pageContext.request.contextPath}/images/customerlogo.png">
 	    		</div>
 	    		<div class="col-sm-8 col-md-8">
-	      				<div class="customerHeaderContent">
-							<h3>Ennem Excel Engineering(P) Limited</h3>
-						</div>
+						
 	    		</div>
 	   		 	<div class="col-sm-2 col-md-2">
 	      			<img class="logo-proauto" alt="" src="../../../${pageContext.request.contextPath}/images/proautologo.png">

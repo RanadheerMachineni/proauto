@@ -86,11 +86,8 @@
 	}
 
 	function addMoreFiles() {  
-		   var div = document.getElementById('fileuploads');  
-		   var field = div.getElementsByTagName('input')[0];  
-		      
-		    div.appendChild(document.createElement("br"));  
-		    div.appendChild(field.cloneNode(false));  
+		   $("#fileuploads").append(document.createElement("br"));  
+		   $("#fileuploads").append('<input type="file" name="eFiles" id="eFiles" multiple>');  
 	}  
 	
 	function unSelectFiles() {

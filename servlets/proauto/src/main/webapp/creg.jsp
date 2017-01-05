@@ -5,36 +5,36 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <t:layout>
 	<jsp:attribute name="header">
-<script>
-	function ValidateForm(form) {
-		var cName = $("#cName").val();
-		var cAddress = $("#cAddress").val();
-		var cnameOne = $("#name_one").val();
-		var cPhoneOne = $("#phone_one").val();
-		var cEmailOne = $("#email_one").val();
-		//var div = document.getElementById('errorDiv');
-		if (!cName || !cAddress || !cnameOne) {
-			alert('Customer Name/Address/First contact can not be empty');
-			//event.preventDefault();
-			return false;
+	<script>
+		function customLoad() {
 		}
+	
+		function addMoreFiles() {  
+			   $("#fileuploads").append(document.createElement("br"));  
+			   $("#fileuploads").append('<input type="file" name="eFiles" id="eFiles" multiple>');  
+		}  
 		
-		var pattern = /[0-9\-\(\)\s]+/;
-		if (!cPhoneOne || (cPhoneOne.length < 10) || (!pattern.test(cPhoneOne))) {
-			alert('Please enter a valid phone number(First row).');
-			return false;
-		}
-
-		var emailRe = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		if (!cEmailOne || !emailRe.test(cEmailOne)) {
-			alert('Please enter a valid email address(First row).');
-			return false;
+		function unSelectFiles() {
+			//$("#eFiles").val('');
+			
+			$('input[name="eFiles"]').each(function() {
+			    $(this).val('');
+			});
 
 		}
 		
-		return true;
-	}
-</script>
+		$(document).ready(function(){
+			
+			
+		$(".addCF").click(function(){
+			$("#customFields").append('<tr valign="top"><td><input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp; <input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp; <input type="text" class="contactField" id="email" name="email" value="" placeholder="Email"/>&nbsp; <input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" />&nbsp; <input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" /> &nbsp;<a href="javascript:void(0);" class="remCF">Remove</a></td></tr>');
+		});
+	    $("#customFields").on('click','.remCF',function(){
+	        $(this).parent().parent().remove();
+	    });
+		});
+	</script>
+
     </jsp:attribute>
 
 	<jsp:body>
@@ -59,9 +59,11 @@
 	 	  		</div>
 			</jstl:if>
 			<jstl:if test="${pageContext.request.userPrincipal.name != null}">
+		<div class="col-md-10 col-sm-10 col-xs-10">
+			
 		<div class="pageHeadings"> Customer Registration</div>
 		<br>
-					<div class="col-md-4 col-sm-4 col-xs-4">
+							<div class="formDiv">
 		
 					<jstl:if test="${customerSelected.customerName == null}">
 						      			<label>Create Customer</label>
@@ -78,139 +80,109 @@
 			
 					</div>
 			</div>
-		
-		<form id="customerRegForm" role="form" action="creg" method="post"
-						onsubmit="return ValidateForm(this);">  
+			
+		<form id="customerRegForm" role="form" action="creg?${_csrf.parameterName}=${_csrf.token}" method="post"
+					 enctype="multipart/form-data">  
 		    <input type="hidden" name="regType" value="customer">
 			   <br>
-			   			   		    <input type="hidden" name="cid" id="cid" value="${customerSelected.customerId}">
-			   
+			   			   		    <input type="hidden" name="cid" id="cid"
+							value="${customerSelected.customerId}">
+			   <input type="hidden" name="uploadedFiles" id="uploadedFiles"
+								value="${customerSelected.files}">		
   	  		   <div class="row">
-  	  		   		<div class="col-sm-4 col-md-4">
+  	  		   		<div class="col-sm-2 col-md-2">
 		      			<label for="cName">Customer Name:</label>
 		    		</div>
-		   		 	<div class="col-sm-6 col-md-6">
+		   		 	<div class="col-sm-3 col-md-3">
 		      			<input type="text" class="form-control" id="cName"
 									name="cName" value="${customerSelected.customerName}">
 		    	 	</div>
   	  		   </div>
   	  		  <br>
   	  		  <div class="row">
-  	  		   		<div class="col-sm-4 col-md-4">
+  	  		   		<div class="col-sm-2 col-md-2">
 		      			<label for="cAddress">Address:</label>
 		    		</div>
-		   		 	<div class="col-sm-6 col-md-6">
+		   		 	<div class="col-sm-3 col-md-3">
 		      			<textarea class="form-control" id="cAddress" name="cAddress">${customerSelected.address}</textarea>
 		    	 	</div>
   	  		   </div>
   	  		   <br>
  	  		 
  	  		  <div class="row">
-  	  		   		<div class="col-sm-10 col-md-10">
+  	  		   		<div class="col-sm-12 col-md-12">
 		      			<label>Contact details</label>
 		    		</div>
   	  		   </div>
   	  		   <br>
   	  		   <div class="row">
-  	  		   		<div class="col-sm-10 col-md-10">
-	  	  		   		<table border="1">
-	  	  		   		
-								<tr>
-										<th>Name</th>
-										<th>Phone</th>
-										<th>Email</th>
-									</tr>
-								<tr>
-									<td><input type="text" id="name_one" name="name_one"
-											value="${customerSelected.name_one}"></td>
-									<td><input type="text" id="phone_one" name="phone_one"
-											value="${customerSelected.phone_one}"></td>
-									<td><input type="text" id="email_one" name="email_one"
-											value="${customerSelected.email_one}"></td>
-								</tr>
-								<tr>
-									<td><input type="text" name="name_two"
-											value="${customerSelected.name_two}"></td>
-									<td><input type="text" name="phone_two"
-											value="${customerSelected.phone_two}"></td>
-									<td><input type="text" name="email_two"
-											value="${customerSelected.email_two}"></td>
-								</tr>
-								<tr>
-									<td><input type="text" name="name_three"
-											value="${customerSelected.name_three}"></td>
-									<td><input type="text" name="phone_three"
-											value="${customerSelected.phone_three}"></td>
-									<td><input type="text" name="email_three"
-											value="${customerSelected.email_three}"></td>
+  	  		   		<div class="col-sm-12 col-md-12">
+	  	  		   	
+	  	  		   	<table class="form-table" id="customFields">
+						<tr valign="top">
+							<td>
+								<input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp;
+								<input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp;
+								<input type="text" class="contactField" id="email" name="email" value="" placeholder="Email" /> &nbsp;
+								<input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" /> &nbsp;
+								<input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" /> &nbsp;
+								
+								<a href="javascript:void(0);" class="addCF">Add Contact</a>
+							</td>
+						</tr>
+					</table>
 
-								</tr>
-								<tr>
-									<td><input type="text" name="name_four"
-											value="${customerSelected.name_four}"></td>
-									<td><input type="text" name="phone_four"
-											value="${customerSelected.phone_four}"></td>
-									<td><input type="text" name="email_four"
-											value="${customerSelected.email_four}"></td>
-
-								</tr>
-								<tr>
-									<td><input type="text" name="name_five"
-											value="${customerSelected.name_five}"></td>
-									<td><input type="text" name="phone_five"
-											value="${customerSelected.phone_five}"></td>
-									<td><input type="text" name="email_five"
-											value="${customerSelected.email_five}"></td>
-
-								</tr>
-								<tr>
-									<td><input type="text" name="name_six"
-											value="${customerSelected.name_six}"></td>
-									<td><input type="text" name="phone_six"
-											value="${customerSelected.phone_six}"></td>
-									<td><input type="text" name="email_six"
-											value="${customerSelected.email_six}"></td>
-
-								</tr>
-								<tr>
-									<td><input type="text" name="name_seven"
-											value="${customerSelected.name_seven}"></td>
-									<td><input type="text" name="phone_seven"
-											value="${customerSelected.phone_seven}"></td>
-									<td><input type="text" name="email_seven"
-											value="${customerSelected.email_seven}"></td>
-
-								</tr>
-								<tr>
-									<td><input type="text" name="name_eight"
-											value="${customerSelected.name_eight}"></td>
-									<td><input type="text" name="phone_eight"
-											value="${customerSelected.phone_eight}"></td>
-									<td><input type="text" name="email_eight"
-											value="${customerSelected.email_eight}"></td>
-
-								</tr>
-								<tr>
-									<td><input type="text" name="name_nine"
-											value="${customerSelected.name_nine}"></td>
-									<td><input type="text" name="phone_nine"
-											value="${customerSelected.phone_nine}"></td>
-									<td><input type="text" name="email_nine"
-											value="${customerSelected.email_nine}"></td>
-
-								</tr>
-								<tr>
-									<td><input type="text" name="name_ten"
-											value="${customerSelected.name_ten}"></td>
-									<td><input type="text" name="phone_ten"
-											value="${customerSelected.phone_ten}"></td>
-									<td><input type="text" name="email_ten"
-											value="${customerSelected.email_ten}"></td>
-
-								</tr>
-	  	  		   		</table>
 		    		</div>
   	  		   </div>
+  	  		   <br>
+  	  		   
+  	  		   <jstl:if	test="${customer.customerId != null && customerSelected.customerId > 0 && customerSelected.files!=null}">
+	  	  		   <div class="row rowspace">
+	  	  		  		 <div class="col-sm-2 col-md-2">
+			      			<label for="uFiles">Uploaded file/s:</label>
+			    		</div>
+			   		 	<div id="alreadyUploadedFiles" class="col-sm-4 col-md-4">
+			   		 		<table>
+				   		 	<jstl:forEach var="eachFile" items="${customerSelected.files}">
+				                <tr>
+				                    <td>
+				                    	<a href="filedownload/customer/${customerSelected.customerId}/${eachFile}"> 	
+				                    		<jstl:out value="${eachFile}" />
+										</a>
+				                    </td>
+				                    
+				                    <td style="padding: 3px;">
+				                    	<button type="button" class="btn btn-default btn-sm" name="deleteFile" id="deleteFile" onClick="removeFile('${eachFile}');">
+        									 <span class="glyphicon glyphicon-remove"></span> Remove 
+        								</button>
+				                   		<!--  <input type="button" name="deleteFile" id="deleteFile" value="Delete" onClick="deleteFile(${employeeSelected.employeeId},${eachFile});" > -->
+				                    </td>
+				                </tr>
+			           		 </jstl:forEach>
+			           		 </table>
+			    	 	</div>
+				   </div>
+				</jstl:if>							
+  	  		   
+  	  		   
+  	  		   <div class="row rowspace">
+  	  		  		 <div class="col-sm-2 col-md-2">
+		      			<label for="eFiles">Upload File/s:</label>
+		    		</div>
+		   		 	<div id="fileuploads" class="col-sm-4 col-md-4">
+		           		 <input type="file" name="eFiles" id="eFiles" multiple>
+		    	 	</div>
+		    	 	
+			   </div>
+
+  			   <div class="row rowspace">
+  	  		  		 <div class="col-sm-2 col-md-2">
+		      			    <input type="button" name="addmore" id="addmore" value="Add More" onClick="addMoreFiles();" />  
+		    		</div>
+		    		<div class="col-sm-2 col-md-2">
+		           		 <input type="button" name="unSelectFile" id="unSelectFile" value="Reset file selection" onClick="unSelectFiles();"/>
+		    	 	</div>	
+			  </div>
   	  		   <br>
 			   <div class="row">
 	   		 		<div class="col-sm-8 col-md-8">
@@ -222,7 +194,8 @@
 							  <input type="hidden" name="create" value="false">
 						      <input id="createCustomerSubmit" type=submit value="Update">
 						      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						      <a class="btn btn-default" href="${pageContext.request.contextPath}/creg" role="button">Cancel</a>
+						      <a class="btn btn-default"
+										href="${pageContext.request.contextPath}/creg" role="button">Cancel</a>
 						</jstl:if>
 	    	 		</div>
 	  			</div>
@@ -232,10 +205,10 @@
 		</form>	
   	  		</div>
   	  		
-  	  		
+  	  		</div>
   	  					<!--  RHS Side -->
 						<div
-					class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4">
+					class="col-md-6 col-sm-6 col-xs-6">
 	   		 					<br>
 	   		 					<form id="customerSearchForm" role="form" action="creg"
 						method="GET">  
@@ -262,7 +235,6 @@
 								      <tr>
 								        <th>Customer Name</th>
 								        <th>Address</th>
-			   					        <th>Contact</th>
 								      </tr>
 								    </thead>
 								    <tbody>
@@ -270,12 +242,13 @@
 							                <tr>
 							                    <td>
 							                    	<a
-										href="${pageContext.request.contextPath}/creg?customerSelected=${customer.customerName}">
+										href="${pageContext.request.contextPath}/creg?customerSelected=${customer.customerId}">
 								                    	<jstl:out value="${customer.customerName}" />
 								                    </a>
 												</td>
-							                    <td><jstl:out value="${customer.address}" /></td>
-							                    <td><jstl:out value="${customer.name_one}" /></td>
+							                    <td><jstl:out
+											value="${customer.address}" /></td>
+							               
 							                </tr>
 							            </jstl:forEach>
 								    </tbody>

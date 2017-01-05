@@ -190,6 +190,16 @@ CREATE TABLE customer_contacts
 	CONSTRAINT fk_cc_contact_id FOREIGN KEY (contact_id) REFERENCES contact(contact_id)
 );
 
+CREATE TABLE customer_files
+(
+	customer_id int NOT NULL,
+	upload_id int NOT NULL,
+	constraint customer_files_pk primary key (customer_id , upload_id),
+	CONSTRAINT fk_cf_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+	CONSTRAINT fk_cf_upload_id FOREIGN KEY (upload_id) REFERENCES files_upload(upload_id)
+
+);
+
 drop table purchase_order;
 CREATE TABLE purchase_order
 (

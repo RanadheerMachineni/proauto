@@ -2,8 +2,13 @@ package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -15,7 +20,7 @@ import java.util.List;
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="customer_id")
 	private int customerId;
 
@@ -46,7 +51,31 @@ public class Customer implements Serializable {
 			@JoinColumn(name="contact_id")
 			}
 		)
-	private List<Contact> contacts;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private Set<Contact> contacts;
+
+	//uni-directional many-to-many association to FilesUpload
+	@ManyToMany
+	@JoinTable(
+		name="customer_files"
+		, joinColumns={
+			@JoinColumn(name="customer_id")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="upload_id")
+			}
+		)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private Set<FilesUpload> filesUploads;
+	
+	
+	public Set<FilesUpload> getFilesUploads() {
+		return filesUploads;
+	}
+
+	public void setFilesUploads(Set<FilesUpload> filesUploads) {
+		this.filesUploads = filesUploads;
+	}
 
 	public Customer() {
 	}
@@ -107,11 +136,11 @@ public class Customer implements Serializable {
 		this.zipCode = zipCode;
 	}
 
-	public List<Contact> getContacts() {
+	public Set<Contact> getContacts() {
 		return this.contacts;
 	}
 
-	public void setContacts(List<Contact> contacts) {
+	public void setContacts(Set<Contact> contacts) {
 		this.contacts = contacts;
 	}
 

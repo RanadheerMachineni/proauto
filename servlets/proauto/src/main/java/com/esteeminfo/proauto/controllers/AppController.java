@@ -29,9 +29,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.esteeminfo.proauto.dto.CustomerDTO;
 import com.esteeminfo.proauto.dto.EmployeeDTO;
+import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.FilesUpload;
+import com.esteeminfo.proauto.service.CustomerService;
 import com.esteeminfo.proauto.service.EmployeeService;
 
 @Controller
@@ -42,6 +45,11 @@ public class AppController {
 	
 	@Autowired(required=true)
 	private EmployeeService employeeService ;
+	
+
+	@Autowired(required=true)
+	private CustomerService customerService ;
+
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
@@ -106,17 +114,6 @@ public class AppController {
 		return "rmat";
 	}
 
-	
-	@RequestMapping(value = { "/creg"}, method = RequestMethod.GET)
-	public String showcregPage(Model model, @RequestParam(value="customerSelected", required=false) String customerSelected, HttpServletRequest request, HttpServletResponse response) {
-		
-		return "creg";
-	}
-	
-	@RequestMapping(value = { "creg"}, method = RequestMethod.POST)
-	public String postcregPage(Model model, HttpServletRequest request, HttpServletResponse response) {	return "creg";
-	}
-	
 	
 	@RequestMapping(value = { "/ereg"}, method = RequestMethod.GET)
 	public String showeregPage(Model model, @RequestParam(value="employeeSelected", required=false) String employeeSelected, HttpServletRequest request, HttpServletResponse response) {
@@ -216,6 +213,97 @@ public class AppController {
 
 	}
 
+	@RequestMapping(value = { "/creg"}, method = RequestMethod.GET)
+	public String showcregPage(Model model, @RequestParam(value="customerSelected", required=false) String customerSelected, HttpServletRequest request, HttpServletResponse response) {
+		
+		
+		CustomerDTO employeeDTO = new CustomerDTO();
+		if(customerSelected!=null){
+			Customer employee = customerService.findById(Integer.valueOf(customerSelected));
+			employeeDTO = customerService.converCustomerToDto(employee);
+		}
+		String employeeSearched = request.getParameter("searchCustomerInput");
+
+		List<CustomerDTO> employeeDTOList = new ArrayList<CustomerDTO>();
+		List<Customer> employeeList = customerService.retrieveAllCustomer(employeeSearched);
+
+		for(Customer eachEmployee : employeeList){
+			CustomerDTO eachEmployeeDTO = customerService.converCustomerToDto(eachEmployee);
+			employeeDTOList.add(eachEmployeeDTO);
+		}
+		model.addAttribute("customerSelected", employeeDTO);
+
+		model.addAttribute("customerList", employeeDTOList);
+		
+		return "creg";
+	}
+	
+	@RequestMapping(value = { "creg"}, method = RequestMethod.POST)
+	public String postcregPage(Model model, @RequestParam("eFiles") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) {	
+		String create = request.getParameter("create");
+		String cid = request.getParameter("cid");
+		String cName = request.getParameter("cName");
+		String cAddress = request.getParameter("cAddress");
+		String[] contactname = request.getParameterValues("contactname");
+		String[] phone = request.getParameterValues("phone");
+		String[] email = request.getParameterValues("email");
+		String[] fax = request.getParameterValues("fax");
+		String[] notes = request.getParameterValues("notes");
+		String[] uploadedFilesArray = request.getParameterValues("uploadedFiles");
+		List<String> uploadedFiles = new ArrayList<String>();;
+
+		Map<String,List<String>> contactsMap =  new HashMap<String, List<String>>();
+		for(int i=0;i<contactname.length;i++){
+			List<String> li = new ArrayList<String>();
+			li.add(phone[i]);
+			li.add(email[i]);
+			li.add(fax[i]);
+			li.add(notes[i]);
+			contactsMap.put(contactname[i], li);
+		}
+		
+		if(uploadedFilesArray!=null && uploadedFilesArray.length>0){
+			for(String s: uploadedFilesArray){
+				if(s!=null && s.length()>0){
+					s = s.replaceAll("[\\[\\]]","");
+					uploadedFiles.addAll(Arrays.asList(s.split(",")));
+				}
+			}
+		}
+		List<String> uploadedFilesTrimmed = new ArrayList<String>();;
+		for(String s: uploadedFiles){
+			uploadedFilesTrimmed.add(s.trim());
+		}
+		
+		
+		System.out.println("cname = "+cName+", cAddress="+cAddress);
+		for (String string : contactname) {
+			System.out.println("******** "+string);
+		}
+		try {
+			Customer customerCreated = customerService.registerCustomer(create,cid, cName,cAddress,contactsMap,files,uploadedFilesTrimmed);
+
+		} catch (Exception e) {
+			model.addAttribute("error", e.getMessage());
+			CustomerDTO employeeDTO = new CustomerDTO();
+			if(cid!=null && cid.length()>0){
+				employeeDTO.setCustomerId(Integer.valueOf(cid));
+			}
+			employeeDTO.setCustomerName(cName);
+			employeeDTO.setAddress(cAddress);
+			model.addAttribute("customerSelected", employeeDTO);
+		}
+		List<CustomerDTO> employeeDTOList = new ArrayList<CustomerDTO>();
+		List<Customer> employeeList = customerService.retrieveAllCustomer(null);
+
+		for(Customer eachEmployee : employeeList){
+			CustomerDTO eachEmployeeDTO = customerService.converCustomerToDto(eachEmployee);
+			employeeDTOList.add(eachEmployeeDTO);
+		}
+		model.addAttribute("customerList", employeeDTOList);
+		return "creg";
+	}
+	
 	@RequestMapping(value = { "ereg"}, method = RequestMethod.POST)
 	public String posteregPage(Model model, @RequestParam("eFiles") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) {
 		//System.out.println("in posteregPage "+ request.getParameter("guid"));
