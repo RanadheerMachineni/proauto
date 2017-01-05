@@ -8,7 +8,20 @@
 	<script>
 		function customLoad() {
 		}
-	
+		
+		function removeFile(fileName){
+			//alert(fileName);
+			var existingInputValue = $('input#uploadedFiles').val();
+			var newValue = existingInputValue.replace(fileName, "");
+			$('input#uploadedFiles').val(newValue);
+			$('#alreadyUploadedFiles tr').each(function() {
+			    var href = $(this).find("td:first").find("a").attr('href');  
+			    if (href.toLowerCase().indexOf(fileName.toLowerCase()) >= 0){
+			        $(this).closest('tr').remove();
+			    }
+			});
+		}
+		
 		function addMoreFiles() {  
 			   $("#fileuploads").append(document.createElement("br"));  
 			   $("#fileuploads").append('<input type="file" name="eFiles" id="eFiles" multiple>');  
@@ -136,7 +149,7 @@
   	  		   </div>
   	  		   <br>
   	  		   
-  	  		   <jstl:if	test="${customer.customerId != null && customerSelected.customerId > 0 && customerSelected.files!=null}">
+  	  		   <jstl:if	test="${customerSelected.customerId != null && customerSelected.customerId > 0 && customerSelected.files!=null}">
 	  	  		   <div class="row rowspace">
 	  	  		  		 <div class="col-sm-2 col-md-2">
 			      			<label for="uFiles">Uploaded file/s:</label>
