@@ -31,9 +31,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.esteeminfo.proauto.dto.CustomerDTO;
 import com.esteeminfo.proauto.dto.EmployeeDTO;
+import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.FilesUpload;
+import com.esteeminfo.proauto.entity.Machine;
+import com.esteeminfo.proauto.service.CommonService;
 import com.esteeminfo.proauto.service.CustomerService;
 import com.esteeminfo.proauto.service.EmployeeService;
 
@@ -50,6 +53,8 @@ public class AppController {
 	@Autowired(required=true)
 	private CustomerService customerService ;
 
+	@Autowired(required=true)
+	private CommonService commonService ;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
@@ -451,5 +456,66 @@ public class AppController {
 		}
 		return userName;
 	}
+	
+	@RequestMapping(value = { "/mreg"}, method = RequestMethod.GET)
+	public String showmregPage(Model model, @RequestParam(value="machineSelected", required=false) String machineSelected, HttpServletRequest request, HttpServletResponse response) {
+		
+		
+		MachineDTO machineDTO = new MachineDTO();
+		if(machineSelected!=null){
+			Machine machine = commonService.findMachineById(Integer.valueOf(machineSelected));
+			machineDTO = commonService.converMachineToDto(machine);
+		}
+		String machineSearched = request.getParameter("searchMachineInput");
+
+		List<MachineDTO> machineDTOList = new ArrayList<MachineDTO>();
+		List<Machine> machineList = commonService.retrieveAllMachines(machineSearched);
+
+		for(Machine eachMachine : machineList){
+			MachineDTO eachMachineDTO = commonService.converMachineToDto(eachMachine);
+			machineDTOList.add(eachMachineDTO);
+		}
+		model.addAttribute("machineSelected", machineDTO);
+
+		model.addAttribute("machineList", machineDTOList);
+		
+		return "mreg";
+	}
+	
+	@RequestMapping(value = { "mreg"}, method = RequestMethod.POST)
+	public String postmregPage(Model model, HttpServletRequest request, HttpServletResponse response) {	
+		String create = request.getParameter("create");
+		String mid = request.getParameter("mid");
+		String mName = request.getParameter("mName");
+		String mCode = request.getParameter("mCode");
+		String mAxle = request.getParameter("mAxle");
+		String mCost = request.getParameter("mCost");
+		
+		try {
+			Machine machineCreated = commonService.registerMachine(create,mid, mName,mCode,mAxle,mCost);
+
+		} catch (Exception e) {
+			model.addAttribute("error", e.getMessage());
+			MachineDTO machineDTO = new MachineDTO();
+			if(mid!=null && mid.length()>0){
+				machineDTO.setMachineId(mid);
+			}
+			machineDTO.setAxle(mAxle);
+			machineDTO.setCost(mCost);
+			machineDTO.setCode(mCode);
+			machineDTO.setName(mName);
+			model.addAttribute("machineSelected", machineDTO);
+		}
+		List<MachineDTO> machineDTOList = new ArrayList<MachineDTO>();
+		List<Machine> machines = commonService.retrieveAllMachines(null);
+
+		for(Machine eachMachine : machines){
+			MachineDTO eachMachineDTO = commonService.converMachineToDto(eachMachine);
+			machineDTOList.add(eachMachineDTO);
+		}
+		model.addAttribute("machineList", machineDTOList);
+		return "mreg";
+	}
+	
 
 }

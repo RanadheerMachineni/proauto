@@ -223,7 +223,7 @@ CREATE TABLE purchase_order
 drop table machines;
 CREATE TABLE machines
 (
-	machine_id char(50) not null,
+	machine_id int AUTO_INCREMENT NOT NULL,
 	machine_desc char(50),
 	machine_cost char(50),
 	machine_code_type char(50),

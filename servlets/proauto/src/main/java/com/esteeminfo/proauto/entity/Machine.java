@@ -14,9 +14,9 @@ import javax.persistence.*;
 public class Machine implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="machine_id")
-	private String machineId;
+	private int machineId;
 
 	@Column(name="machine_axle")
 	private String machineAxle;
@@ -33,11 +33,11 @@ public class Machine implements Serializable {
 	public Machine() {
 	}
 
-	public String getMachineId() {
+	public int getMachineId() {
 		return this.machineId;
 	}
 
-	public void setMachineId(String machineId) {
+	public void setMachineId(int machineId) {
 		this.machineId = machineId;
 	}
 

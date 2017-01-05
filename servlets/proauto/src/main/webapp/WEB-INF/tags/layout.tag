@@ -100,7 +100,7 @@
 
 	    lielement=res[res.length-1];
 	    
-		if(lielement=="ereg" || lielement=="vreg" || lielement=="creg" || lielement=="rmat"){
+		if(lielement=="ereg" || lielement=="vreg" || lielement=="creg" || lielement=="rmat" || lielement=="mreg"){
 			lielement ="reg";
 		}
 		$("#"+lielement+"li").addClass('active').siblings().removeClass('active');
@@ -124,7 +124,9 @@
 	      			<img class="logo-customer" alt="" src="../../../${pageContext.request.contextPath}/images/customerlogo.png">
 	    		</div>
 	    		<div class="col-sm-8 col-md-8">
-						
+	      				<div class="customerHeaderContent">
+							<h3>Ennem Excel Engineering(P) Limited</h3>
+						</div>
 	    		</div>
 	   		 	<div class="col-sm-2 col-md-2">
 	      			<img class="logo-proauto" alt="" src="../../../${pageContext.request.contextPath}/images/proautologo.png">
@@ -174,6 +176,9 @@
 								href="${pageContext.request.contextPath}/vreg">Vendor
 								Master</a> <a
 								href="${pageContext.request.contextPath}/rmat">Raw Material
+								</a>
+								<a
+								href="${pageContext.request.contextPath}/mreg">Machines
 								</a>
 						</div></li>
 
