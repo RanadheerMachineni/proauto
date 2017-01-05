@@ -171,7 +171,7 @@
  	  		 <br>
  	  		  <div class="row">
   	  		   		<div class="col-sm-12 col-md-12">
-		      			<label>Contact details</label>
+		      			<label>Contact details (Name is mandatory. Without Name contact will not be saved)</label>
 		    		</div>
   	  		   </div>
   	  		  
