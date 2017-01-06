@@ -46,7 +46,6 @@
 
 					});
 	function customLoad() {
-		roleChanged();
 	}
 
 	function addMoreFiles() {  
@@ -91,45 +90,7 @@
 
 		}
 	}
-	function ValidateForm(form) {
-		var eName = $("#eName").val();
-		var roleSelect = document.getElementById("eRole");
-		var eRole = roleSelect.options[roleSelect.selectedIndex].value;
-		var eUserId = $("#eUserId").val();
-		var ePassword = $("#ePassword").val();
-		var eAddress = $("#eAddress").val();
-		var ePhone = $("#ePhone").val();
-		var eEmail = $("#eEmail").val();
-
-		if (!eName || !eAddress) {
-			alert('Employee Name/Address can not be empty');
-			//event.preventDefault();
-			return false;
-		}
-
-		if (eRole != 'ROLE_norole') {
-			if (!eUserId || !ePassword) {
-				alert('Employee UserId/Password can not be empty');
-				//event.preventDefault();
-				return false;
-			}
-		}
-
-		var pattern = /[0-9\-\(\)\s]+/;
-		if (!ePhone || (ePhone.length < 10) || (!pattern.test(ePhone))) {
-			alert('Please enter a valid phone number');
-			return false;
-		}
-
-		var emailRe = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		if (!eEmail || !emailRe.test(eEmail)) {
-			alert('Please enter a valid email address');
-			return false;
-
-		}
-
-		return true;
-	}
+	
 </script>
     </jsp:attribute>
 

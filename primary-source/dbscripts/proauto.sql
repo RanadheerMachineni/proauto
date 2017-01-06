@@ -203,21 +203,25 @@ CREATE TABLE customer_files
 drop table purchase_order;
 CREATE TABLE purchase_order
 (
-	po_id int NOT NULL,
-	po_version int NOT NULL,
+	pid int AUTO_INCREMENT NOT NULL,
+	po_id char(100) NOT NULL,
+	po_version char(10),
 	pdate DATE,
 	vno_sender char(50),
 	sender_contact char(50),
+	sender_details char(50),
 	sender_email char(50),
 	sender_phone char(50),
 	sender_fax char(50),
-	notes char(200) NULL,
+	notes char(200),
 	mat_no char(50) NOT NULL,
-	mat_desc char(50) NULL,
+	mat_desc char(50),
 	mat_unitprice char(50),
 	mat_quantiy int,
+	discount char(50),
 	mat_value char(50) NOT NULL,
-    CONSTRAINT po_pk PRIMARY KEY (po_id)
+    CONSTRAINT po_pk PRIMARY KEY (pid),
+   	CONSTRAINT uk_po_id UNIQUE (po_id)
 );
 
 drop table machines;

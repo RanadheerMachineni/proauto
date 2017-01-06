@@ -4,6 +4,16 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl"%>
 
 <t:layout>
+<jsp:attribute name="header">
+<script>
+
+	
+	function customLoad() {
+	}
+
+
+</script>
+    </jsp:attribute>
 	<jsp:body>
 <div class="container">
 	<br>

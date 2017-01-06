@@ -15,9 +15,10 @@ import java.util.Date;
 public class PurchaseOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="po_id")
-	private int poId;
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int pid;
+
+	private String discount;
 
 	@Column(name="mat_desc")
 	private String matDesc;
@@ -39,11 +40,17 @@ public class PurchaseOrder implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date pdate;
 
+	@Column(name="po_id")
+	private String poId;
+
 	@Column(name="po_version")
-	private int poVersion;
+	private String poVersion;
 
 	@Column(name="sender_contact")
 	private String senderContact;
+
+	@Column(name="sender_details")
+	private String senderDetails;
 
 	@Column(name="sender_email")
 	private String senderEmail;
@@ -60,12 +67,20 @@ public class PurchaseOrder implements Serializable {
 	public PurchaseOrder() {
 	}
 
-	public int getPoId() {
-		return this.poId;
+	public int getPid() {
+		return this.pid;
 	}
 
-	public void setPoId(int poId) {
-		this.poId = poId;
+	public void setPid(int pid) {
+		this.pid = pid;
+	}
+
+	public String getDiscount() {
+		return this.discount;
+	}
+
+	public void setDiscount(String discount) {
+		this.discount = discount;
 	}
 
 	public String getMatDesc() {
@@ -124,11 +139,19 @@ public class PurchaseOrder implements Serializable {
 		this.pdate = pdate;
 	}
 
-	public int getPoVersion() {
+	public String getPoId() {
+		return this.poId;
+	}
+
+	public void setPoId(String poId) {
+		this.poId = poId;
+	}
+
+	public String getPoVersion() {
 		return this.poVersion;
 	}
 
-	public void setPoVersion(int poVersion) {
+	public void setPoVersion(String poVersion) {
 		this.poVersion = poVersion;
 	}
 
@@ -138,6 +161,14 @@ public class PurchaseOrder implements Serializable {
 
 	public void setSenderContact(String senderContact) {
 		this.senderContact = senderContact;
+	}
+
+	public String getSenderDetails() {
+		return this.senderDetails;
+	}
+
+	public void setSenderDetails(String senderDetails) {
+		this.senderDetails = senderDetails;
 	}
 
 	public String getSenderEmail() {

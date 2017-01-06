@@ -1,5 +1,7 @@
 package com.esteeminfo.proauto.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -10,9 +12,12 @@ import org.springframework.stereotype.Repository;
 
 import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.entity.Machine;
+import com.esteeminfo.proauto.entity.PurchaseOrder;
 
 @Repository("commonDAO")
 public class CommonDAO extends AbstractDao{
+
+	public static SimpleDateFormat ui_date_format =  new SimpleDateFormat("MM/dd/yyyy");
 
 	public void loadRoleMap(Map<String, String> roleMap) {
 			
@@ -84,6 +89,108 @@ public class CommonDAO extends AbstractDao{
 			entityManager.getTransaction().commit();
 			entityManager.close();
 			return machineCreated;
+		}
+	}
+
+	public PurchaseOrder findPOById(String valueOf) {
+		EntityManager entityManager = getEntityManager();
+		entityManager.getTransaction().begin();
+		Query q = entityManager.createQuery( "select e from PurchaseOrder e where e.pid=:pid");
+		q.setParameter("pid", Integer.valueOf(valueOf));
+		List<PurchaseOrder> result = q.getResultList();
+		if(result == null || result.size() ==0){
+			return null;
+		}
+		PurchaseOrder e = result.get(0);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return e;
+	}
+
+	public List<PurchaseOrder> retrieveAllPos(String poSearched) {
+		EntityManager entityManager = getEntityManager();
+		entityManager.getTransaction().begin();
+		String query = "select e from PurchaseOrder e";
+		if (poSearched != null && poSearched.length() > 0) {
+			query += " where e.poId LIKE '" + poSearched + "%'";
+		}
+		Query q = entityManager.createQuery(query);
+		List<PurchaseOrder> result = q.getResultList();
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return result;
+	}
+
+	public PurchaseOrder registerPO(String create, String pid, String poNumber, String poVersion, String poDate, String vnoSender,
+			String poSender, String poSenderDetails, String senderEmail, String senderPhone, String senderFax,
+			String notes, String matNo, String matDesc, String unitPrice, String quantity, String discount,
+			String value) throws ParseException {
+		int purchaseid = (pid == null || pid.length() == 0 ) ? 0:Integer.valueOf(pid); 
+		java.util.Date javaDatePoDate = null;
+		if(poDate!=null){
+			javaDatePoDate = ui_date_format.parse(poDate) ;
+		}
+		
+		if (create.equalsIgnoreCase("false") && purchaseid > 0) {
+			EntityManager entityManager = getEntityManager();
+			entityManager.getTransaction().begin();
+			PurchaseOrder existingPO = null;
+			Query q = entityManager.createQuery( "select e from PurchaseOrder e where e.pid=:eid");
+			q.setParameter("eid", purchaseid);
+			List<PurchaseOrder> result = q.getResultList();
+			if(result != null || result.size() > 0){
+				existingPO = result.get(0);
+			}
+			existingPO.setPoId(poNumber);
+			existingPO.setPoVersion(poVersion);
+			existingPO.setPdate(javaDatePoDate);
+			existingPO.setVnoSender(vnoSender);
+			existingPO.setSenderContact(poSender);
+			existingPO.setSenderDetails(poSenderDetails);
+			existingPO.setSenderEmail(senderEmail);
+			existingPO.setSenderPhone(senderPhone);
+			existingPO.setSenderFax(senderFax);
+			existingPO.setNotes(notes);
+			existingPO.setMatNo(matNo);
+			existingPO.setMatDesc(matDesc);
+			existingPO.setMatUnitprice(unitPrice);
+			if(quantity!=null && quantity.length()>0){
+				existingPO.setMatQuantiy(Integer.valueOf(quantity));
+			}
+			existingPO.setDiscount(discount);
+			existingPO.setMatValue(value);
+			entityManager.persist(existingPO);
+			entityManager.flush();
+			entityManager.getTransaction().commit();
+			entityManager.close();
+			return existingPO;
+		}else{
+			EntityManager entityManager = getEntityManager();
+			entityManager.getTransaction().begin();
+			PurchaseOrder poCreated =  new PurchaseOrder();
+			poCreated.setPoId(poNumber);
+			poCreated.setPoVersion(poVersion);
+			poCreated.setPdate(javaDatePoDate);
+			poCreated.setVnoSender(vnoSender);
+			poCreated.setSenderContact(poSender);
+			poCreated.setSenderDetails(poSenderDetails);
+			poCreated.setSenderEmail(senderEmail);
+			poCreated.setSenderPhone(senderPhone);
+			poCreated.setSenderFax(senderFax);
+			poCreated.setNotes(notes);
+			poCreated.setMatNo(matNo);
+			poCreated.setMatDesc(matDesc);
+			poCreated.setMatUnitprice(unitPrice);
+			if(quantity!=null && quantity.length()>0){
+				poCreated.setMatQuantiy(Integer.valueOf(quantity));
+			}
+			poCreated.setDiscount(discount);
+			poCreated.setMatValue(value);
+			entityManager.persist(poCreated);
+			entityManager.flush();
+			entityManager.getTransaction().commit();
+			entityManager.close();
+			return poCreated;
 		}
 	}
 	

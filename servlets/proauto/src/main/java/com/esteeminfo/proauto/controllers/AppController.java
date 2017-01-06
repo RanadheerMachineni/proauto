@@ -32,10 +32,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.esteeminfo.proauto.dto.CustomerDTO;
 import com.esteeminfo.proauto.dto.EmployeeDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
+import com.esteeminfo.proauto.dto.PoDTO;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.FilesUpload;
 import com.esteeminfo.proauto.entity.Machine;
+import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.service.CommonService;
 import com.esteeminfo.proauto.service.CustomerService;
 import com.esteeminfo.proauto.service.EmployeeService;
@@ -517,5 +519,90 @@ public class AppController {
 		return "mreg";
 	}
 	
+	@RequestMapping(value = { "/poreg"}, method = RequestMethod.GET)
+	public String showporegPage(Model model, @RequestParam(value="poSelected", required=false) String poSelected, HttpServletRequest request, HttpServletResponse response) {
+		
+		
+		PoDTO poDTO = new PoDTO();
+		if(poSelected!=null){
+			PurchaseOrder purchaseOrder = commonService.findPOById(poSelected);
+			poDTO = commonService.converPoToDto(purchaseOrder);
+		}
+		String poSearched = request.getParameter("searchPoInput");
 
+		List<PoDTO> poDTOs = new ArrayList<PoDTO>();
+		List<PurchaseOrder> purchaseOrders = commonService.retrieveAllPos(poSearched);
+
+		for(PurchaseOrder eachPO : purchaseOrders){
+			PoDTO eachPODTO = commonService.converPoToDto(eachPO);
+			poDTOs.add(eachPODTO);
+		}
+		model.addAttribute("poSelected", poDTO);
+
+		model.addAttribute("poList", poDTOs);
+		
+		return "poreg";
+	}
+	
+	@RequestMapping(value = { "poreg"}, method = RequestMethod.POST)
+	public String postporegPage(Model model, HttpServletRequest request, HttpServletResponse response) {	
+		String create = request.getParameter("create");
+		String pid =  request.getParameter("pid");
+		String poNumber = request.getParameter("poNumber");
+		String poVersion = request.getParameter("poVersion");
+		String poDate = request.getParameter("poDate");
+		String vnoSender = request.getParameter("vnoSender");
+		String poSender = request.getParameter("poSender");
+		
+		String poSenderDetails = request.getParameter("poSenderDetails");
+		String senderEmail = request.getParameter("senderEmail");
+		String senderPhone = request.getParameter("senderPhone");
+		String senderFax = request.getParameter("senderFax");
+		String notes = request.getParameter("notes");
+		String matNo = request.getParameter("matNo");
+		String matDesc = request.getParameter("matDesc");
+		
+		String unitPrice = request.getParameter("unitPrice");
+		String quantity = request.getParameter("quantity");
+		String discount = request.getParameter("discount");
+		String value = request.getParameter("value");
+		try {
+			PurchaseOrder poCreated = commonService.registerPO(create,pid, poNumber, poVersion,poDate,vnoSender,poSender,poSenderDetails,senderEmail,senderPhone,senderFax,notes,
+					matNo,matDesc,unitPrice,quantity,discount,value);
+
+		} catch (Exception e) {
+			model.addAttribute("error", e.getMessage());
+			PoDTO poDTO = new PoDTO();
+			if(poNumber!=null && poNumber.length()>0){
+				poDTO.setPoId(poNumber);
+			}
+			poDTO.setVersion(poVersion);
+			poDTO.setDate(poDate);
+			poDTO.setVendor(vnoSender);
+			poDTO.setSender(poSender);
+			poDTO.setSenderDetails(poSenderDetails);
+			poDTO.setSenderEmail(senderEmail);
+			poDTO.setSenderPhone(senderPhone);
+			poDTO.setSenderFax(senderFax);
+			poDTO.setNotes(notes);
+			poDTO.setMatNo(matNo);
+			poDTO.setMatDesc(matDesc);
+			poDTO.setUnitPrice(unitPrice);
+			poDTO.setQuantity(quantity);
+			poDTO.setDiscount(discount);
+			poDTO.setValue(value);
+
+			model.addAttribute("poSelected", poDTO);
+		}
+		List<PoDTO> poDTOList = new ArrayList<PoDTO>();
+		List<PurchaseOrder> pos = commonService.retrieveAllPos(null);
+
+		for(PurchaseOrder purchaseOrder : pos){
+			PoDTO eachPoDTO = commonService.converPoToDto(purchaseOrder);
+			poDTOList.add(eachPoDTO);
+		}
+		model.addAttribute("poList", poDTOList);
+		return "poreg";
+	}
+	
 }
