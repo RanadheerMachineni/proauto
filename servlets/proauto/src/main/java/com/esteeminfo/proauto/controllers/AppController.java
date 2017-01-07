@@ -604,5 +604,14 @@ public class AppController {
 		model.addAttribute("poList", poDTOList);
 		return "poreg";
 	}
+
+	@RequestMapping(value = { "/createjobop"}, method = RequestMethod.GET)
+	public String createjobop(Model model, @RequestParam(value="jobopSelected", required=false) String jobopSelected, HttpServletRequest request, HttpServletResponse response) {
+		return "createjobop";
+	}
 	
+	@RequestMapping(value = { "creg"}, method = RequestMethod.POST)
+	public String postjobopPage(Model model, HttpServletRequest request, HttpServletResponse response) {
+		return "createjobop";
+	}
 }

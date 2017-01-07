@@ -188,6 +188,9 @@
 								<a
 								href="${pageContext.request.contextPath}/mreg">Machines
 								</a>
+								<a
+								href="${pageContext.request.contextPath}/createjobop">Job Operations
+								</a>
 						</div></li>
 
 				</ul>

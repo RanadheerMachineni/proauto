@@ -235,3 +235,11 @@ CREATE TABLE machines
     CONSTRAINT machine_pk PRIMARY KEY (machine_id)
 )
 
+drop table job_operation;
+CREATE TABLE job_operation
+(
+	jo_id int AUTO_INCREMENT NOT NULL,
+	job_name char(50),
+	job_desc char(200),
+    CONSTRAINT job_operation_pk PRIMARY KEY (jo_id)
+)
