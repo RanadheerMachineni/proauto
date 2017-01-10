@@ -7,10 +7,12 @@ import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.esteeminfo.proauto.dto.CustomerDTO;
+import com.esteeminfo.proauto.dto.JobOpDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.FilesUpload;
+import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 
@@ -34,5 +36,13 @@ public interface CommonService {
 			String poSender, String poSenderDetails, String senderEmail, String senderPhone, String senderFax,
 			String notes, String matNo, String matDesc, String unitPrice, String quantity, String discount,
 			String value) throws ParseException;
+
+	JobOpDTO converOperationToDto(JobOperation jobOperation);
+
+	JobOperation findOperationById(Integer valueOf);
+
+	List<JobOperation> retrieveAllOperations(String operationSearched);
+
+	JobOperation registerJobOperation(String create, String oid, String oName, String oDescription);
 
 }

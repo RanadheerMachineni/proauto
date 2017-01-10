@@ -12,10 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.esteeminfo.proauto.dao.CommonDAO;
 import com.esteeminfo.proauto.dto.CustomerDTO;
+import com.esteeminfo.proauto.dto.JobOpDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
 import com.esteeminfo.proauto.entity.Contact;
 import com.esteeminfo.proauto.entity.FilesUpload;
+import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 
@@ -91,6 +93,27 @@ public class CommonServiceImpl implements CommonService {
 				poSender, poSenderDetails, senderEmail, senderPhone, senderFax,
 				notes,  matNo,  matDesc,  unitPrice,  quantity,  discount,
 				 value);
+
+	}
+
+	public JobOpDTO converOperationToDto(JobOperation jobOperation) {
+		JobOpDTO jobOpDTO=  new JobOpDTO();
+		jobOpDTO.setId(jobOperation.getJoId());
+		jobOpDTO.setName(jobOperation.getJobName());
+		jobOpDTO.setDesc(jobOperation.getJobDesc());
+		return jobOpDTO;
+	}
+
+	public JobOperation findOperationById(Integer valueOf) {
+		return commonDAO.findOperationById(valueOf);
+	}
+
+	public List<JobOperation> retrieveAllOperations(String operationSearched) {
+		return commonDAO.retrieveAllOperations(operationSearched);
+	}
+
+	public JobOperation registerJobOperation(String create, String oid, String oName, String oDescription) {
+		return commonDAO.registerOperation(create, oid, oName, oDescription);
 
 	}
 }

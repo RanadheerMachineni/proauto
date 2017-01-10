@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import com.esteeminfo.proauto.dto.MachineDTO;
+import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 
@@ -192,6 +193,71 @@ public class CommonDAO extends AbstractDao{
 			entityManager.close();
 			return poCreated;
 		}
+	}
+
+	public JobOperation findOperationById(Integer valueOf) {
+		EntityManager entityManager = getEntityManager();
+		entityManager.getTransaction().begin();
+		Query q = entityManager.createQuery( "select e from JobOperation e where e.joId=:eid");
+		q.setParameter("eid", valueOf);
+		List<JobOperation> result = q.getResultList();
+		if(result == null || result.size() ==0){
+			return null;
+		}
+		JobOperation e = result.get(0);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return e;
+	}
+
+	public List<JobOperation> retrieveAllOperations(String operationSearched) {
+		EntityManager entityManager = getEntityManager();
+		entityManager.getTransaction().begin();
+		String query = "select e from JobOperation e";
+		if (operationSearched != null && operationSearched.length() > 0) {
+			query += " where e.jobName LIKE '" + operationSearched + "%'";
+		}
+		Query q = entityManager.createQuery(query);
+		List<JobOperation> result = q.getResultList();
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return result;
+	}
+
+	public JobOperation registerOperation(String create, String oid, String oName, String oDescription) {
+		int joid = (oid == null || oid.length() == 0 ) ? 0:Integer.valueOf(oid); 
+
+
+		if (create.equalsIgnoreCase("false") && joid > 0 ) {
+			EntityManager entityManager = getEntityManager();
+			entityManager.getTransaction().begin();
+			JobOperation existingMachine = null;
+			Query q = entityManager.createQuery( "select e from JobOperation e where e.joId=:eid");
+			q.setParameter("eid", joid);
+			List<JobOperation> result = q.getResultList();
+			if(result != null || result.size() > 0){
+				existingMachine = result.get(0);
+			}
+			existingMachine.setJobName(oName);
+			existingMachine.setJobDesc(oDescription);
+			entityManager.persist(existingMachine);
+			entityManager.flush();
+			entityManager.getTransaction().commit();
+			entityManager.close();
+			return existingMachine;
+		}else{
+			EntityManager entityManager = getEntityManager();
+			entityManager.getTransaction().begin();
+			JobOperation machineCreated =  new JobOperation();
+			machineCreated.setJobName(oName);
+			machineCreated.setJobDesc(oDescription);
+			entityManager.persist(machineCreated);
+			entityManager.flush();
+			entityManager.getTransaction().commit();
+			entityManager.close();
+			return machineCreated;
+		}	
+		
 	}
 	
 	

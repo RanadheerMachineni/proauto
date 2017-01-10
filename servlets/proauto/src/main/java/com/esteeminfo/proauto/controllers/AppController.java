@@ -31,11 +31,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.esteeminfo.proauto.dto.CustomerDTO;
 import com.esteeminfo.proauto.dto.EmployeeDTO;
+import com.esteeminfo.proauto.dto.JobOpDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.FilesUpload;
+import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.service.CommonService;
@@ -606,12 +608,57 @@ public class AppController {
 	}
 
 	@RequestMapping(value = { "/createjobop"}, method = RequestMethod.GET)
-	public String createjobop(Model model, @RequestParam(value="jobopSelected", required=false) String jobopSelected, HttpServletRequest request, HttpServletResponse response) {
+	public String createjobop(Model model, @RequestParam(value="operationSelected", required=false) String operationSelected, HttpServletRequest request, HttpServletResponse response) {
+		
+		JobOpDTO operationDTO = new JobOpDTO();
+		if(operationSelected!=null){
+			JobOperation jobOperation = commonService.findOperationById(Integer.valueOf(operationSelected));
+			operationDTO = commonService.converOperationToDto(jobOperation);
+		}
+		String operationSearched = request.getParameter("searchOperationInput");
+
+		List<JobOpDTO> operationDTOList = new ArrayList<JobOpDTO>();
+		List<JobOperation> operationsList = commonService.retrieveAllOperations(operationSearched);
+
+		for(JobOperation eachJobOperation : operationsList){
+			JobOpDTO eachJobOpDTO = commonService.converOperationToDto(eachJobOperation);
+			operationDTOList.add(eachJobOpDTO);
+		}
+		model.addAttribute("operationSelected", operationDTO);
+
+		model.addAttribute("operationList", operationDTOList);
 		return "createjobop";
 	}
 	
-	@RequestMapping(value = { "creg"}, method = RequestMethod.POST)
+	@RequestMapping(value = { "createjobop"}, method = RequestMethod.POST)
 	public String postjobopPage(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String create = request.getParameter("create");
+		String oid =  request.getParameter("oid");
+		String oName = request.getParameter("oName");
+		String oDescription = request.getParameter("oDescription");
+		
+		
+		try {
+			JobOperation jobOp  = commonService.registerJobOperation(create,oid, oName,oDescription);
+
+		} catch (Exception e) {
+			model.addAttribute("error", e.getMessage());
+			JobOpDTO jobOptDTO = new JobOpDTO();
+			if(oid!=null){
+				jobOptDTO.setId(Integer.valueOf(oid));
+			}
+			jobOptDTO.setName(oName);
+			jobOptDTO.setDesc(oDescription);
+			model.addAttribute("operationSelected", jobOptDTO);
+		}
+		List<JobOpDTO> jobOpList = new ArrayList<JobOpDTO>();
+		List<JobOperation> jobOps = commonService.retrieveAllOperations(null);
+
+		for(JobOperation jobOperation : jobOps){
+			JobOpDTO eachJobOpDTO = commonService.converOperationToDto(jobOperation);
+			jobOpList.add(eachJobOpDTO);
+		}
+		model.addAttribute("operationList", jobOpList);
 		return "createjobop";
 	}
 }

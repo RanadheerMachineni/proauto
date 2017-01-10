@@ -14,20 +14,11 @@
 					function() {
 						
 						
-						$('#machineRegForm').validate(
+						$('#operationForm').validate(
 								{
 									rules : {
-										mName : {
+										oName : {
 											minlength : 2,
-											required : true
-										},
-										mCode : {
-											required : true
-										},
-										mAxle : {
-											required : true
-										},
-										mCost : {
 											required : true
 										}
 									},
@@ -74,16 +65,16 @@
 			</jstl:if>
 			<jstl:if test="${pageContext.request.userPrincipal.name != null}">
 					<div class="col-md-10 col-sm-10 col-xs-10">
-					<div class="pageHeadings"> Machine Registration</div>
+					<div class="pageHeadings"> Job Operations</div>
 					<br>
 					<div class="formDiv">
 					<jstl:if
-							test="${machineSelected.machineId == null || machineSelected.machineId<=0}">
-						      			<label>Create Machine</label>
+							test="${operationSelected.id == null || operationSelected.id<=0}">
+						      			<label>Create Operation</label>
 					</jstl:if>
 					<jstl:if
-							test="${machineSelected.machineId != null && machineSelected.machineId > 0}">
-						      			<label>Update Machine</label>
+							test="${operationSelected.id != null && operationSelected.id > 0}">
+						      			<label>Update Operation</label>
 					</jstl:if>
 					
 				   	<div class="row">
@@ -95,23 +86,23 @@
 					</div>
 					</div>
 		
-		<form id="machineRegForm" role="form"
-							action="mreg" method="post"							>  
+		<form id="operationForm" role="form"
+							action="createjobop" method="post"							>  
 		
 		
-		      <input type="hidden" name="regType" value="machine">
-			  <input type="hidden" name="mid" id="mid"
-								value="${machineSelected.machineId}">
+		      <input type="hidden" name="regType" value="operation">
+			  <input type="hidden" name="oid" id="oid"
+								value="${operationSelected.id}">
 			   <br>
 			   
   	  		   <div class="row rowspace">
   	  		        <div class="control-group">
 	  	  		   		<div class="col-sm-2 col-md-2">
-			      			<label class="control-label" for="mName">Description:</label>
+			      			<label class="control-label" for="oName">Operation :</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="mName"
-											name="mName" value="${machineSelected.name}">
+			      			<input type="text" class="form-control" id="oName"
+											name="oName" value="${operationSelected.name}">
 			    	 	</div>
 		    	 	</div>
 		    	</div>
@@ -120,63 +111,36 @@
 		    	 <div class="row rowspace">
 		    	 	<div class="control-group">
 			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="mCode" class="control-label">Code Type:</label>
+			      			<label for="oDescription" class="control-label">Description:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="mCode"
-											name="mCode" value="${machineSelected.code}">
+			      			<input type="text" class="form-control" id="oDescription"
+											name="oDescription" value="${operationSelected.desc}">
 			    	 	</div>
 			    	 </div>
 		    	</div>
-		    	
-		      <div class="row rowspace">
-		    	 	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="mAxle" class="control-label">Axle:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="mAxle"
-											name="mAxle" value="${machineSelected.axle}">
-			    	 	</div>
-			    	 </div>
-		    	</div>
-		    	
-		    	<div class="row rowspace">
-			    	 <div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="mCost" class="control-label">Cost:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="mCost"
-											name="mCost" value="${machineSelected.cost}">
-			    	 	</div>
-			    	 </div>
-  	  		 	 </div>
-  	  		  	
-  	  		  	
-  	  		   
 			  
   	  		   <br>
 			   <div class="row">
 	   		 		<div class="col-sm-8 col-md-8">
 						<jstl:if
-							test="${machineSelected.machineId == null || machineSelected.machineId<=0}">
+							test="${operationSelected.id == null || operationSelected.id<=0}">
 	   		 				  <input type="hidden" name="create" value="true">
 						      <!--  <input id="createEmployeeSubmit" type=submit value="Create">-->
-						      <button id="createEmployeeSubmit" type="submit"
+						      <button id="createOperationSubmit" type="submit"
 								class="btn btn-primary">Create</button>
 						      
 						</jstl:if>
 					<jstl:if
-							test="${machineSelected.machineId != null && machineSelected.machineId > 0}">
+							test="${operationSelected.id != null && operationSelected.id > 0}">
 							  <input type="hidden" name="create" value="false">
 						      <!-- <input id="createEmployeeSubmit" type=submit value="Update"> -->
-						      <button id="createEmployeeSubmit" type="submit"
+						      <button id="createOperationSubmit" type="submit"
 								class="btn btn-primary">Update</button>
 						      
 						       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						      <a class="btn btn-default"
-								href="${pageContext.request.contextPath}/mreg" role="button">Cancel</a>
+								href="${pageContext.request.contextPath}/createjobop" role="button">Cancel</a>
 						</jstl:if>
 	    	 		</div>
 	  			</div>
@@ -191,15 +155,15 @@
   	  		<!-- List of emps -->
 						<div class="col-md-10 col-sm-10 col-xs-10">
 	   		 					<br>
-	   		 					<form id="machineSearchForm" role="form" action="mreg"
+	   		 					<form id="operationSearchForm" role="form" action="createjobop"
 				method="GET">  
 	   		 					<div class="row">
 				  	  		   		<div class="col-sm-1 col-md-1">
-						      			<label for="searchMachineInput">Search Machine</label>
+						      			<label for="searchOperationInput">Search Operation</label>
 						    		</div>
 						   		 	<div class="col-sm-2 col-md-2">
 						      			<input type="text" class="form-control"
-							id="searchMachineInput" name="searchMachineInput">
+							id="searchOperationInput" name="searchOperationInput">
 						    	 	</div>
 						    	 	<div class="col-sm-1 col-md-1">
 						      			<input type=submit value="Search">
@@ -207,32 +171,26 @@
   	  		  					</div>
   	  		  					</form>
   	  		   					<br>
-  	  		   					<div class="informativeText">List of existing Machines</div>
+  	  		   					<div class="informativeText">List of existing Operations</div>
   	  		   					<br>
 				   		 		<table class="table table-bordered">
 								    <thead>
 								      <tr>
-								        <th>Description</th>
-										<th>Code type</th>
-										<th>Axle</th>
-			   					        <th>Cost</th>
+								        <th>Name</th>
+										<th>Description</th>
 								      </tr>
 								    </thead>
 								    <tbody>
-								      <jstl:forEach var="machine" items="${machineList}">
+								      <jstl:forEach var="operation" items="${operationList}">
 							                <tr>
 							                    <td>
 							                    	<a
-								href="${pageContext.request.contextPath}/mreg?machineSelected=${machine.machineId}">
+								href="${pageContext.request.contextPath}/createjobop?operationSelected=${operation.id}">
 								                    	<jstl:out
-										value="${machine.name}" />
+										value="${operation.name}" />
 								                    </a>
 												</td>
-							                    <td><jstl:out value="${machine.code}" /></td>
-							                    <td><jstl:out
-									value="${machine.axle}" /></td>
-							                    <td><jstl:out value="${machine.cost}" /></td>
-							                    
+							                    <td><jstl:out value="${operation.desc}" /></td>
 							                </tr>
 							            </jstl:forEach>
 								    </tbody>
