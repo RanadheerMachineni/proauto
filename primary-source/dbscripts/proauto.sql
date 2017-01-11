@@ -204,6 +204,7 @@ drop table purchase_order;
 CREATE TABLE purchase_order
 (
 	pid int AUTO_INCREMENT NOT NULL,
+	customer_id int NOT NULL,
 	po_id char(100) NOT NULL,
 	po_version char(10),
 	pdate DATE,
@@ -214,15 +215,27 @@ CREATE TABLE purchase_order
 	sender_phone char(50),
 	sender_fax char(50),
 	notes char(200),
+	total_value char(50),
+    CONSTRAINT po_pk PRIMARY KEY (pid),
+   	CONSTRAINT uk_po_id UNIQUE (po_id),
+   	CONSTRAINT fk_po_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+);
+
+drop table po_tool;
+CREATE TABLE po_tool
+(
+	pt_id int AUTO_INCREMENT NOT NULL,
+	pid int NOT NULL,
 	mat_no char(50) NOT NULL,
 	mat_desc char(50),
 	mat_unitprice char(50),
 	mat_quantiy int,
 	discount char(50),
-	mat_value char(50) NOT NULL,
-    CONSTRAINT po_pk PRIMARY KEY (pid),
-   	CONSTRAINT uk_po_id UNIQUE (po_id)
+	mat_value char(50),
+    CONSTRAINT po_tool_pk PRIMARY KEY (pt_id),
+   	CONSTRAINT fk_po_tool_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid)
 );
+
 
 drop table machines;
 CREATE TABLE machines
