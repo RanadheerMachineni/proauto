@@ -72,12 +72,7 @@ public class CommonServiceImpl implements CommonService {
 		poDTO.setSenderPhone(purchaseOrder.getSenderPhone());
 		poDTO.setSenderFax(purchaseOrder.getSenderFax());
 		poDTO.setNotes(purchaseOrder.getNotes());
-		poDTO.setMatNo(purchaseOrder.getMatNo());
-		poDTO.setMatDesc(purchaseOrder.getMatDesc());
-		poDTO.setUnitPrice(purchaseOrder.getMatUnitprice());
-		poDTO.setQuantity(String.valueOf(purchaseOrder.getMatQuantiy()));
 		poDTO.setDiscount(purchaseOrder.getDiscount());
-		poDTO.setValue(purchaseOrder.getMatValue());
 		return poDTO;
 	}
 

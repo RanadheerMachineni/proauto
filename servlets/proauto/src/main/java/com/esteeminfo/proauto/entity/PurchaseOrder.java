@@ -3,6 +3,7 @@ package com.esteeminfo.proauto.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 
 /**
@@ -20,20 +21,16 @@ public class PurchaseOrder implements Serializable {
 
 	private String discount;
 
-	@Column(name="mat_desc")
-	private String matDesc;
+	@Column(name="total_value")
+	private String totalValue;
+	
+	@ManyToOne
+	@JoinColumn(name="customer_id")
+	private Customer customer;
 
-	@Column(name="mat_no")
-	private String matNo;
-
-	@Column(name="mat_quantiy")
-	private int matQuantiy;
-
-	@Column(name="mat_unitprice")
-	private String matUnitprice;
-
-	@Column(name="mat_value")
-	private String matValue;
+	//bi-directional many-to-one association to PoTool
+	@OneToMany(mappedBy="purchaseOrder")
+	private Set<PoTool> poTools;
 
 	private String notes;
 
@@ -81,46 +78,6 @@ public class PurchaseOrder implements Serializable {
 
 	public void setDiscount(String discount) {
 		this.discount = discount;
-	}
-
-	public String getMatDesc() {
-		return this.matDesc;
-	}
-
-	public void setMatDesc(String matDesc) {
-		this.matDesc = matDesc;
-	}
-
-	public String getMatNo() {
-		return this.matNo;
-	}
-
-	public void setMatNo(String matNo) {
-		this.matNo = matNo;
-	}
-
-	public int getMatQuantiy() {
-		return this.matQuantiy;
-	}
-
-	public void setMatQuantiy(int matQuantiy) {
-		this.matQuantiy = matQuantiy;
-	}
-
-	public String getMatUnitprice() {
-		return this.matUnitprice;
-	}
-
-	public void setMatUnitprice(String matUnitprice) {
-		this.matUnitprice = matUnitprice;
-	}
-
-	public String getMatValue() {
-		return this.matValue;
-	}
-
-	public void setMatValue(String matValue) {
-		this.matValue = matValue;
 	}
 
 	public String getNotes() {
@@ -201,6 +158,35 @@ public class PurchaseOrder implements Serializable {
 
 	public void setVnoSender(String vnoSender) {
 		this.vnoSender = vnoSender;
+	}
+	
+	public Customer getCustomer() {
+		return this.customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public Set<PoTool> getPoTools() {
+		return this.poTools;
+	}
+
+	public void setPoTools(Set<PoTool> poTools) {
+		this.poTools = poTools;
+	}
+
+	public PoTool addPoTool(PoTool poTool) {
+		getPoTools().add(poTool);
+		poTool.setPurchaseOrder(this);
+		return poTool;
+	}
+
+	public PoTool removePoTool(PoTool poTool) {
+		getPoTools().remove(poTool);
+		poTool.setPurchaseOrder(null);
+
+		return poTool;
 	}
 
 }

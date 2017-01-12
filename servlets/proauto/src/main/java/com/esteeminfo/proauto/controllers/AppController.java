@@ -561,13 +561,13 @@ public class AppController {
 		String senderPhone = request.getParameter("senderPhone");
 		String senderFax = request.getParameter("senderFax");
 		String notes = request.getParameter("notes");
-		String matNo = request.getParameter("matNo");
+		/*String matNo = request.getParameter("matNo");
 		String matDesc = request.getParameter("matDesc");
 		
 		String unitPrice = request.getParameter("unitPrice");
 		String quantity = request.getParameter("quantity");
 		String discount = request.getParameter("discount");
-		String value = request.getParameter("value");
+		String value = request.getParameter("value");*/
 		try {
 			PurchaseOrder poCreated = commonService.registerPO(create,pid, poNumber, poVersion,poDate,vnoSender,poSender,poSenderDetails,senderEmail,senderPhone,senderFax,notes,
 					matNo,matDesc,unitPrice,quantity,discount,value);

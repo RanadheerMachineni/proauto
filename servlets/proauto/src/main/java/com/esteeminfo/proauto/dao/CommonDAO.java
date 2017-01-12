@@ -152,14 +152,7 @@ public class CommonDAO extends AbstractDao{
 			existingPO.setSenderPhone(senderPhone);
 			existingPO.setSenderFax(senderFax);
 			existingPO.setNotes(notes);
-			existingPO.setMatNo(matNo);
-			existingPO.setMatDesc(matDesc);
-			existingPO.setMatUnitprice(unitPrice);
-			if(quantity!=null && quantity.length()>0){
-				existingPO.setMatQuantiy(Integer.valueOf(quantity));
-			}
 			existingPO.setDiscount(discount);
-			existingPO.setMatValue(value);
 			entityManager.persist(existingPO);
 			entityManager.flush();
 			entityManager.getTransaction().commit();
@@ -179,14 +172,7 @@ public class CommonDAO extends AbstractDao{
 			poCreated.setSenderPhone(senderPhone);
 			poCreated.setSenderFax(senderFax);
 			poCreated.setNotes(notes);
-			poCreated.setMatNo(matNo);
-			poCreated.setMatDesc(matDesc);
-			poCreated.setMatUnitprice(unitPrice);
-			if(quantity!=null && quantity.length()>0){
-				poCreated.setMatQuantiy(Integer.valueOf(quantity));
-			}
 			poCreated.setDiscount(discount);
-			poCreated.setMatValue(value);
 			entityManager.persist(poCreated);
 			entityManager.flush();
 			entityManager.getTransaction().commit();

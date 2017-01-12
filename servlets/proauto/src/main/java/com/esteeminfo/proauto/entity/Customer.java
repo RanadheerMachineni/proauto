@@ -7,7 +7,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 
@@ -77,6 +76,10 @@ public class Customer implements Serializable {
 		this.filesUploads = filesUploads;
 	}
 
+	//bi-directional many-to-one association to PurchaseOrder
+	@OneToMany(mappedBy="customer")
+	private Set<PurchaseOrder> purchaseOrders;
+	
 	public Customer() {
 	}
 
@@ -144,4 +147,23 @@ public class Customer implements Serializable {
 		this.contacts = contacts;
 	}
 
+	public Set<PurchaseOrder> getPurchaseOrders() {
+		return this.purchaseOrders;
+	}
+
+	public void setPurchaseOrders(Set<PurchaseOrder> purchaseOrders) {
+		this.purchaseOrders = purchaseOrders;
+	}
+
+	public PurchaseOrder addPurchaseOrder(PurchaseOrder purchaseOrder) {
+		getPurchaseOrders().add(purchaseOrder);
+		purchaseOrder.setCustomer(this);
+		return purchaseOrder;
+	}
+
+	public PurchaseOrder removePurchaseOrder(PurchaseOrder purchaseOrder) {
+		getPurchaseOrders().remove(purchaseOrder);
+		purchaseOrder.setCustomer(null);
+		return purchaseOrder;
+	}
 }
