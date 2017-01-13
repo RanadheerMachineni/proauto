@@ -12,6 +12,7 @@
 		<class>com.esteeminfo.proauto.entity.Machine</class>
 		<class>com.esteeminfo.proauto.entity.PurchaseOrder</class>
 		<class>com.esteeminfo.proauto.entity.JobOperation</class>
+		<class>com.esteeminfo.proauto.entity.PoTool</class>
 		
 		  <properties>
 		       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/proauto_db"/>

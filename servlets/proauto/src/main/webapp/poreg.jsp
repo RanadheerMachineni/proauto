@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <t:layout>
 	<jsp:attribute name="header">
@@ -11,6 +12,52 @@
 	function customLoad() {
 	}
 
+	function GetDynamicTextBox(value) {
+		return '<tr valign="top"><td><input type="text" class="contactField" id="matNo"	name="matNo" value="" placeholder="Mat No" /> &nbsp;<input type="text" class="contactField" id="matDesc" name="matDesc"	value="" placeholder="Description" /> &nbsp;<input type="text" class="contactField" id="unitPrice" name="unitPrice"	value="" placeholder="Unit Price" /> &nbsp;<input type="text" class="contactField" id="quantity" name="quantity" value="" placeholder="Quantity" /> &nbsp;<input type="text" class="contactField" id="discount" name="discount" value="" placeholder="Discount" /> &nbsp;<input type="text" class="contactField" id="value" name="value" value="" placeholder="Value" /> &nbsp;'
+				+ '<input type="button" value="Remove" onclick = "RemoveTextBox(this)" /></td></tr>'
+	}
+	function AddTextBox() {
+		var div = document.createElement('DIV');
+		div.innerHTML = GetDynamicTextBox("");
+		document.getElementById("customFields").appendChild(div);
+	}
+
+	function RemoveTextBox(div) {
+		document.getElementById("customFields").removeChild(div.parentNode);
+	}
+	
+	function removeFile(fileName) {
+		//alert(fileName);
+		var existingInputValue = $('input#uploadedFiles').val();
+		var newValue = existingInputValue.replace(fileName, "");
+		$('input#uploadedFiles').val(newValue);
+		$('#alreadyUploadedFiles tr').each(function() {
+			var href = $(this).find("td:first").find("a").attr('href');
+			if (href.toLowerCase().indexOf(fileName.toLowerCase()) >= 0) {
+				$(this).closest('tr').remove();
+			}
+		});
+	}
+
+	function addMoreFiles() {
+		$("#fileuploads").append(document.createElement("br"));
+		$("#fileuploads").append(
+				'<input type="file" name="eFiles" id="eFiles" multiple>');
+	}
+
+	function unSelectFiles() {
+		//$("#eFiles").val('');
+
+		$('input[name="eFiles"]').each(function() {
+			$(this).val('');
+		});
+
+	}
+	
+	$("#customFieldsExisting").on('click', '.remCF', function() {
+		$(this).parent().parent().remove();
+	});
+	
 	$(document)
 			.ready(
 					function() {
@@ -86,7 +133,7 @@
 	 	  		</div>
 			</jstl:if>
 			<jstl:if test="${pageContext.request.userPrincipal.name != null}">
-					<div class="col-md-10 col-sm-10 col-xs-10">
+					<div class="col-md-11 col-sm-11 col-xs-11">
 					<div class="pageHeadings"> Purchase Order</div>
 					<br>
 					<div class="formDiv">
@@ -214,8 +261,8 @@
 			    	 </div>
 		    	</div>
 			  
-			  	<div class="row rowspace">
-  	  		        <div class="control-group">
+			  <div class="row rowspace">
+		    	   <div class="control-group">
 	  	  		   		<div class="col-sm-2 col-md-2">
 			      			<label class="control-label" for="notes">Notes:</label>
 			    		</div>
@@ -224,73 +271,144 @@
 											name="notes" value="${poSelected.notes}">
 			    	 	</div>
 		    	 	</div>
-		    	 
-		    	 	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="matNo" class="control-label">Mat No:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="matNo"
-											name="matNo" value="${poSelected.matNo}">
-			    	 	</div>
-			    	 </div>
-		    	
-		    	 	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="matDesc" class="control-label">Mat Desc:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="matDesc"
-											name="matDesc" value="${poSelected.matDesc}">
-			    	 	</div>
-			    	 </div>
-		    	</div>
-		    	
-		    	<div class="row rowspace">
-  	  		        <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
-			      			<label class="control-label" for="unitPrice">Unit Price:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="unitPrice"
-											name="unitPrice" value="${poSelected.unitPrice}">
-			    	 	</div>
-		    	 	</div>
-		    	 
-		    	 	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="quantity" class="control-label">Quantity:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="quantity"
-											name="quantity" value="${poSelected.quantity}">
-			    	 	</div>
-			    	 </div>
-		    	
-		    	 	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="discount" class="control-label">Discount:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="discount"
-											name="discount" value="${poSelected.discount}">
-			    	 	</div>
-			    	 </div>
-		    	</div>
-		    	
-		    	<div class="row rowspace">
   	  		        <div class="control-group">
 	  	  		   		<div class="col-sm-2 col-md-2">
 			      			<label class="control-label" for="value">Total value:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="value"
-											name="value" value="${poSelected.value}">
+			      			<input type="text" class="form-control" id="totalValue"
+											name="totalValue" value="${poSelected.totalValue}">
 			    	 	</div>
 		    	 	</div>
 		    	</div>
-  	  		   <br>
+		    	
+		    	<div class="row rowspace">
+  	  		   		<div class="col-sm-12 col-md-12">
+		      			<label>Material details (Mat No is mandatory. Without Mat No Material will not be saved)</label>
+		    		</div>
+  	  		   </div>
+  	  		  
+  	  		  	 
+  	  		   <jstl:if
+								test="${poSelected.pid != null && customerSelected.pid > 0 && customerSelected.material!=null}">
+	  	  		   <div class="row rowspace">
+			   		 	<div id="alreadySavedContacts" class="col-sm-12 col-md-12">
+			   		 		<table class="form-table" id="customFieldsExisting">
+				   		 	<jstl:forEach var="eachMaterial"
+												items="${poSelected.material}">
+				   			 	<jstl:set var="splittedString"
+													value="${fn:split(eachMaterial, '[|]')}" />
+				                <tr>
+				                <td>
+								<input type="text" class="contactField" id="matNo"
+														name="matNo" value="${splittedString[0]}"
+														placeholder="Mat No" /> &nbsp;
+								<input type="text" class="contactField" id="matDesc" name="matDesc"
+														value="${splittedString[1]}" placeholder="Description" /> &nbsp;
+								<input type="text" class="contactField" id="unitPrice" name="unitPrice"
+														value="${splittedString[2]}" placeholder="Unit Price" /> &nbsp;
+								<input type="text" class="contactField" id="quantity" name="quantity"
+														value="${splittedString[3]}" placeholder="Quantity" /> &nbsp;
+								<input type="text" class="contactField" id="discount" name="discount"
+														value="${splittedString[4]}" placeholder="Discount" /> &nbsp;
+								<input type="text" class="contactField" id="value" name="value"
+														value="${splittedString[5]}" placeholder="Value" /> &nbsp;
+								</td>
+				                </tr>
+			           		 </jstl:forEach>
+			           		 </table>
+			    	 	</div>
+				   </div>
+				</jstl:if>							
   	  		   
+  	  		   
+			  	<div class="row rowspace">
+  	  		 
+  	  				 <div class="col-sm-12 col-md-12">
+	  	  		   	
+	  	  		   	<table class="form-table" id="customFields">
+						<tr valign="top">
+							<td>
+								<input type="text" class="contactField" id="matNo"
+												name="matNo" value="" placeholder="Mat No" /> &nbsp;
+								<input type="text" class="contactField" id="matDesc" name="matDesc"
+												value="" placeholder="Description" /> &nbsp;
+								<input type="text" class="contactField" id="unitPrice" name="unitPrice"
+												value="" placeholder="Unit Price" /> &nbsp;
+								<input type="text" class="contactField" id="quantity" name="quantity"
+												value="" placeholder="Quantity" /> &nbsp;
+								<input type="text" class="contactField" id="discount" name="discount"
+												value="" placeholder="Discount" /> &nbsp;
+								<input type="text" class="contactField" id="value" name="value"
+												value="" placeholder="Value" /> &nbsp;
+								<input id="btnAdd" type="button" value="Add Item"
+												onclick="AddTextBox()" />
+							</td>
+						</tr>
+					</table>
+					
+		
+		    	</div>
+		    	
+		    	
+  	  		   <br>
+  	  		   <jstl:if
+								test="${poSelected.pid != null && poSelected.pid > 0 && poSelected.files!=null}">
+	  	  		   <div class="row rowspace">
+	  	  		  		 <div class="col-sm-2 col-md-2">
+			      			<label for="uFiles">Uploaded file/s:</label>
+			    		</div>
+			   		 	<div id="alreadyUploadedFiles" class="col-sm-4 col-md-4">
+			   		 		<table>
+				   		 	<jstl:forEach var="eachFile"
+												items="${poSelected.files}">
+				                <tr>
+				                    <td>
+				                    	<a
+														href="filedownload/po/${poSelected.pid}/${eachFile}"> 	
+				                    		<jstl:out value="${eachFile}" />
+										</a>
+				                    </td>
+				                    
+				                    <td style="padding: 3px;">
+				                    	<button type="button"
+															class="btn btn-default btn-sm" name="deleteFile"
+															id="deleteFile" onClick="removeFile('${eachFile}');">
+        									 <span class="glyphicon glyphicon-remove"></span> Remove 
+        								</button>
+				                   		<!--  <input type="button" name="deleteFile" id="deleteFile" value="Delete" onClick="deleteFile(${employeeSelected.employeeId},${eachFile});" > -->
+				                    </td>
+				                </tr>
+			           		 </jstl:forEach>
+			           		 </table>
+			    	 	</div>
+				   </div>
+				</jstl:if>							
+  	  		   
+  	  		   
+  	  		   <div class="row rowspace">
+  	  		  		 <div class="col-sm-2 col-md-2">
+		      			<label for="eFiles">Upload File/s:</label>
+		    		</div>
+		   		 	<div id="fileuploads" class="col-sm-4 col-md-4">
+		           		 <input type="file" name="eFiles" id="eFiles" multiple>
+		    	 	</div>
+		    	 	
+			   </div>
+
+  			   <div class="row rowspace">
+  	  		  		 <div class="col-sm-2 col-md-2">
+		      			    <input type="button" name="addmore" id="addmore"
+										value="Add More" onClick="addMoreFiles();" />  
+		    		</div>
+		    		<div class="col-sm-2 col-md-2">
+		           		 <input type="button" name="unSelectFile"
+										id="unSelectFile" value="Reset file selection"
+										onClick="unSelectFiles();" />
+		    	 	</div>	
+			  </div>
+			  
+			  <br>
 			   <div class="row">
 	   		 		<div class="col-sm-8 col-md-8">
 						<jstl:if

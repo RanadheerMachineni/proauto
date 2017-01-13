@@ -200,6 +200,16 @@ CREATE TABLE customer_files
 
 );
 
+CREATE TABLE po_files
+(
+	pid int NOT NULL,
+	upload_id int NOT NULL,
+	constraint po_files_pk primary key (pid , upload_id),
+	CONSTRAINT fk_cf_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid),
+	CONSTRAINT fk_cf_upload_id FOREIGN KEY (upload_id) REFERENCES files_upload(upload_id)
+
+);
+
 drop table purchase_order;
 CREATE TABLE purchase_order
 (

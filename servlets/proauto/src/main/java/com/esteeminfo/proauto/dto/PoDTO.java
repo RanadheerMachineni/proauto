@@ -1,5 +1,7 @@
 package com.esteeminfo.proauto.dto;
 
+import java.util.List;
+
 public class PoDTO {
 	int pid;
 	String poId;
@@ -12,13 +14,15 @@ public class PoDTO {
 	String senderPhone;
 	String senderFax;
 	String notes;
-	String matNo;
-	String matDesc;
-	String unitPrice;
-	String quantity;
-	String discount;
-	String value;
-
+	String totalValue;
+	List<String> material;
+	
+	public int getPid() {
+		return pid;
+	}
+	public void setPid(int pid) {
+		this.pid = pid;
+	}
 	public String getPoId() {
 		return poId;
 	}
@@ -79,47 +83,16 @@ public class PoDTO {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
-	public String getMatNo() {
-		return matNo;
+	public String getTotalValue() {
+		return totalValue;
 	}
-	public void setMatNo(String matNo) {
-		this.matNo = matNo;
+	public void setTotalValue(String totalValue) {
+		this.totalValue = totalValue;
 	}
-	public String getMatDesc() {
-		return matDesc;
+	public List<String> getMaterial() {
+		return material;
 	}
-	public void setMatDesc(String matDesc) {
-		this.matDesc = matDesc;
+	public void setMaterial(List<String> material) {
+		this.material = material;
 	}
-	public String getUnitPrice() {
-		return unitPrice;
-	}
-	public void setUnitPrice(String unitPrice) {
-		this.unitPrice = unitPrice;
-	}
-	public String getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(String quantity) {
-		this.quantity = quantity;
-	}
-	public String getDiscount() {
-		return discount;
-	}
-	public void setDiscount(String discount) {
-		this.discount = discount;
-	}
-	public String getValue() {
-		return value;
-	}
-	public void setValue(String value) {
-		this.value = value;
-	}
-	public int getPid() {
-		return pid;
-	}
-	public void setPid(int pid) {
-		this.pid = pid;
-	}
-	
 }

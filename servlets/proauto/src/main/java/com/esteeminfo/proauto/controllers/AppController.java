@@ -292,11 +292,6 @@ public class AppController {
 			uploadedFilesTrimmed.add(s.trim());
 		}
 		
-		
-		System.out.println("cname = "+cName+", cAddress="+cAddress);
-		for (String string : contactname) {
-			System.out.println("******** "+string);
-		}
 		try {
 			Customer customerCreated = customerService.registerCustomer(create,cid, cName,cAddress,contactsMap,files,uploadedFilesTrimmed);
 
@@ -547,7 +542,7 @@ public class AppController {
 	}
 	
 	@RequestMapping(value = { "poreg"}, method = RequestMethod.POST)
-	public String postporegPage(Model model, HttpServletRequest request, HttpServletResponse response) {	
+	public String postporegPage(Model model,@RequestParam("eFiles") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) {	
 		String create = request.getParameter("create");
 		String pid =  request.getParameter("pid");
 		String poNumber = request.getParameter("poNumber");
@@ -555,22 +550,52 @@ public class AppController {
 		String poDate = request.getParameter("poDate");
 		String vnoSender = request.getParameter("vnoSender");
 		String poSender = request.getParameter("poSender");
-		
 		String poSenderDetails = request.getParameter("poSenderDetails");
 		String senderEmail = request.getParameter("senderEmail");
 		String senderPhone = request.getParameter("senderPhone");
 		String senderFax = request.getParameter("senderFax");
 		String notes = request.getParameter("notes");
-		/*String matNo = request.getParameter("matNo");
-		String matDesc = request.getParameter("matDesc");
+		String totalValue = request.getParameter("totalValue");
+
+		String[] matNo = request.getParameterValues("totalValue");
+		String[] matDesc = request.getParameterValues("matDesc");
+		String[] unitPrice = request.getParameterValues("unitPrice");
+		String[] quantity = request.getParameterValues("quantity");
+		String[] discount = request.getParameterValues("discount");
+		String[] value = request.getParameterValues("value");
 		
-		String unitPrice = request.getParameter("unitPrice");
-		String quantity = request.getParameter("quantity");
-		String discount = request.getParameter("discount");
-		String value = request.getParameter("value");*/
+		String[] uploadedFilesArray = request.getParameterValues("uploadedFiles");
+		List<String> uploadedFiles = new ArrayList<String>();;
+
+		if(uploadedFilesArray!=null && uploadedFilesArray.length>0){
+			for(String s: uploadedFilesArray){
+				if(s!=null && s.length()>0){
+					s = s.replaceAll("[\\[\\]]","");
+					uploadedFiles.addAll(Arrays.asList(s.split(",")));
+				}
+			}
+		}
+		List<String> uploadedFilesTrimmed = new ArrayList<String>();;
+		for(String s: uploadedFiles){
+			uploadedFilesTrimmed.add(s.trim());
+		}
+		
+		Map<String,List<String>> matMap =  new HashMap<String, List<String>>();
+		for(int i=0;i<matNo.length;i++){
+			if(matNo[i]!=null && matNo[i].length()>0){
+				List<String> li = new ArrayList<String>();
+				li.add(matDesc[i]);
+				li.add(unitPrice[i]);
+				li.add(quantity[i]);
+				li.add(discount[i]);
+				li.add(value[i]);
+				matMap.put(matNo[i], li);
+			}
+		}		
+		
 		try {
 			PurchaseOrder poCreated = commonService.registerPO(create,pid, poNumber, poVersion,poDate,vnoSender,poSender,poSenderDetails,senderEmail,senderPhone,senderFax,notes,
-					matNo,matDesc,unitPrice,quantity,discount,value);
+					totalValue,matMap,files,uploadedFilesTrimmed);
 
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
@@ -587,12 +612,6 @@ public class AppController {
 			poDTO.setSenderPhone(senderPhone);
 			poDTO.setSenderFax(senderFax);
 			poDTO.setNotes(notes);
-			poDTO.setMatNo(matNo);
-			poDTO.setMatDesc(matDesc);
-			poDTO.setUnitPrice(unitPrice);
-			poDTO.setQuantity(quantity);
-			poDTO.setDiscount(discount);
-			poDTO.setValue(value);
 
 			model.addAttribute("poSelected", poDTO);
 		}

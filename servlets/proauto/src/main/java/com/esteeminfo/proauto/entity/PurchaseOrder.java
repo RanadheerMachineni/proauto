@@ -19,8 +19,6 @@ public class PurchaseOrder implements Serializable {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int pid;
 
-	private String discount;
-
 	@Column(name="total_value")
 	private String totalValue;
 	
@@ -61,6 +59,18 @@ public class PurchaseOrder implements Serializable {
 	@Column(name="vno_sender")
 	private String vnoSender;
 
+	@ManyToMany
+	@JoinTable(
+		name="po_files"
+		, joinColumns={
+			@JoinColumn(name="pid")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="upload_id")
+			}
+		)
+	private Set<FilesUpload> filesUploads;
+	
 	public PurchaseOrder() {
 	}
 
@@ -70,14 +80,6 @@ public class PurchaseOrder implements Serializable {
 
 	public void setPid(int pid) {
 		this.pid = pid;
-	}
-
-	public String getDiscount() {
-		return this.discount;
-	}
-
-	public void setDiscount(String discount) {
-		this.discount = discount;
 	}
 
 	public String getNotes() {
@@ -188,5 +190,12 @@ public class PurchaseOrder implements Serializable {
 
 		return poTool;
 	}
+	
+	public Set<FilesUpload> getFilesUploads() {
+		return this.filesUploads;
+	}
 
+	public void setFilesUploads(Set<FilesUpload> filesUploads) {
+		this.filesUploads = filesUploads;
+	}
 }

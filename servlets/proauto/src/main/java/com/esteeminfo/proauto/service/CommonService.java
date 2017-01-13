@@ -32,11 +32,6 @@ public interface CommonService {
 
 	List<PurchaseOrder> retrieveAllPos(String poSearched);
 
-	PurchaseOrder registerPO(String create, String pid, String poNumber, String poVersion, String poDate, String vnoSender,
-			String poSender, String poSenderDetails, String senderEmail, String senderPhone, String senderFax,
-			String notes, String matNo, String matDesc, String unitPrice, String quantity, String discount,
-			String value) throws ParseException;
-
 	JobOpDTO converOperationToDto(JobOperation jobOperation);
 
 	JobOperation findOperationById(Integer valueOf);
@@ -44,5 +39,9 @@ public interface CommonService {
 	List<JobOperation> retrieveAllOperations(String operationSearched);
 
 	JobOperation registerJobOperation(String create, String oid, String oName, String oDescription);
+
+	PurchaseOrder registerPO(String create, String pid, String poNumber, String poVersion, String poDate,
+			String vnoSender, String poSender, String poSenderDetails, String senderEmail, String senderPhone,
+			String senderFax, String notes, String totalValue, Map<String, List<String>> matMap, MultipartFile[] files, List<String> uploadedFilesTrimmed) throws ParseException;
 
 }
