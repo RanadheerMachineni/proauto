@@ -1,6 +1,5 @@
 package com.esteeminfo.proauto.service;
 
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,23 +9,17 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.apache.taglibs.standard.tag.common.core.ForEachSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.esteeminfo.proauto.controllers.AppController;
 import com.esteeminfo.proauto.dao.CustomerDAO;
-import com.esteeminfo.proauto.dao.EmployeeDao;
 import com.esteeminfo.proauto.dao.FileUploadDAO;
 import com.esteeminfo.proauto.dto.CustomerDTO;
-import com.esteeminfo.proauto.dto.EmployeeDTO;
 import com.esteeminfo.proauto.entity.Contact;
 import com.esteeminfo.proauto.entity.Customer;
-import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.FilesUpload;
-import com.esteeminfo.proauto.entity.Role;
 
 @Service("customerService")
 @Transactional

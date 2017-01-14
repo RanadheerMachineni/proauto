@@ -44,7 +44,6 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 	
 	public Employee findById(int id) {
 		EntityManager entityManager = getEntityManager();
-		entityManager.getTransaction().begin();
 		Query q = entityManager.createQuery( "select e from Employee e where e.employeeId=:eid");
 		q.setParameter("eid", id);
 		List<Employee> result = q.getResultList();
@@ -52,23 +51,18 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			return null;
 		}
 		Employee e = result.get(0);
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		System.out.println("***** EmployeeDaoImpl findById = "+e.getFirstName());
 		return e;
 	}
 
 	public List<Employee> retrieveAllEmployees(String employeeSearched) {
 		EntityManager entityManager = getEntityManager();
-		entityManager.getTransaction().begin();
 		String query = "select e from Employee e";
 		if (employeeSearched != null && employeeSearched.length() > 0) {
 			query += " where e.firstName LIKE '" + employeeSearched + "%'";
 		}
 		Query q = entityManager.createQuery(query);
 		List<Employee> result = q.getResultList();
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		return result;
 	}
 
@@ -90,7 +84,6 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 
 		if (create.equalsIgnoreCase("false") && employeeId > 0 ) {
 			EntityManager entityManager = getEntityManager();
-			entityManager.getTransaction().begin();
 			Employee existingEmployee = null;
 			Query q = entityManager.createQuery( "select e from Employee e where e.employeeId=:eid");
 			q.setParameter("eid", employeeId);
@@ -124,19 +117,14 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			existingEmployee.setDepartment(entityManager.find(Department.class, "dept1"));
 			existingEmployee.setStatus("a");
 			entityManager.persist(existingEmployee);
-			entityManager.flush();
 			Role role = entityManager.find(Role.class, eRole);
 			Set<Role> roleList = new HashSet<Role>();
 			roleList.add(role);
 			existingEmployee.setRoles(roleList);
 			entityManager.merge(role);
-			entityManager.flush();
-			entityManager.getTransaction().commit();
-			entityManager.close();
 			return existingEmployee;
 		}else{
 			EntityManager entityManager = getEntityManager();
-			entityManager.getTransaction().begin();
 			Employee employeeCreated =  new Employee();
 			employeeCreated.setFirstName(efirstName);
 			employeeCreated.setLastName(eLastName);
@@ -161,16 +149,12 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			employeeCreated.setEmployementType(eEmploymentType);
 			employeeCreated.setSection(entityManager.find(Section.class, eSection));
 			entityManager.persist(employeeCreated);
-			entityManager.flush();
 			System.out.println("EMP created ******** "+employeeCreated.getEmployeeId());
 			Role role = entityManager.find(Role.class, eRole);
 			Set<Role> roleList = new HashSet<Role>();
 			roleList.add(role);
 			employeeCreated.setRoles(roleList);
 			entityManager.merge(role);
-			entityManager.flush();
-			entityManager.getTransaction().commit();
-			entityManager.close();
 			return employeeCreated;
 		}
 	}
@@ -179,20 +163,15 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 		Employee employee = findById(id);
 		if(employee!=null && employee.getEmployeeId()>0){
 				EntityManager entityManager = getEntityManager();
-				entityManager.getTransaction().begin();
 				employee.setFilesUploads(filesUploads);	
 				entityManager.merge(employee);
-				entityManager.flush();
-				entityManager.getTransaction().commit();
-				entityManager.close();
 		}
 		cleanUpFiles();
 		return employee;
 	}
 
 	public void cleanUpFiles() {
-		EntityManager entityManager = getEntityManager();
-		entityManager.getTransaction().begin();
+		
 		/*
 		 * Query q1 = entityManager.createQuery("select fu.uploadId from FilesUpload fu left join employee e on "
 				+ "ef.employeeId = fu.employeeId where ef.upload_id is null");
@@ -206,15 +185,18 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 		int deletedCound = q.executeUpdate();
 		logger.info("deleted files "+deletedCound);*/
 		
-		Query q = entityManager.createNativeQuery("delete from files_upload where upload_id in(select dummy.upload_id from (select * from files_upload) as dummy "
-				+ "left join employee_files ef on ef.upload_id = dummy.upload_id where ef.upload_id is null)");
-		
-		int deletedCnt = q.executeUpdate(); 
-				
-		logger.info("deletedCnt "+deletedCnt);
-		
-		entityManager.getTransaction().commit();
-		entityManager.close();
+//		EntityManager entityManager = getEntityManager();
+//		entityManager.getTransaction().begin();
+//		
+//		Query q = entityManager.createNativeQuery("delete from files_upload where upload_id in(select dummy.upload_id from (select * from files_upload) as dummy "
+//				+ "left join employee_files ef on ef.upload_id = dummy.upload_id where ef.upload_id is null)");
+//		
+//		int deletedCnt = q.executeUpdate(); 
+//				
+//		logger.info("deletedCnt "+deletedCnt);
+//		
+//		entityManager.getTransaction().commit();
+//		entityManager.close();
 
 	}
 

@@ -1,6 +1,5 @@
 package com.esteeminfo.proauto.service;
 
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.esteeminfo.proauto.controllers.AppController;
 import com.esteeminfo.proauto.dao.EmployeeDao;
 import com.esteeminfo.proauto.dao.FileUploadDAO;
 import com.esteeminfo.proauto.dto.EmployeeDTO;

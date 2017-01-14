@@ -370,6 +370,7 @@
 		    	
 		    	</div>
   	  		   <br>
+  	  		   
   	  		   <jstl:if
 								test="${poSelected.pid != null && poSelected.pid > 0 && poSelected.files!=null}">
 	  	  		   <div class="row rowspace">
@@ -394,7 +395,6 @@
 															id="deleteFile" onClick="removeFile('${eachFile}');">
         									 <span class="glyphicon glyphicon-remove"></span> Remove 
         								</button>
-				                   		<!--  <input type="button" name="deleteFile" id="deleteFile" value="Delete" onClick="deleteFile(${employeeSelected.employeeId},${eachFile});" > -->
 				                    </td>
 				                </tr>
 			           		 </jstl:forEach>
@@ -402,7 +402,7 @@
 			    	 	</div>
 				   </div>
 				</jstl:if>							
-  	  		   
+  	  		    
   	  		   
   	  		   <div class="row rowspace">
   	  		  		 <div class="col-sm-2 col-md-2">

@@ -30,7 +30,6 @@ public class CommonDAO extends AbstractDao{
 	
 	public Machine findMachineById(int id){
 		EntityManager entityManager = getEntityManager();
-		entityManager.getTransaction().begin();
 		Query q = entityManager.createQuery( "select e from Machine e where e.machineId=:eid");
 		q.setParameter("eid", id);
 		List<Machine> result = q.getResultList();
@@ -38,22 +37,17 @@ public class CommonDAO extends AbstractDao{
 			return null;
 		}
 		Machine e = result.get(0);
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		return e;
 	}
 	
 	public List<Machine> retrieveAllMachines(String machineSearched){
 		EntityManager entityManager = getEntityManager();
-		entityManager.getTransaction().begin();
 		String query = "select e from Machine e";
 		if (machineSearched != null && machineSearched.length() > 0) {
 			query += " where e.machineDesc LIKE '" + machineSearched + "%'";
 		}
 		Query q = entityManager.createQuery(query);
 		List<Machine> result = q.getResultList();
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		return result;
 	}
 
@@ -63,7 +57,6 @@ public class CommonDAO extends AbstractDao{
 
 		if (create.equalsIgnoreCase("false") && machineId > 0 ) {
 			EntityManager entityManager = getEntityManager();
-			entityManager.getTransaction().begin();
 			Machine existingMachine = null;
 			Query q = entityManager.createQuery( "select e from Machine e where e.machineId=:eid");
 			q.setParameter("eid", machineId);
@@ -77,29 +70,21 @@ public class CommonDAO extends AbstractDao{
 			existingMachine.setMachineAxle(mAxle);
 			existingMachine.setMachineCost(mCost);
 			entityManager.persist(existingMachine);
-			entityManager.flush();
-			entityManager.getTransaction().commit();
-			entityManager.close();
 			return existingMachine;
 		}else{
 			EntityManager entityManager = getEntityManager();
-			entityManager.getTransaction().begin();
 			Machine machineCreated =  new Machine();
 			machineCreated.setMachineDesc(mName);
 			machineCreated.setMachineCodeType(mCode);
 			machineCreated.setMachineAxle(mAxle);
 			machineCreated.setMachineCost(mCost);
 			entityManager.persist(machineCreated);
-			entityManager.flush();
-			entityManager.getTransaction().commit();
-			entityManager.close();
 			return machineCreated;
 		}
 	}
 
 	public PurchaseOrder findPOById(int valueOf) {
 		EntityManager entityManager = getEntityManager();
-		entityManager.getTransaction().begin();
 		Query q = entityManager.createQuery( "select e from PurchaseOrder e where e.pid=:pid");
 		q.setParameter("pid", Integer.valueOf(valueOf));
 		List<PurchaseOrder> result = q.getResultList();
@@ -107,22 +92,17 @@ public class CommonDAO extends AbstractDao{
 			return null;
 		}
 		PurchaseOrder e = result.get(0);
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		return e;
 	}
 
 	public List<PurchaseOrder> retrieveAllPos(String poSearched) {
 		EntityManager entityManager = getEntityManager();
-		entityManager.getTransaction().begin();
 		String query = "select e from PurchaseOrder e";
 		if (poSearched != null && poSearched.length() > 0) {
 			query += " where e.poId LIKE '" + poSearched + "%'";
 		}
 		Query q = entityManager.createQuery(query);
 		List<PurchaseOrder> result = q.getResultList();
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		return result;
 	}
 
@@ -140,7 +120,6 @@ public class CommonDAO extends AbstractDao{
 
 	public JobOperation findOperationById(Integer valueOf) {
 		EntityManager entityManager = getEntityManager();
-		entityManager.getTransaction().begin();
 		Query q = entityManager.createQuery( "select e from JobOperation e where e.joId=:eid");
 		q.setParameter("eid", valueOf);
 		List<JobOperation> result = q.getResultList();
@@ -148,22 +127,17 @@ public class CommonDAO extends AbstractDao{
 			return null;
 		}
 		JobOperation e = result.get(0);
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		return e;
 	}
 
 	public List<JobOperation> retrieveAllOperations(String operationSearched) {
 		EntityManager entityManager = getEntityManager();
-		entityManager.getTransaction().begin();
 		String query = "select e from JobOperation e";
 		if (operationSearched != null && operationSearched.length() > 0) {
 			query += " where e.jobName LIKE '" + operationSearched + "%'";
 		}
 		Query q = entityManager.createQuery(query);
 		List<JobOperation> result = q.getResultList();
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		return result;
 	}
 
@@ -172,7 +146,6 @@ public class CommonDAO extends AbstractDao{
 
 		if (create.equalsIgnoreCase("false") && joid > 0 ) {
 			EntityManager entityManager = getEntityManager();
-			entityManager.getTransaction().begin();
 			JobOperation existingMachine = null;
 			Query q = entityManager.createQuery( "select e from JobOperation e where e.joId=:eid");
 			q.setParameter("eid", joid);
@@ -183,20 +156,13 @@ public class CommonDAO extends AbstractDao{
 			existingMachine.setJobName(oName);
 			existingMachine.setJobDesc(oDescription);
 			entityManager.persist(existingMachine);
-			entityManager.flush();
-			entityManager.getTransaction().commit();
-			entityManager.close();
 			return existingMachine;
 		}else{
 			EntityManager entityManager = getEntityManager();
-			entityManager.getTransaction().begin();
 			JobOperation machineCreated =  new JobOperation();
 			machineCreated.setJobName(oName);
 			machineCreated.setJobDesc(oDescription);
 			entityManager.persist(machineCreated);
-			entityManager.flush();
-			entityManager.getTransaction().commit();
-			entityManager.close();
 			return machineCreated;
 		}	
 		
@@ -220,7 +186,6 @@ public class CommonDAO extends AbstractDao{
 		
 		if (create.equalsIgnoreCase("false") && purchaseid > 0) {
 			EntityManager entityManager = getEntityManager();
-			entityManager.getTransaction().begin();
 			PurchaseOrder existingPO = null;
 			Query q = entityManager.createQuery( "select e from PurchaseOrder e where e.pid=:eid");
 			q.setParameter("eid", purchaseid);
@@ -244,6 +209,7 @@ public class CommonDAO extends AbstractDao{
 			Set<PoTool> poList = new HashSet<PoTool>();
 			for (Entry<String, List<String>> eachEntry : matMap.entrySet()) {
 				PoTool poTool = new PoTool();
+				poTool.setPurchaseOrder(existingPO);
 				poTool.setMatNo(eachEntry.getKey());
 				poTool.setMatDesc(eachEntry.getValue().get(0));
 				poTool.setMatUnitprice(eachEntry.getValue().get(1));
@@ -256,13 +222,9 @@ public class CommonDAO extends AbstractDao{
 			
 			existingPO.setPoTools(poList);
 			entityManager.merge(existingPO);
-			entityManager.getTransaction().commit();
-			entityManager.flush();
-			entityManager.close();
 			return existingPO;
 		}else{
 			EntityManager entityManager = getEntityManager();
-			//entityManager.getTransaction().begin();
 			PurchaseOrder poCreated =  new PurchaseOrder();
 			poCreated.setPoId(poNumber);
 			poCreated.setPoVersion(poVersion);
@@ -280,6 +242,7 @@ public class CommonDAO extends AbstractDao{
 			Set<PoTool> poList = new HashSet<PoTool>();
 			for (Entry<String, List<String>> eachEntry : matMap.entrySet()) {
 				PoTool poTool = new PoTool();
+				poTool.setPurchaseOrder(poCreated);
 				poTool.setMatNo(eachEntry.getKey());
 				poTool.setMatDesc(eachEntry.getValue().get(0));
 				poTool.setMatUnitprice(eachEntry.getValue().get(1));
@@ -287,14 +250,11 @@ public class CommonDAO extends AbstractDao{
 				poTool.setDiscount(eachEntry.getValue().get(3));
 				poTool.setMatValue(eachEntry.getValue().get(4));
 				entityManager.persist(poTool);
-				poList.add(poTool);
+				//poList.add(poTool);
 			}
 			
-			poCreated.setPoTools(poList);
-			entityManager.merge(poCreated);
-			//entityManager.getTransaction().commit();
-			entityManager.flush();
-			entityManager.close();
+			//poCreated.setPoTools(poList);
+			//entityManager.merge(poCreated);
 			return poCreated;
 	
 		}
@@ -304,12 +264,8 @@ public class CommonDAO extends AbstractDao{
 		PurchaseOrder purchaseOrder = findPOById(pid);
 		if(purchaseOrder!=null && purchaseOrder.getPid()>0){
 				EntityManager entityManager = getEntityManager();
-				entityManager.getTransaction().begin();
 				purchaseOrder.setFilesUploads(filesUploads);	
 				entityManager.merge(purchaseOrder);
-				entityManager.flush();
-				entityManager.getTransaction().commit();
-				entityManager.close();
 		}
 		//cleanUpFiles();
 		return purchaseOrder;

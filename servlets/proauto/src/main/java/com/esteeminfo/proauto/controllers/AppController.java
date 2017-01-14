@@ -536,10 +536,6 @@ public class AppController {
 		}
 		Map<String, String> customerMap = new HashMap<String, String>(); 
 		customerMap = customerService.retreiveCustomerMap();
-//		customerMap.put("1", "cu0");
-//		customerMap.put("2", "cu1");
-//		customerMap.put("3", "cu2");
-//		customerMap.put("4", "cu3");
 		
 		model.addAttribute("customers", customerMap);
 

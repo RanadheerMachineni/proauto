@@ -18,6 +18,7 @@ import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.Role;
 
 @Service("customUserDetailsService")
+@Transactional
 public class CustomUserDetailsService implements UserDetailsService{
 
 	

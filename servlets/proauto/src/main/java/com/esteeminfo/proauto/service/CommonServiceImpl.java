@@ -1,6 +1,5 @@
 package com.esteeminfo.proauto.service;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,11 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.esteeminfo.proauto.dao.CommonDAO;
 import com.esteeminfo.proauto.dao.FileUploadDAO;
-import com.esteeminfo.proauto.dto.CustomerDTO;
 import com.esteeminfo.proauto.dto.JobOpDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
-import com.esteeminfo.proauto.entity.Contact;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.FilesUpload;
 import com.esteeminfo.proauto.entity.JobOperation;
@@ -142,6 +139,7 @@ public class CommonServiceImpl implements CommonService {
 						filesUploads.add(filesUpload);
 						
 					} catch (Exception e) {
+						e.printStackTrace();
 					}	
 				}
 				

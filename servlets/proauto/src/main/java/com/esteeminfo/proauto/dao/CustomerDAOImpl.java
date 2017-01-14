@@ -37,7 +37,6 @@ public class CustomerDAOImpl extends AbstractDao implements CustomerDAO {
 	
 	public Customer findById(int id) {
 		EntityManager entityManager = getEntityManager();
-		entityManager.getTransaction().begin();
 		Query q = entityManager.createQuery( "select e from Customer e where e.customerId=:eid");
 		q.setParameter("eid", id);
 		List<Customer> result = q.getResultList();
@@ -45,8 +44,6 @@ public class CustomerDAOImpl extends AbstractDao implements CustomerDAO {
 			return null;
 		}
 		Customer e = result.get(0);
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		return e;
 	}
 
@@ -63,15 +60,12 @@ public class CustomerDAOImpl extends AbstractDao implements CustomerDAO {
 
 	public List<Customer> retrieveAllCustomers(String customerSearched) {
 		EntityManager entityManager = getEntityManager();
-		entityManager.getTransaction().begin();
 		String query = "select e from Customer e";
 		if (customerSearched != null && customerSearched.length() > 0) {
 			query += " where e.customerName LIKE '" + customerSearched + "%'";
 		}
 		Query q = entityManager.createQuery(query);
 		List<Customer> result = q.getResultList();
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		return result;
 	}
 
@@ -79,11 +73,8 @@ public class CustomerDAOImpl extends AbstractDao implements CustomerDAO {
 		Customer employee = findById(id);
 		if(employee!=null && employee.getCustomerId()>0){
 				EntityManager entityManager = getEntityManager();
-				entityManager.getTransaction().begin();
 				employee.setFilesUploads(filesUploads);	
 				entityManager.merge(employee);
-				entityManager.flush();
-				entityManager.getTransaction().commit();
 				entityManager.close();
 		}
 		cleanUpFiles();
@@ -104,7 +95,6 @@ public class CustomerDAOImpl extends AbstractDao implements CustomerDAO {
 
 		if (create.equalsIgnoreCase("false") && employeeId > 0 ) {
 			EntityManager entityManager = getEntityManager();
-			entityManager.getTransaction().begin();
 			Customer existingEmployee = null;
 			Query q = entityManager.createQuery( "select e from Customer e where e.customerId=:eid");
 			q.setParameter("eid", employeeId);
@@ -118,7 +108,6 @@ public class CustomerDAOImpl extends AbstractDao implements CustomerDAO {
 			existingEmployee.setCustomerName(cName);
 			existingEmployee.setAddress(cAddress);
 			entityManager.persist(existingEmployee);
-			entityManager.flush();
 
 			Set<Contact> contactList = new HashSet<Contact>();
 			for (Entry<String, List<String>> eachEntry : contactsMap.entrySet()) {
@@ -129,28 +118,19 @@ public class CustomerDAOImpl extends AbstractDao implements CustomerDAO {
 				contact.setFax(eachEntry.getValue().get(2));
 				contact.setNotes(eachEntry.getValue().get(3));
 				entityManager.persist(contact);
-				entityManager.flush();
 				contactList.add(contact);
 			}
 			existingEmployee.setContacts(contactList);
 			entityManager.merge(existingEmployee);
-			entityManager.flush();
-			entityManager.getTransaction().commit();
-			entityManager.close();
 			return existingEmployee;
 		}else{
 			EntityManager entityManager = getEntityManager();
-			entityManager.getTransaction().begin();
 			Customer employeeCreated =  new Customer();
 			employeeCreated.setCustomerName(cName);
 			employeeCreated.setAddress(cAddress);
 			entityManager.persist(employeeCreated);
-			entityManager.flush();
-			entityManager.getTransaction().commit();
-			entityManager.close();
 			
 			EntityManager entityManager1 = getEntityManager();
-			entityManager1.getTransaction().begin();
 			Query q = entityManager1.createQuery( "select e from Customer e where e.customerId=:eid");
 			q.setParameter("eid", employeeCreated.getCustomerId());
 			List<Customer> result = q.getResultList();
@@ -165,13 +145,9 @@ public class CustomerDAOImpl extends AbstractDao implements CustomerDAO {
 				contact.setNotes(eachEntry.getValue().get(3));
 				contactList.add(contact);
 				entityManager1.persist(contact);
-				entityManager1.flush();
 			}
 			employeeCreated1.setContacts(contactList);
 			entityManager1.merge(employeeCreated1);
-			entityManager1.flush();
-			entityManager1.getTransaction().commit();
-			entityManager1.close();
 			return employeeCreated1;
 		}
 	
