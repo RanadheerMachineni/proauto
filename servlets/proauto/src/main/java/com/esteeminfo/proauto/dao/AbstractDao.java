@@ -2,24 +2,13 @@ package com.esteeminfo.proauto.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.persistence.Persistence;
 
 public abstract class AbstractDao {
 	
-//	@Autowired
-//	EntityManagerFactory entityManagerFactory;
-//
-//	protected EntityManager getEntityManager(){
-//		return entityManagerFactory.createEntityManager( );
-//	}
+	private EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "proauto" );;
 
-	 @PersistenceContext	
-	 EntityManager entityManager;	
-	 
-	 
-		public EntityManager getEntityManager() {
-			return this.entityManager;
-		}
+	protected EntityManager getEntityManager(){
+		return emfactory.createEntityManager( );
+	}
 }
