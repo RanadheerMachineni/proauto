@@ -21,6 +21,7 @@ import com.esteeminfo.proauto.dto.JobOpDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
 import com.esteeminfo.proauto.entity.Contact;
+import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.FilesUpload;
 import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Machine;
@@ -81,7 +82,9 @@ public class CommonServiceImpl implements CommonService {
 		poDTO.setSenderPhone(purchaseOrder.getSenderPhone());
 		poDTO.setSenderFax(purchaseOrder.getSenderFax());
 		poDTO.setNotes(purchaseOrder.getNotes());
-		
+		if(purchaseOrder.getCustomer()!=null){
+			poDTO.setCustomer(String.valueOf(purchaseOrder.getCustomer().getCustomerId()));
+		}
 		if(purchaseOrder.getPoTools()!=null && purchaseOrder.getPoTools().size()>0){
 			List<String> poTools =  new ArrayList<String>();
 			for(PoTool poTool: purchaseOrder.getPoTools()){
@@ -120,10 +123,10 @@ public class CommonServiceImpl implements CommonService {
 
 	}
 
-	public PurchaseOrder registerPO(String create, String pid, String poNumber, String poVersion, String poDate,
+	public PurchaseOrder registerPO(String create, String pid,Customer customer, String poNumber, String poVersion, String poDate,
 			String vnoSender, String poSender, String poSenderDetails, String senderEmail, String senderPhone,
-			String senderFax, String notes, String totalValue, Map<String, List<String>> matMap, MultipartFile[] files, List<String> uploadedFilesTrimmed) throws ParseException {
-		PurchaseOrder purchaseOrder = commonDAO.registerPO(create, pid, poNumber, poVersion, poDate,
+			String senderFax, String notes, String totalValue, Map<String, List<String>> matMap, MultipartFile[] files, List<String> uploadedFilesTrimmed) throws Exception {
+		PurchaseOrder purchaseOrder = commonDAO.registerPO(create, pid, customer, poNumber, poVersion, poDate,
 				vnoSender, poSender, poSenderDetails,  senderEmail,  senderPhone,
 				 senderFax,  notes,  totalValue,  matMap);
 		

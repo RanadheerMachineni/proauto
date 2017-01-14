@@ -3,12 +3,14 @@ package com.esteeminfo.proauto.service;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.apache.taglibs.standard.tag.common.core.ForEachSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -126,6 +128,16 @@ public class CustomerServiceImpl implements CustomerService {
 		customerCreated = customerDAO.addFilesToCustomer(customerCreated.getCustomerId(), filesUploads);
 		return customerCreated;
 	
+	}
+
+	public Map<String, String> retreiveCustomerMap() {
+		Map<String, String> map = new HashMap<String, String>();
+		List<Customer> list = customerDAO.retrieveAllCustomers(null);
+		for(Customer eachCustomer : list){
+			map.put(String.valueOf(eachCustomer.getCustomerId()), eachCustomer.getCustomerName());
+		}
+		
+		return map;
 	}
 	
 }

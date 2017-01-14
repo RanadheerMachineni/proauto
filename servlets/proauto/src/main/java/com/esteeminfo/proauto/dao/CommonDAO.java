@@ -1,6 +1,5 @@
 package com.esteeminfo.proauto.dao;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.List;
@@ -12,10 +11,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.esteeminfo.proauto.dto.MachineDTO;
-import com.esteeminfo.proauto.entity.Employee;
+import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.FilesUpload;
 import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Machine;
@@ -129,7 +126,17 @@ public class CommonDAO extends AbstractDao{
 		return result;
 	}
 
-	
+	private PurchaseOrder findPOByNumber(String poNumber) {
+		EntityManager entityManager = getEntityManager();
+		Query q = entityManager.createQuery( "select e from PurchaseOrder e where e.poId=:userId");
+		q.setParameter("userId", poNumber);
+		List<PurchaseOrder> result = q.getResultList();
+		if(result == null || result.size() ==0){
+			return null;
+		}
+		return result.get(0);
+	}
+
 
 	public JobOperation findOperationById(Integer valueOf) {
 		EntityManager entityManager = getEntityManager();
@@ -195,10 +202,17 @@ public class CommonDAO extends AbstractDao{
 		
 	}
 
-	public PurchaseOrder registerPO(String create, String pid, String poNumber, String poVersion, String poDate,
+	public PurchaseOrder registerPO(String create, String pid, Customer customer, String poNumber, String poVersion, String poDate,
 			String vnoSender, String poSender, String poSenderDetails, String senderEmail, String senderPhone,
-			String senderFax, String notes, String totalValue, Map<String, List<String>> matMap) throws ParseException {
+			String senderFax, String notes, String totalValue, Map<String, List<String>> matMap) throws Exception {
 		int purchaseid = (pid == null || pid.length() == 0 ) ? 0:Integer.valueOf(pid); 
+		
+		if(poNumber!=null && poNumber.length()>0){
+			PurchaseOrder existingPOByNumber =  findPOByNumber(poNumber);
+			if (existingPOByNumber!=null && (purchaseid==0 || (existingPOByNumber.getPid() != purchaseid))) {
+				throw new Exception("PurchaseOrder with given PO number already exist. Please select other PO number");
+			}
+		}
 		java.util.Date javaDatePoDate = null;
 		if(poDate!=null){
 			javaDatePoDate = ui_date_format.parse(poDate) ;
@@ -224,6 +238,7 @@ public class CommonDAO extends AbstractDao{
 			existingPO.setSenderPhone(senderPhone);
 			existingPO.setSenderFax(senderFax);
 			existingPO.setNotes(notes);
+			existingPO.setCustomer(customer);
 			entityManager.persist(existingPO);
 			
 			Set<PoTool> poList = new HashSet<PoTool>();
@@ -247,7 +262,7 @@ public class CommonDAO extends AbstractDao{
 			return existingPO;
 		}else{
 			EntityManager entityManager = getEntityManager();
-			entityManager.getTransaction().begin();
+			//entityManager.getTransaction().begin();
 			PurchaseOrder poCreated =  new PurchaseOrder();
 			poCreated.setPoId(poNumber);
 			poCreated.setPoVersion(poVersion);
@@ -259,6 +274,7 @@ public class CommonDAO extends AbstractDao{
 			poCreated.setSenderPhone(senderPhone);
 			poCreated.setSenderFax(senderFax);
 			poCreated.setNotes(notes);
+			poCreated.setCustomer(customer);
 			entityManager.persist(poCreated);
 			
 			Set<PoTool> poList = new HashSet<PoTool>();
@@ -276,7 +292,7 @@ public class CommonDAO extends AbstractDao{
 			
 			poCreated.setPoTools(poList);
 			entityManager.merge(poCreated);
-			entityManager.getTransaction().commit();
+			//entityManager.getTransaction().commit();
 			entityManager.flush();
 			entityManager.close();
 			return poCreated;

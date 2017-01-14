@@ -15,6 +15,8 @@ public class PoDTO {
 	String senderFax;
 	String notes;
 	String totalValue;
+	String customer;
+
 	List<String> material;
 	
 	public int getPid() {
@@ -94,5 +96,11 @@ public class PoDTO {
 	}
 	public void setMaterial(List<String> material) {
 		this.material = material;
+	}
+	public String getCustomer() {
+		return customer;
+	}
+	public void setCustomer(String customer) {
+		this.customer = customer;
 	}
 }

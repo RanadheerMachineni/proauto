@@ -78,6 +78,7 @@ public class Customer implements Serializable {
 
 	//bi-directional many-to-one association to PurchaseOrder
 	@OneToMany(mappedBy="customer")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<PurchaseOrder> purchaseOrders;
 	
 	public Customer() {

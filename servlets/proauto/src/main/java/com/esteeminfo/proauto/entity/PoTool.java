@@ -3,6 +3,9 @@ package com.esteeminfo.proauto.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 
 /**
  * The persistent class for the po_tool database table.

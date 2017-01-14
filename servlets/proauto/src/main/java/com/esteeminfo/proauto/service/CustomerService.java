@@ -23,4 +23,6 @@ public interface CustomerService {
 
 	FilesUpload findFile(Integer eid, String fname);
 
+	Map<String, String> retreiveCustomerMap();
+
 }

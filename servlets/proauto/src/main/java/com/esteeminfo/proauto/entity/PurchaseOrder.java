@@ -2,6 +2,10 @@ package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -28,6 +32,7 @@ public class PurchaseOrder implements Serializable {
 
 	//bi-directional many-to-one association to PoTool
 	@OneToMany(mappedBy="purchaseOrder")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<PoTool> poTools;
 
 	private String notes;
@@ -69,6 +74,7 @@ public class PurchaseOrder implements Serializable {
 			@JoinColumn(name="upload_id")
 			}
 		)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<FilesUpload> filesUploads;
 	
 	public PurchaseOrder() {

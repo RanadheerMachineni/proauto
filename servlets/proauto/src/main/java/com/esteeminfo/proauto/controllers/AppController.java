@@ -534,6 +534,15 @@ public class AppController {
 			PoDTO eachPODTO = commonService.converPoToDto(eachPO);
 			poDTOs.add(eachPODTO);
 		}
+		Map<String, String> customerMap = new HashMap<String, String>(); 
+		customerMap = customerService.retreiveCustomerMap();
+//		customerMap.put("1", "cu0");
+//		customerMap.put("2", "cu1");
+//		customerMap.put("3", "cu2");
+//		customerMap.put("4", "cu3");
+		
+		model.addAttribute("customers", customerMap);
+
 		model.addAttribute("poSelected", poDTO);
 
 		model.addAttribute("poList", poDTOs);
@@ -545,6 +554,8 @@ public class AppController {
 	public String postporegPage(Model model,@RequestParam("eFiles") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) {	
 		String create = request.getParameter("create");
 		String pid =  request.getParameter("pid");
+		String customerId = request.getParameter("customer");
+		Customer customer = customerService.findById(Integer.valueOf(customerId));
 		String poNumber = request.getParameter("poNumber");
 		String poVersion = request.getParameter("poVersion");
 		String poDate = request.getParameter("poDate");
@@ -556,8 +567,7 @@ public class AppController {
 		String senderFax = request.getParameter("senderFax");
 		String notes = request.getParameter("notes");
 		String totalValue = request.getParameter("totalValue");
-
-		String[] matNo = request.getParameterValues("totalValue");
+		String[] matNo = request.getParameterValues("matNo");
 		String[] matDesc = request.getParameterValues("matDesc");
 		String[] unitPrice = request.getParameterValues("unitPrice");
 		String[] quantity = request.getParameterValues("quantity");
@@ -594,7 +604,7 @@ public class AppController {
 		}		
 		
 		try {
-			PurchaseOrder poCreated = commonService.registerPO(create,pid, poNumber, poVersion,poDate,vnoSender,poSender,poSenderDetails,senderEmail,senderPhone,senderFax,notes,
+			PurchaseOrder poCreated = commonService.registerPO(create,pid,customer, poNumber, poVersion,poDate,vnoSender,poSender,poSenderDetails,senderEmail,senderPhone,senderFax,notes,
 					totalValue,matMap,files,uploadedFilesTrimmed);
 
 		} catch (Exception e) {
@@ -622,6 +632,13 @@ public class AppController {
 			PoDTO eachPoDTO = commonService.converPoToDto(purchaseOrder);
 			poDTOList.add(eachPoDTO);
 		}
+		
+		Map<String, String> customerMap = new HashMap<String, String>(); 
+		customerMap = customerService.retreiveCustomerMap();
+
+		
+		model.addAttribute("customers", customerMap);
+
 		model.addAttribute("poList", poDTOList);
 		return "poreg";
 	}

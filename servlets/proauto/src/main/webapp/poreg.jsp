@@ -66,36 +66,36 @@
 						
 						$('#poRegForm').validate(
 								{
+									
+									
 									rules : {
 										poNumber : {
 											minlength : 2,
-											required : true
+											required: true
+										},
+										customer :{
+											required: true
 										},
 										quantity : {
 											number : true
 										},
 										poDate : {
-											required : true
+											required: true
 										},
 										poSender : {
 											required : true
 										},
 										poSenderDetails : {
 											minlength : 2,
-											required : true
-										},
-										matNo : {
-											required : true
-										},
-										matDesc : {
-											required : true
+											required: true
 										}
 									},
 									highlight : function(element) {
 										$(element).closest('.control-group')
 												.removeClass('success')
 												.addClass('error');
-									},
+									}
+									,
 									success : function(element) {
 										element.text('OK!').addClass('valid')
 												.closest('.control-group')
@@ -156,7 +156,7 @@
 					</div>
 		
 		<form id="poRegForm" role="form"
-							action="poreg" method="post"							>  
+							action="poreg?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">							  
 		
 		
 		      <input type="hidden" name="regType" value="po">
@@ -164,6 +164,21 @@
 								value="${poSelected.pid}">
 			   <br>
 			   
+			   <div class="row rowspace">
+		    	 	<div class="col-sm-2 col-md-2">
+		      			<label for="customer">Customer:</label>
+		    		</div>
+		   		 	<div class="col-sm-2 col-md-2">
+			 			<select class="form-control" name="customer" id="customer">
+			 			 	<option value="">Select Customer</option>
+	  						<jstl:forEach items="${customers}" var="eachCustomer">
+	  				  			<option value="${eachCustomer.key}"
+												${poSelected.customer == eachCustomer.key ? 'selected' : ''}>${eachCustomer.value}</option>
+	  						</jstl:forEach>
+						</select>
+		    	 	</div>
+  	  		  </div>
+  	  		  
   	  		   <div class="row rowspace">
   	  		        <div class="control-group">
 	  	  		   		<div class="col-sm-2 col-md-2">
@@ -288,7 +303,9 @@
 		    		</div>
   	  		   </div>
   	  		  
-  	  		  	 
+  	  		  	
+  	  		   <div class="row rowspace">
+  	  		   		<div class="col-sm-12 col-md-12">
   	  		   <jstl:if
 								test="${poSelected.pid != null && customerSelected.pid > 0 && customerSelected.material!=null}">
 	  	  		   <div class="row rowspace">
@@ -300,18 +317,18 @@
 													value="${fn:split(eachMaterial, '[|]')}" />
 				                <tr>
 				                <td>
-								<input type="text" class="contactField" id="matNo"
+								<input type="text" class="contactField rowspace" id="matNo"
 														name="matNo" value="${splittedString[0]}"
 														placeholder="Mat No" /> &nbsp;
-								<input type="text" class="contactField" id="matDesc" name="matDesc"
+								<input type="text" class="contactField rowspace" id="matDesc" name="matDesc"
 														value="${splittedString[1]}" placeholder="Description" /> &nbsp;
-								<input type="text" class="contactField" id="unitPrice" name="unitPrice"
+								<input type="text" class="contactField rowspace" id="unitPrice" name="unitPrice"
 														value="${splittedString[2]}" placeholder="Unit Price" /> &nbsp;
-								<input type="text" class="contactField" id="quantity" name="quantity"
+								<input type="text" class="contactField rowspace" id="quantity" name="quantity"
 														value="${splittedString[3]}" placeholder="Quantity" /> &nbsp;
-								<input type="text" class="contactField" id="discount" name="discount"
+								<input type="text" class="contactField rowspace" id="discount" name="discount"
 														value="${splittedString[4]}" placeholder="Discount" /> &nbsp;
-								<input type="text" class="contactField" id="value" name="value"
+								<input type="text" class="contactField rowspace" id="value" name="value"
 														value="${splittedString[5]}" placeholder="Value" /> &nbsp;
 								</td>
 				                </tr>
@@ -321,25 +338,26 @@
 				   </div>
 				</jstl:if>							
   	  		   
-  	  		   
+  	  		   </div>
+  	  		   </div>
 			  	<div class="row rowspace">
   	  		 
   	  				 <div class="col-sm-12 col-md-12">
 	  	  		   	
 	  	  		   	<table class="form-table" id="customFields">
-						<tr valign="top">
+						<tr>
 							<td>
-								<input type="text" class="contactField" id="matNo"
+								<input type="text" class="contactField rowspace" id="matNo"
 												name="matNo" value="" placeholder="Mat No" /> &nbsp;
-								<input type="text" class="contactField" id="matDesc" name="matDesc"
+								<input type="text" class="contactField rowspace" id="matDesc" name="matDesc"
 												value="" placeholder="Description" /> &nbsp;
-								<input type="text" class="contactField" id="unitPrice" name="unitPrice"
+								<input type="text" class="contactField rowspace" id="unitPrice" name="unitPrice"
 												value="" placeholder="Unit Price" /> &nbsp;
-								<input type="text" class="contactField" id="quantity" name="quantity"
+								<input type="text" class="contactField rowspace" id="quantity" name="quantity"
 												value="" placeholder="Quantity" /> &nbsp;
-								<input type="text" class="contactField" id="discount" name="discount"
+								<input type="text" class="contactField rowspace" id="discount" name="discount"
 												value="" placeholder="Discount" /> &nbsp;
-								<input type="text" class="contactField" id="value" name="value"
+								<input type="text" class="contactField rowspace" id="value" name="value"
 												value="" placeholder="Value" /> &nbsp;
 								<input id="btnAdd" type="button" value="Add Item"
 												onclick="AddTextBox()" />
@@ -350,7 +368,7 @@
 		
 		    	</div>
 		    	
-		    	
+		    	</div>
   	  		   <br>
   	  		   <jstl:if
 								test="${poSelected.pid != null && poSelected.pid > 0 && poSelected.files!=null}">
