@@ -79,6 +79,8 @@ public class CommonServiceImpl implements CommonService {
 		poDTO.setSenderPhone(purchaseOrder.getSenderPhone());
 		poDTO.setSenderFax(purchaseOrder.getSenderFax());
 		poDTO.setNotes(purchaseOrder.getNotes());
+		poDTO.setTotalValue(purchaseOrder.getTotalValue());
+
 		if(purchaseOrder.getCustomer()!=null){
 			poDTO.setCustomer(String.valueOf(purchaseOrder.getCustomer().getCustomerId()));
 		}
@@ -92,6 +94,13 @@ public class CommonServiceImpl implements CommonService {
 			poDTO.setMaterial(poTools);
 		}	
 		
+		if(purchaseOrder.getFilesUploads()!=null && purchaseOrder.getFilesUploads().size()>0){
+			List<String> files =  new ArrayList<String>();
+			for(FilesUpload filesUpload: purchaseOrder.getFilesUploads()){
+				files.add(filesUpload.getFileName());
+			}
+			poDTO.setFiles(files);
+		}	
 		return poDTO;
 	}
 

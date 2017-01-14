@@ -307,7 +307,7 @@
   	  		   <div class="row rowspace">
   	  		   		<div class="col-sm-12 col-md-12">
   	  		   <jstl:if
-								test="${poSelected.pid != null && customerSelected.pid > 0 && customerSelected.material!=null}">
+								test="${poSelected.pid != null && poSelected.pid > 0 && poSelected.material!=null}">
 	  	  		   <div class="row rowspace">
 			   		 	<div id="alreadySavedContacts" class="col-sm-12 col-md-12">
 			   		 		<table class="form-table" id="customFieldsExisting">

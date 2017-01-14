@@ -16,9 +16,9 @@ public class PoDTO {
 	String notes;
 	String totalValue;
 	String customer;
-
 	List<String> material;
-	
+	List<String> files;
+
 	public int getPid() {
 		return pid;
 	}
@@ -102,5 +102,11 @@ public class PoDTO {
 	}
 	public void setCustomer(String customer) {
 		this.customer = customer;
+	}
+	public List<String> getFiles() {
+		return files;
+	}
+	public void setFiles(List<String> files) {
+		this.files = files;
 	}
 }

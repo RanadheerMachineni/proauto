@@ -203,6 +203,7 @@ public class CommonDAO extends AbstractDao{
 			existingPO.setSenderPhone(senderPhone);
 			existingPO.setSenderFax(senderFax);
 			existingPO.setNotes(notes);
+			existingPO.setTotalValue(totalValue);
 			existingPO.setCustomer(customer);
 			entityManager.persist(existingPO);
 			
@@ -236,6 +237,7 @@ public class CommonDAO extends AbstractDao{
 			poCreated.setSenderPhone(senderPhone);
 			poCreated.setSenderFax(senderFax);
 			poCreated.setNotes(notes);
+			poCreated.setTotalValue(totalValue);
 			poCreated.setCustomer(customer);
 			entityManager.persist(poCreated);
 			

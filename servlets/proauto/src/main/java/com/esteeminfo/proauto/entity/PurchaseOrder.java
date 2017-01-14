@@ -204,4 +204,12 @@ public class PurchaseOrder implements Serializable {
 	public void setFilesUploads(Set<FilesUpload> filesUploads) {
 		this.filesUploads = filesUploads;
 	}
+
+	public String getTotalValue() {
+		return totalValue;
+	}
+
+	public void setTotalValue(String totalValue) {
+		this.totalValue = totalValue;
+	}
 }

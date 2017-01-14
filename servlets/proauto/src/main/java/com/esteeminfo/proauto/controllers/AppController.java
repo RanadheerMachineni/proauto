@@ -618,6 +618,7 @@ public class AppController {
 			poDTO.setSenderPhone(senderPhone);
 			poDTO.setSenderFax(senderFax);
 			poDTO.setNotes(notes);
+			poDTO.setTotalValue(totalValue);
 
 			model.addAttribute("poSelected", poDTO);
 		}
