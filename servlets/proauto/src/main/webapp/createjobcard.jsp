@@ -13,23 +13,12 @@
 			.ready(
 					function() {
 						
-						
-						$('#machineRegForm').validate(
+						$("#jobStart").datepicker();
+						$("#jobEnd").datepicker();
+						$('#jobcardRegForm').validate(
 								{
 									rules : {
-										mName : {
-											minlength : 2,
-											required : true
-										},
-										mCode : {
-											required : true
-										},
-										mAxle : {
-											required : true
-										},
-										mCost : {
-											required : true
-										}
+										
 									},
 									highlight : function(element) {
 										$(element).closest('.control-group')
@@ -48,49 +37,6 @@
 	function customLoad() {
 	}
 
-	function addMoreFiles() {  
-		   $("#fileuploads").append(document.createElement("br"));  
-		   $("#fileuploads").append('<input type="file" name="eFiles" id="eFiles" multiple>');  
-	}  
-	
-	function unSelectFiles() {
-		//$("#eFiles").val('');
-		
-		$('input[name="eFiles"]').each(function() {
-		    $(this).val('');
-		});
-
-	}
-	
-	function removeFile(fileName){
-		//alert(fileName);
-		var existingInputValue = $('input#uploadedFiles').val();
-		var newValue = existingInputValue.replace(fileName, "");
-		$('input#uploadedFiles').val(newValue);
-		$('#alreadyUploadedFiles tr').each(function() {
-		    var href = $(this).find("td:first").find("a").attr('href');  
-		    if (href.toLowerCase().indexOf(fileName.toLowerCase()) >= 0){
-		        $(this).closest('tr').remove();
-		    }
-		});
-	}
-	function roleChanged() {
-		var roleSelect = document.getElementById("eRole");
-		var role = roleSelect.options[roleSelect.selectedIndex].value;
-		if (role == 'ROLE_norole') {
-			$("#userIdDiv").removeClass('show');
-			$("#pwdDiv").removeClass('show');
-			$("#userIdDiv").addClass('hide');
-			$("#pwdDiv").addClass('hide');
-		} else {
-			$("#userIdDiv").removeClass('hide');
-			$("#pwdDiv").removeClass('hide');
-			$("#userIdDiv").addClass('show');
-			$("#pwdDiv").addClass('show');
-
-		}
-	}
-	
 </script>
     </jsp:attribute>
 
@@ -137,7 +83,7 @@
 					</div>
 					</div>
 		
-		<form id="machineRegForm" role="form"
+		<form id="jobcardRegForm" role="form"
 							action="mreg" method="post"							>  
 		
 		
