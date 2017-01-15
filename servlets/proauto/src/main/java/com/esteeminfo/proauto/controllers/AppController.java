@@ -698,6 +698,25 @@ public class AppController {
 	
 	@RequestMapping(value = { "/createjobcard"}, method = RequestMethod.GET)
 	public String showjobcard(Model model, @RequestParam(value="jobcardSelected", required=false) String jobcardSelected, HttpServletRequest request, HttpServletResponse response) {
+		Map<String, String> operations = new HashMap<String, String>(); 
+		operations.put("1", "Cutting");
+		operations.put("2", "Polishing");
+		model.addAttribute("operations", operations);
+		
+		Map<String, String> stateMap = new HashMap<String, String>(); 
+		stateMap.put("1", "New");
+		stateMap.put("2", "In Progress");
+		stateMap.put("3", "Pending");
+		stateMap.put("4", "Hold");
+		stateMap.put("5", "Completed");
+		model.addAttribute("states", stateMap);
+		
+		Map<String, String> machineMap = new HashMap<String, String>(); 
+		//commonDAO.loadRoleMap(roleMap);
+		machineMap.put("1", "machine1");
+		machineMap.put("2", "machine 2");
+		model.addAttribute("machines", machineMap);
+		
 		JobcardDTO jobcardDTO = new JobcardDTO();
 		List<JobcardDTO> jobcardDTOs = new ArrayList<JobcardDTO>();
 		model.addAttribute("jobCardSelected", jobcardDTO);

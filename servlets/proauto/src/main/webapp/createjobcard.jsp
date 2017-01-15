@@ -9,34 +9,31 @@
 	//$( function() {
 	//} );
 
-	$(document)
-			.ready(
-					function() {
-						
-						$("#jobStart").datepicker();
-						$("#jobEnd").datepicker();
-						$('#jobcardRegForm').validate(
-								{
-									rules : {
-										
-									},
-									highlight : function(element) {
-										$(element).closest('.control-group')
-												.removeClass('success')
-												.addClass('error');
-									},
-									success : function(element) {
-										element.text('OK!').addClass('valid')
-												.closest('.control-group')
-												.removeClass('error').addClass(
-														'success');
-									}
-								});
+	$(document).ready(
+			function() {
 
-					});
+				$("#jobStart").datepicker();
+				$("#jobEnd").datepicker();
+				$('#jobcardRegForm').validate(
+						{
+							rules : {
+
+							},
+							highlight : function(element) {
+								$(element).closest('.control-group')
+										.removeClass('success').addClass(
+												'error');
+							},
+							success : function(element) {
+								element.text('OK!').addClass('valid').closest(
+										'.control-group').removeClass('error')
+										.addClass('success');
+							}
+						});
+
+			});
 	function customLoad() {
 	}
-
 </script>
     </jsp:attribute>
 
@@ -61,7 +58,7 @@
 	 	  		</div>
 			</jstl:if>
 			<jstl:if test="${pageContext.request.userPrincipal.name != null}">
-					<div class="col-md-10 col-sm-10 col-xs-10">
+					<div class="col-md-12 col-sm-12 col-xs-12">
 					<div class="pageHeadings"> Job Cards</div>
 					<br>
 					<div class="formDiv">
@@ -83,8 +80,7 @@
 					</div>
 					</div>
 		
-		<form id="jobcardRegForm" role="form"
-							action="mreg" method="post"							>  
+		<form id="jobcardRegForm" role="form" action="mreg" method="post">  
 		
 		
 		      <input type="hidden" name="regType" value="jobcard">
@@ -95,7 +91,7 @@
   	  		   <div class="row rowspace">
   	  		   
   	  		        <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
+	  	  		   		<div class="col-sm-1 col-md-1">
 			      			<label class="control-label" for="jname">Name:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
@@ -104,7 +100,7 @@
 			    	 	</div>
 		    	 	</div>
   	  		        <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
+	  	  		   		<div class="col-sm-1 col-md-1">
 			      			<label class="control-label" for="jdesc">Description:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
@@ -117,7 +113,7 @@
 		    	 
 		    	 <div class="row rowspace">
 		    	 	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
+			    	 	<div class="col-sm-1 col-md-1">
 		      				<label for="customer">Customer:</label>
 		    			</div>
 			   		 	<div class="col-sm-2 col-md-2">
@@ -132,7 +128,7 @@
 			    	 </div>
 			    	 
 			    	 <div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
+			    	 	<div class="col-sm-1 col-md-1">
 		      				<label for="po">PO:</label>
 		    			</div>
 			   		 	<div class="col-sm-2 col-md-2">
@@ -147,7 +143,7 @@
 			    	 </div>
 			    	 
 			    	  <div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
+			    	 	<div class="col-sm-1 col-md-1">
 		      				<label for="status">Status:</label>
 		    			</div>
 			   		 	<div class="col-sm-2 col-md-2">
@@ -164,7 +160,7 @@
 		    	
 		      <div class="row rowspace">
 		    	 	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
+			    	 	<div class="col-sm-1 col-md-1">
 			      			<label for="createdBy" class="control-label">Created By:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
@@ -174,52 +170,101 @@
 			    	 </div>
 			    	
 			    	 <div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
+			    	 	<div class="col-sm-1 col-md-1">
 			      			<label for="jobStart" class="control-label">Start Date:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<input type="text" class="form-control" id="jobStart"
-											name="jobStart" readonly="true" value="${jobCardSelected.jobStart}">
+											name="jobStart" readonly="true"
+											value="${jobCardSelected.jobStart}">
 			    	 	</div>
 			    	</div>
 		    	 	
 		    	 	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
+			    	 	<div class="col-sm-1 col-md-1">
 			      			<label for="jobEnd" class="control-label">End Date:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<input type="text" class="form-control" id="jobEnd"
-											name="jobEnd" readonly="true" value="${jobCardSelected.jobEnd}">
+											name="jobEnd" readonly="true"
+											value="${jobCardSelected.jobEnd}">
 			    	 	</div>
 			    	</div>
 		    	</div>
 		    	
-			  
+			  	<div class="row rowspace">
+  	  		 
+  	  				 <div class="col-sm-12 col-md-12">
+	  	  		   	
+	  	  		   	<table class="form-table" id="customFields">
+						<tr>
+							<td>
+								<select class="form-control contactField" name="jobop" id="jobop">
+				 			 		<option value="">Select Operation</option>
+			  						<jstl:forEach items="${operations}" var="eachOp">
+			  				  			<option value="${eachOp.key}">${eachOp.value}</option>
+			  						</jstl:forEach>
+								</select>
+								<input type="text" class="contactField" id="notes"
+												name="notes" value="" placeholder="Notes" /> &nbsp;
+								<input type="text" class="contactField" id="assignee"
+												name="assignee" value="" placeholder="Assignee" /> &nbsp;
+								<input type="text" class="contactField" id="startTime"
+												name="startTime" value="" placeholder="Start Time" /> &nbsp;
+								<input type="text" class="contactField" id="endTime"
+												name="endTime" value="" placeholder="End Time" /> &nbsp;
+								<input type="text" class="contactField" id="duration"
+												name="duration" value="" placeholder="Duration(Mins)" /> &nbsp;
+								<select class="form-control" name="machine" id="machine">
+				 			 		<option value="">Machine</option>
+			  						<jstl:forEach items="${machines}" var="eachMachine">
+			  				  			<option value="${eachMachine.key}">${eachMachine.value}</option>
+			  						</jstl:forEach>
+								</select> &nbsp;
+								<input type="text" class="contactField" id="cost"
+												name="cost" value="" placeholder="Cost" /> &nbsp;
+								<select class="form-control" name="taskStatus" id="taskStatus">
+				 			 		<option value="">State</option>
+			  						<jstl:forEach items="${states}" var="eachState">
+			  				  			<option value="${eachState.key}">${eachState.value}</option>
+			  						</jstl:forEach>
+								</select> &nbsp;
+								<input id="btnAdd" type="button" value="Add Item"
+												onclick="AddTextBox()" />
+							</td>
+						</tr>
+					</table>
+					
+		
+		    	</div>
+		    	
+		    	</div>
   	  		   <br>
 			   <div class="row">
 	   		 		<div class="col-sm-8 col-md-8">
 						<jstl:if
-							test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
+										test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
 	   		 				  <input type="hidden" name="create" value="true">
 						      <button id="createJobcardSubmit" type="submit"
-								class="btn btn-primary">Create</button>
+											class="btn btn-primary">Create</button>
 						      
 						</jstl:if>
 					<jstl:if
-							test="${jobCardSelected.id != null && jobCardSelected.id > 0}">
+										test="${jobCardSelected.id != null && jobCardSelected.id > 0}">
 							  <input type="hidden" name="create" value="false">
 						      <button id="createJobcardSubmit" type="submit"
-								class="btn btn-primary">Update</button>
+											class="btn btn-primary">Update</button>
 						      
 						       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						      <a class="btn btn-default"
-								href="${pageContext.request.contextPath}/createjobcard" role="button">Cancel</a>
+											href="${pageContext.request.contextPath}/createjobcard"
+											role="button">Cancel</a>
 						</jstl:if>
 	    	 		</div>
 	  			</div>
 	  			<br>
 	  			<input type="hidden" name="${_csrf.parameterName}"
-					value="${_csrf.token}" />
+								value="${_csrf.token}" />
 		</form>	
 		
 		</div>
@@ -228,15 +273,15 @@
   	  		<!-- List of emps -->
 						<div class="col-md-10 col-sm-10 col-xs-10">
 	   		 					<br>
-	   		 					<form id="jobcardSearchForm" role="form" action="createjobcard"
-				method="GET">  
+	   		 					<form id="jobcardSearchForm" role="form"
+						action="createjobcard" method="GET">  
 	   		 					<div class="row">
 				  	  		   		<div class="col-sm-1 col-md-1">
 						      			<label for="searchJobcardInput">Search Jobcard</label>
 						    		</div>
 						   		 	<div class="col-sm-2 col-md-2">
 						      			<input type="text" class="form-control"
-							id="searchJobcardInput" name="searchJobcardInput">
+									id="searchJobcardInput" name="searchJobcardInput">
 						    	 	</div>
 						    	 	<div class="col-sm-1 col-md-1">
 						      			<input type=submit value="Search">
@@ -260,15 +305,14 @@
 							                <tr>
 							                    <td>
 							                    	<a
-								href="${pageContext.request.contextPath}/createjobcard?jobcardSelected=${jobcard.id}">
-								                    	<jstl:out
-										value="${jobcard.name}" />
+										href="${pageContext.request.contextPath}/createjobcard?jobcardSelected=${jobcard.id}">
+								                    	<jstl:out value="${jobcard.name}" />
 								                    </a>
 												</td>
 							                    <td><jstl:out value="${jobcard.desc}" /></td>
+							                    <td><jstl:out value="${jobcard.po}" /></td>
 							                    <td><jstl:out
-									value="${jobcard.po}" /></td>
-							                    <td><jstl:out value="${jobcard.customer}" /></td>
+											value="${jobcard.customer}" /></td>
 							                    
 							                </tr>
 							            </jstl:forEach>

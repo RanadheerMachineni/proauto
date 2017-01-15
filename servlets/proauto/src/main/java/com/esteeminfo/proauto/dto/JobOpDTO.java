@@ -1,5 +1,7 @@
 package com.esteeminfo.proauto.dto;
 
+import java.util.List;
+
 public class JobOpDTO {
 	private int id;
 	private String name;
@@ -23,5 +25,4 @@ public class JobOpDTO {
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
-
 }
