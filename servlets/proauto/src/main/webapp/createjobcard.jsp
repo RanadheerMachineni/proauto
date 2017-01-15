@@ -34,6 +34,16 @@
 			});
 	function customLoad() {
 	}
+	
+	function GetDynamicTextBox(value) {
+		return '<tr valign="top"><td><input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp; <input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp; <input type="text" class="contactField" id="email" name="email" value="" placeholder="Email"/>&nbsp; <input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" />&nbsp; <input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" />'
+				+ '<input type="button" value="Remove" onclick = "RemoveTextBox(this)" /></td></tr>'
+	}
+	function AddTextBox() {
+		//var div = document.createElement('DIV');
+		//div.innerHTML = GetDynamicTextBox("");
+		document.getElementById("customFields").appendChild(div);
+	}
 </script>
     </jsp:attribute>
 
@@ -191,7 +201,12 @@
 			    	 	</div>
 			    	</div>
 		    	</div>
-		    	
+		    	<br>
+		      <div class="row">
+  	  		   		<div class="col-sm-12 col-md-12">
+		      			<label>Job Operations</label>
+		    		</div>
+  	  		   </div>
 			  	<div class="row rowspace">
   	  		 
   	  				 <div class="col-sm-12 col-md-12">
