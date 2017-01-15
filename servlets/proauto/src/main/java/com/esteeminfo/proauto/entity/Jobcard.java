@@ -28,9 +28,6 @@ public class Jobcard implements Serializable {
 	@Column(name="created_by")
 	private String createdBy;
 
-	@Column(name="customer_id")
-	private int customerId;
-
 	@Column(name="jobcard_desc")
 	private String jobcardDesc;
 
@@ -74,14 +71,6 @@ public class Jobcard implements Serializable {
 
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
-	}
-
-	public int getCustomerId() {
-		return this.customerId;
-	}
-
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
 	}
 
 	public String getJobcardDesc() {
