@@ -32,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.esteeminfo.proauto.dto.CustomerDTO;
 import com.esteeminfo.proauto.dto.EmployeeDTO;
 import com.esteeminfo.proauto.dto.JobOpDTO;
+import com.esteeminfo.proauto.dto.JobcardDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
 import com.esteeminfo.proauto.entity.Customer;
@@ -697,11 +698,18 @@ public class AppController {
 	
 	@RequestMapping(value = { "/createjobcard"}, method = RequestMethod.GET)
 	public String showjobcard(Model model, @RequestParam(value="jobcardSelected", required=false) String jobcardSelected, HttpServletRequest request, HttpServletResponse response) {
+		JobcardDTO jobcardDTO = new JobcardDTO();
+		List<JobcardDTO> jobcardDTOs = new ArrayList<JobcardDTO>();
+		model.addAttribute("jobCardSelected", jobcardDTO);
+		model.addAttribute("jobcardList", jobcardDTOs);
 		return "createjobcard";
 	}
 	
 	@RequestMapping(value = { "createjobcard"}, method = RequestMethod.POST)
 	public String postjobcard(Model model, HttpServletRequest request, HttpServletResponse response) {
-		return "createjobcard";
-	}
+		JobcardDTO jobcardDTO = new JobcardDTO();
+		List<JobcardDTO> jobcardDTOs = new ArrayList<JobcardDTO>();
+		model.addAttribute("jobCardSelected", jobcardDTO);
+		model.addAttribute("jobcardList", jobcardDTOs);
+		return "createjobcard";	}
 }
