@@ -81,6 +81,11 @@ public class Customer implements Serializable {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<PurchaseOrder> purchaseOrders;
 	
+	
+	@OneToMany(mappedBy="customer")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private Set<Jobcard> jobcards;
+	
 	public Customer() {
 	}
 
@@ -167,4 +172,25 @@ public class Customer implements Serializable {
 		purchaseOrder.setCustomer(null);
 		return purchaseOrder;
 	}
+
+	public Set<Jobcard> getJobcards() {
+		return jobcards;
+	}
+
+	public void setJobcards(Set<Jobcard> jobcards) {
+		this.jobcards = jobcards;
+	}
+	
+	public Jobcard addJobcard(Jobcard jobcard) {
+		getJobcards().add(jobcard);
+		jobcard.setCustomer(this);
+		return jobcard;
+	}
+
+	public Jobcard removeJobcard(Jobcard jobcard) {
+		getJobcards().remove(jobcard);
+		jobcard.setCustomer(null);
+		return jobcard;
+	}
+
 }

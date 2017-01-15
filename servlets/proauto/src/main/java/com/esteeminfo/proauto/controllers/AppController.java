@@ -694,4 +694,14 @@ public class AppController {
 		model.addAttribute("operationList", jobOpList);
 		return "createjobop";
 	}
+	
+	@RequestMapping(value = { "/createjobcard"}, method = RequestMethod.GET)
+	public String showjobcard(Model model, @RequestParam(value="jobcardSelected", required=false) String jobcardSelected, HttpServletRequest request, HttpServletResponse response) {
+		return "createjobcard";
+	}
+	
+	@RequestMapping(value = { "createjobcard"}, method = RequestMethod.POST)
+	public String postjobcard(Model model, HttpServletRequest request, HttpServletResponse response) {
+		return "createjobcard";
+	}
 }

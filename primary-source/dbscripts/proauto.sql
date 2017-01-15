@@ -267,3 +267,41 @@ CREATE TABLE job_operation
 	job_desc char(200),
     CONSTRAINT job_operation_pk PRIMARY KEY (jo_id)
 )
+
+
+drop table jobcard_task;
+CREATE TABLE jobcard_task
+(
+	task_id int NOT NULL,
+	jobcard_id int not null,
+	jo_id int not null,
+	status char(20),
+	assignee char(50),
+	notes char(100),
+	cost char(20),
+	machine_id int,
+	time_taken char(20),
+	start_time DATE,
+	end_time DATE,
+	task_order int,
+	constraint task_id_pk primary key (task_id),
+   	CONSTRAINT fk_jobcard_task_jobcard_id FOREIGN KEY (jobcard_id) REFERENCES jobcard(jobcard_id),
+   	CONSTRAINT fk_jobcard_task_jo_id FOREIGN KEY (jo_id) REFERENCES job_operation(jo_id)
+);
+
+drop table jobcard;
+CREATE TABLE jobcard
+(
+	jobcard_id int AUTO_INCREMENT NOT NULL,
+	jobcard_name char(50) NOT NULL,
+	jobcard_desc char(100),
+	customer_id int NOT NULL,
+	pid int NOT NULL,
+	created_by char(50),
+	create_date DATE,
+	status char(20),
+	constraint jobcard_pk primary key (jobcard_id),
+	CONSTRAINT uk_jobcard UNIQUE (jobcard_name),
+   	CONSTRAINT fk_jobcard_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+   	CONSTRAINT fk_jobcard_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid)
+);

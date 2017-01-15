@@ -22,8 +22,6 @@
 
 <link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/bootstrap.css">
 
-<link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/dropzone.css">
-
 <link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/fileinput.css">
 
 <link rel="stylesheet" type="text/css"	href="../../../${pageContext.request.contextPath}/css/template.css">
@@ -179,6 +177,9 @@
 								href="${pageContext.request.contextPath}/poreg">Purchase Orders
 								</a>
 								
+								<a
+								href="${pageContext.request.contextPath}/createjobcard">Job Cards
+								</a>
 								<!-- 
 								<a
 								href="${pageContext.request.contextPath}/vreg">Vendor
