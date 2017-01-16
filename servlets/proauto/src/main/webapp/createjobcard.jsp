@@ -11,6 +11,18 @@
 
 	$(document).ready(
 			function() {
+				
+				
+				$('#customFields').on('click', 'input[type="button"]', function () {
+				    $(this).closest('tr').remove();
+				})
+				$('#insertRow').click(function () {
+				    //$('#customFields').append('<tr><td><input type="text" class="fname" /></td><td><input type="button" value="Delete" /></td></tr>')
+				    $('#customFields').append('<tr><td>'+
+				    		'<select class="joboperationbox" name="jobop" id="jobop">		 		<option value="">Select Operation</option>						<jstl:forEach items="${operations}" var="eachOp">				  			<option value="${eachOp.key}">${eachOp.value}</option>						</jstl:forEach>				</select>				<input type="text" class="joboperationbox" id="notes"								name="notes" value="" placeholder="Notes" /> &nbsp;				<input type="text" class="joboperationbox" id="assignee"								name="assignee" value="" placeholder="Assignee" /> &nbsp;				<input type="text" class="joboperationbox" id="startTime"								name="startTime" value="" placeholder="Start Time" /> &nbsp;				<input type="text" class="joboperationbox" id="endTime"								name="endTime" value="" placeholder="End Time" /> &nbsp;				<input type="text" class="joboperationbox" id="duration"								name="duration" value="" placeholder="Duration(Mins)" /> &nbsp;				<select class="joboperationbox" name="machine" id="machine"> 			 		<option value="">Machine</option>						<jstl:forEach items="${machines}" var="eachMachine">				  			<option value="${eachMachine.key}">${eachMachine.value}</option>						</jstl:forEach>				</select> &nbsp;				<input type="text" class="joboperationbox" id="cost"								name="cost" value="" placeholder="Cost" /> &nbsp;				<select class="joboperationbox" name="taskStatus" id="taskStatus"> 			 		<option value="">State</option>						<jstl:forEach items="${states}" var="eachState">				  			<option value="${eachState.key}">${eachState.value}</option>						</jstl:forEach>				</select> &nbsp;'+
+				    		'<input type="button" value="Delete" />'+
+				    		'</td></tr>')
+				});
 
 				$("#jobStart").datepicker();
 				$("#jobEnd").datepicker();
@@ -35,15 +47,6 @@
 	function customLoad() {
 	}
 	
-	function GetDynamicTextBox(value) {
-		return '<tr valign="top"><td><input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp; <input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp; <input type="text" class="contactField" id="email" name="email" value="" placeholder="Email"/>&nbsp; <input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" />&nbsp; <input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" />'
-				+ '<input type="button" value="Remove" onclick = "RemoveTextBox(this)" /></td></tr>'
-	}
-	function AddTextBox() {
-		//var div = document.createElement('DIV');
-		//div.innerHTML = GetDynamicTextBox("");
-		document.getElementById("customFields").appendChild(div);
-	}
 </script>
     </jsp:attribute>
 
@@ -244,16 +247,21 @@
 			  				  			<option value="${eachState.key}">${eachState.value}</option>
 			  						</jstl:forEach>
 								</select> &nbsp;
-								<input id="btnAdd" type="button" value="Add Item"
-												onclick="AddTextBox()" />
 							</td>
 						</tr>
 					</table>
-					
-		
+		    	</div>
 		    	</div>
 		    	
-		    	</div>
+		    	
+		     <div class="row rowspace">
+  	  		   		<div class="col-sm-12 col-md-12">
+		      			    <p>
+    							<input id="insertRow" type="button" value="Insert row">
+							</p>
+		    		</div>
+  	  		   </div>
+		    	
   	  		   <br>
 			   <div class="row">
 	   		 		<div class="col-sm-8 col-md-8">
