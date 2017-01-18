@@ -2,6 +2,7 @@ package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,10 @@ public class Jobcard implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="create_date")
 	private Date createDate;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="end_date")
+	private Date endDate;
 
 	@Column(name="created_by")
 	private String createdBy;
@@ -34,10 +39,10 @@ public class Jobcard implements Serializable {
 	@Column(name="jobcard_name")
 	private String jobcardName;
 
-	private int pid;
-
-	private String status;
-
+	@ManyToOne
+	@JoinColumn(name="pid")
+	private PurchaseOrder purchaseOrder;
+	
 	//bi-directional many-to-one association to JobcardTask
 	@OneToMany(mappedBy="jobcard")
 	private Set<JobcardTask> jobcardTasks;
@@ -45,6 +50,10 @@ public class Jobcard implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="customer_id")
 	private Customer customer;
+	
+	@ManyToOne
+	@JoinColumn(name="status")
+	private Status statusBean;
 	
 	public Jobcard() {
 	}
@@ -89,22 +98,6 @@ public class Jobcard implements Serializable {
 		this.jobcardName = jobcardName;
 	}
 
-	public int getPid() {
-		return this.pid;
-	}
-
-	public void setPid(int pid) {
-		this.pid = pid;
-	}
-
-	public String getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 	public Set<JobcardTask> getJobcardTasks() {
 		return this.jobcardTasks;
 	}
@@ -135,4 +128,27 @@ public class Jobcard implements Serializable {
 		this.customer = customer;
 	}
 
+	public PurchaseOrder getPurchaseOrder() {
+		return this.purchaseOrder;
+	}
+
+	public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
+		this.purchaseOrder = purchaseOrder;
+	}
+	
+	public Status getStatusBean() {
+		return this.statusBean;
+	}
+
+	public void setStatusBean(Status statusBean) {
+		this.statusBean = statusBean;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 }

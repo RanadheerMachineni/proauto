@@ -272,21 +272,22 @@ CREATE TABLE job_operation
 drop table jobcard_task;
 CREATE TABLE jobcard_task
 (
-	task_id int NOT NULL,
+	task_id int AUTO_INCREMENT NOT NULL,
 	jobcard_id int not null,
 	jo_id int not null,
-	status char(20),
+	status int,
 	assignee char(50),
 	notes char(100),
 	cost char(20),
 	machine_id int,
 	time_taken char(20),
-	start_time DATE,
-	end_time DATE,
+	start_time char(20),
+	end_time char(20),
 	task_order int,
 	constraint task_id_pk primary key (task_id),
    	CONSTRAINT fk_jobcard_task_jobcard_id FOREIGN KEY (jobcard_id) REFERENCES jobcard(jobcard_id),
-   	CONSTRAINT fk_jobcard_task_jo_id FOREIGN KEY (jo_id) REFERENCES job_operation(jo_id)
+   	CONSTRAINT fk_jobcard_task_jo_id FOREIGN KEY (jo_id) REFERENCES job_operation(jo_id),
+   	CONSTRAINT fk_jobcard_task_status FOREIGN KEY (status) REFERENCES status(status_id)
 );
 
 drop table jobcard;
@@ -299,9 +300,26 @@ CREATE TABLE jobcard
 	pid int NOT NULL,
 	created_by char(50),
 	create_date DATE,
-	status char(20),
+	end_date DATE,
+	status int,
 	constraint jobcard_pk primary key (jobcard_id),
-	CONSTRAINT uk_jobcard UNIQUE (jobcard_name),
    	CONSTRAINT fk_jobcard_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-   	CONSTRAINT fk_jobcard_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid)
+   	CONSTRAINT fk_jobcard_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid),
+   	CONSTRAINT fk_jobcard_status FOREIGN KEY (status) REFERENCES status(status_id)
 );
+
+drop table status;
+CREATE TABLE status
+(
+	status_id int NOT NULL,
+	status char(50) NOT NULL,
+	constraint status_pk primary key (status_id)
+);
+insert into status(status_id,status) values(1, 'New');
+insert into status(status_id,status) values(2, 'In Progress');
+insert into status(status_id,status) values(3, 'Pending');
+insert into status(status_id,status) values(4, 'Aborted');
+insert into status(status_id,status) values(5, 'Completed');
+
+
+

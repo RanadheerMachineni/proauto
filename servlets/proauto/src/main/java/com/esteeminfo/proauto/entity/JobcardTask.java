@@ -24,9 +24,8 @@ public class JobcardTask implements Serializable {
 
 	private String cost;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="end_time")
-	private Date endTime;
+	private String endTime;
 
 	@Column(name="jo_id")
 	private int joId;
@@ -36,11 +35,8 @@ public class JobcardTask implements Serializable {
 
 	private String notes;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="start_time")
-	private Date startTime;
-
-	private String status;
+	private String startTime;
 
 	@Column(name="task_order")
 	private int taskOrder;
@@ -53,6 +49,10 @@ public class JobcardTask implements Serializable {
 	@JoinColumn(name="jobcard_id")
 	private Jobcard jobcard;
 
+	@ManyToOne
+	@JoinColumn(name="status")
+	private Status statusBean;
+	
 	public JobcardTask() {
 	}
 
@@ -80,14 +80,6 @@ public class JobcardTask implements Serializable {
 		this.cost = cost;
 	}
 
-	public Date getEndTime() {
-		return this.endTime;
-	}
-
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
-
 	public int getJoId() {
 		return this.joId;
 	}
@@ -112,21 +104,6 @@ public class JobcardTask implements Serializable {
 		this.notes = notes;
 	}
 
-	public Date getStartTime() {
-		return this.startTime;
-	}
-
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
-	}
-
-	public String getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
 
 	public String getTimeTaken() {
 		return this.timeTaken;
@@ -150,6 +127,30 @@ public class JobcardTask implements Serializable {
 
 	public void setTaskOrder(int taskOrder) {
 		this.taskOrder = taskOrder;
+	}
+
+	public Status getStatusBean() {
+		return this.statusBean;
+	}
+
+	public void setStatusBean(Status statusBean) {
+		this.statusBean = statusBean;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
 
 }

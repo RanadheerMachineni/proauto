@@ -7,6 +7,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 
@@ -64,6 +65,9 @@ public class PurchaseOrder implements Serializable {
 	@Column(name="vno_sender")
 	private String vnoSender;
 
+	@OneToMany(mappedBy="purchaseOrder")
+	private List<Jobcard> jobcards;
+	
 	@ManyToMany
 	@JoinTable(
 		name="po_files"
@@ -211,5 +215,27 @@ public class PurchaseOrder implements Serializable {
 
 	public void setTotalValue(String totalValue) {
 		this.totalValue = totalValue;
+	}
+	
+	public List<Jobcard> getJobcards() {
+		return this.jobcards;
+	}
+
+	public void setJobcards(List<Jobcard> jobcards) {
+		this.jobcards = jobcards;
+	}
+
+	public Jobcard addJobcard(Jobcard jobcard) {
+		getJobcards().add(jobcard);
+		jobcard.setPurchaseOrder(this);
+
+		return jobcard;
+	}
+
+	public Jobcard removeJobcard(Jobcard jobcard) {
+		getJobcards().remove(jobcard);
+		jobcard.setPurchaseOrder(null);
+
+		return jobcard;
 	}
 }

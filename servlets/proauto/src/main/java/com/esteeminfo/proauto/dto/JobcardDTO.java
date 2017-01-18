@@ -13,7 +13,8 @@ public class JobcardDTO {
 	private String createdBy;
 	private String jobStart;
 	private String jobEnd;
-	
+	List<String> tasks;
+
 	public int getId() {
 		return id;
 	}
@@ -67,6 +68,12 @@ public class JobcardDTO {
 	}
 	public void setJobEnd(String jobEnd) {
 		this.jobEnd = jobEnd;
+	}
+	public List<String> getTasks() {
+		return tasks;
+	}
+	public void setTasks(List<String> tasks) {
+		this.tasks = tasks;
 	}
 
 }

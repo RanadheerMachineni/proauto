@@ -18,6 +18,7 @@ import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.PoTool;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
+import com.esteeminfo.proauto.entity.Status;
 
 @Repository("commonDAO")
 public class CommonDAO extends AbstractDao{
@@ -271,5 +272,20 @@ public class CommonDAO extends AbstractDao{
 		}
 		//cleanUpFiles();
 		return purchaseOrder;
+	}
+
+	public List<JobOperation> getJobOperations() {
+		Query q = entityManager.createNamedQuery("JobOperation.findAll");
+		return q.getResultList();
+	}
+
+	public List<Status> getStatuses() {
+		Query q = entityManager.createNamedQuery("Status.findAll");
+		return q.getResultList();
+	}
+
+	public List<Machine> getMachines() {
+		Query q = entityManager.createNamedQuery("Machine.findAll");
+		return q.getResultList();
 	}
 }

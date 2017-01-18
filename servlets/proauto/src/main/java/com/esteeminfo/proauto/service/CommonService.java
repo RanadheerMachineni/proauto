@@ -44,4 +44,10 @@ public interface CommonService {
 			String vnoSender, String poSender, String poSenderDetails, String senderEmail, String senderPhone,
 			String senderFax, String notes, String totalValue, Map<String, List<String>> matMap, MultipartFile[] files, List<String> uploadedFilesTrimmed) throws Exception;
 
+	Map<String, String> getJobOperations();
+
+	Map<String, String> getStatuses();
+
+	Map<String, String> getMachines();
+
 }

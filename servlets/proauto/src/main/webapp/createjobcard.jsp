@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <t:layout>
 	<jsp:attribute name="header">
@@ -93,7 +94,7 @@
 					</div>
 					</div>
 		
-		<form id="jobcardRegForm" role="form" action="mreg" method="post">  
+		<form id="jobcardRegForm" role="form" action="createjobcard" method="post">  
 		
 		
 		      <input type="hidden" name="regType" value="jobcard">
@@ -209,6 +210,62 @@
   	  		   		<div class="col-sm-12 col-md-12">
 		      			<label>Job Operations</label>
 		    		</div>
+  	  		   </div>
+  	  		   
+  	  		   
+  	  		    <div class="row rowspace">
+  	  		   		<div class="col-sm-12 col-md-12">
+  	  		   <jstl:if
+								test="${jobCardSelected.id != null && jobCardSelected.id > 0 && jobCardSelected.tasks!=null}">
+	  	  		   <div class="row rowspace">
+			   		 	<div id="alreadySavedContacts" class="col-sm-12 col-md-12">
+			   		 		<table class="form-table" id="customFieldsExisting">
+				   		 	<jstl:forEach var="eachTask"
+												items="${jobCardSelected.tasks}">
+				   			 	<jstl:set var="splittedString"
+													value="${fn:split(eachTask, '[|]')}" />
+				                <tr>
+					               <td>
+										<select class="joboperationbox" name="jobop" id="jobop">
+						 			 		<option value="">Select Operation</option>
+					  						<jstl:forEach items="${operations}" var="eachOp">
+					  				  			<option value="${eachOp.key}" ${splittedString[0] == eachOp.key ? 'selected' : ''}>${eachOp.value}</option>
+					  						</jstl:forEach>
+										</select>
+										<input type="text" class="joboperationbox" id="notes"
+														name="notes" value="${splittedString[1]}" placeholder="Notes" /> &nbsp;
+										<input type="text" class="joboperationbox" id="assignee"
+														name="assignee" value="${splittedString[2]}" placeholder="Assignee" /> &nbsp;
+										<input type="text" class="joboperationbox" id="startTime"
+														name="startTime" value="${splittedString[3]}" placeholder="Start Time" /> &nbsp;
+										<input type="text" class="joboperationbox" id="endTime"
+														name="endTime" value="${splittedString[4]}" placeholder="End Time" /> &nbsp;
+										<input type="text" class="joboperationbox" id="duration"
+														name="duration" value="${splittedString[5]}" placeholder="Duration(Mins)" /> &nbsp;
+										<select class="joboperationbox" name="machine" id="machine">
+						 			 		<option value="">Machine</option>
+					  						<jstl:forEach items="${machines}" var="eachMachine">
+					  				  			<option value="${eachMachine.key}" ${splittedString[6] == eachMachine.key ? 'selected' : ''}>${eachMachine.value}</option>
+					  						</jstl:forEach>
+										</select> &nbsp;
+										<input type="text" class="joboperationbox" id="cost"
+														name="cost" value="${splittedString[7]}" placeholder="Cost" /> &nbsp;
+										<select class="joboperationbox" name="taskStatus" id="taskStatus">
+						 			 		<option value="">State</option>
+					  						<jstl:forEach items="${states}" var="eachState">
+					  				  			<option value="${eachState.key}" ${splittedString[8] == eachState.key ? 'selected' : ''}>${eachState.value}</option>
+					  						</jstl:forEach>
+										</select> &nbsp;
+										<input type="button" value="Delete" />
+								</td>
+				                </tr>
+			           		 </jstl:forEach>
+			           		 </table>
+			    	 	</div>
+				   </div>
+				</jstl:if>							
+  	  		   
+  	  		   </div>
   	  		   </div>
 			  	<div class="row rowspace">
   	  		 

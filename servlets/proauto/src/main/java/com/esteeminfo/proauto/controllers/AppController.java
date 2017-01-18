@@ -39,11 +39,13 @@ import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.FilesUpload;
 import com.esteeminfo.proauto.entity.JobOperation;
+import com.esteeminfo.proauto.entity.Jobcard;
 import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.service.CommonService;
 import com.esteeminfo.proauto.service.CustomerService;
 import com.esteeminfo.proauto.service.EmployeeService;
+import com.esteeminfo.proauto.service.JobcardService;
 
 @Controller
 public class AppController {
@@ -60,6 +62,9 @@ public class AppController {
 
 	@Autowired(required=true)
 	private CommonService commonService ;
+	
+	@Autowired(required=true)
+	private JobcardService jobcardService ;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
@@ -277,7 +282,6 @@ public class AppController {
 				li.add(notes[i]);
 				contactsMap.put(contactname[i], li);
 			}
-		
 		}
 		
 		if(uploadedFilesArray!=null && uploadedFilesArray.length>0){
@@ -698,37 +702,126 @@ public class AppController {
 	
 	@RequestMapping(value = { "/createjobcard"}, method = RequestMethod.GET)
 	public String showjobcard(Model model, @RequestParam(value="jobcardSelected", required=false) String jobcardSelected, HttpServletRequest request, HttpServletResponse response) {
+		String jobcardSearched = request.getParameter("searchJobcardInput");
+
+		JobcardDTO jobcardDTO = new JobcardDTO();
+		if(jobcardSelected!=null){
+			Jobcard jobcard = jobcardService.findById(Integer.valueOf(jobcardSelected));
+			jobcardDTO = jobcardService.converJobcardToDto(jobcard);
+		}
+		
 		Map<String, String> operations = new HashMap<String, String>(); 
-		operations.put("1", "Cutting");
-		operations.put("2", "Polishing");
+		operations  = commonService.getJobOperations();
 		model.addAttribute("operations", operations);
 		
+		Map<String, String> customerMap = new HashMap<String, String>(); 
+		customerMap = customerService.retreiveCustomerMap();
+		model.addAttribute("customers", customerMap);
+
 		Map<String, String> stateMap = new HashMap<String, String>(); 
-		stateMap.put("1", "New");
-		stateMap.put("2", "In Progress");
-		stateMap.put("3", "Pending");
-		stateMap.put("4", "Hold");
-		stateMap.put("5", "Completed");
+		stateMap  = commonService.getStatuses();
 		model.addAttribute("states", stateMap);
 		
+		Map<String, String> poMap = new HashMap<String, String>(); 
+		List<PurchaseOrder> purchaseOrders = commonService.retrieveAllPos(null);
+		for(PurchaseOrder purchaseOrder : purchaseOrders){
+			poMap.put(String.valueOf(purchaseOrder.getPid()), purchaseOrder.getPoId());
+		}
+		model.addAttribute("poList", poMap);
+		
+		
 		Map<String, String> machineMap = new HashMap<String, String>(); 
-		//commonDAO.loadRoleMap(roleMap);
-		machineMap.put("1", "machine1");
-		machineMap.put("2", "machine 2");
+		machineMap  = commonService.getMachines();
 		model.addAttribute("machines", machineMap);
 		
-		JobcardDTO jobcardDTO = new JobcardDTO();
-		List<JobcardDTO> jobcardDTOs = new ArrayList<JobcardDTO>();
 		model.addAttribute("jobCardSelected", jobcardDTO);
+
+		List<JobcardDTO> jobcardDTOs = new ArrayList<JobcardDTO>();
+		List<Jobcard> jobcards = jobcardService.retrieveAllJobcards(jobcardSearched);
+		for(Jobcard jobcard : jobcards){
+			jobcardDTOs.add(jobcardService.converJobcardToDto(jobcard));
+		}
 		model.addAttribute("jobcardList", jobcardDTOs);
 		return "createjobcard";
 	}
 	
 	@RequestMapping(value = { "createjobcard"}, method = RequestMethod.POST)
-	public String postjobcard(Model model, HttpServletRequest request, HttpServletResponse response) {
-		JobcardDTO jobcardDTO = new JobcardDTO();
+	public String postjobcard(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		String create = request.getParameter("create");
+		String jid =  request.getParameter("jid");
+		String name =  request.getParameter("jname");
+		String desc =  request.getParameter("jdesc");
+		String customerId = request.getParameter("customer");
+		Customer customer = customerService.findById(Integer.valueOf(customerId));
+		String po = request.getParameter("po");
+		PurchaseOrder purchaseOrder = commonService.findPOById(po);
+		String status = request.getParameter("status");
+		String createdBy = request.getParameter("createdBy");
+		String jobStart = request.getParameter("jobStart");
+		String jobEnd = request.getParameter("jobEnd");
+
+		String[] jobop = request.getParameterValues("jobop");
+		String[] notes = request.getParameterValues("notes");
+		String[] assignee = request.getParameterValues("assignee");
+		String[] startTime = request.getParameterValues("startTime");
+		String[] endTime = request.getParameterValues("endTime");
+		String[] duration = request.getParameterValues("duration");
+		String[] machine = request.getParameterValues("machine");
+		String[] cost = request.getParameterValues("cost");
+		String[] taskStatus = request.getParameterValues("taskStatus");
+		
+		try {
+			Jobcard jobcard  = jobcardService.registerJobcard(create,jid, name,desc,customer,purchaseOrder,status,createdBy,jobStart,jobEnd,jobop,
+					notes,assignee,startTime,endTime,duration,machine,cost,taskStatus);
+
+		} catch (Exception e) {
+			model.addAttribute("error", e.getMessage());
+			JobcardDTO jobcardDTO = new JobcardDTO();
+			if(jid!=null && jid.length()>0){
+				jobcardDTO.setId(Integer.valueOf(jid));
+			}
+			jobcardDTO.setName(name);
+			jobcardDTO.setDesc(desc);
+			jobcardDTO.setCustomer(customerId);
+			jobcardDTO.setPo(po);
+			jobcardDTO.setState(status);
+			jobcardDTO.setCreatedBy(createdBy);
+			jobcardDTO.setJobStart(jobStart);
+			jobcardDTO.setJobEnd(jobEnd);
+			model.addAttribute("jobCardSelected", jobcardDTO);
+
+		}
+
+		Map<String, String> operations = new HashMap<String, String>(); 
+		operations  = commonService.getJobOperations();
+		model.addAttribute("operations", operations);
+		
+		Map<String, String> stateMap = new HashMap<String, String>(); 
+		stateMap  = commonService.getStatuses();
+		model.addAttribute("states", stateMap);
+		
+		Map<String, String> machineMap = new HashMap<String, String>(); 
+		machineMap  = commonService.getMachines();
+		model.addAttribute("machines", machineMap);
+		
+		Map<String, String> customerMap = new HashMap<String, String>(); 
+		customerMap = customerService.retreiveCustomerMap();
+		model.addAttribute("customers", customerMap);
+
+		Map<String, String> poMap = new HashMap<String, String>(); 
+		List<PurchaseOrder> purchaseOrders = commonService.retrieveAllPos(null);
+		for(PurchaseOrder purchaseOrder2 : purchaseOrders){
+			poMap.put(String.valueOf(purchaseOrder2.getPid()), purchaseOrder2.getPoId());
+		}
+		model.addAttribute("poList", poMap);
+		
 		List<JobcardDTO> jobcardDTOs = new ArrayList<JobcardDTO>();
-		model.addAttribute("jobCardSelected", jobcardDTO);
+		List<Jobcard> jobcards = jobcardService.retrieveAllJobcards(null);
+		for(Jobcard jobcard : jobcards){
+			jobcardDTOs.add(jobcardService.converJobcardToDto(jobcard));
+		}
 		model.addAttribute("jobcardList", jobcardDTOs);
-		return "createjobcard";	}
+		return "createjobcard";	
+	}
 }

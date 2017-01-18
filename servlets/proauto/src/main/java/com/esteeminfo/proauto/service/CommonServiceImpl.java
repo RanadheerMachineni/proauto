@@ -2,6 +2,7 @@ package com.esteeminfo.proauto.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.PoTool;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
+import com.esteeminfo.proauto.entity.Status;
 
 @Service("commonService")
 @Transactional
@@ -166,5 +168,32 @@ public class CommonServiceImpl implements CommonService {
 		filesUploads.addAll(existingFilesNew);
 		purchaseOrder = commonDAO.addFilesToPO(purchaseOrder.getPid(), filesUploads);
 		return purchaseOrder;
+	}
+
+	public Map<String, String> getJobOperations() {
+		List<JobOperation> list= commonDAO.getJobOperations();
+		Map<String, String> operations = new HashMap<String, String>();
+		for(JobOperation jobOp : list){
+			operations.put(String.valueOf(jobOp.getJoId()), jobOp.getJobName());
+		}
+		return operations;
+	}
+
+	public Map<String, String> getStatuses() {
+		List<Status> list= commonDAO.getStatuses();
+		Map<String, String> operations = new HashMap<String, String>();
+		for(Status jobOp : list){
+			operations.put(String.valueOf(jobOp.getStatusId()), jobOp.getStatus());
+		}
+		return operations;
+	}
+
+	public Map<String, String> getMachines() {
+		List<Machine> list= commonDAO.getMachines();
+		Map<String, String> operations = new HashMap<String, String>();
+		for(Machine jobOp : list){
+			operations.put(String.valueOf(jobOp.getMachineId()), jobOp.getMachineDesc());
+		}
+		return operations;
 	}
 }
