@@ -17,10 +17,12 @@ import com.esteeminfo.proauto.dao.FileUploadDAO;
 import com.esteeminfo.proauto.dao.JobcardDao;
 import com.esteeminfo.proauto.dto.EmployeeDTO;
 import com.esteeminfo.proauto.dto.JobcardDTO;
+import com.esteeminfo.proauto.entity.Contact;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.FilesUpload;
 import com.esteeminfo.proauto.entity.Jobcard;
+import com.esteeminfo.proauto.entity.JobcardTask;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.entity.Role;
 
@@ -52,6 +54,18 @@ public class JobcardServiceImpl implements JobcardService {
 		jobcardDTO.setCustomer(jobcard.getCustomer().getCustomerName());
 		if(jobcard.getPurchaseOrder()!=null){
 			jobcardDTO.setPo(jobcard.getPurchaseOrder().getPoId());
+		}
+		if(jobcard.getJobcardTasks()!=null && jobcard.getJobcardTasks().size()>0){
+			List<String> tasks =  new ArrayList<String>();
+			for(JobcardTask jobcardTask : jobcard.getJobcardTasks()){
+				if(jobcardTask!=null && jobcardTask.getJoId()>0 ){
+					String taskStatus = jobcardTask.getStatusBean()!=null ? String.valueOf(jobcardTask.getStatusBean().getStatusId()) : "";
+					tasks.add(jobcardTask.getJoId()+"|"+jobcardTask.getNotes()+"|"+jobcardTask.getAssignee()+"|"+jobcardTask.getStartTime()+"|"+jobcardTask.getEndTime()
+					+"|"+jobcardTask.getTimeTaken()+"|"+jobcardTask.getMachineId()+"|"+jobcardTask.getCost()+"|"+taskStatus);
+				}
+			}
+			jobcardDTO.setTasks(tasks);
+			
 		}
 		jobcardDTO.setState(String.valueOf(jobcard.getStatusBean().getStatusId()));
 		jobcardDTO.setCreatedBy(jobcard.getCreatedBy());

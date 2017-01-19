@@ -3,6 +3,9 @@ package com.esteeminfo.proauto.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -45,6 +48,7 @@ public class Jobcard implements Serializable {
 	
 	//bi-directional many-to-one association to JobcardTask
 	@OneToMany(mappedBy="jobcard")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<JobcardTask> jobcardTasks;
 
 	@ManyToOne
