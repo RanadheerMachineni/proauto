@@ -776,6 +776,7 @@ public class AppController {
 					notes,assignee,startTime,endTime,duration,machine,cost,taskStatus);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			model.addAttribute("error", e.getMessage());
 			JobcardDTO jobcardDTO = new JobcardDTO();
 			if(jid!=null && jid.length()>0){
