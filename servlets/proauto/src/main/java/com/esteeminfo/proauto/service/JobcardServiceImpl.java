@@ -51,9 +51,9 @@ public class JobcardServiceImpl implements JobcardService {
 		jobcardDTO.setId(jobcard.getJobcardId());
 		jobcardDTO.setName(jobcard.getJobcardName());
 		jobcardDTO.setDesc(jobcard.getJobcardDesc());
-		jobcardDTO.setCustomer(jobcard.getCustomer().getCustomerName());
+		jobcardDTO.setCustomer(String.valueOf(jobcard.getCustomer().getCustomerId()));
 		if(jobcard.getPurchaseOrder()!=null){
-			jobcardDTO.setPo(jobcard.getPurchaseOrder().getPoId());
+			jobcardDTO.setPo(String.valueOf(jobcard.getPurchaseOrder().getPid()));
 		}
 		if(jobcard.getJobcardTasks()!=null && jobcard.getJobcardTasks().size()>0){
 			List<String> tasks =  new ArrayList<String>();
