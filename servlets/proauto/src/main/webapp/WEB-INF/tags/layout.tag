@@ -32,7 +32,7 @@
 
 <script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/bootstrap.js"></script>
 
-<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/bootstrap-dialog.min.js"></script>
+<script type="text/javascript" src="../../../${pageContext.request.contextPath}/scripts/bootstrap-dialog.js"></script>
 
 <!--
 
@@ -88,6 +88,8 @@
 
 
 <script>
+
+
 	function formSubmit() {
 		document.getElementById("logoutForm").submit();
 	}
