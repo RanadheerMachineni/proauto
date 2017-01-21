@@ -66,8 +66,9 @@ public class JobcardDaoImpl extends AbstractDao implements JobcardDao {
 		jobcard.setCreatedBy(createdBy);
 		jobcard.setCreateDate(javaStartdate);
 		jobcard.setEndDate(javaEnddate);
+		jobcard.getJobcardTasks().clear();
 		entityManager.persist(jobcard);
-		//Set<JobcardTask> jobcardTasks =  new HashSet<JobcardTask>();
+		Set<JobcardTask> jobcardTasks =  new HashSet<JobcardTask>();
 		for(int i=0;i<jobop.length;i++){
 			if(jobop[i]!=null && jobop[i].length()>0){
 				JobcardTask jobcardTask = new JobcardTask();
@@ -80,11 +81,11 @@ public class JobcardDaoImpl extends AbstractDao implements JobcardDao {
 				jobcardTask.setMachineId(Integer.valueOf(machine[i]));
 				jobcardTask.setJobcard(jobcard);
 				entityManager.persist(jobcardTask);
-				//jobcardTasks.add(jobcardTask);
+				jobcardTasks.add(jobcardTask);
 			}
 		}
-		//jobcard.setJobcardTasks(jobcardTasks);
-		//entityManager.merge(jobcard);
+		jobcard.getJobcardTasks().addAll(jobcardTasks);
+		entityManager.persist(jobcard);
 		return jobcard;
 	}
 	

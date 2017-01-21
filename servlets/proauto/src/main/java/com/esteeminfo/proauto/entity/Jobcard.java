@@ -47,7 +47,7 @@ public class Jobcard implements Serializable {
 	private PurchaseOrder purchaseOrder;
 	
 	//bi-directional many-to-one association to JobcardTask
-	@OneToMany(mappedBy="jobcard")
+	@OneToMany(mappedBy="jobcard",cascade=CascadeType.ALL,orphanRemoval=true)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<JobcardTask> jobcardTasks;
 
