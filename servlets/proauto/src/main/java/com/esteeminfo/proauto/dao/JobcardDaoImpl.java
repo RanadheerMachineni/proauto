@@ -79,6 +79,7 @@ public class JobcardDaoImpl extends AbstractDao implements JobcardDao {
 				jobcardTask.setEndTime(endTime[i]);
 				jobcardTask.setTimeTaken(duration[i]);
 				jobcardTask.setMachineId(Integer.valueOf(machine[i]));
+				jobcardTask.setCost(cost[i]);
 				jobcardTask.setJobcard(jobcard);
 				entityManager.persist(jobcardTask);
 				jobcardTasks.add(jobcardTask);
