@@ -702,7 +702,6 @@ public class AppController {
 	
 	@RequestMapping(value = { "/createjobcard"}, method = RequestMethod.GET)
 	public String showjobcard(Model model, @RequestParam(value="jobcardSelected", required=false) String jobcardSelected, HttpServletRequest request, HttpServletResponse response) {
-		String jobcardSearched = request.getParameter("searchJobcardInput");
 
 		JobcardDTO jobcardDTO = new JobcardDTO();
 		if(jobcardSelected!=null){
@@ -736,12 +735,6 @@ public class AppController {
 		
 		model.addAttribute("jobCardSelected", jobcardDTO);
 
-		List<JobcardDTO> jobcardDTOs = new ArrayList<JobcardDTO>();
-		List<Jobcard> jobcards = jobcardService.retrieveAllJobcards(jobcardSearched);
-		for(Jobcard jobcard : jobcards){
-			jobcardDTOs.add(jobcardService.converJobcardToDto(jobcard));
-		}
-		model.addAttribute("jobcardList", jobcardDTOs);
 		return "createjobcard";
 	}
 	
@@ -817,12 +810,19 @@ public class AppController {
 		}
 		model.addAttribute("poList", poMap);
 		
+		return "createjobcard";	
+	}
+	
+	@RequestMapping(value = { "/searchjobcard"}, method = RequestMethod.GET)
+	public String searchjobcard(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String jobcardSearched = request.getParameter("searchJobcardInput");
 		List<JobcardDTO> jobcardDTOs = new ArrayList<JobcardDTO>();
-		List<Jobcard> jobcards = jobcardService.retrieveAllJobcards(null);
+		List<Jobcard> jobcards = jobcardService.retrieveAllJobcards(jobcardSearched);
 		for(Jobcard jobcard : jobcards){
 			jobcardDTOs.add(jobcardService.converJobcardToDto(jobcard));
 		}
 		model.addAttribute("jobcardList", jobcardDTOs);
-		return "createjobcard";	
+		return "searchjobcard";
 	}
+
 }

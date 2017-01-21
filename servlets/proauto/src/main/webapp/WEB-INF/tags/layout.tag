@@ -158,9 +158,13 @@
 					<li id="dashboardli"><a
 						href="${pageContext.request.contextPath}/dashboard">Dashboard</a></li>
 
-					<li id="jobcardli"><a
-						href="${pageContext.request.contextPath}/jobcard">Job Card</a></li>
-
+					<li id="jobcardli" class="dropdownmenu"><a class="dropbtn">Job Card</a>
+						<div class="dropdown-content">
+							<a href="${pageContext.request.contextPath}/searchjobcard">Search Jobcard</a>
+							<a href="${pageContext.request.contextPath}/createjobcard">Create Jobcard</a>
+						</div>
+					</li>
+					
 					<li id="dmsli"><a
 						href="${pageContext.request.contextPath}/dms">DMS</a></li>
 
@@ -179,9 +183,6 @@
 								href="${pageContext.request.contextPath}/poreg">Purchase Orders
 								</a>
 								
-								<a
-								href="${pageContext.request.contextPath}/createjobcard">Job Cards
-								</a>
 								<!-- 
 								<a
 								href="${pageContext.request.contextPath}/vreg">Vendor

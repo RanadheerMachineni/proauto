@@ -97,7 +97,8 @@
 					</div>
 					</div>
 		
-		<form id="jobcardRegForm" role="form" action="createjobcard" method="post">  
+		<form id="jobcardRegForm" role="form" action="createjobcard"
+							method="post">  
 		
 		
 		      <input type="hidden" name="regType" value="jobcard">
@@ -219,44 +220,53 @@
   	  		    <div class="row rowspace">
   	  		   		<div class="col-sm-12 col-md-12">
   	  		   <jstl:if
-								test="${jobCardSelected.id != null && jobCardSelected.id > 0 && jobCardSelected.tasks!=null}">
+										test="${jobCardSelected.id != null && jobCardSelected.id > 0 && jobCardSelected.tasks!=null}">
 	  	  		   <div class="row rowspace">
 			   		 	<div id="alreadySavedContacts" class="col-sm-12 col-md-12">
 			   		 		<table class="form-table" id="customFieldsExisting">
-				   		 	<jstl:forEach var="eachTask"
-												items="${jobCardSelected.tasks}">
+				   		 	<jstl:forEach var="eachTask" items="${jobCardSelected.tasks}">
 				   			 	<jstl:set var="splittedString"
-													value="${fn:split(eachTask, '[|]')}" />
+															value="${fn:split(eachTask, '[|]')}" />
 				                <tr>
 					               <td>
 										<select class="joboperationbox" name="jobop" id="jobop">
 						 			 		<option value="">Select Operation</option>
 					  						<jstl:forEach items="${operations}" var="eachOp">
-					  				  			<option value="${eachOp.key}" ${splittedString[0] == eachOp.key ? 'selected' : ''}>${eachOp.value}</option>
+					  				  			<option value="${eachOp.key}"
+																			${splittedString[0] == eachOp.key ? 'selected' : ''}>${eachOp.value}</option>
 					  						</jstl:forEach>
 										</select>
 										<input type="text" class="joboperationbox" id="notes"
-														name="notes" value="${splittedString[1]}" placeholder="Notes" /> &nbsp;
+																name="notes" value="${splittedString[1]}"
+																placeholder="Notes" /> &nbsp;
 										<input type="text" class="joboperationbox" id="assignee"
-														name="assignee" value="${splittedString[2]}" placeholder="Assignee" /> &nbsp;
+																name="assignee" value="${splittedString[2]}"
+																placeholder="Assignee" /> &nbsp;
 										<input type="text" class="joboperationbox" id="startTime"
-														name="startTime" value="${splittedString[3]}" placeholder="Start Time" /> &nbsp;
+																name="startTime" value="${splittedString[3]}"
+																placeholder="Start Time" /> &nbsp;
 										<input type="text" class="joboperationbox" id="endTime"
-														name="endTime" value="${splittedString[4]}" placeholder="End Time" /> &nbsp;
+																name="endTime" value="${splittedString[4]}"
+																placeholder="End Time" /> &nbsp;
 										<input type="text" class="joboperationbox" id="duration"
-														name="duration" value="${splittedString[5]}" placeholder="Duration(Mins)" /> &nbsp;
+																name="duration" value="${splittedString[5]}"
+																placeholder="Duration(Mins)" /> &nbsp;
 										<select class="joboperationbox" name="machine" id="machine">
 						 			 		<option value="">Machine</option>
 					  						<jstl:forEach items="${machines}" var="eachMachine">
-					  				  			<option value="${eachMachine.key}" ${splittedString[6] == eachMachine.key ? 'selected' : ''}>${eachMachine.value}</option>
+					  				  			<option value="${eachMachine.key}"
+																			${splittedString[6] == eachMachine.key ? 'selected' : ''}>${eachMachine.value}</option>
 					  						</jstl:forEach>
 										</select> &nbsp;
 										<input type="text" class="joboperationbox" id="cost"
-														name="cost" value="${splittedString[7]}" placeholder="Cost" /> &nbsp;
-										<select class="joboperationbox" name="taskStatus" id="taskStatus">
+																name="cost" value="${splittedString[7]}"
+																placeholder="Cost" /> &nbsp;
+										<select class="joboperationbox" name="taskStatus"
+																id="taskStatus">
 						 			 		<option value="">State</option>
 					  						<jstl:forEach items="${states}" var="eachState">
-					  				  			<option value="${eachState.key}" ${splittedString[8] == eachState.key ? 'selected' : ''}>${eachState.value}</option>
+					  				  			<option value="${eachState.key}"
+																			${splittedString[8] == eachState.key ? 'selected' : ''}>${eachState.value}</option>
 					  						</jstl:forEach>
 										</select> &nbsp;
 										<input type="button" class="deleteButton" value="Delete" />
@@ -299,9 +309,10 @@
 			  				  			<option value="${eachMachine.key}">${eachMachine.value}</option>
 			  						</jstl:forEach>
 								</select> &nbsp;
-								<input type="text" class="joboperationbox" id="cost"
-												name="cost" value="" placeholder="Cost" /> &nbsp;
-								<select class="joboperationbox" name="taskStatus" id="taskStatus">
+								<input type="text" class="joboperationbox" id="cost" name="cost"
+												value="" placeholder="Cost" /> &nbsp;
+								<select class="joboperationbox" name="taskStatus"
+												id="taskStatus">
 				 			 		<option value="">State</option>
 			  						<jstl:forEach items="${states}" var="eachState">
 			  				  			<option value="${eachState.key}">${eachState.value}</option>
@@ -353,56 +364,7 @@
 		</div>
 		</div>
   	  		
-  	  		<!-- List of emps -->
-						<div class="col-md-10 col-sm-10 col-xs-10">
-	   		 					<br>
-	   		 					<form id="jobcardSearchForm" role="form"
-						action="createjobcard" method="GET">  
-	   		 					<div class="row">
-				  	  		   		<div class="col-sm-1 col-md-1">
-						      			<label for="searchJobcardInput">Search Jobcard</label>
-						    		</div>
-						   		 	<div class="col-sm-2 col-md-2">
-						      			<input type="text" class="form-control"
-									id="searchJobcardInput" name="searchJobcardInput">
-						    	 	</div>
-						    	 	<div class="col-sm-1 col-md-1">
-						      			<input type=submit value="Search">
-						    	 	</div>
-  	  		  					</div>
-  	  		  					</form>
-  	  		   					<br>
-  	  		   					<div class="informativeText">List of Jobcards</div>
-  	  		   					<br>
-				   		 		<table class="table table-bordered">
-								    <thead>
-								      <tr>
-								    	<th>Name</th>
-								        <th>Description</th>
-										<th>PO</th>
-										<th>Customer</th>
-								      </tr>
-								    </thead>
-								    <tbody>
-								      <jstl:forEach var="jobcard" items="${jobcardList}">
-							                <tr>
-							                    <td>
-							                    	<a
-										href="${pageContext.request.contextPath}/createjobcard?jobcardSelected=${jobcard.id}">
-								                    	<jstl:out value="${jobcard.name}" />
-								                    </a>
-												</td>
-							                    <td><jstl:out value="${jobcard.desc}" /></td>
-							                    <td><jstl:out value="${jobcard.po}" /></td>
-							                    <td><jstl:out
-											value="${jobcard.customer}" /></td>
-							                    
-							                </tr>
-							            </jstl:forEach>
-								    </tbody>
-								  </table>
-						</div>
-  	  		
+
 					</jstl:if>
 		
 </div>
