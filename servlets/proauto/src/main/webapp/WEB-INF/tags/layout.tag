@@ -103,6 +103,9 @@
 		if(lielement=="ereg" || lielement=="vreg" || lielement=="creg" || lielement=="rmat" || lielement=="mreg"){
 			lielement ="reg";
 		}
+		if(lielement=="searchjobcard" || lielement=="createjobcard"){
+			lielement ="jobcard";
+		}
 		$("#"+lielement+"li").addClass('active').siblings().removeClass('active');
 	});
 </script>
