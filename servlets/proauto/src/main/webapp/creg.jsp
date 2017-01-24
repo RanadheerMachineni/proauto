@@ -7,6 +7,18 @@
 <t:layout>
 	<jsp:attribute name="header">
 	<script>
+	
+	$(document).on("click", ".insertRow", function(event) {
+		 $('#customFields').append('<tr><td>'+'<input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp;	<input type="text" class="contactField" id="phone" name="phone"							value="" placeholder="Phone" /> &nbsp;			<input type="text" class="contactField" id="email" name="email"							value="" placeholder="Email" /> &nbsp;			<input type="text" class="contactField" id="fax" name="fax"							value="" placeholder="Fax" /> &nbsp;			<input type="text" class="contactField" id="notes" name="notes"							value="" placeholder="Notes" /> &nbsp;'+
+		 			'<input type="button" class="deleteButton" value="Delete" />'+
+ 					'</td></tr>')
+		
+	});
+	$(document).on("click", ".deleteButton", function(event) {
+	    $(this).closest('tr').remove();
+		
+	});
+	
 		$(document).ready(
 				function() {
 					$('#customerRegForm').validate(
@@ -67,28 +79,7 @@
 
 		}
 
-		function GetDynamicTextBox(value) {
-			return '<tr valign="top"><td><input type="text" class="contactField" id="contactname" name="contactname" value="" placeholder="Name" /> &nbsp; <input type="text" class="contactField" id="phone" name="phone" value="" placeholder="Phone" /> &nbsp; <input type="text" class="contactField" id="email" name="email" value="" placeholder="Email"/>&nbsp; <input type="text" class="contactField" id="fax" name="fax" value="" placeholder="Fax" />&nbsp; <input type="text" class="contactField" id="notes" name="notes" value="" placeholder="Notes" />'
-					+ '<input type="button" value="Remove" onclick = "RemoveTextBox(this)" /></td></tr>'
-		}
-		function AddTextBox() {
-			var div = document.createElement('DIV');
-			div.innerHTML = GetDynamicTextBox("");
-			document.getElementById("customFields").appendChild(div);
-		}
-
-		function RemoveTextBox(div) {
-			document.getElementById("customFields").removeChild(div.parentNode);
-		}
-
-		/*function RemoveExistingTextBox(div) {
-		    document.getElementById("customFieldsExisting").removeChild(div.parentNode);
-		}*/
-
-		$("#customFieldsExisting").on('click', '.remCF', function() {
-			$(this).parent().parent().remove();
-		});
-	</script>
+		</script>
 
     </jsp:attribute>
 
@@ -198,6 +189,8 @@
 														value="${splittedString[3]}" placeholder="Fax" /> &nbsp;
 								<input type="text" class="contactField" id="notes" name="notes"
 														value="${splittedString[4]}" placeholder="Notes" /> &nbsp;
+								<input type="button" class="deleteButton" value="Delete" />
+														
 								</td>
 				                </tr>
 			           		 </jstl:forEach>
@@ -224,12 +217,17 @@
 												value="" placeholder="Fax" /> &nbsp;
 								<input type="text" class="contactField" id="notes" name="notes"
 												value="" placeholder="Notes" /> &nbsp;
-								<input id="btnAdd" type="button" value="Add Contact"
-												onclick="AddTextBox()" />
 							</td>
 						</tr>
 					</table>
 
+		    		</div>
+  	  		   </div>
+  	  		   <div class="row rowspace">
+  	  		   		<div class="col-sm-12 col-md-12">
+		      			    <p id="insertRowParent">
+    							<input class="insertRow" type="button" value="Add Contact">
+							</p>
 		    		</div>
   	  		   </div>
   	  		   <br>

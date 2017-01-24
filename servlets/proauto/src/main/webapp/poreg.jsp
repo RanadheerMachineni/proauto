@@ -11,58 +11,51 @@
 	//} );
 	function customLoad() {
 	}
-
-	function GetDynamicTextBox(value) {
-		return '<tr valign="top"><td><input type="text" class="contactField" id="matNo"	name="matNo" value="" placeholder="Mat No" /> &nbsp;<input type="text" class="contactField" id="matDesc" name="matDesc"	value="" placeholder="Description" /> &nbsp;<input type="text" class="contactField" id="unitPrice" name="unitPrice"	value="" placeholder="Unit Price" /> &nbsp;<input type="text" class="contactField" id="quantity" name="quantity" value="" placeholder="Quantity" /> &nbsp;<input type="text" class="contactField" id="discount" name="discount" value="" placeholder="Discount" /> &nbsp;<input type="text" class="contactField" id="value" name="value" value="" placeholder="Value" /> &nbsp;'
-				+ '<input type="button" value="Remove" onclick = "RemoveTextBox(this)" /></td></tr>'
-	}
-	function AddTextBox() {
-		var div = document.createElement('DIV');
-		div.innerHTML = GetDynamicTextBox("");
-		document.getElementById("customFields").appendChild(div);
-	}
-
-	function RemoveTextBox(div) {
-		document.getElementById("customFields").removeChild(div.parentNode);
-	}
 	
-	function removeFile(fileName) {
-		//alert(fileName);
-		var existingInputValue = $('input#uploadedFiles').val();
-		var newValue = existingInputValue.replace(fileName, "");
-		$('input#uploadedFiles').val(newValue);
-		$('#alreadyUploadedFiles tr').each(function() {
-			var href = $(this).find("td:first").find("a").attr('href');
-			if (href.toLowerCase().indexOf(fileName.toLowerCase()) >= 0) {
-				$(this).closest('tr').remove();
-			}
-		});
-	}
-
-	function addMoreFiles() {
-		$("#fileuploads").append(document.createElement("br"));
-		$("#fileuploads").append(
-				'<input type="file" name="eFiles" id="eFiles" multiple>');
-	}
-
-	function unSelectFiles() {
-		//$("#eFiles").val('');
-
-		$('input[name="eFiles"]').each(function() {
-			$(this).val('');
-		});
-
-	}
-	
-	$("#customFieldsExisting").on('click', '.remCF', function() {
-		$(this).parent().parent().remove();
+	$(document).on("click", ".insertRow", function(event) {
+		 $('#customFields').append('<tr><td>'+'				 <input type="text" class="contactField rowspace" id="matNo"						name="matNo" value="" placeholder="Mat No" /> &nbsp;		<input type="text" class="contactField rowspace" id="matDesc" name="matDesc"						value="" placeholder="Description" /> &nbsp;		<input type="text" class="contactField rowspace" id="unitPrice" name="unitPrice"						value="" placeholder="Unit Price" /> &nbsp;		<input type="text" class="contactField rowspace" id="quantity" name="quantity"						value="" placeholder="Quantity" /> &nbsp;		<input type="text" class="contactField rowspace" id="discount" name="discount"						value="" placeholder="Discount" /> &nbsp;		<input type="text" class="contactField rowspace" id="value" name="value"						value="" placeholder="Value" /> &nbsp;'+
+		  			'<input type="button" class="deleteButton" value="Delete" />'+
+					'</td></tr>')
+		
 	});
+	$(document).on("click", ".deleteButton", function(event) {
+	    $(this).closest('tr').remove();
+		
+	});
+
 	
 	$(document)
 			.ready(
 					function() {
 						$("#poDate").datepicker();
 
+						function removeFile(fileName) {
+							//alert(fileName);
+							var existingInputValue = $('input#uploadedFiles').val();
+							var newValue = existingInputValue.replace(fileName, "");
+							$('input#uploadedFiles').val(newValue);
+							$('#alreadyUploadedFiles tr').each(function() {
+								var href = $(this).find("td:first").find("a").attr('href');
+								if (href.toLowerCase().indexOf(fileName.toLowerCase()) >= 0) {
+									$(this).closest('tr').remove();
+								}
+							});
+						}
+
+						function addMoreFiles() {
+							$("#fileuploads").append(document.createElement("br"));
+							$("#fileuploads").append(
+									'<input type="file" name="eFiles" id="eFiles" multiple>');
+						}
+
+						function unSelectFiles() {
+							//$("#eFiles").val('');
+
+							$('input[name="eFiles"]').each(function() {
+								$(this).val('');
+							});
+
+						}
 						
 						$('#poRegForm').validate(
 								{
@@ -330,6 +323,8 @@
 														value="${splittedString[4]}" placeholder="Discount" /> &nbsp;
 								<input type="text" class="contactField rowspace" id="value" name="value"
 														value="${splittedString[5]}" placeholder="Value" /> &nbsp;
+																						<input type="button" class="deleteButton" value="Delete" />
+														
 								</td>
 				                </tr>
 			           		 </jstl:forEach>
@@ -359,16 +354,20 @@
 												value="" placeholder="Discount" /> &nbsp;
 								<input type="text" class="contactField rowspace" id="value" name="value"
 												value="" placeholder="Value" /> &nbsp;
-								<input id="btnAdd" type="button" value="Add Item"
-												onclick="AddTextBox()" />
 							</td>
 						</tr>
 					</table>
 					
 		
 		    	</div>
-		    	
 		    	</div>
+		    	<div class="row rowspace">
+  	  		   		<div class="col-sm-12 col-md-12">
+		      			    <p id="insertRowParent">
+    							<input class="insertRow" type="button" value="Insert Row">
+							</p>
+		    		</div>
+  	  		   </div>
   	  		   <br>
   	  		   
   	  		   <jstl:if
