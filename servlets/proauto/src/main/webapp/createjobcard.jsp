@@ -35,13 +35,13 @@
 				    var customer = $(this).val();
 				    $.get("${pageContext.request.contextPath}/getPos",
 				    	    {"customer" : customer},
-				    	    function(data) {
-								alert(data.result);				    	    	
-				    	    	for (var key in data.result) {
-				    	             if (data.result.hasOwnProperty(key)) {
-				    	            	 $('#po').append('<option value="'+key+'">'+obj.result[key]+'</option>');
-				    	             }
-				    	         }
+				    	    function(resultJSON) {
+				    	    	var result = $.parseJSON(resultJSON);
+				    	    	$('#po').empty();
+				    	    	$.each(result, function(k, v) {
+				    	    	      $('#po').append('<option value="'+k+'">'+v+'</option>');
+
+				    	    	});
 				    	    }
 				    );
 				})

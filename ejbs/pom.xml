@@ -26,12 +26,6 @@
 			<version>${mysql.version}</version>
 		</dependency>
 		
-		<dependency>
-    		<groupId>com.fasterxml.jackson.core</groupId>
-    		<artifactId>jackson-core</artifactId>
-    		<version>${jackson.core.version}</version>
-		</dependency>
-		
 		<!-- Spring dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>

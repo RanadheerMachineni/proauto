@@ -47,6 +47,8 @@ import com.esteeminfo.proauto.service.CommonService;
 import com.esteeminfo.proauto.service.CustomerService;
 import com.esteeminfo.proauto.service.EmployeeService;
 import com.esteeminfo.proauto.service.JobcardService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class AppController {
@@ -86,9 +88,10 @@ public class AppController {
 	}
 	
 	@RequestMapping(value = {"/getPos"}, method = RequestMethod.GET)
-	public @ResponseBody Map<String,String> getPos(@RequestParam("customer") String customer) {
+	public @ResponseBody String getPos(@RequestParam("customer") String customer) throws JsonProcessingException {
 		Map<String,String> pos = commonService.findPOByCustId(customer);
-		return pos;
+		String json = new ObjectMapper().writeValueAsString(pos);
+		return json;
 	}
 	
 	
