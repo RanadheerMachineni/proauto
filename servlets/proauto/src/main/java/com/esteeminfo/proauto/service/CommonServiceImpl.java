@@ -196,4 +196,13 @@ public class CommonServiceImpl implements CommonService {
 		}
 		return operations;
 	}
+
+	public Map<String,String> findPOByCustId(String customer) {
+		Map<String,String> poMap =  new HashMap<String, String>();
+		List<PurchaseOrder> pos = commonDAO.findPosByCustomer(customer);
+		for (PurchaseOrder purchaseOrder : pos) {
+			poMap.put(String.valueOf(purchaseOrder.getPid()), purchaseOrder.getPoId());
+		}
+		return poMap;
+	}
 }

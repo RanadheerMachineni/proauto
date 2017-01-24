@@ -288,4 +288,12 @@ public class CommonDAO extends AbstractDao{
 		Query q = entityManager.createNamedQuery("Machine.findAll");
 		return q.getResultList();
 	}
+
+	public List<PurchaseOrder> findPosByCustomer(String customer) {
+		EntityManager entityManager = getEntityManager();
+		String query = "select e from PurchaseOrder e where e.customer="+Integer.valueOf(customer);
+		Query q = entityManager.createQuery(query);
+		List<PurchaseOrder> result = q.getResultList();
+		return result;
+	}
 }

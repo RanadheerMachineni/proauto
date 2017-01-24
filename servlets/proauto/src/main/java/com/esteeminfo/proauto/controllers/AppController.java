@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -84,17 +85,12 @@ public class AppController {
 
 	}
 	
-	@RequestMapping(value = "/get_provider_list", method = RequestMethod.GET, headers="Accept=*/*")
-	public @ResponseBody List<String> getProviderList(@RequestParam("provider") String provider, @RequestParam("starts") String starts) {
-		logger.info("************* get_provider_list, provider = "+provider+",starts = "+starts);
-		List<String> li = new ArrayList<String>();
-		li.add("a");
-		li.add("ab");
-		li.add("ac");
-		li.add("ad");
-
-		return li;
+	@RequestMapping(value = {"/getPos"}, method = RequestMethod.GET)
+	public @ResponseBody Map<String,String> getPos(@RequestParam("customer") String customer) {
+		Map<String,String> pos = commonService.findPOByCustId(customer);
+		return pos;
 	}
+	
 	
 	@RequestMapping(value = { "/dashboard"}, method = RequestMethod.GET)
 	public ModelAndView homePage() {
@@ -722,9 +718,8 @@ public class AppController {
 		model.addAttribute("states", stateMap);
 		
 		Map<String, String> poMap = new HashMap<String, String>(); 
-		List<PurchaseOrder> purchaseOrders = commonService.retrieveAllPos(null);
-		for(PurchaseOrder purchaseOrder : purchaseOrders){
-			poMap.put(String.valueOf(purchaseOrder.getPid()), purchaseOrder.getPoId());
+		if(jobcardSelected!=null){
+			poMap = commonService.findPOByCustId(jobcardDTO.getCustomer());
 		}
 		model.addAttribute("poList", poMap);
 		

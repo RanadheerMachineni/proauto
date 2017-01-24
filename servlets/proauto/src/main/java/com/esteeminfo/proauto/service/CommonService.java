@@ -27,6 +27,8 @@ public interface CommonService {
 	MachineDTO converMachineToDto(Machine machine);
 
 	PurchaseOrder findPOById(String poSelected);
+	
+	Map<String,String> findPOByCustId(String customer);
 
 	PoDTO converPoToDto(PurchaseOrder purchaseOrder);
 

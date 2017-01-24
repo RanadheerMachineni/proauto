@@ -10,6 +10,10 @@
 	//$( function() {
 	//} );
 
+	function customLoad() {
+	
+	}
+	
 	$(document).on("click", ".insertRow", function(event) {
 		 $('#customFields').append('<tr><td>'+
 		    		'<select class="joboperationbox" name="jobop" id="jobop">		 		<option value="">Select Operation</option>						<jstl:forEach items="${operations}" var="eachOp">				  			<option value="${eachOp.key}">${eachOp.value}</option>						</jstl:forEach>				</select>				<input type="text" class="joboperationbox" id="notes"								name="notes" value="" placeholder="Notes" /> &nbsp;				<input type="text" class="joboperationbox" id="assignee"								name="assignee" value="" placeholder="Assignee" /> &nbsp;				<input type="text" class="joboperationbox" id="startTime"								name="startTime" value="" placeholder="Start Time" /> &nbsp;				<input type="text" class="joboperationbox" id="endTime"								name="endTime" value="" placeholder="End Time" /> &nbsp;				<input type="text" class="joboperationbox" id="duration"								name="duration" value="" placeholder="Duration(Mins)" /> &nbsp;				<select class="joboperationbox" name="machine" id="machine"> 			 		<option value="">Machine</option>						<jstl:forEach items="${machines}" var="eachMachine">				  			<option value="${eachMachine.key}">${eachMachine.value}</option>						</jstl:forEach>				</select> &nbsp;				<input type="text" class="joboperationbox" id="cost"								name="cost" value="" placeholder="Cost" /> &nbsp;				<select class="joboperationbox" name="taskStatus" id="taskStatus"> 			 		<option value="">State</option>						<jstl:forEach items="${states}" var="eachState">				  			<option value="${eachState.key}">${eachState.value}</option>						</jstl:forEach>				</select> &nbsp;'+
@@ -25,10 +29,22 @@
 	$(document).ready(
 			function() {
 				
-				function customLoad() {
-				}
 				
 				
+				$('select[name=customer]').change(function(){
+				    var customer = $(this).val();
+				    $.get("${pageContext.request.contextPath}/getPos",
+				    	    {"customer" : customer},
+				    	    function(data) {
+								alert(data.result);				    	    	
+				    	    	for (var key in data.result) {
+				    	             if (data.result.hasOwnProperty(key)) {
+				    	            	 $('#po').append('<option value="'+key+'">'+obj.result[key]+'</option>');
+				    	             }
+				    	         }
+				    	    }
+				    );
+				})
 
 				$("#jobStart").datepicker();
 				$("#jobEnd").datepicker();
