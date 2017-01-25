@@ -15,7 +15,6 @@
 	}
 	
 	function switchForm(){
-		alert('sf');
 		$('.block').each(function(i, obj) {
 			if($(this).hasClass("show")){
 				$(this).removeClass("show");
@@ -114,7 +113,10 @@
 							test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
 						      			<label>Create Job Card</label>
 					</jstl:if>
-					
+					<jstl:if
+							test="${jobCardSelected.id != null && jobCardSelected.id>0}">
+						      			<label>${jobCardSelected.name}</label>
+					</jstl:if>
 				   	<div class="row">
 	   					<div class="col-sm-10 col-md-10">
 					   	<jstl:if test="${not empty error}">
@@ -140,9 +142,8 @@
 			      			<label class="control-label" for="jname">Name:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
-			   		 	
-   		 					<jstl:if test="${jobCardSelected.id != null || jobCardSelected.id>0}">
-   		 						<strong id="jname" class="block show">${jobCardSelected.name}</strong>
+   		 					<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
+   		 						<p id="jname" class="block show">${jobCardSelected.name}</p>
    		 						<input type="text" class="form-control block hide" id="jname"	name="jname" value="${jobCardSelected.name}">
 							</jstl:if>
 							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
@@ -155,8 +156,15 @@
 			      			<label class="control-label" for="jdesc">Description:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="jdesc"
-											name="jdesc" value="${jobCardSelected.desc}">
+			   		 	
+			   		 		<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
+   		 						<p id="jdesc" class="block show">${jobCardSelected.name}</p>
+   		 						<input type="text" class="form-control block hide" id="jdesc"	name="jdesc" value="${jobCardSelected.desc}">
+							</jstl:if>
+							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
+								<input type="text" class="form-control block show" id="jdesc"	name="jdesc" value="${jobCardSelected.desc}">
+							</jstl:if>
+
 			    	 	</div>
 		    	 	</div>
 		    	</div>
@@ -168,13 +176,30 @@
 		      				<label for="customer">Customer:</label>
 		    			</div>
 			   		 	<div class="col-sm-2 col-md-2">
-				 			<select class="form-control" name="customer" id="customer">
-				 			 	<option value="">Select Customer</option>
-		  						<jstl:forEach items="${customers}" var="eachCustomer">
-		  				  			<option value="${eachCustomer.key}"
-													${jobCardSelected.customer == eachCustomer.key ? 'selected' : ''}>${eachCustomer.value}</option>
+			   		 		<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
+			   		 			<jstl:forEach items="${customers}" var="eachCustomer">
+					   		 		<jstl:if test="${jobCardSelected.customer == eachCustomer.key}">
+					   		 			   <p id="customer" class="block show">${eachCustomer.value}</p>
+					   		 		</jstl:if>
 		  						</jstl:forEach>
-							</select>
+		  						<select class="form-control block hide" name="customer" id="customer">
+				 			 		<option value="">Select Customer</option>
+			  						<jstl:forEach items="${customers}" var="eachCustomer">
+			  				  			<option value="${eachCustomer.key}"
+														${jobCardSelected.customer == eachCustomer.key ? 'selected' : ''}>${eachCustomer.value}</option>
+			  						</jstl:forEach>
+								</select>
+							</jstl:if>
+							
+							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
+								<select class="form-control block show" name="customer" id="customer">
+				 			 		<option value="">Select Customer</option>
+			  						<jstl:forEach items="${customers}" var="eachCustomer">
+			  				  			<option value="${eachCustomer.key}"
+														${jobCardSelected.customer == eachCustomer.key ? 'selected' : ''}>${eachCustomer.value}</option>
+			  						</jstl:forEach>
+								</select>
+							</jstl:if>
 			    	 	</div>
 			    	 </div>
 			    	 
@@ -182,14 +207,31 @@
 			    	 	<div class="col-sm-1 col-md-1">
 		      				<label for="po">PO:</label>
 		    			</div>
-			   		 	<div class="col-sm-2 col-md-2">
-				 			<select class="form-control" name="po" id="po">
-				 			 	<option value="">Select PO</option>
-		  						<jstl:forEach items="${poList}" var="eachPo">
-		  				  			<option value="${eachPo.key}"
-													${jobCardSelected.po == eachPo.key ? 'selected' : ''}>${eachPo.value}</option>
+		    			 	<div class="col-sm-2 col-md-2">
+			   		 		<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
+			   		 			<jstl:forEach items="${poList}" var="eachPo">
+					   		 		<jstl:if test="${jobCardSelected.po == eachPo.key}">
+					   		 			   <p id="po" class="block show">${eachPo.value}</p>
+					   		 		</jstl:if>
 		  						</jstl:forEach>
-							</select>
+		  						<select class="form-control block hide" name="po" id="po">
+				 			 		<option value="">Select PO</option>
+			  						<jstl:forEach items="${poList}" var="eachPo">
+			  				  			<option value="${eachPo.key}"
+														${jobCardSelected.po == eachPo.key ? 'selected' : ''}>${eachPo.value}</option>
+			  						</jstl:forEach>
+								</select>
+							</jstl:if>
+							
+							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
+								<select class="form-control block show" name="po" id="po">
+				 			 		<option value="">Select PO</option>
+			  						<jstl:forEach items="${poList}" var="eachPo">
+			  				  			<option value="${eachPo.key}"
+														${jobCardSelected.po == eachPo.key ? 'selected' : ''}>${eachPo.value}</option>
+			  						</jstl:forEach>
+								</select>
+							</jstl:if>
 			    	 	</div>
 			    	 </div>
 			    	 
@@ -197,14 +239,31 @@
 			    	 	<div class="col-sm-1 col-md-1">
 		      				<label for="status">Status:</label>
 		    			</div>
-			   		 	<div class="col-sm-2 col-md-2">
-				 			<select class="form-control" name="status" id="status">
-				 			 	<option value="">State</option>
-		  						<jstl:forEach items="${states}" var="eachState">
-		  				  			<option value="${eachState.key}"
-													${jobCardSelected.state == eachState.key ? 'selected' : ''}>${eachState.value}</option>
+		    			<div class="col-sm-2 col-md-2">
+			   		 		<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
+			   		 			<jstl:forEach items="${states}" var="eachState">
+					   		 		<jstl:if test="${jobCardSelected.state == eachState.key}">
+					   		 			   <p id="status" class="block show">${eachState.value}</p>
+					   		 		</jstl:if>
 		  						</jstl:forEach>
-							</select>
+		  						<select class="form-control block hide" name="status" id="status">
+				 			 		<option value="">State</option>
+			  						<jstl:forEach items="${states}" var="eachState">
+			  				  			<option value="${eachState.key}"
+														${jobCardSelected.state == eachState.key ? 'selected' : ''}>${eachState.value}</option>
+			  						</jstl:forEach>
+								</select>
+							</jstl:if>
+							
+							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
+								<select class="form-control block show" name="status" id="status">
+				 			 		<option value="">State</option>
+			  						<jstl:forEach items="${states}" var="eachState">
+			  				  			<option value="${eachState.key}"
+														${jobCardSelected.state == eachState.key ? 'selected' : ''}>${eachState.value}</option>
+			  						</jstl:forEach>
+								</select>
+							</jstl:if>
 			    	 	</div>
 			    	 </div>
 		    	</div>
@@ -214,9 +273,14 @@
 			    	 	<div class="col-sm-1 col-md-1">
 			      			<label for="createdBy" class="control-label">Created By:</label>
 			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="createdBy"
-											name="createdBy" value="${jobCardSelected.createdBy}">
+			    		<div class="col-sm-2 col-md-2 controls">
+   		 					<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
+   		 						<p id="createdBy" class="block show">${jobCardSelected.createdBy}</p>
+   		 						<input type="text" class="form-control block hide" id="createdBy"	name="createdBy" value="${jobCardSelected.createdBy}">
+							</jstl:if>
+							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
+								<input type="text" class="form-control block show" id="createdBy"	name="createdBy" value="${jobCardSelected.createdBy}">
+							</jstl:if>
 			    	 	</div>
 			    	 </div>
 			    	
@@ -224,10 +288,14 @@
 			    	 	<div class="col-sm-1 col-md-1">
 			      			<label for="jobStart" class="control-label">Start Date:</label>
 			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="jobStart"
-											name="jobStart" readonly="true"
-											value="${jobCardSelected.jobStart}">
+			    		<div class="col-sm-2 col-md-2 controls">
+   		 					<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
+   		 						<p id="jobStart" class="block show">${jobCardSelected.jobStart}</p>
+   		 						<input type="text" class="form-control block hide" id="jobStart" readonly name="jobStart" value="${jobCardSelected.jobStart}">
+							</jstl:if>
+							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
+								<input type="text" class="form-control block show" id="jobStart" readonly name="jobStart" value="${jobCardSelected.jobStart}">
+							</jstl:if>
 			    	 	</div>
 			    	</div>
 		    	 	
@@ -235,10 +303,14 @@
 			    	 	<div class="col-sm-1 col-md-1">
 			      			<label for="jobEnd" class="control-label">End Date:</label>
 			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="jobEnd"
-											name="jobEnd" readonly="true"
-											value="${jobCardSelected.jobEnd}">
+			    		<div class="col-sm-2 col-md-2 controls">
+   		 					<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
+   		 						<p id="jobEnd" class="block show">${jobCardSelected.jobEnd}</p>
+   		 						<input type="text" class="form-control block hide" id="jobEnd" readonly name="jobEnd" value="${jobCardSelected.jobEnd}">
+							</jstl:if>
+							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
+								<input type="text" class="form-control block show" id="jobEnd" readonly name="jobEnd" value="${jobCardSelected.jobEnd}">
+							</jstl:if>
 			    	 	</div>
 			    	</div>
 		    	</div>
@@ -368,26 +440,25 @@
 		    	
   	  		   <br>
 			   <div class="row">
-	   		 		<div class="col-sm-8 col-md-8">
-						<jstl:if
-										test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
+		   		 	<div class="col-sm-1 col-md-1">
+		   		 		<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
 	   		 				  <input type="hidden" name="create" value="true">
-						      <button id="createJobcardSubmit" type="submit"
-											class="btn btn-primary">Create</button>
-						      
+						      <button id="createJobcardSubmit" type="submit" class="btn btn-primary">Create</button>
 						</jstl:if>
-					<jstl:if
-										test="${jobCardSelected.id != null && jobCardSelected.id > 0}">
+						<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id > 0}">
+							  <button id="editButton" type="button" onclick="switchForm();return false;" class="btn btn-primary block show">Edit</button>
 							  <input type="hidden" name="create" value="false">
-							  <button id="editButton" type="button" onclick="switchForm();return false;" class="btn btn-primary block show">Edit Jobcard</button>
-							  
-						      <button id="createJobcardSubmit" type="submit"
-											class="btn btn-primary block hide">Update</button>
-						      
-						       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						       <button id="cancelButton" onclick="switchForm();return false;" class="btn btn-primary block hide">Cancel</button>
+						      <button id="createJobcardSubmit" type="submit" class="btn btn-primary block hide">Update</button>
 						</jstl:if>
-	    	 		</div>
+		   		 	</div>
+		   		 	<div class="col-sm-1 col-md-1">
+		   		 		<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id > 0}">
+						      <button id="printButton" type="button" onclick="alert('print pdf');" class="btn btn-primary block show">Print</button>
+						      <button id="cancelButton" onclick="switchForm();return false;" class="btn btn-primary block hide">Cancel</button>
+						</jstl:if>
+		   		 	</div>
+				</div>
+		    	 	
 	  			</div>
 	  			<br>
 	  			<input type="hidden" name="${_csrf.parameterName}"
