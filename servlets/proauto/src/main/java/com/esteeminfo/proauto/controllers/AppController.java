@@ -137,7 +137,9 @@ public class AppController {
 		if(employeeSelected!=null){
 			Employee employee = employeeService.findById(Integer.valueOf(employeeSelected));
 			employeeDTO = employeeService.converEmployeeToDto(employee);
-			model.addAttribute("employeeSelectedRole", employeeDTO.getRoles().get(0));
+			if(employeeDTO.getRoles()!=null){
+				model.addAttribute("employeeSelectedRole", employeeDTO.getRoles().get(0));
+			}
 		}else{
 			model.addAttribute("employeeSelectedRole", "ROLE_norole");
 		}
@@ -761,15 +763,17 @@ public class AppController {
 		String[] machine = request.getParameterValues("machine");
 		String[] cost = request.getParameterValues("cost");
 		String[] taskStatus = request.getParameterValues("taskStatus");
-		
+		Jobcard jobcardCreated = null;
+		JobcardDTO jobcardDTO = null;
+
 		try {
-			Jobcard jobcard  = jobcardService.registerJobcard(create,jid, name,desc,customer,purchaseOrder,status,createdBy,jobStart,jobEnd,jobop,
+			jobcardCreated  = jobcardService.registerJobcard(create,jid, name,desc,customer,purchaseOrder,status,createdBy,jobStart,jobEnd,jobop,
 					notes,assignee,startTime,endTime,duration,machine,cost,taskStatus);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("error", e.getMessage());
-			JobcardDTO jobcardDTO = new JobcardDTO();
+			jobcardDTO = new JobcardDTO();
 			if(jid!=null && jid.length()>0){
 				jobcardDTO.setId(Integer.valueOf(jid));
 			}
@@ -785,6 +789,12 @@ public class AppController {
 
 		}
 
+		if(jobcardCreated!=null){
+			jobcardDTO = jobcardService.converJobcardToDto(jobcardCreated);
+			model.addAttribute("jobCardSelected", jobcardDTO);
+
+		}
+		
 		Map<String, String> operations = new HashMap<String, String>(); 
 		operations  = commonService.getJobOperations();
 		model.addAttribute("operations", operations);

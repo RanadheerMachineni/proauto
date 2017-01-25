@@ -130,7 +130,7 @@ li.dropdownmenu {
 }
 
 .hide{
-	display :none;	
+	display :none;	visibility: hidden;
 }
 
 .show{

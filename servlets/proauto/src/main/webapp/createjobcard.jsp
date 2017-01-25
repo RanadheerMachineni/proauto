@@ -14,6 +14,19 @@
 	
 	}
 	
+	function switchForm(){
+		alert('sf');
+		$('.block').each(function(i, obj) {
+			if($(this).hasClass("show")){
+				$(this).removeClass("show");
+				$(this).addClass("hide");
+			}else{
+				$(this).addClass("show");
+				$(this).removeClass("hide");
+			}
+		});
+	}
+	
 	$(document).on("click", ".insertRow", function(event) {
 		 $('#customFields').append('<tr><td>'+
 		    		'<select class="joboperationbox" name="jobop" id="jobop">		 		<option value="">Select Operation</option>						<jstl:forEach items="${operations}" var="eachOp">				  			<option value="${eachOp.key}">${eachOp.value}</option>						</jstl:forEach>				</select>				<input type="text" class="joboperationbox" id="notes"								name="notes" value="" placeholder="Notes" /> &nbsp;				<input type="text" class="joboperationbox" id="assignee"								name="assignee" value="" placeholder="Assignee" /> &nbsp;				<input type="text" class="joboperationbox" id="startTime"								name="startTime" value="" placeholder="Start Time" /> &nbsp;				<input type="text" class="joboperationbox" id="endTime"								name="endTime" value="" placeholder="End Time" /> &nbsp;				<input type="text" class="joboperationbox" id="duration"								name="duration" value="" placeholder="Duration(Mins)" /> &nbsp;				<select class="joboperationbox" name="machine" id="machine"> 			 		<option value="">Machine</option>						<jstl:forEach items="${machines}" var="eachMachine">				  			<option value="${eachMachine.key}">${eachMachine.value}</option>						</jstl:forEach>				</select> &nbsp;				<input type="text" class="joboperationbox" id="cost"								name="cost" value="" placeholder="Cost" /> &nbsp;				<select class="joboperationbox" name="taskStatus" id="taskStatus"> 			 		<option value="">State</option>						<jstl:forEach items="${states}" var="eachState">				  			<option value="${eachState.key}">${eachState.value}</option>						</jstl:forEach>				</select> &nbsp;'+
@@ -46,6 +59,8 @@
 				    );
 				})
 
+			
+				
 				$("#jobStart").datepicker();
 				$("#jobEnd").datepicker();
 				$('#jobcardRegForm').validate(
@@ -99,10 +114,6 @@
 							test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
 						      			<label>Create Job Card</label>
 					</jstl:if>
-					<jstl:if
-							test="${jobCardSelected.id != null && jobCardSelected.id > 0}">
-						      			<label>Update Job Card</label>
-					</jstl:if>
 					
 				   	<div class="row">
 	   					<div class="col-sm-10 col-md-10">
@@ -129,8 +140,14 @@
 			      			<label class="control-label" for="jname">Name:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="jname"
-											name="jname" value="${jobCardSelected.name}">
+			   		 	
+   		 					<jstl:if test="${jobCardSelected.id != null || jobCardSelected.id>0}">
+   		 						<strong id="jname" class="block show">${jobCardSelected.name}</strong>
+   		 						<input type="text" class="form-control block hide" id="jname"	name="jname" value="${jobCardSelected.name}">
+							</jstl:if>
+							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
+								<input type="text" class="form-control block show" id="jname"	name="jname" value="${jobCardSelected.name}">
+							</jstl:if>
 			    	 	</div>
 		    	 	</div>
   	  		        <div class="control-group">
@@ -362,13 +379,13 @@
 					<jstl:if
 										test="${jobCardSelected.id != null && jobCardSelected.id > 0}">
 							  <input type="hidden" name="create" value="false">
+							  <button id="editButton" type="button" onclick="switchForm();return false;" class="btn btn-primary block show">Edit Jobcard</button>
+							  
 						      <button id="createJobcardSubmit" type="submit"
-											class="btn btn-primary">Update</button>
+											class="btn btn-primary block hide">Update</button>
 						      
 						       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						      <a class="btn btn-default"
-											href="${pageContext.request.contextPath}/createjobcard"
-											role="button">Cancel</a>
+						       <button id="cancelButton" onclick="switchForm();return false;" class="btn btn-primary block hide">Cancel</button>
 						</jstl:if>
 	    	 		</div>
 	  			</div>
