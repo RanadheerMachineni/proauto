@@ -322,10 +322,8 @@
   	  		   </div>
   	  		   
   	  		   
-  	  		    <div class="row rowspace">
-  	  		   		<div class="col-sm-12 col-md-12">
-  	  		   <jstl:if
-										test="${jobCardSelected.id != null && jobCardSelected.id > 0 && jobCardSelected.tasks!=null}">
+  	  		  
+  	  		   <jstl:if	test="${jobCardSelected.id != null && jobCardSelected.id > 0 && jobCardSelected.tasks!=null}">
 	  	  		   <div class="row rowspace">
 			   		 	<div id="alreadySavedContacts" class="col-sm-12 col-md-12">
 			   		 		<table class="form-table" id="customFieldsExisting">
@@ -334,47 +332,80 @@
 															value="${fn:split(eachTask, '[|]')}" />
 				                <tr>
 					               <td>
-										<select class="joboperationbox" name="jobop" id="jobop">
-						 			 		<option value="">Select Operation</option>
-					  						<jstl:forEach items="${operations}" var="eachOp">
-					  				  			<option value="${eachOp.key}"
-																			${splittedString[0] == eachOp.key ? 'selected' : ''}>${eachOp.value}</option>
-					  						</jstl:forEach>
-										</select>
-										<input type="text" class="joboperationbox" id="notes"
-																name="notes" value="${splittedString[1]}"
-																placeholder="Notes" /> &nbsp;
-										<input type="text" class="joboperationbox" id="assignee"
-																name="assignee" value="${splittedString[2]}"
-																placeholder="Assignee" /> &nbsp;
-										<input type="text" class="joboperationbox" id="startTime"
-																name="startTime" value="${splittedString[3]}"
-																placeholder="Start Time" /> &nbsp;
-										<input type="text" class="joboperationbox" id="endTime"
-																name="endTime" value="${splittedString[4]}"
-																placeholder="End Time" /> &nbsp;
-										<input type="text" class="joboperationbox" id="duration"
-																name="duration" value="${splittedString[5]}"
-																placeholder="Duration(Mins)" /> &nbsp;
-										<select class="joboperationbox" name="machine" id="machine">
-						 			 		<option value="">Machine</option>
-					  						<jstl:forEach items="${machines}" var="eachMachine">
-					  				  			<option value="${eachMachine.key}"
-																			${splittedString[6] == eachMachine.key ? 'selected' : ''}>${eachMachine.value}</option>
-					  						</jstl:forEach>
-										</select> &nbsp;
-										<input type="text" class="joboperationbox" id="cost"
-																name="cost" value="${splittedString[7]}"
-																placeholder="Cost" /> &nbsp;
-										<select class="joboperationbox" name="taskStatus"
-																id="taskStatus">
-						 			 		<option value="">State</option>
-					  						<jstl:forEach items="${states}" var="eachState">
-					  				  			<option value="${eachState.key}"
-																			${splittedString[8] == eachState.key ? 'selected' : ''}>${eachState.value}</option>
-					  						</jstl:forEach>
-										</select> &nbsp;
-										<input type="button" class="deleteButton" value="Delete" />
+					                 	  		<div class="col-sm-1 col-md-1">
+				  								<jstl:forEach items="${operations}" var="eachOp">
+															<jstl:if test="${eachOp.key == splittedString[0]}">
+											   		 			   <p id="jobop" class="joboperationbox block show">${eachOp.value}</p>
+											   		 		</jstl:if>
+											   	</jstl:forEach>
+												<select class="joboperationbox block hide" name="jobop" id="jobop">
+								 			 		<option value="">Select Operation</option>
+							  						<jstl:forEach items="${operations}" var="eachOp">
+							  				  			<option value="${eachOp.key}" ${splittedString[0] == eachOp.key ? 'selected' : ''}>${eachOp.value}</option>
+							  						</jstl:forEach>
+												</select>
+												</div>
+												<div class="col-sm-1 col-md-1">
+												<p id="notes" class="joboperationbox block show">${splittedString[1]}</p>
+   		 										<input type="text" class="joboperationbox block hide" id="notes" placeholder="Notes" name="notes" value="${splittedString[1]}">
+												</div>
+												
+												<div class="col-sm-1 col-md-1">
+												<p id="assignee" class="joboperationbox block show">${splittedString[2]}</p>
+   		 										<input type="text" class="joboperationbox block hide" id="assignee" placeholder="Assignee" name="assignee" value="${splittedString[2]}">
+												</div>
+												
+												<div class="col-sm-1 col-md-1">
+												<p id="startTime" class="joboperationbox block show">${splittedString[3]}</p>
+   		 										<input type="text" class="joboperationbox block hide" id="startTime" placeholder="Start Time" name="startTime" value="${splittedString[3]}">
+												</div>
+												
+												<div class="col-sm-1 col-md-1">
+												<p id="endTime" class="joboperationbox block show">${splittedString[4]}</p>
+   		 										<input type="text" class="joboperationbox block hide" id="endTime" placeholder="End Time" name="endTime" value="${splittedString[4]}">
+												</div>
+												
+												<div class="col-sm-1 col-md-1">
+												<p id="duration" class="joboperationbox block show">${splittedString[5]}</p>
+   		 										<input type="text" class="joboperationbox block hide" id="duration" placeholder="Duration(Mins)" name="duration" value="${splittedString[5]}">
+												</div>
+												
+												<div class="col-sm-1 col-md-1">
+												<jstl:forEach items="${machines}" var="eachMachine">
+															<jstl:if test="${eachMachine.key == splittedString[6]}">
+											   		 			   <p id="machine" class="joboperationbox block show">${eachMachine.value}</p>
+											   		 		</jstl:if>
+											   	</jstl:forEach>
+												<select class="joboperationbox block hide" name="machine" id="machine">
+								 			 		<option value="">Machine</option>
+							  						<jstl:forEach items="${machines}" var="eachMachine">
+							  				  			<option value="${eachMachine.key}" ${splittedString[6] == eachMachine.key ? 'selected' : ''}>${eachMachine.value}</option>
+							  						</jstl:forEach>
+												</select>
+												 </div>
+												
+												<div class="col-sm-1 col-md-1">
+												<p id="cost" class="joboperationbox block show">${splittedString[7]}</p>
+   		 										<input type="text" class="joboperationbox block hide" id="cost" placeholder="Cost" name="cost" value="${splittedString[7]}">
+												</div>
+												
+												<div class="col-sm-1 col-md-1">
+												<jstl:forEach items="${states}" var="eachState">
+															<jstl:if test="${eachState.key == splittedString[8]}">
+											   		 			   <p id="taskStatus" class="joboperationbox block show">${eachState.value}</p>
+											   		 		</jstl:if>
+											   	</jstl:forEach>
+												<select class="joboperationbox block hide" name="taskStatus" id="taskStatus">
+								 			 		<option value="">State</option>
+							  						<jstl:forEach items="${states}" var="eachState">
+							  				  			<option value="${eachState.key}" ${splittedString[8] == eachMachine.key ? 'selected' : ''}>${eachState.value}</option>
+							  						</jstl:forEach>
+												</select>
+												 </div>
+												
+												<div class="col-sm-1 col-md-1">
+												<input type="button" class="block hide deleteButton" value="Delete" />
+												</div>
 								</td>
 				                </tr>
 			           		 </jstl:forEach>
@@ -383,8 +414,7 @@
 				   </div>
 				</jstl:if>							
   	  		   
-  	  		   </div>
-  	  		   </div>
+  	  		
 			  	<div class="row rowspace">
   	  		 
   	  				 <div class="col-sm-12 col-md-12">
@@ -429,14 +459,24 @@
 		    	</div>
 		    	</div>
 		    	
-		    	
-		     <div class="row rowspace">
-  	  		   		<div class="col-sm-12 col-md-12">
-		      			    <p id="insertRowParent">
-    							<input class="insertRow" type="button" value="Insert row">
-							</p>
-		    		</div>
-  	  		   </div>
+		    	<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
+					<div class="row rowspace">
+	  	  		   		<div class="col-sm-12 col-md-12">
+			      			    <p id="insertRowParent">
+	    							<input class="insertRow block show" type="button" value="Insert row">
+								</p>
+			    		</div>
+  	  		   		</div>
+				</jstl:if>
+	  			<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
+					<div class="row rowspace">
+	  	  		   		<div class="col-sm-12 col-md-12">
+			      			    <p id="insertRowParent">
+	    							<input class="insertRow block hide" type="button" value="Insert row">
+								</p>
+			    		</div>
+  	  		   		</div>
+				</jstl:if>
 		    	
   	  		   <br>
 			   <div class="row">
