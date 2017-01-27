@@ -415,11 +415,10 @@
 				</jstl:if>							
   	  		   
   	  		
-			  	<div class="row rowspace">
-  	  		 
-  	  				 <div class="col-sm-12 col-md-12">
-	  	  		   	
-	  	  		   	<table class="form-table" id="customFields">
+  	  			<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
+					<div class="row rowspace">
+	  	  		   		<div class="col-sm-12 col-md-12">
+			      			    <table class="form-table block show" id="customFields">
 						<tr>
 							<td>
 								<select class="joboperationbox" name="jobop" id="jobop">
@@ -456,6 +455,57 @@
 							</td>
 						</tr>
 					</table>
+			    		</div>
+  	  		   		</div>
+				</jstl:if>
+	  			<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
+					<div class="row rowspace">
+	  	  		   		<div class="col-sm-12 col-md-12">
+			      			   <table class="form-table block hide" id="customFields">
+						<tr>
+							<td>
+								<select class="joboperationbox" name="jobop" id="jobop">
+				 			 		<option value="">Select Operation</option>
+			  						<jstl:forEach items="${operations}" var="eachOp">
+			  				  			<option value="${eachOp.key}">${eachOp.value}</option>
+			  						</jstl:forEach>
+								</select>
+								<input type="text" class="joboperationbox" id="notes"
+												name="notes" value="" placeholder="Notes" /> &nbsp;
+								<input type="text" class="joboperationbox" id="assignee"
+												name="assignee" value="" placeholder="Assignee" /> &nbsp;
+								<input type="text" class="joboperationbox" id="startTime"
+												name="startTime" value="" placeholder="Start Time" /> &nbsp;
+								<input type="text" class="joboperationbox" id="endTime"
+												name="endTime" value="" placeholder="End Time" /> &nbsp;
+								<input type="text" class="joboperationbox" id="duration"
+												name="duration" value="" placeholder="Duration(Mins)" /> &nbsp;
+								<select class="joboperationbox" name="machine" id="machine">
+				 			 		<option value="">Machine</option>
+			  						<jstl:forEach items="${machines}" var="eachMachine">
+			  				  			<option value="${eachMachine.key}">${eachMachine.value}</option>
+			  						</jstl:forEach>
+								</select> &nbsp;
+								<input type="text" class="joboperationbox" id="cost" name="cost"
+												value="" placeholder="Cost" /> &nbsp;
+								<select class="joboperationbox" name="taskStatus"
+												id="taskStatus">
+				 			 		<option value="">State</option>
+			  						<jstl:forEach items="${states}" var="eachState">
+			  				  			<option value="${eachState.key}">${eachState.value}</option>
+			  						</jstl:forEach>
+								</select> &nbsp;
+							</td>
+						</tr>
+					</table>
+			    		</div>
+  	  		   		</div>
+				</jstl:if>
+  	  		
+			  	<div class="row rowspace">
+  				 <div class="col-sm-12 col-md-12">
+	  	  		   	
+	  	  		   	
 		    	</div>
 		    	</div>
 		    	
