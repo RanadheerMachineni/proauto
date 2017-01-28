@@ -398,7 +398,7 @@
 												<select class="joboperationbox block hide" name="taskStatus" id="taskStatus">
 								 			 		<option value="">State</option>
 							  						<jstl:forEach items="${states}" var="eachState">
-							  				  			<option value="${eachState.key}" ${splittedString[8] == eachMachine.key ? 'selected' : ''}>${eachState.value}</option>
+							  				  			<option value="${eachState.key}" ${splittedString[8] == eachState.key ? 'selected' : ''}>${eachState.value}</option>
 							  						</jstl:forEach>
 												</select>
 												 </div>
