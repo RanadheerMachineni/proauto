@@ -15,15 +15,29 @@
 	}
 	
 	function switchForm(){
-		$('.block').each(function(i, obj) {
-			if($(this).hasClass("show")){
-				$(this).removeClass("show");
-				$(this).addClass("hide");
-			}else{
-				$(this).addClass("show");
-				$(this).removeClass("hide");
-			}
-		});
+		var status = $("#status").text();
+		if(status=='New'){
+			$('.block').each(function(i, obj) {
+				if($(this).hasClass("show")){
+					$(this).removeClass("show");
+					$(this).addClass("hide");
+				}else{
+					$(this).addClass("show");
+					$(this).removeClass("hide");
+				}
+			});
+		}else{
+			$('.block').each(function(i, obj) {
+				if($(this).hasClass("show") && $(this).hasClass("alwaysEditable")){
+					$(this).removeClass("show");
+					$(this).addClass("hide");
+				}else if($(this).hasClass("hide") && $(this).hasClass("alwaysEditable")){
+					$(this).addClass("show");
+					$(this).removeClass("hide");
+				}
+			});
+		}
+	
 	}
 	
 	$(document).on("click", ".insertRow", function(event) {
@@ -306,11 +320,11 @@
 			    		</div>
 			    		<div class="col-sm-2 col-md-2 controls">
    		 					<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
-   		 						<p id="jobStart" class="block show">${jobCardSelected.jobStart}</p>
-   		 						<input type="text" class="form-control block hide" id="jobStart" readonly name="jobStart" value="${jobCardSelected.jobStart}">
+   		 						<p id="jobStart" class="block show alwaysEditable">${jobCardSelected.jobStart}</p>
+   		 						<input type="text" class="form-control block hide alwaysEditable" id="jobStart" readonly name="jobStart" value="${jobCardSelected.jobStart}">
 							</jstl:if>
 							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
-								<input type="text" class="form-control block show" id="jobStart" readonly name="jobStart" value="${jobCardSelected.jobStart}">
+								<input type="text" class="form-control block show alwaysEditable" id="jobStart" readonly name="jobStart" value="${jobCardSelected.jobStart}">
 							</jstl:if>
 			    	 	</div>
 			    	</div>
@@ -321,11 +335,11 @@
 			    		</div>
 			    		<div class="col-sm-2 col-md-2 controls">
    		 					<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
-   		 						<p id="jobEnd" class="block show">${jobCardSelected.jobEnd}</p>
-   		 						<input type="text" class="form-control block hide" id="jobEnd" readonly name="jobEnd" value="${jobCardSelected.jobEnd}">
+   		 						<p id="jobEnd" class="block show alwaysEditable">${jobCardSelected.jobEnd}</p>
+   		 						<input type="text" class="form-control block hide alwaysEditable" id="jobEnd" readonly name="jobEnd" value="${jobCardSelected.jobEnd}">
 							</jstl:if>
 							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
-								<input type="text" class="form-control block show" id="jobEnd" readonly name="jobEnd" value="${jobCardSelected.jobEnd}">
+								<input type="text" class="form-control block show alwaysEditable" id="jobEnd" readonly name="jobEnd" value="${jobCardSelected.jobEnd}">
 							</jstl:if>
 			    	 	</div>
 			    	</div>
@@ -363,37 +377,37 @@
 												</div>
 									</td><td class="joboperationbox">			
 												<div>
-												<p id="notes" class="form-control block show">${splittedString[1]}</p>
-   		 										<input type="text" class="form-control block hide" id="notes" placeholder="Notes" name="notes" value="${splittedString[1]}">
+												<p id="notes" class="form-control block show alwaysEditable">${splittedString[1]}</p>
+   		 										<input type="text" class="form-control block hide alwaysEditable" id="notes" placeholder="Notes" name="notes" value="${splittedString[1]}">
 												</div>
 									</td><td class="joboperationbox">			
 												<div>
-												<p id="assignee" class="form-control block show">${splittedString[2]}</p>
-   		 										<input type="text" class="form-control block hide" id="assignee" placeholder="Assignee" name="assignee" value="${splittedString[2]}">
+												<p id="assignee" class="form-control block show alwaysEditable">${splittedString[2]}</p>
+   		 										<input type="text" class="form-control block hide alwaysEditable" id="assignee" placeholder="Assignee" name="assignee" value="${splittedString[2]}">
 												</div>
 									</td><td class="joboperationbox">			
 												<div>
-												<p id="startTime" class="form-control block show">${splittedString[3]}</p>
-   		 										<input type="text" class="form-control block hide" id="startTime" placeholder="Start Time" name="startTime" value="${splittedString[3]}">
+												<p id="startTime" class="form-control block show alwaysEditable">${splittedString[3]}</p>
+   		 										<input type="text" class="form-control block hide alwaysEditable" id="startTime" placeholder="Start Time" name="startTime" value="${splittedString[3]}">
 												</div>
 									</td><td class="joboperationbox">			
 												<div >
-												<p id="endTime" class="form-control block show">${splittedString[4]}</p>
-   		 										<input type="text" class="form-control block hide" id="endTime" placeholder="End Time" name="endTime" value="${splittedString[4]}">
+												<p id="endTime" class="form-control block show alwaysEditable">${splittedString[4]}</p>
+   		 										<input type="text" class="form-control block hide alwaysEditable" id="endTime" placeholder="End Time" name="endTime" value="${splittedString[4]}">
 												</div>
 									</td><td class="joboperationbox">			
 												<div >
-												<p id="duration" class="form-control block show">${splittedString[5]}</p>
-   		 										<input type="text" class="form-control block hide" id="duration" placeholder="Duration(Mins)" name="duration" value="${splittedString[5]}">
+												<p id="duration" class="form-control block show alwaysEditable">${splittedString[5]}</p>
+   		 										<input type="text" class="form-control block hide alwaysEditable" id="duration" placeholder="Duration(Mins)" name="duration" value="${splittedString[5]}">
 												</div>
 									</td><td class="joboperationbox">			
 												<div >
 												<jstl:forEach items="${machines}" var="eachMachine">
 															<jstl:if test="${eachMachine.key == splittedString[6]}">
-											   		 			   <p id="machine" class="form-control block show">${eachMachine.value}</p>
+											   		 			   <p id="machine" class="form-control block show alwaysEditable">${eachMachine.value}</p>
 											   		 		</jstl:if>
 											   	</jstl:forEach>
-												<select class="form-control block hide" name="machine" id="machine">
+												<select class="form-control block hide alwaysEditable" name="machine" id="machine">
 								 			 		<option value="">Machine</option>
 							  						<jstl:forEach items="${machines}" var="eachMachine">
 							  				  			<option value="${eachMachine.key}" ${splittedString[6] == eachMachine.key ? 'selected' : ''}>${eachMachine.value}</option>
@@ -402,17 +416,17 @@
 												 </div>
 									</td><td class="joboperationbox">			
 												<div >
-												<p id="cost" class="form-control block show">${splittedString[7]}</p>
-   		 										<input type="text" class="form-control block hide" id="cost" placeholder="Cost" name="cost" value="${splittedString[7]}">
+												<p id="cost" class="form-control block show alwaysEditable">${splittedString[7]}</p>
+   		 										<input type="text" class="form-control block hide alwaysEditable" id="cost" placeholder="Cost" name="cost" value="${splittedString[7]}">
 												</div>
 									</td><td class="joboperationbox">			
 												<div >
 												<jstl:forEach items="${states}" var="eachState">
 															<jstl:if test="${eachState.key == splittedString[8]}">
-											   		 			   <p id="taskStatus" class="form-control block show">${eachState.value}</p>
+											   		 			   <p id="taskStatus" class="form-control block show alwaysEditable">${eachState.value}</p>
 											   		 		</jstl:if>
 											   	</jstl:forEach>
-												<select class="form-control block hide" name="taskStatus" id="taskStatus">
+												<select class="form-control block hide alwaysEditable" name="taskStatus" id="taskStatus">
 								 			 		<option value="">State</option>
 							  						<jstl:forEach items="${states}" var="eachState">
 							  				  			<option value="${eachState.key}" ${splittedString[8] == eachState.key ? 'selected' : ''}>${eachState.value}</option>
@@ -493,10 +507,6 @@
 							  						</jstl:forEach>
 												</select>
 												 </div>
-									</td><td class="joboperationbox">			
-												<div >
-												<input type="button" class="form-control block hide deleteButton" value="Delete" />
-												</div>
 									</td>
 				                </tr>
 			           		 </table>
@@ -506,71 +516,6 @@
 		    	  <jstl:if	test="${jobCardSelected.id != null && jobCardSelected.id>0}">
 	  	  		   <div class="row rowspace control-group col-sm-12 col-md-12">
 			   		 		<table id="customFields" class="form-table block hide">
-				                <tr>
-					               <td class="joboperationbox">
-					               		  <div>
-					                 	 	 <select class="form-control" name="jobop" id="jobop">
-								 			 		<option value="">Select</option>
-							  						<jstl:forEach items="${operations}" var="eachOp">
-							  				  			<option value="${eachOp.key}">${eachOp.value}</option>
-							  						</jstl:forEach>
-												</select>
-											</div>
-									</td><td class="joboperationbox">			
-												<div>
-												<input type="text" class="form-control" id="notes"
-												name="notes" value="" placeholder="Notes" />
-												</div>
-									</td><td class="joboperationbox">			
-												<div>
-												<input type="text" class="form-control" id="assignee"
-												name="assignee" value="" placeholder="Assignee" />
-												</div>
-									</td><td class="joboperationbox">			
-												<div>
-												<input type="text" class="form-control" id="startTime"
-												name="startTime" value="" placeholder="Start Time" />
-												</div>
-									</td><td class="joboperationbox">			
-												<div >
-												<input type="text" class="form-control" id="endTime"
-												name="endTime" value="" placeholder="End Time" />
-												</div>
-									</td><td class="joboperationbox">			
-												<div >
-												<input type="text" class="form-control" id="duration"
-												name="duration" value="" placeholder="Duration(Mins)" />
-												</div>
-									</td><td class="joboperationbox">			
-												<div >
-												<select class="form-control" name="machine" id="machine">
-								 			 		<option value="">Machine</option>
-							  						<jstl:forEach items="${machines}" var="eachMachine">
-							  				  			<option value="${eachMachine.key}">${eachMachine.value}</option>
-							  						</jstl:forEach>
-												</select>
-												 </div>
-									</td><td class="joboperationbox">			
-												<div >
-												<input type="text" class="form-control" id="cost" name="cost"
-												value="" placeholder="Cost" />
-												</div>
-									</td><td class="joboperationbox">			
-												<div >
-												<select class="form-control" name="taskStatus"
-														id="taskStatus">
-					 			 					<option value="">State</option>
-							  						<jstl:forEach items="${states}" var="eachState">
-							  				  			<option value="${eachState.key}">${eachState.value}</option>
-							  						</jstl:forEach>
-												</select>
-												 </div>
-									</td><td class="joboperationbox">			
-												<div >
-												<input type="button" class="form-control deleteButton" value="Delete" />
-												</div>
-									</td>
-				                </tr>
 			           		 </table>
 				   </div>
 				</jstl:if>				
@@ -582,7 +527,7 @@
 					<div class="row rowspace">
 	  	  		   		<div class="col-sm-2 col-md-2">
 			      			    <p id="insertRowParent">
-	    							<input class="form-control insertRow block show btn btn-primary" type="button" value="Insert row">
+	    							<input class="form-control insertRow block show btn btn-primary" type="button" value="Add Operation">
 								</p>
 			    		</div>
   	  		   		</div>
@@ -591,7 +536,7 @@
 					<div class="row rowspace">
 	  	  		   		<div class="col-sm-2 col-md-2">
 			      			    <p id="insertRowParent">
-	    							<input class="form-control insertRow block hide btn btn-primary" type="button" value="Insert row">
+	    							<input class="form-control insertRow block hide btn btn-primary" type="button" value="Add Operation">
 								</p>
 			    		</div>
   	  		   		</div>
@@ -605,15 +550,15 @@
 						      <button id="createJobcardSubmit" type="submit" class="btn btn-primary">Create</button>
 						</jstl:if>
 						<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id > 0}">
-							  <button id="editButton" type="button" onclick="switchForm();return false;" class="btn btn-primary block show">Edit</button>
+							  <button id="editButton" type="button" onclick="switchForm();return false;" class="btn btn-primary block show alwaysEditable">Edit</button>
 							  <input type="hidden" name="create" value="false">
-						      <button id="createJobcardSubmit" type="submit" class="btn btn-primary block hide">Update</button>
+						      <button id="createJobcardSubmit" type="submit" class="btn btn-primary block hide alwaysEditable">Update</button>
 						</jstl:if>
 		   		 	</div>
 		   		 	<div class="col-sm-1 col-md-1">
 		   		 		<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id > 0}">
-						      <button id="printButton" type="button" onclick="alert('print pdf');" class="btn btn-primary block show">Print</button>
-						      <button id="cancelButton" onclick="switchForm();return false;" class="btn btn-primary block hide">Cancel</button>
+						      <button id="printButton" type="button" onclick="alert('print pdf');" class="btn btn-primary block show alwaysEditable">Print</button>
+						      <button id="cancelButton" onclick="switchForm();return false;" class="btn btn-primary block hide alwaysEditable">Cancel</button>
 						</jstl:if>
 		   		 	</div>
 				</div>
