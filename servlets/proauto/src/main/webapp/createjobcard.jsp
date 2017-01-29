@@ -64,7 +64,24 @@
 				$('#jobcardRegForm').validate(
 						{
 							rules : {
-
+								jname : {
+									required : true
+								},
+								jdesc : {
+									required : true
+								},
+								customer : {
+									required : true
+								},
+								po : {
+									required : true
+								},
+								status : {
+									required : true
+								},
+								createdBy : {
+									required : true
+								}
 							},
 							highlight : function(element) {
 								$(element).closest('.control-group')
@@ -560,7 +577,7 @@
 		    	
 		    	
 		    	
-				
+				<br>
 		    	<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
 					<div class="row rowspace">
 	  	  		   		<div class="col-sm-2 col-md-2">
