@@ -104,7 +104,7 @@
 					<li id="jobcardli" class="dropdownmenu"><a class="dropbtn">Job Card</a>
 						<div class="dropdown-content">
 							<a href="${pageContext.request.contextPath}/searchjobcard">Search Jobcard</a>
-							<a href="${pageContext.request.contextPath}/createjobcard">Create Jobcard</a>
+							<a href="${pageContext.request.contextPath}/showjobcard">Create Jobcard</a>
 						</div>
 					</li>
 					

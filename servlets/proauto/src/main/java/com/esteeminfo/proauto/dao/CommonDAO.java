@@ -194,6 +194,10 @@ public class CommonDAO extends AbstractDao{
 			if(result != null || result.size() > 0){
 				existingPO = result.get(0);
 			}
+			
+			if(existingPO.getJobcards()!=null && existingPO.getJobcards().size()>0){
+				throw new Exception("Can not edit this PurchaseOrder as Jobcard/s are already prepared with this PO");
+			}
 			existingPO.setPoId(poNumber);
 			existingPO.setPoVersion(poVersion);
 			existingPO.setPdate(javaDatePoDate);
