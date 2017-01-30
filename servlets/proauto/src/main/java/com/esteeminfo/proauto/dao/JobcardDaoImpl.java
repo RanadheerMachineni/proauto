@@ -49,8 +49,11 @@ public class JobcardDaoImpl extends AbstractDao implements JobcardDao {
 			String[] jobop, String[] notes, String[] assignee, String[] startTime, String[] endTime, String[] duration,
 			String[] machine, String[] cost, String[] taskStatus) throws Exception {
 		int jid = (jobcardId == null || jobcardId.length() == 0 ) ? 0:Integer.valueOf(jobcardId); 
-		java.util.Date javaStartdate = ui_date_format.parse(jobStart) ;
-		java.util.Date javaEnddate = ui_date_format.parse(jobEnd) ;
+		java.util.Date javaStartdate = null;
+		if(jobStart!=null && jobStart.length()>0)javaStartdate = ui_date_format.parse(jobStart) ;
+		java.util.Date javaEnddate = null;
+		if(jobEnd!=null && jobEnd.length()>0)javaEnddate = ui_date_format.parse(jobEnd) ;
+		
 		Jobcard jobcard = null;
 		if (create.equalsIgnoreCase("false") && jid > 0 ) {
 			jobcard = findById(jid);
@@ -65,8 +68,12 @@ public class JobcardDaoImpl extends AbstractDao implements JobcardDao {
 		jobcard.setPurchaseOrder(purchaseOrder);
 		jobcard.setStatusBean(entityManager.find(Status.class, Integer.valueOf(status)));
 		jobcard.setCreatedBy(createdBy);
-		jobcard.setCreateDate(javaStartdate);
-		jobcard.setEndDate(javaEnddate);
+		if(javaStartdate!=null){
+			jobcard.setCreateDate(javaStartdate);
+		}
+		if(javaEnddate!=null){
+			jobcard.setEndDate(javaEnddate);
+		}
 		entityManager.persist(jobcard);
 		Set<JobcardTask> jobcardTasks =  new HashSet<JobcardTask>();
 		for(int i=0;i<jobop.length;i++){
