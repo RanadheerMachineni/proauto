@@ -445,7 +445,7 @@
 						      
 						       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						      <a class="btn btn-default"
-								href="${pageContext.request.contextPath}/poreg" role="button">Cancel</a>
+								href="${pageContext.request.contextPath}/searchpo" role="button">Cancel</a>
 						</jstl:if>
 	    	 		</div>
 	  			</div>
@@ -456,56 +456,6 @@
 		
 		</div>
 		</div>
-  	  		
-  	  		<!-- List of emps -->
-						<div class="col-md-10 col-sm-10 col-xs-10">
-	   		 					<br>
-	   		 					<form id="poSearchForm" role="form" action="poreg"
-				method="GET">  
-	   		 					<div class="row">
-				  	  		   		<div class="col-sm-1 col-md-1">
-						      			<label for="searchPoInput">Search Order</label>
-						    		</div>
-						   		 	<div class="col-sm-2 col-md-2">
-						      			<input type="text" class="form-control"
-							id="searchPoInput" name="searchPoInput">
-						    	 	</div>
-						    	 	<div class="col-sm-1 col-md-1">
-						      			<input type=submit value="Search">
-						    	 	</div>
-  	  		  					</div>
-  	  		  					</form>
-  	  		   					<br>
-  	  		   					<div class="informativeText">List of existing Orders</div>
-  	  		   					<br>
-				   		 		<table class="table table-bordered">
-								    <thead>
-								      <tr>
-								        <th>PO</th>
-										<th>Version</th>
-										<th>Date</th>
-			   					        <th>Sender Details</th>
-								      </tr>
-								    </thead>
-								    <tbody>
-								      <jstl:forEach var="po" items="${poList}">
-							                <tr>
-							                    <td>
-							                    	<a
-								href="${pageContext.request.contextPath}/poreg?poSelected=${po.pid}">
-								                    	<jstl:out
-										value="${po.poId}" />
-								                    </a>
-												</td>
-							                    <td><jstl:out value="${po.version}" /></td>
-							                    <td><jstl:out value="${po.date}" /></td>
-							                    <td><jstl:out value="${po.senderDetails}" /></td>
-							                    
-							                </tr>
-							            </jstl:forEach>
-								    </tbody>
-								  </table>
-						</div>
   	  		
 					</jstl:if>
 		

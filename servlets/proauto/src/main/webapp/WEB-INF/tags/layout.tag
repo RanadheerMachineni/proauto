@@ -108,8 +108,12 @@
 						</div>
 					</li>
 					
-					<li id="dmsli"><a
-						href="${pageContext.request.contextPath}/dms">DMS</a></li>
+					<li id="poli" class="dropdownmenu"><a class="dropbtn">Purchase Orders</a>
+						<div class="dropdown-content">
+							<a href="${pageContext.request.contextPath}/searchpo">Search PO</a>
+							<a href="${pageContext.request.contextPath}/showpo">Create PO</a>
+						</div>
+					</li>
 
 					<li id="costingli"><a
 						href="${pageContext.request.contextPath}/costing">Costing</a></li>
@@ -122,11 +126,11 @@
 								href="${pageContext.request.contextPath}/creg">Customer
 								Master</a>
 								
-								 <a
+								<!-- <a
 								href="${pageContext.request.contextPath}/poreg">Purchase Orders
 								</a>
 								
-								<!-- 
+								 
 								<a
 								href="${pageContext.request.contextPath}/vreg">Vendor
 								Master</a> <a

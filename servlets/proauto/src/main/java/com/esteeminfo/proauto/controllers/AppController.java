@@ -522,15 +522,25 @@ public class AppController {
 		return "mreg";
 	}
 	
-	@RequestMapping(value = { "/poreg"}, method = RequestMethod.GET)
-	public String showporegPage(Model model, @RequestParam(value="poSelected", required=false) String poSelected, HttpServletRequest request, HttpServletResponse response) {
-		
-		
+	@RequestMapping(value = { "/showpo"}, method = RequestMethod.GET)
+	public String showpo(Model model, @RequestParam(value="poSelected", required=false) String poSelected, HttpServletRequest request, HttpServletResponse response) {
 		PoDTO poDTO = new PoDTO();
 		if(poSelected!=null){
 			PurchaseOrder purchaseOrder = commonService.findPOById(poSelected);
 			poDTO = commonService.converPoToDto(purchaseOrder);
 		}
+		Map<String, String> customerMap = new HashMap<String, String>(); 
+		customerMap = customerService.retreiveCustomerMap();
+		
+		model.addAttribute("customers", customerMap);
+
+		model.addAttribute("poSelected", poDTO);
+
+		return "poreg";
+	}
+	
+	@RequestMapping(value = { "/searchpo"}, method = RequestMethod.GET)
+	public String searchpo(Model model, HttpServletRequest request, HttpServletResponse response) {
 		String poSearched = request.getParameter("searchPoInput");
 
 		List<PoDTO> poDTOs = new ArrayList<PoDTO>();
@@ -540,16 +550,10 @@ public class AppController {
 			PoDTO eachPODTO = commonService.converPoToDto(eachPO);
 			poDTOs.add(eachPODTO);
 		}
-		Map<String, String> customerMap = new HashMap<String, String>(); 
-		customerMap = customerService.retreiveCustomerMap();
-		
-		model.addAttribute("customers", customerMap);
-
-		model.addAttribute("poSelected", poDTO);
 
 		model.addAttribute("poList", poDTOs);
 		
-		return "poreg";
+		return "searchpo";
 	}
 	
 	@RequestMapping(value = { "poreg"}, method = RequestMethod.POST)
@@ -701,7 +705,7 @@ public class AppController {
 		return "createjobop";
 	}
 	
-	@RequestMapping(value = { "/createjobcard"}, method = RequestMethod.GET)
+	@RequestMapping(value = { "/showjobcard"}, method = RequestMethod.GET)
 	public String showjobcard(Model model, @RequestParam(value="jobcardSelected", required=false) String jobcardSelected, HttpServletRequest request, HttpServletResponse response) {
 
 		JobcardDTO jobcardDTO = new JobcardDTO();
