@@ -46,7 +46,7 @@
 		if(lielement=="searchjobcard" || lielement=="createjobcard"){
 			lielement ="jobcard";
 		}
-		$("#"+lielement+"li").addClass('active').siblings().removeClass('active');
+		//$("#"+lielement+"li").addClass('active').siblings().removeClass('active');
 	});
 </script>
 
