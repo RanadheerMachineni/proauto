@@ -51,7 +51,7 @@ public class JobcardServiceImpl implements JobcardService {
 		jobcardDTO.setId(jobcard.getJobcardId());
 		jobcardDTO.setName(jobcard.getJobcardName());
 		jobcardDTO.setDesc(jobcard.getJobcardDesc());
-		jobcardDTO.setCustomer(String.valueOf(jobcard.getCustomer().getCustomerId()));
+		if(jobcard.getCustomer()!=null)	jobcardDTO.setCustomer(String.valueOf(jobcard.getCustomer().getCustomerId()));
 		if(jobcard.getPurchaseOrder()!=null){
 			jobcardDTO.setPo(String.valueOf(jobcard.getPurchaseOrder().getPid()));
 		}
@@ -67,10 +67,10 @@ public class JobcardServiceImpl implements JobcardService {
 			jobcardDTO.setTasks(tasks);
 			
 		}
-		jobcardDTO.setState(String.valueOf(jobcard.getStatusBean().getStatusId()));
+		if(jobcard.getStatusBean()!=null)jobcardDTO.setState(String.valueOf(jobcard.getStatusBean().getStatusId()));
 		jobcardDTO.setCreatedBy(jobcard.getCreatedBy());
-		jobcardDTO.setJobStart(ui_date_format.format(jobcard.getCreateDate()));
-		jobcardDTO.setJobEnd(ui_date_format.format(jobcard.getEndDate()));
+		if(jobcard.getCreateDate()!=null)jobcardDTO.setJobStart(ui_date_format.format(jobcard.getCreateDate()));
+		if(jobcard.getEndDate()!=null)jobcardDTO.setJobEnd(ui_date_format.format(jobcard.getEndDate()));
 		return jobcardDTO;
 	}
 

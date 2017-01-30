@@ -8,7 +8,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -49,7 +48,7 @@ public class Jobcard implements Serializable {
 	//bi-directional many-to-one association to JobcardTask
 	@OneToMany(mappedBy="jobcard",cascade=CascadeType.ALL,orphanRemoval=true)
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private Set<JobcardTask> jobcardTasks;
+	private List<JobcardTask> jobcardTasks;
 
 	@ManyToOne
 	@JoinColumn(name="customer_id")
@@ -102,11 +101,11 @@ public class Jobcard implements Serializable {
 		this.jobcardName = jobcardName;
 	}
 
-	public Set<JobcardTask> getJobcardTasks() {
+	public List<JobcardTask> getJobcardTasks() {
 		return this.jobcardTasks;
 	}
 
-	public void setJobcardTasks(Set<JobcardTask> jobcardTasks) {
+	public void setJobcardTasks(List<JobcardTask> jobcardTasks) {
 		this.jobcardTasks = jobcardTasks;
 	}
 

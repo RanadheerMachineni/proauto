@@ -75,7 +75,7 @@ public class JobcardDaoImpl extends AbstractDao implements JobcardDao {
 			jobcard.setEndDate(javaEnddate);
 		}
 		entityManager.persist(jobcard);
-		Set<JobcardTask> jobcardTasks =  new HashSet<JobcardTask>();
+		List<JobcardTask> jobcardTasks =  new ArrayList<JobcardTask>();
 		for(int i=0;i<jobop.length;i++){
 			if(jobop[i]!=null && jobop[i].length()>0){
 				JobcardTask jobcardTask = new JobcardTask();
