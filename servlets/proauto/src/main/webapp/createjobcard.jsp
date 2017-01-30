@@ -11,7 +11,6 @@
 	//} );
 
 	function customLoad() {
-	
 	}
 	
 	function switchForm(){
@@ -50,12 +49,15 @@
 	    $(this).closest('tr').remove();
 		
 	});
+
 	
 	$(document).ready(
 			function() {
 				
-				
-				
+			    $('#jobStart').datepicker();
+				$('#jobEnd').datepicker();
+				$('#jobStartExisting').datepicker();
+				$('#jobEndExisting').datepicker();
 				$('select[name=customer]').change(function(){
 				    var customer = $(this).val();
 				    $.get("${pageContext.request.contextPath}/getPos",
@@ -71,10 +73,6 @@
 				    );
 				})
 
-			
-				
-				$("#jobStart").datepicker();
-				$("#jobEnd").datepicker();
 				$('#jobcardRegForm').validate(
 						{
 							rules : {
@@ -321,7 +319,7 @@
 			    		<div class="col-sm-2 col-md-2 controls">
    		 					<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
    		 						<p id="jobStart" class="block show alwaysEditable">${jobCardSelected.jobStart}</p>
-   		 						<input type="text" class="form-control block hide alwaysEditable" id="jobStart" readonly name="jobStart" value="${jobCardSelected.jobStart}">
+   		 						<input type="text" class="form-control block hide alwaysEditable" id="jobStartExisting" readonly name="jobStartExisting" value="${jobCardSelected.jobStart}">
 							</jstl:if>
 							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
 								<input type="text" class="form-control block show alwaysEditable" id="jobStart" readonly name="jobStart" value="${jobCardSelected.jobStart}">
@@ -336,7 +334,7 @@
 			    		<div class="col-sm-2 col-md-2 controls">
    		 					<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
    		 						<p id="jobEnd" class="block show alwaysEditable">${jobCardSelected.jobEnd}</p>
-   		 						<input type="text" class="form-control block hide alwaysEditable" id="jobEnd" readonly name="jobEnd" value="${jobCardSelected.jobEnd}">
+   		 						<input type="text" class="form-control block hide alwaysEditable" id="jobEndExisting" readonly name="jobEndExisting" value="${jobCardSelected.jobEnd}">
 							</jstl:if>
 							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
 								<input type="text" class="form-control block show alwaysEditable" id="jobEnd" readonly name="jobEnd" value="${jobCardSelected.jobEnd}">

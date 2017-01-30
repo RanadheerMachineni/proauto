@@ -753,7 +753,13 @@ public class AppController {
 		String createdBy = request.getParameter("createdBy");
 		String jobStart = request.getParameter("jobStart");
 		String jobEnd = request.getParameter("jobEnd");
-
+		String jobStartExisting = request.getParameter("jobStartExisting");
+		String jobEndExisting = request.getParameter("jobEndExisting");
+		int id = (jid == null || jid.length() == 0 ) ? 0:Integer.valueOf(jid); 
+		if (create.equalsIgnoreCase("false") && id > 0 ) {
+			jobStart = jobStartExisting;
+			jobEnd = jobEndExisting;
+		}
 		String[] jobop = request.getParameterValues("jobop");
 		String[] notes = request.getParameterValues("notes");
 		String[] assignee = request.getParameterValues("assignee");
