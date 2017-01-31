@@ -68,6 +68,21 @@
 					<div class="pageHeadings"> Job Operations</div>
 					<br>
 					<div class="formDiv">
+					<div class="row">
+	   					<div class="col-sm-10 col-md-10">
+						   	<jstl:if test="${not empty result && result=='sucess'}">
+								<div id="sucessDiv" class="successresponse">
+								Successfully created/updated job operation. Please click to view/update
+								<a
+								href="${pageContext.request.contextPath}/createjobop?operationSelected=${jobopCreated}">
+								                    	<jstl:out
+										value="${jobopCreatedName}" />
+								                    </a>
+								</div>
+							</jstl:if>
+						</div>
+					</div>
+					
 					<jstl:if
 							test="${operationSelected.id == null || operationSelected.id<=0}">
 						      			<label>Create Operation</label>

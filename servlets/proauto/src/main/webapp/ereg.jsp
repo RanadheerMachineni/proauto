@@ -195,6 +195,20 @@
 					<div class="pageHeadings"> Employee Registration</div>
 					<br>
 					<div class="formDiv">
+					<div class="row">
+	   					<div class="col-sm-10 col-md-10">
+						   	<jstl:if test="${not empty result && result=='sucess'}">
+								<div id="sucessDiv" class="successresponse">
+								Successfully created/updated employee. Please click to view/update
+								<a
+								href="${pageContext.request.contextPath}/ereg?employeeSelected=${empCreated}">
+								                    	<jstl:out
+										value="${empCreatedName}" />
+								                    </a>
+								</div>
+							</jstl:if>
+						</div>
+					</div>
 					<jstl:if
 							test="${employeeSelected.employeeId == null || employeeSelected.employeeId<=0}">
 						      			<label>Create Employee</label>
@@ -206,13 +220,11 @@
 					
 				   	<div class="row">
 	   					<div class="col-sm-10 col-md-10">
-					   	<jstl:if test="${not empty error}">
-							<div id="errorDiv" class="error">${error}</div>
-						</jstl:if>
-			
+						   	<jstl:if test="${not empty error}">
+								<div id="errorDiv" class="error">${error}</div>
+							</jstl:if>
+						</div>
 					</div>
-					</div>
-		
 		<form id="employeeRegForm" role="form"
 							action="ereg?${_csrf.parameterName}=${_csrf.token}" method="post"
 							enctype="multipart/form-data">  

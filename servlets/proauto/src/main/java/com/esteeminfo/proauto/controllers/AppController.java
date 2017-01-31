@@ -297,9 +297,9 @@ public class AppController {
 		for(String s: uploadedFiles){
 			uploadedFilesTrimmed.add(s.trim());
 		}
-		
+		Customer customerCreated = null;
 		try {
-			Customer customerCreated = customerService.registerCustomer(create,cid, cName,cAddress,contactsMap,files,uploadedFilesTrimmed);
+			customerCreated = customerService.registerCustomer(create,cid, cName,cAddress,contactsMap,files,uploadedFilesTrimmed);
 
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
@@ -318,6 +318,12 @@ public class AppController {
 			CustomerDTO eachEmployeeDTO = customerService.converCustomerToDto(eachEmployee);
 			employeeDTOList.add(eachEmployeeDTO);
 		}
+		if(customerCreated!=null && customerCreated.getCustomerId()>0){
+			model.addAttribute("result", "sucess");
+			model.addAttribute("cusCreated", customerCreated.getCustomerId());
+			model.addAttribute("cusCreatedName", customerCreated.getCustomerName());
+		}
+		
 		model.addAttribute("customerList", employeeDTOList);
 		return "creg";
 	}
@@ -366,8 +372,9 @@ public class AppController {
 		for(String s: uploadedFiles){
 			uploadedFilesTrimmed.add(s.trim());
 		}
+		Employee employeeCreated = null;
 		try {
-			Employee employeeCreated = employeeService.registerEmployee(create, eid, efirstName, eLastName, gender, eQualification, eExperience, married, eDesignation, eDob,eDoj, eRole, eUserId, password,
+			employeeCreated = employeeService.registerEmployee(create, eid, efirstName, eLastName, gender, eQualification, eExperience, married, eDesignation, eDob,eDoj, eRole, eUserId, password,
 					ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes, eEmploymentType, eSection,files, uploadedFilesTrimmed);
 			Map<String, String> roleMap = new HashMap<String, String>(); 
 			roleMap.put("ROLE_norole", "- Not user");
@@ -434,6 +441,11 @@ public class AppController {
 			employeeDTOList.add(eachEmployeeDTO);
 		}
 		model.addAttribute("employeeList", employeeDTOList);
+		if(employeeCreated!=null && employeeCreated.getEmployeeId()>0){
+			model.addAttribute("result", "sucess");
+			model.addAttribute("empCreated", employeeCreated.getEmployeeId());
+			model.addAttribute("empCreatedName", employeeCreated.getFirstName());
+		}
 		return "ereg";
 	}
 
@@ -495,9 +507,9 @@ public class AppController {
 		String mCode = request.getParameter("mCode");
 		String mAxle = request.getParameter("mAxle");
 		String mCost = request.getParameter("mCost");
-		
+		Machine machineCreated = null;
 		try {
-			Machine machineCreated = commonService.registerMachine(create,mid, mName,mCode,mAxle,mCost);
+			machineCreated = commonService.registerMachine(create,mid, mName,mCode,mAxle,mCost);
 
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
@@ -517,6 +529,11 @@ public class AppController {
 		for(Machine eachMachine : machines){
 			MachineDTO eachMachineDTO = commonService.converMachineToDto(eachMachine);
 			machineDTOList.add(eachMachineDTO);
+		}
+		if(machineCreated!=null && machineCreated.getMachineId()>0){
+			model.addAttribute("result", "sucess");
+			model.addAttribute("macCreated", machineCreated.getMachineId());
+			model.addAttribute("macCreatedName", machineCreated.getMachineDesc());
 		}
 		model.addAttribute("machineList", machineDTOList);
 		return "mreg";
@@ -702,9 +719,9 @@ public class AppController {
 		String oName = request.getParameter("oName");
 		String oDescription = request.getParameter("oDescription");
 		
-		
+		JobOperation jobOp=null;
 		try {
-			JobOperation jobOp  = commonService.registerJobOperation(create,oid, oName,oDescription);
+			jobOp  = commonService.registerJobOperation(create,oid, oName,oDescription);
 
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
@@ -724,6 +741,12 @@ public class AppController {
 			jobOpList.add(eachJobOpDTO);
 		}
 		model.addAttribute("operationList", jobOpList);
+		
+		if(jobOp!=null && jobOp.getJoId()>0){
+			model.addAttribute("result", "sucess");
+			model.addAttribute("jobopCreated", jobOp.getJoId());
+			model.addAttribute("jobopCreatedName", jobOp.getJobDesc());
+		}
 		return "createjobop";
 	}
 	

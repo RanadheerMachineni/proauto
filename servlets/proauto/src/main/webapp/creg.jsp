@@ -110,7 +110,20 @@
 		<div class="pageHeadings"> Customer Registration</div>
 		<br>
 							<div class="formDiv">
-		
+					<div class="row">
+	   					<div class="col-sm-10 col-md-10">
+						   	<jstl:if test="${not empty result && result=='sucess'}">
+								<div id="sucessDiv" class="successresponse">
+								Successfully created/updated customer. Please click to view/update
+								<a
+								href="${pageContext.request.contextPath}/creg?customerSelected=${cusCreated}">
+								                    	<jstl:out
+										value="${cusCreatedName}" />
+								                    </a>
+								</div>
+							</jstl:if>
+						</div>
+					</div>
 					<jstl:if test="${customerSelected.customerName == null}">
 						      			<label>Create Customer</label>
 					</jstl:if>

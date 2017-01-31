@@ -120,6 +120,20 @@
 					<div class="pageHeadings"> Machine Registration</div>
 					<br>
 					<div class="formDiv">
+					<div class="row">
+	   					<div class="col-sm-10 col-md-10">
+						   	<jstl:if test="${not empty result && result=='sucess'}">
+								<div id="sucessDiv" class="successresponse">
+								Successfully created/updated machine. Please click to view/update
+								<a
+								href="${pageContext.request.contextPath}/mreg?machineSelected=${macCreated}">
+								                    	<jstl:out
+										value="${macCreatedName}" />
+								                    </a>
+								</div>
+							</jstl:if>
+						</div>
+					</div>
 					<jstl:if
 							test="${machineSelected.machineId == null || machineSelected.machineId<=0}">
 						      			<label>Create Machine</label>
