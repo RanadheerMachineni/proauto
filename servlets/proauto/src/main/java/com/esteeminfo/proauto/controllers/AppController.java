@@ -608,28 +608,50 @@ public class AppController {
 				matMap.put(matNo[i], li);
 			}
 		}		
-		
+		PurchaseOrder poCreated =null;
+		PoDTO poDTO = null;
 		try {
-			PurchaseOrder poCreated = commonService.registerPO(create,pid,customer, poNumber, poVersion,poDate,vnoSender,poSender,poSenderDetails,senderEmail,senderPhone,senderFax,notes,
+			poCreated = commonService.registerPO(create,pid,customer, poNumber, poVersion,poDate,vnoSender,poSender,poSenderDetails,senderEmail,senderPhone,senderFax,notes,
 					totalValue,matMap,files,uploadedFilesTrimmed);
+			
 
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
-			PoDTO poDTO = new PoDTO();
-			if(poNumber!=null && poNumber.length()>0){
-				poDTO.setPoId(poNumber);
-			}
-			poDTO.setVersion(poVersion);
-			poDTO.setDate(poDate);
-			poDTO.setVendor(vnoSender);
-			poDTO.setSender(poSender);
-			poDTO.setSenderDetails(poSenderDetails);
-			poDTO.setSenderEmail(senderEmail);
-			poDTO.setSenderPhone(senderPhone);
-			poDTO.setSenderFax(senderFax);
-			poDTO.setNotes(notes);
-			poDTO.setTotalValue(totalValue);
+			int purchaseid = (pid == null || pid.length() == 0 ) ? 0:Integer.valueOf(pid); 
+			if (create.equalsIgnoreCase("false") && purchaseid > 0) {
+				poDTO = commonService.converPoToDto(commonService.findPOById(pid));
+			}else{
+				poDTO = new PoDTO();
+				if(poNumber!=null && poNumber.length()>0){
+					poDTO.setPoId(poNumber);
+				}
+				poDTO.setCustomer(customerId);
+				poDTO.setVersion(poVersion);
+				poDTO.setDate(poDate);
+				poDTO.setVendor(vnoSender);
+				poDTO.setSender(poSender);
+				poDTO.setSenderDetails(poSenderDetails);
+				poDTO.setSenderEmail(senderEmail);
+				poDTO.setSenderPhone(senderPhone);
+				poDTO.setSenderFax(senderFax);
+				poDTO.setNotes(notes);
+				poDTO.setTotalValue(totalValue);	
+				List<String> poTools =  new ArrayList<String>();
 
+				for(int i=0;i<matNo.length;i++){
+					if(matNo[i]!=null && matNo[i].length()>0){
+						poTools.add(matNo[i]+"|"+matDesc[i]+"|"+quantity[i]+"|"+unitPrice[i]+"|"+discount[i]+"|"+value[i]);
+					}
+				}	
+				poDTO.setMaterial(poTools);
+			}
+			
+			model.addAttribute("poSelected", poDTO);
+		}
+		
+		
+		if(poCreated!=null){
+			poDTO = commonService.converPoToDto(commonService.findPOById(String.valueOf(poCreated.getPid())));
 			model.addAttribute("poSelected", poDTO);
 		}
 		List<PoDTO> poDTOList = new ArrayList<PoDTO>();
