@@ -12,11 +12,14 @@ import com.esteeminfo.proauto.entity.FilesUpload;
 public interface EmployeeService {
 
 	Employee findById(int id);
-	
+
+	EmployeeDTO findDTOById(int id);
+
 	Employee findByUser(String user);
 
-
 	List<Employee> retrieveAllEmployees(String employeeSearched);
+	
+	List<EmployeeDTO> retrieveAllEmployeesDTO(String employeeSearched);
 
 	Employee registerEmployee(String create, String eid, String efirstName, String eLastName, String gender,
 			String eQualification, String eExperience, String married, String eDesignation, String eDob, String eDoj,

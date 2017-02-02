@@ -134,5 +134,36 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		return null;
 	}
+
+	public EmployeeDTO findDTOById(int id) {
+		Employee employee = findById(id);
+		if(employee!=null) return converEmployeeToDto(employee);
+		return null;
+	}
+
+	public List<EmployeeDTO> retrieveAllEmployeesDTO(String employeeSearched) {
+		List<EmployeeDTO> employeeDTOList = new ArrayList<EmployeeDTO>();
+		List<Employee> employeeList = retrieveAllEmployees(employeeSearched);
+		for(Employee eachEmployee : employeeList){
+			EmployeeDTO eachEmployeeDTO = convertEmployeeToMiniDto(eachEmployee);
+			employeeDTOList.add(eachEmployeeDTO);
+		}
+		return employeeDTOList;
+	}
+
+	private EmployeeDTO convertEmployeeToMiniDto(Employee employee) {
+		EmployeeDTO employeeDTO = new EmployeeDTO();
+		//if(employee.getEmployeeId()>0){
+			employeeDTO.setEmployeeId(employee.getEmployeeId());
+			employeeDTO.setFirstName(employee.getFirstName());
+			employeeDTO.setLastName(employee.getLastName());
+			employeeDTO.setDesignation(employee.getDesignation());
+			employeeDTO.setGender(employee.getGender());
+			employeeDTO.setEmergencyContact(employee.getEmergencyContact());
+			employeeDTO.setUserId(employee.getUserId());
+			employeeDTO.setPhone(employee.getPhone());
+		//}
+		return employeeDTO;
+	}
 	
 }

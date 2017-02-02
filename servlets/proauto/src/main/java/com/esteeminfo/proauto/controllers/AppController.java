@@ -135,8 +135,7 @@ public class AppController {
 		
 		EmployeeDTO employeeDTO = new EmployeeDTO();
 		if(employeeSelected!=null){
-			Employee employee = employeeService.findById(Integer.valueOf(employeeSelected));
-			employeeDTO = employeeService.converEmployeeToDto(employee);
+			employeeDTO = employeeService.findDTOById(Integer.valueOf(employeeSelected));
 			if(employeeDTO.getRoles()!=null){
 				model.addAttribute("employeeSelectedRole", employeeDTO.getRoles().get(0));
 			}
@@ -146,13 +145,7 @@ public class AppController {
 		
 		String employeeSearched = request.getParameter("searchEmployeeInput");
 
-		List<EmployeeDTO> employeeDTOList = new ArrayList<EmployeeDTO>();
-		List<Employee> employeeList = employeeService.retrieveAllEmployees(employeeSearched);
-
-		for(Employee eachEmployee : employeeList){
-			EmployeeDTO eachEmployeeDTO = employeeService.converEmployeeToDto(eachEmployee);
-			employeeDTOList.add(eachEmployeeDTO);
-		}
+		List<EmployeeDTO> employeeDTOList = employeeService.retrieveAllEmployeesDTO(employeeSearched);
 		model.addAttribute("employeeSelected", employeeDTO);
 
 		model.addAttribute("employeeList", employeeDTOList);
@@ -434,13 +427,8 @@ public class AppController {
 			sectionMap.put("Section2", "Section2");
 			model.addAttribute("sections", sectionMap);
 		}
-		List<EmployeeDTO> employeeDTOList = new ArrayList<EmployeeDTO>();
-		List<Employee> employeeList = employeeService.retrieveAllEmployees(null);
-
-		for(Employee eachEmployee : employeeList){
-			EmployeeDTO eachEmployeeDTO = employeeService.converEmployeeToDto(eachEmployee);
-			employeeDTOList.add(eachEmployeeDTO);
-		}
+		List<EmployeeDTO> employeeDTOList = employeeService.retrieveAllEmployeesDTO(null);
+	
 		model.addAttribute("employeeList", employeeDTOList);
 		if(employeeCreated!=null && employeeCreated.getEmployeeId()>0){
 			model.addAttribute("result", "sucess");

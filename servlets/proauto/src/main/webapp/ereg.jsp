@@ -23,7 +23,7 @@
 	$.validator.addMethod('filesize', function (value, element, param) {
 		if(!element.files[0]) return true;
 	    return (element.files[0].size <= param)
-	}, 'File size must be less than 1MB');
+	}, 'File size must be less than 4MB');
 	
 	$(document)
 			.ready(
@@ -71,7 +71,7 @@
 											required : true
 										},
 										eFiles : {
-											filesize: 1048576
+											filesize: 4194304
 										}
 									},
 									highlight : function(element) {

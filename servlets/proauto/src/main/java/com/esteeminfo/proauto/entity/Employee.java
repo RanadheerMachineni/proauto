@@ -108,7 +108,7 @@ public class Employee implements Serializable {
 	private Section section;
 
 	//bi-directional many-to-many association to Role
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
 		name="employee_role"
 		, joinColumns={
@@ -118,11 +118,10 @@ public class Employee implements Serializable {
 			@JoinColumn(name="role_id")
 			}
 		)
-	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<Role> roles;
 	
 	//uni-directional many-to-many association to FilesUpload
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
 		name="employee_files"
 		, joinColumns={
@@ -132,7 +131,6 @@ public class Employee implements Serializable {
 			@JoinColumn(name="upload_id")
 			}
 		)
-	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<FilesUpload> filesUploads;
 
 	public Employee() {

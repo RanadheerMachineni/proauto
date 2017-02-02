@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="files_upload")
 @NamedQuery(name="FilesUpload.findAll", query="SELECT f FROM FilesUpload f")
-public class FilesUpload implements Serializable {
+public class FilesUpload implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -20,6 +20,7 @@ public class FilesUpload implements Serializable {
 	private int uploadId;
 
 	@Lob
+    @Basic(fetch=FetchType.LAZY)
 	@Column(name="file_data")
 	private byte[] fileData;
 
