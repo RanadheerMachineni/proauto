@@ -1,3 +1,4 @@
+max_allowed_packet=10M
 Drop user proauto CASCADE;
 CREATE USER 'proauto'@'localhost' IDENTIFIED BY 'proauto';
 GRANT ALL PRIVILEGES ON * . * TO 'proauto'@'localhost';

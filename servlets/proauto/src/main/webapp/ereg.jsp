@@ -9,21 +9,25 @@
 	//$( function() {
 	//} );
 
+	/*$(document).on("change", "#eFiles", function(event) {
+		$.each(this.files, function( index, eachFile ) {
+			if(eachFile.size>1048576){
+				  //alert("File '"+eachFile.name+"' is not allowed as it size crosses 1MB.");
+				  this.files[0].val('');
+			}
+		});
+	});*/
+	//return true means no error
+	//return this.optional(element) || (element.files[0].size <= param)
+
+	$.validator.addMethod('filesize', function (value, element, param) {
+		if(!element.files[0]) return true;
+	    return (element.files[0].size <= param)
+	}, 'File size must be less than 1MB');
+	
 	$(document)
 			.ready(
 					function() {
-						
-						/*var $input = $("#eFiles");
-						$input.fileinput({
-						    uploadUrl: "http://localhost:8080/proauto/fileupload?${_csrf.parameterName}=${_csrf.token}", // server upload action
-						    uploadAsync: false,
-						    showUpload: false, // hide upload button
-						    showRemove: false // hide remove button
-						   
-						}).on("filebatchselected", function(event, files) {
-						    $input.fileinput("upload");
-						});*/
-						
 
 						$("#eDob").datepicker();
 						$("#eDoj").datepicker();
@@ -65,6 +69,9 @@
 										},
 										eDoj : {
 											required : true
+										},
+										eFiles : {
+											filesize: 1048576
 										}
 									},
 									highlight : function(element) {
@@ -87,7 +94,7 @@
 
 	function addMoreFiles() {  
 		   $("#fileuploads").append(document.createElement("br"));  
-		   $("#fileuploads").append('<input type="file" name="eFiles" id="eFiles" multiple>');  
+		   $("#fileuploads").append('<input type="file" name="eFiles" id="eFiles">');  
 	}  
 	
 	function unSelectFiles() {
@@ -499,7 +506,7 @@
 		      			<label for="eFiles">Upload File/s:</label>
 		    		</div>
 		   		 	<div id="fileuploads" class="col-sm-4 col-md-4">
-		           		 <input type="file" name="eFiles" id="eFiles" multiple>
+		           		 <input type="file" name="eFiles" id="eFiles">
 		    	 	</div>
 		    	 	
 			   </div>

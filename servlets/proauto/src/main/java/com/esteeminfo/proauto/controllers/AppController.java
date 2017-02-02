@@ -391,7 +391,8 @@ public class AppController {
 			model.addAttribute("sections", sectionMap);
 
 		} catch (Exception e) {
-			model.addAttribute("error", e.getMessage());
+			model.addAttribute("error", "Following error occured while saving the employee. Please check. "+e.getMessage());
+			e.printStackTrace();
 			EmployeeDTO employeeDTO = new EmployeeDTO();
 			if(eid!=null && eid.length()>0){
 				employeeDTO.setEmployeeId(Integer.valueOf(eid));
