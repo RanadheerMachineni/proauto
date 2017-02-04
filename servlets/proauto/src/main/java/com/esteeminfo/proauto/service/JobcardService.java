@@ -17,4 +17,8 @@ public interface JobcardService {
 	
 	JobcardDTO converJobcardToDto(Jobcard jobcard);
 
+	List<JobcardDTO> retrieveAllJobcardDTOs(String jobcardSearched);
+
+	JobcardDTO findDTOById(Integer valueOf);
+
 }

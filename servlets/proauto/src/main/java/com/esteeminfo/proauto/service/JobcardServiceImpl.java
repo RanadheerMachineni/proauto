@@ -82,6 +82,36 @@ public class JobcardServiceImpl implements JobcardService {
 				 jobop,  notes,  assignee,  startTime,  endTime, duration,
 				 machine,  cost, taskStatus);
 	}
+
+	public List<JobcardDTO> retrieveAllJobcardDTOs(String jobcardSearched) {
+		List<JobcardDTO> jobcardDTOs = new ArrayList<JobcardDTO>();
+		List<Jobcard> jobcards = retrieveAllJobcards(jobcardSearched);
+		for(Jobcard jobcard : jobcards){
+			JobcardDTO eachDTO = convertJcToMiniDto(jobcard);
+			jobcardDTOs.add(eachDTO);
+		}
+		return jobcardDTOs;
+	}
+
+	private JobcardDTO convertJcToMiniDto(Jobcard jobcard) {
+
+		JobcardDTO jobcardDTO =  new JobcardDTO();
+		jobcardDTO.setId(jobcard.getJobcardId());
+		jobcardDTO.setName(jobcard.getJobcardName());
+		jobcardDTO.setDesc(jobcard.getJobcardDesc());
+		if(jobcard.getCustomer()!=null)	jobcardDTO.setCustomer(String.valueOf(jobcard.getCustomer().getCustomerId()));
+		if(jobcard.getPurchaseOrder()!=null){
+			jobcardDTO.setPo(String.valueOf(jobcard.getPurchaseOrder().getPid()));
+		}
+		return jobcardDTO;
+	
+	}
+
+	public JobcardDTO findDTOById(Integer valueOf) {
+		Jobcard jobcard = findById(valueOf);
+		if(jobcard!=null) return converJobcardToDto(jobcard);
+		return null;
+	}
 	
 	
 }

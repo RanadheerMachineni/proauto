@@ -678,8 +678,7 @@ public class AppController {
 
 		JobcardDTO jobcardDTO = new JobcardDTO();
 		if(jobcardSelected!=null){
-			Jobcard jobcard = jobcardService.findById(Integer.valueOf(jobcardSelected));
-			jobcardDTO = jobcardService.converJobcardToDto(jobcard);
+			jobcardDTO = jobcardService.findDTOById(Integer.valueOf(jobcardSelected));
 		}
 		
 		Map<String, String> operations = new HashMap<String, String>(); 
@@ -802,11 +801,7 @@ public class AppController {
 	@RequestMapping(value = { "/searchjobcard"}, method = RequestMethod.GET)
 	public String searchjobcard(Model model, HttpServletRequest request, HttpServletResponse response) {
 		String jobcardSearched = request.getParameter("searchJobcardInput");
-		List<JobcardDTO> jobcardDTOs = new ArrayList<JobcardDTO>();
-		List<Jobcard> jobcards = jobcardService.retrieveAllJobcards(jobcardSearched);
-		for(Jobcard jobcard : jobcards){
-			jobcardDTOs.add(jobcardService.converJobcardToDto(jobcard));
-		}
+		List<JobcardDTO> jobcardDTOs = jobcardService.retrieveAllJobcardDTOs(jobcardSearched);
 		model.addAttribute("jobcardList", jobcardDTOs);
 		return "searchjobcard";
 	}
