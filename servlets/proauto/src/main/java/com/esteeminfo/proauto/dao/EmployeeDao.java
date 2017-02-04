@@ -31,6 +31,8 @@ public interface EmployeeDao {
 	List<String> findFileNames(int id);
 
 	byte[] findFileData(Integer eid, String fileName);
+	
+	Employee findByEmpId(String empId);
 
 }
 

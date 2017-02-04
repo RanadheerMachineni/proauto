@@ -77,6 +77,7 @@ CREATE TABLE employee
 	employement_type CHAR(1) NOT NULL DEFAULT 'p',
 	CONSTRAINT pk_employee primary key (employee_id),
 	CONSTRAINT uk_user_id UNIQUE (user_id),
+	CONSTRAINT first_name UNIQUE (first_name),
 	CONSTRAINT fk_dept_id FOREIGN KEY (department_id) REFERENCES department(department_id),
 	CONSTRAINT fk_sec_id FOREIGN KEY (section_id) REFERENCES section(section_id)
 );

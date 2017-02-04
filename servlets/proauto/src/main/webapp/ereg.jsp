@@ -253,7 +253,7 @@
   	  		   <div class="row rowspace">
   	  		        <div class="control-group">
 	  	  		   		<div class="col-sm-2 col-md-2">
-			      			<label class="control-label" for="efirstName">First Name:</label>
+			      			<label class="control-label" for="efirstName">Emp Id:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<input type="text" class="form-control" id="efirstName"
@@ -263,7 +263,7 @@
 		    	 	
 		    	 	<div class="control-group">
 			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="eLastName" class="control-label">Last Name:</label>
+			      			<label for="eLastName" class="control-label">Name:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<input type="text" class="form-control" id="eLastName"

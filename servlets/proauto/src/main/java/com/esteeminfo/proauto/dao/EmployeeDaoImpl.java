@@ -63,6 +63,13 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			String eEmergencyContact, String eCAddress, String ePAddress, String eNotes, String eEmploymentType, String eSection, String removedFiles,MultipartFile[] files) throws Exception {
 		
 		int employeeId = (eid == null || eid.length() == 0 ) ? 0:Integer.valueOf(eid); 
+		if(efirstName!=null && efirstName.length()>0){
+			Employee existingEmployeeByEmpId =  findByEmpId(efirstName);
+			if (existingEmployeeByEmpId!=null && (employeeId==0 || (existingEmployeeByEmpId.getEmployeeId() != employeeId))) {
+				throw new Exception("Employee with given Emp Id already exist. Please select other Emp Id");
+			}
+		}
+		
 		if(eUserId!=null && eUserId.length()>0){
 			Employee existingEmployeeByUser =  findByUser(eUserId);
 			if (existingEmployeeByUser!=null && (employeeId==0 || (existingEmployeeByUser.getEmployeeId() != employeeId))) {
@@ -219,6 +226,17 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			entityManager.merge(employeeCreated);
 			return employeeCreated;
 		}
+	}
+
+	public Employee findByEmpId(String empId) {
+		EntityManager entityManager = getEntityManager();
+		Query q = entityManager.createQuery( "select e from Employee e where e.firstName=:empId");
+		q.setParameter("empId", empId);
+		List<Employee> result = q.getResultList();
+		if(result == null || result.size() ==0){
+			return null;
+		}
+		return result.get(0);
 	}
 
 	public void cleanUpFiles() {
