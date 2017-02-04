@@ -33,11 +33,16 @@
 		
 	});
 
+	$.validator.addMethod('filesize', function (value, element, param) {
+		if(!element.files[0]) return true;
+	    return (element.files[0].size <= param)
+	}, 'File size must be less than 1MB');
+	
 	function removeFile(fileName) {
 		//alert(fileName);
-		var existingInputValue = $('input#uploadedFiles').val();
-		var newValue = existingInputValue.replace(fileName, "");
-		$('input#uploadedFiles').val(newValue);
+		var existingInputValue = $('input#removedFiles').val();
+		var newValue = existingInputValue+","+fileName;
+		$('input#removedFiles').val(newValue);
 		$('#alreadyUploadedFiles tr').each(function() {
 			var href = $(this).find("td:first").find("a").attr('href');
 			if (href.toLowerCase().indexOf(fileName.toLowerCase()) >= 0) {
@@ -49,7 +54,7 @@
 	function addMoreFiles() {
 		$("#fileuploads").append(document.createElement("br"));
 		$("#fileuploads").append(
-				'<input type="file" name="eFiles" id="eFiles" multiple>');
+				'<input type="file" name="eFiles" id="eFiles">');
 	}
 
 	function unSelectFiles() {
@@ -90,6 +95,9 @@
 										poSenderDetails : {
 											minlength : 2,
 											required: true
+										},
+										eFiles : {
+											filesize: 1048576
 										}
 									},
 									highlight : function(element) {
@@ -164,6 +172,8 @@
 		      <input type="hidden" name="regType" value="po">
 			  <input type="hidden" name="pid" id="pid"
 								value="${poSelected.pid}">
+			  <input type="hidden" name="removedFiles" id="removedFiles"
+								value="">
 			  <input type="hidden" name="uploadedFiles" id="uploadedFiles"
 								value="${poSelected.files}">	
 			   <br>
@@ -537,7 +547,7 @@
 		      			<label for="eFiles">Upload File/s:</label>
 		    		</div>
 		   		 	<div id="fileuploads" class="col-sm-4 col-md-4">
-		           		 <input type="file" name="eFiles" id="eFiles" multiple>
+		           		 <input type="file" name="eFiles" id="eFiles">
 		    	 	</div>
 		    	 	
 			   </div>

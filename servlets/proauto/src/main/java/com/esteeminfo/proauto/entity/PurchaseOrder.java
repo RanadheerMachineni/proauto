@@ -2,10 +2,6 @@ package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -21,21 +17,18 @@ import java.util.Set;
 public class PurchaseOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int pid;
 
-	@Column(name="total_value")
-	private String totalValue;
-	
 	@ManyToOne
 	@JoinColumn(name="customer_id")
 	private Customer customer;
 
 	//bi-directional many-to-one association to PoTool
-	@OneToMany(mappedBy="purchaseOrder")
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy="purchaseOrder",fetch=FetchType.LAZY)
 	private Set<PoTool> poTools;
-
+	
 	private String notes;
 
 	@Temporal(TemporalType.DATE)
@@ -62,24 +55,19 @@ public class PurchaseOrder implements Serializable {
 	@Column(name="sender_phone")
 	private String senderPhone;
 
+	@Column(name="total_value")
+	private String totalValue;
+
 	@Column(name="vno_sender")
 	private String vnoSender;
 
-	@OneToMany(mappedBy="purchaseOrder")
+	//bi-directional many-to-one association to PoFile
+	@OneToMany(mappedBy="purchaseOrder", fetch=FetchType.LAZY, cascade=CascadeType.ALL,orphanRemoval=true)
+	private List<PoFile> poFiles;
+
+
+	@OneToMany(mappedBy="purchaseOrder",fetch=FetchType.LAZY)
 	private List<Jobcard> jobcards;
-	
-	@ManyToMany
-	@JoinTable(
-		name="po_files"
-		, joinColumns={
-			@JoinColumn(name="pid")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="upload_id")
-			}
-		)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	private Set<FilesUpload> filesUploads;
 	
 	public PurchaseOrder() {
 	}
@@ -163,15 +151,6 @@ public class PurchaseOrder implements Serializable {
 	public void setSenderPhone(String senderPhone) {
 		this.senderPhone = senderPhone;
 	}
-
-	public String getVnoSender() {
-		return this.vnoSender;
-	}
-
-	public void setVnoSender(String vnoSender) {
-		this.vnoSender = vnoSender;
-	}
-	
 	public Customer getCustomer() {
 		return this.customer;
 	}
@@ -200,23 +179,43 @@ public class PurchaseOrder implements Serializable {
 
 		return poTool;
 	}
-	
-	public Set<FilesUpload> getFilesUploads() {
-		return this.filesUploads;
-	}
-
-	public void setFilesUploads(Set<FilesUpload> filesUploads) {
-		this.filesUploads = filesUploads;
-	}
-
 	public String getTotalValue() {
-		return totalValue;
+		return this.totalValue;
 	}
 
 	public void setTotalValue(String totalValue) {
 		this.totalValue = totalValue;
 	}
-	
+
+	public String getVnoSender() {
+		return this.vnoSender;
+	}
+
+	public void setVnoSender(String vnoSender) {
+		this.vnoSender = vnoSender;
+	}
+
+	public List<PoFile> getPoFiles() {
+		return this.poFiles;
+	}
+
+	public void setPoFiles(List<PoFile> poFiles) {
+		this.poFiles = poFiles;
+	}
+
+	public PoFile addPoFile(PoFile poFile) {
+		getPoFiles().add(poFile);
+		poFile.setPurchaseOrder(this);
+
+		return poFile;
+	}
+
+	public PoFile removePoFile(PoFile poFile) {
+		getPoFiles().remove(poFile);
+		poFile.setPurchaseOrder(null);
+
+		return poFile;
+	}
 	public List<Jobcard> getJobcards() {
 		return this.jobcards;
 	}

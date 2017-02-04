@@ -1,7 +1,9 @@
 package com.esteeminfo.proauto.dao;
 
+import java.sql.Blob;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,16 +12,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.esteeminfo.proauto.entity.Department;
+import com.esteeminfo.proauto.entity.EmpFileData;
 import com.esteeminfo.proauto.entity.Employee;
-import com.esteeminfo.proauto.entity.FilesUpload;
+import com.esteeminfo.proauto.entity.EmployeeFile;
 import com.esteeminfo.proauto.entity.Role;
 import com.esteeminfo.proauto.entity.Section;
-import com.esteeminfo.proauto.service.EmployeeServiceImpl;
 
 @Repository("employeeDao")
 public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
@@ -28,9 +29,6 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 
 	public static SimpleDateFormat ui_date_format =  new SimpleDateFormat("MM/dd/yyyy");
 	
-	@Autowired(required=true)
-	private FileUploadDAO fileUploadDAO;
-
 	public Employee findByUser(String user) {
 		EntityManager entityManager = getEntityManager();
 		Query q = entityManager.createQuery( "select e from Employee e where e.userId=:userId");
@@ -44,14 +42,7 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 	
 	public Employee findById(int id) {
 		EntityManager entityManager = getEntityManager();
-		Query q = entityManager.createQuery( "select e from Employee e where e.employeeId=:eid");
-		q.setParameter("eid", id);
-		List<Employee> result = q.getResultList();
-		if(result == null || result.size() ==0){
-			return null;
-		}
-		Employee e = result.get(0);
-		System.out.println("***** EmployeeDaoImpl findById = "+e.getFirstName());
+		Employee e = entityManager.find(Employee.class, id);
 		return e;
 	}
 
@@ -69,7 +60,7 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 	public Employee registerEmployee(String create, String eid, String efirstName, String eLastName, String gender,
 			String eQualification, String eExperience, String married, String eDesignation, String eDob, String eDoj,
 			String eRole, String eUserId, String password, String ePhone, String eEmail, String ePassport,
-			String eEmergencyContact, String eCAddress, String ePAddress, String eNotes, String eEmploymentType, String eSection) throws Exception {
+			String eEmergencyContact, String eCAddress, String ePAddress, String eNotes, String eEmploymentType, String eSection, String removedFiles,MultipartFile[] files) throws Exception {
 		
 		int employeeId = (eid == null || eid.length() == 0 ) ? 0:Integer.valueOf(eid); 
 		if(eUserId!=null && eUserId.length()>0){
@@ -121,7 +112,51 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			Set<Role> roleList = new HashSet<Role>();
 			roleList.add(role);
 			existingEmployee.setRoles(roleList);
-			entityManager.merge(role);
+			//entityManager.merge(role);
+			
+			List<String> removedFilesArray = new ArrayList<String>();
+			List<EmployeeFile> listTobeRemoved = new ArrayList<EmployeeFile>();
+			removedFilesArray.addAll(Arrays.asList(removedFiles.split(",")));
+			for(String file : removedFilesArray){
+				for(EmployeeFile eF : existingEmployee.getEmployeeFiles()){
+					if(eF.getFileName().equalsIgnoreCase(file)){
+						listTobeRemoved.add(eF);
+					}
+				}
+			}
+			
+			for(EmployeeFile rf:listTobeRemoved){
+				existingEmployee.removeEmployeeFile(rf);
+			}
+			
+			if(files!=null){
+				for (int i = 0; i < files.length; i++) {
+					MultipartFile file = files[i];
+					if(file.getOriginalFilename()!=null && file.getOriginalFilename().length()>0){
+						logger.info("uploading file "+file.getOriginalFilename());
+						try {
+							byte[] bytes = file.getBytes();
+							EmployeeFile employeeFile =  new EmployeeFile();
+							employeeFile.setFileName(file.getOriginalFilename());
+							employeeFile.setEmployee(existingEmployee);
+
+							entityManager.persist(employeeFile);
+
+							EmpFileData empFileData =  new EmpFileData();
+							empFileData.setFileData(bytes);
+							empFileData.setEmployeeFile(employeeFile);
+							entityManager.persist(empFileData);
+
+							existingEmployee.addEmployeeFile(employeeFile);
+							
+						} catch (Exception e) {
+						}	
+					}
+					
+				}
+			}
+			entityManager.merge(existingEmployee);
+
 			return existingEmployee;
 		}else{
 			EntityManager entityManager = getEntityManager();
@@ -155,19 +190,35 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			roleList.add(role);
 			employeeCreated.setRoles(roleList);
 			entityManager.merge(role);
+			
+			if(files!=null){
+				for (int i = 0; i < files.length; i++) {
+					MultipartFile file = files[i];
+					if(file.getOriginalFilename()!=null && file.getOriginalFilename().length()>0){
+						logger.info("uploading file "+file.getOriginalFilename());
+						try {
+							byte[] bytes = file.getBytes();
+							EmployeeFile employeeFile =  new EmployeeFile();
+							employeeFile.setFileName(file.getOriginalFilename());
+							employeeFile.setEmployee(employeeCreated);
+							entityManager.persist(employeeFile);
+
+							EmpFileData empFileData =  new EmpFileData();
+							empFileData.setFileData(bytes);
+							empFileData.setEmployeeFile(employeeFile);
+							entityManager.persist(empFileData);
+
+							employeeCreated.addEmployeeFile(employeeFile);
+							
+						} catch (Exception e) {
+						}	
+					}
+					
+				}
+			}
+			entityManager.merge(employeeCreated);
 			return employeeCreated;
 		}
-	}
-
-	public Employee addFilesToEmployee(int id, Set<FilesUpload> filesUploads) {
-		Employee employee = findById(id);
-		if(employee!=null && employee.getEmployeeId()>0){
-				EntityManager entityManager = getEntityManager();
-				employee.setFilesUploads(filesUploads);	
-				entityManager.merge(employee);
-		}
-		cleanUpFiles();
-		return employee;
 	}
 
 	public void cleanUpFiles() {
@@ -198,6 +249,39 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 //		entityManager.getTransaction().commit();
 //		entityManager.close();
 
+	}
+
+	public Employee addFilesToEmployee(int id, Set<EmployeeFile> filesUploads) {
+		return null;
+	}
+
+	public Employee saveEmployeeFile(int employeeId, String originalFilename, byte[] bytes) {
+		Employee employee = findById(employeeId);
+		EmpFileData empFileData =  new EmpFileData();
+		empFileData.setFileData(bytes);
+		entityManager.persist(empFileData);
+
+		EmployeeFile employeeFile =  new EmployeeFile();
+		employeeFile.setFileName(originalFilename);
+		employeeFile.setEmpFileData(empFileData);
+		
+		employee.addEmployeeFile(employeeFile);
+		return employee;
+	}
+
+	public List<String> findFileNames(int id) {
+		List<String> list = null;
+		Query q1 = entityManager.createNativeQuery("select file_name from employee_files where employee_id="+id);
+		list= q1.getResultList();
+		return list;
+	}
+
+	public byte[] findFileData(Integer eid, String fileName) {
+		//select efd.file_data from employee_files ef,emp_file_data efd where ef.upload_id=efd.upload_id and ef.file_name='"+fileName+"' and ef.employee_id="+eid
+		//select e from Employee e join fetch e.roles where e.userId=:userId
+		Query query= entityManager.createNativeQuery("select efd.* from employee_files ef,emp_file_data efd where ef.upload_id=efd.upload_id and ef.file_name='"+fileName+"' and ef.employee_id="+eid,EmpFileData.class);
+		EmpFileData empFileData = (EmpFileData) query.getSingleResult();
+		return empFileData.getFileData();
 	}
 
 

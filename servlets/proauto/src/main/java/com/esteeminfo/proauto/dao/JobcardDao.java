@@ -5,7 +5,6 @@ import java.util.Set;
 
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.Employee;
-import com.esteeminfo.proauto.entity.FilesUpload;
 import com.esteeminfo.proauto.entity.Jobcard;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 

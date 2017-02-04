@@ -3,10 +3,8 @@ package com.esteeminfo.proauto.service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +14,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.esteeminfo.proauto.dao.CommonDAO;
 import com.esteeminfo.proauto.dao.FileUploadDAO;
+import com.esteeminfo.proauto.dto.EmployeeDTO;
 import com.esteeminfo.proauto.dto.JobOpDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
 import com.esteeminfo.proauto.entity.Customer;
-import com.esteeminfo.proauto.entity.FilesUpload;
+import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Machine;
+import com.esteeminfo.proauto.entity.PoFile;
 import com.esteeminfo.proauto.entity.PoTool;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.entity.Status;
@@ -68,7 +68,7 @@ public class CommonServiceImpl implements CommonService {
 		return commonDAO.findPOById(Integer.valueOf(valueOf));
 	}
 
-	public PoDTO converPoToDto(PurchaseOrder purchaseOrder) {
+	public PoDTO converPoToDto(PurchaseOrder purchaseOrder, List<String> fileNames) {
 		PoDTO poDTO = new PoDTO();
 		poDTO.setPid(purchaseOrder.getPid());
 		poDTO.setPoId(purchaseOrder.getPoId());
@@ -96,13 +96,7 @@ public class CommonServiceImpl implements CommonService {
 			poDTO.setMaterial(poTools);
 		}	
 		
-		if(purchaseOrder.getFilesUploads()!=null && purchaseOrder.getFilesUploads().size()>0){
-			List<String> files =  new ArrayList<String>();
-			for(FilesUpload filesUpload: purchaseOrder.getFilesUploads()){
-				files.add(filesUpload.getFileName());
-			}
-			poDTO.setFiles(files);
-		}	
+		poDTO.setFiles(fileNames);
 		return poDTO;
 	}
 
@@ -130,46 +124,6 @@ public class CommonServiceImpl implements CommonService {
 		return commonDAO.registerOperation(create, oid, oName, oDescription);
 
 	}
-
-	public PurchaseOrder registerPO(String create, String pid,Customer customer, String poNumber, String poVersion, String poDate,
-			String vnoSender, String poSender, String poSenderDetails, String senderEmail, String senderPhone,
-			String senderFax, String notes, String totalValue, Map<String, List<String>> matMap, MultipartFile[] files, List<String> uploadedFilesTrimmed) throws Exception {
-		PurchaseOrder purchaseOrder = commonDAO.registerPO(create, pid, customer, poNumber, poVersion, poDate,
-				vnoSender, poSender, poSenderDetails,  senderEmail,  senderPhone,
-				 senderFax,  notes,  totalValue,  matMap);
-		
-		Set<FilesUpload> filesUploads = new HashSet<FilesUpload>();
-		if(files!=null){
-			for (int i = 0; i < files.length; i++) {
-				MultipartFile file = files[i];
-				if(file.getOriginalFilename()!=null && file.getOriginalFilename().length()>0){
-					logger.info("uploading file "+file.getOriginalFilename());
-					try {
-						byte[] bytes = file.getBytes();
-						FilesUpload filesUpload =  fileUploadDAO.saveFile(file.getOriginalFilename(), bytes);
-						filesUploads.add(filesUpload);
-						
-					} catch (Exception e) {
-						e.printStackTrace();
-					}	
-				}
-				
-			}
-		}
-		Set<FilesUpload> existingFiles = purchaseOrder.getFilesUploads();
-		Set<FilesUpload> existingFilesNew = new HashSet<FilesUpload>();
-		if(existingFiles!=null){
-			for(FilesUpload existingFile : existingFiles){
-				if(uploadedFilesTrimmed.contains(existingFile.getFileName())){
-					existingFilesNew.add(existingFile);
-				}
-			}
-		}
-		filesUploads.addAll(existingFilesNew);
-		purchaseOrder = commonDAO.addFilesToPO(purchaseOrder.getPid(), filesUploads);
-		return purchaseOrder;
-	}
-
 	public Map<String, String> getJobOperations() {
 		List<JobOperation> list= commonDAO.getJobOperations();
 		Map<String, String> operations = new HashMap<String, String>();
@@ -205,4 +159,50 @@ public class CommonServiceImpl implements CommonService {
 		}
 		return poMap;
 	}
+
+	public PoDTO findPoDTOById(int id) {
+		PurchaseOrder purchaseOrder = findPOById(String.valueOf(id));
+		List<String> fileNames = commonDAO.findPOFileNames(id);
+		if(purchaseOrder!=null) return converPoToDto(purchaseOrder,fileNames);
+		return null;
+	}
+
+	public List<PoDTO> retrieveAllPoDTOs(String poSearched) {
+		List<PoDTO> poDTOList = new ArrayList<PoDTO>();
+		List<PurchaseOrder> poList = retrieveAllPos(poSearched);
+		for(PurchaseOrder eachPO : poList){
+			PoDTO eachPoDTO = convertPoToMiniDto(eachPO);
+			poDTOList.add(eachPoDTO);
+		}
+		return poDTOList;
+	}
+
+	private PoDTO convertPoToMiniDto(PurchaseOrder purchaseOrder) {
+
+		PoDTO poDTO = new PoDTO();
+		poDTO.setPid(purchaseOrder.getPid());
+		poDTO.setPoId(purchaseOrder.getPoId());
+		poDTO.setVersion(purchaseOrder.getPoVersion());
+		poDTO.setSender(purchaseOrder.getSenderContact());
+		poDTO.setDate(ui_date_format.format(purchaseOrder.getPdate()));
+		poDTO.setSenderDetails(purchaseOrder.getSenderDetails());
+		return poDTO;
+	
+	}
+
+	public PurchaseOrder registerPO(String create, String pid, Customer customer, String poNumber, String poVersion,
+			String poDate, String vnoSender, String poSender, String poSenderDetails, String senderEmail,
+			String senderPhone, String senderFax, String notes, String totalValue, Map<String, List<String>> matMap,
+			MultipartFile[] files, String removedFiles) throws Exception {
+		PurchaseOrder purchaseOrder = commonDAO.registerPO(create, pid, customer, poNumber, poVersion, poDate,
+				vnoSender, poSender, poSenderDetails,  senderEmail,  senderPhone,
+				 senderFax,  notes,  totalValue,  matMap, files, removedFiles);
+		return purchaseOrder;
+	}
+
+	public byte[] findPOFile(Integer pid, String fileName) {
+		byte[] fileData = commonDAO.findPoFileData(pid, fileName);
+		return fileData;
+	}
+
 }

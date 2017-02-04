@@ -1,6 +1,8 @@
 package com.esteeminfo.proauto.dao;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +13,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.esteeminfo.proauto.entity.Customer;
-import com.esteeminfo.proauto.entity.FilesUpload;
+import com.esteeminfo.proauto.entity.EmployeeFile;
 import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Machine;
+import com.esteeminfo.proauto.entity.PoFile;
+import com.esteeminfo.proauto.entity.PoFileData;
 import com.esteeminfo.proauto.entity.PoTool;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.entity.Status;
@@ -171,7 +176,7 @@ public class CommonDAO extends AbstractDao{
 
 	public PurchaseOrder registerPO(String create, String pid, Customer customer, String poNumber, String poVersion, String poDate,
 			String vnoSender, String poSender, String poSenderDetails, String senderEmail, String senderPhone,
-			String senderFax, String notes, String totalValue, Map<String, List<String>> matMap) throws Exception {
+			String senderFax, String notes, String totalValue, Map<String, List<String>> matMap, MultipartFile[] files, String removedFiles) throws Exception {
 		int purchaseid = (pid == null || pid.length() == 0 ) ? 0:Integer.valueOf(pid); 
 		
 		if(poNumber!=null && poNumber.length()>0){
@@ -184,97 +189,90 @@ public class CommonDAO extends AbstractDao{
 		if(poDate!=null){
 			javaDatePoDate = ui_date_format.parse(poDate) ;
 		}
-		
-		if (create.equalsIgnoreCase("false") && purchaseid > 0) {
-			EntityManager entityManager = getEntityManager();
-			PurchaseOrder existingPO = null;
-			Query q = entityManager.createQuery( "select e from PurchaseOrder e where e.pid=:eid");
-			q.setParameter("eid", purchaseid);
-			List<PurchaseOrder> result = q.getResultList();
-			if(result != null || result.size() > 0){
-				existingPO = result.get(0);
-			}
-			
-			if(existingPO.getJobcards()!=null && existingPO.getJobcards().size()>0){
+		PurchaseOrder purchaseOrder = null;
+		if (create.equalsIgnoreCase("false") && purchaseid > 0 ) {
+			purchaseOrder = findPOById(purchaseid);
+			if(purchaseOrder.getJobcards()!=null && purchaseOrder.getJobcards().size()>0){
 				throw new Exception("Can not edit this PurchaseOrder as Jobcard/s are already prepared with this PO");
 			}
-			existingPO.setPoId(poNumber);
-			existingPO.setPoVersion(poVersion);
-			existingPO.setPdate(javaDatePoDate);
-			existingPO.setVnoSender(vnoSender);
-			existingPO.setSenderContact(poSender);
-			existingPO.setSenderDetails(poSenderDetails);
-			existingPO.setSenderEmail(senderEmail);
-			existingPO.setSenderPhone(senderPhone);
-			existingPO.setSenderFax(senderFax);
-			existingPO.setNotes(notes);
-			existingPO.setTotalValue(totalValue);
-			existingPO.setCustomer(customer);
-			entityManager.persist(existingPO);
-			
-			Set<PoTool> poList = new HashSet<PoTool>();
-			for (Entry<String, List<String>> eachEntry : matMap.entrySet()) {
-				PoTool poTool = new PoTool();
-				poTool.setPurchaseOrder(existingPO);
-				poTool.setMatNo(eachEntry.getKey());
-				poTool.setMatDesc(eachEntry.getValue().get(0));
-				poTool.setMatUnitprice(eachEntry.getValue().get(1));
-				poTool.setMatQuantiy(Integer.valueOf(eachEntry.getValue().get(2)));
-				poTool.setDiscount(eachEntry.getValue().get(3));
-				poTool.setMatValue(eachEntry.getValue().get(4));
-				entityManager.persist(poTool);
-				poList.add(poTool);
-			}
-			
-			existingPO.setPoTools(poList);
-			entityManager.merge(existingPO);
-			return existingPO;
-		}else{
-			EntityManager entityManager = getEntityManager();
-			PurchaseOrder poCreated =  new PurchaseOrder();
-			poCreated.setPoId(poNumber);
-			poCreated.setPoVersion(poVersion);
-			poCreated.setPdate(javaDatePoDate);
-			poCreated.setVnoSender(vnoSender);
-			poCreated.setSenderContact(poSender);
-			poCreated.setSenderDetails(poSenderDetails);
-			poCreated.setSenderEmail(senderEmail);
-			poCreated.setSenderPhone(senderPhone);
-			poCreated.setSenderFax(senderFax);
-			poCreated.setNotes(notes);
-			poCreated.setTotalValue(totalValue);
-			poCreated.setCustomer(customer);
-			entityManager.persist(poCreated);
-			
-			Set<PoTool> poList = new HashSet<PoTool>();
-			for (Entry<String, List<String>> eachEntry : matMap.entrySet()) {
-				PoTool poTool = new PoTool();
-				poTool.setPurchaseOrder(poCreated);
-				poTool.setMatNo(eachEntry.getKey());
-				poTool.setMatDesc(eachEntry.getValue().get(0));
-				poTool.setMatUnitprice(eachEntry.getValue().get(1));
-				poTool.setMatQuantiy(Integer.valueOf(eachEntry.getValue().get(2)));
-				poTool.setDiscount(eachEntry.getValue().get(3));
-				poTool.setMatValue(eachEntry.getValue().get(4));
-				entityManager.persist(poTool);
-				//poList.add(poTool);
-			}
-			
-			//poCreated.setPoTools(poList);
-			//entityManager.merge(poCreated);
-			return poCreated;
-	
-		}
-	}
+			purchaseOrder.getPoTools().clear();
+			List<String> removedFilesArray = new ArrayList<String>();
+			removedFilesArray.addAll(Arrays.asList(removedFiles.split(",")));
+			List<PoFile> listTobeRemoved = new ArrayList<PoFile>();
 
-	public PurchaseOrder addFilesToPO(int pid, Set<FilesUpload> filesUploads) {
-		PurchaseOrder purchaseOrder = findPOById(pid);
-		if(purchaseOrder!=null && purchaseOrder.getPid()>0){
-				EntityManager entityManager = getEntityManager();
-				purchaseOrder.setFilesUploads(filesUploads);	
-				entityManager.merge(purchaseOrder);
+			for(String file : removedFilesArray){
+				for(PoFile eF : purchaseOrder.getPoFiles()){
+					if(eF.getFileName().equalsIgnoreCase(file)){
+						listTobeRemoved.add(eF);
+					}
+				}
+			}
+			for(PoFile rf:listTobeRemoved){
+				purchaseOrder.removePoFile(rf);
+			}
+			entityManager.persist(purchaseOrder);
+		}else{
+			purchaseOrder = new PurchaseOrder();
 		}
-		//cleanUpFiles();
+		
+		purchaseOrder.setPoId(poNumber);
+		purchaseOrder.setPoVersion(poVersion);
+		purchaseOrder.setPdate(javaDatePoDate);
+		purchaseOrder.setVnoSender(vnoSender);
+		purchaseOrder.setSenderContact(poSender);
+		purchaseOrder.setSenderDetails(poSenderDetails);
+		purchaseOrder.setSenderEmail(senderEmail);
+		purchaseOrder.setSenderPhone(senderPhone);
+		purchaseOrder.setSenderFax(senderFax);
+		purchaseOrder.setNotes(notes);
+		purchaseOrder.setTotalValue(totalValue);
+		purchaseOrder.setCustomer(customer);
+		entityManager.persist(purchaseOrder);
+		
+		
+		if(files!=null){
+			for (int i = 0; i < files.length; i++) {
+				MultipartFile file = files[i];
+				if(file.getOriginalFilename()!=null && file.getOriginalFilename().length()>0){
+					try {
+						PoFile poFile =  new PoFile();
+						poFile.setFileName(file.getOriginalFilename());
+						poFile.setPurchaseOrder(purchaseOrder);
+
+						entityManager.persist(poFile);
+
+						byte[] bytes = file.getBytes();
+						PoFileData poFileData =  new PoFileData();
+						poFileData.setFileData(bytes);
+						poFileData.setPoFile(poFile);
+						entityManager.persist(poFileData);
+
+						purchaseOrder.addPoFile(poFile);
+						
+					} catch (Exception e) {
+					}	
+				}
+				
+			}
+		}
+		
+		
+		Set<PoTool> poList = new HashSet<PoTool>();
+		for (Entry<String, List<String>> eachEntry : matMap.entrySet()) {
+			PoTool poTool = new PoTool();
+			poTool.setPurchaseOrder(purchaseOrder);
+			poTool.setMatNo(eachEntry.getKey());
+			poTool.setMatDesc(eachEntry.getValue().get(0));
+			poTool.setMatUnitprice(eachEntry.getValue().get(1));
+			poTool.setMatQuantiy(Integer.valueOf(eachEntry.getValue().get(2)));
+			poTool.setDiscount(eachEntry.getValue().get(3));
+			poTool.setMatValue(eachEntry.getValue().get(4));
+			entityManager.persist(poTool);
+			poList.add(poTool);
+		}
+		
+		purchaseOrder.setPoTools(poList);
+		entityManager.persist(purchaseOrder);
 		return purchaseOrder;
 	}
 
@@ -299,5 +297,18 @@ public class CommonDAO extends AbstractDao{
 		Query q = entityManager.createQuery(query);
 		List<PurchaseOrder> result = q.getResultList();
 		return result;
+	}
+	
+	public List<String> findPOFileNames(int id) {
+		List<String> list = null;
+		Query q1 = entityManager.createNativeQuery("select file_name from po_files where pid="+id);
+		list= q1.getResultList();
+		return list;
+	}
+
+	public byte[] findPoFileData(Integer pid, String fileName) {
+		Query query= entityManager.createNativeQuery("select pfd.* from po_files pof,po_file_data pfd where pof.upload_id=pfd.upload_id and pof.file_name='"+fileName+"' and pof.pid="+pid,PoFileData.class);
+		PoFileData poFileData = (PoFileData) query.getSingleResult();
+		return poFileData.getFileData();
 	}
 }

@@ -19,11 +19,12 @@
 	});*/
 	//return true means no error
 	//return this.optional(element) || (element.files[0].size <= param)
+	//1048576/4194304
 
 	$.validator.addMethod('filesize', function (value, element, param) {
 		if(!element.files[0]) return true;
 	    return (element.files[0].size <= param)
-	}, 'File size must be less than 4MB');
+	}, 'File size must be less than 1MB');
 	
 	$(document)
 			.ready(
@@ -71,7 +72,7 @@
 											required : true
 										},
 										eFiles : {
-											filesize: 4194304
+											filesize: 1048576
 										}
 									},
 									highlight : function(element) {
@@ -108,9 +109,9 @@
 	
 	function removeFile(fileName){
 		//alert(fileName);
-		var existingInputValue = $('input#uploadedFiles').val();
-		var newValue = existingInputValue.replace(fileName, "");
-		$('input#uploadedFiles').val(newValue);
+		var existingInputValue = $('input#removedFiles').val();
+		var newValue = existingInputValue+","+fileName;
+		$('input#removedFiles').val(newValue);
 		$('#alreadyUploadedFiles tr').each(function() {
 		    var href = $(this).find("td:first").find("a").attr('href');  
 		    if (href.toLowerCase().indexOf(fileName.toLowerCase()) >= 0){
@@ -244,7 +245,9 @@
 			  <input type="hidden" name="eid" id="eid"
 								value="${employeeSelected.employeeId}">
 			  <input type="hidden" name="uploadedFiles" id="uploadedFiles"
-								value="${employeeSelected.files}">								
+								value="${employeeSelected.files}">	
+			  <input type="hidden" name="removedFiles" id="removedFiles"
+								value="">									
 			   <br>
 			   
   	  		   <div class="row rowspace">

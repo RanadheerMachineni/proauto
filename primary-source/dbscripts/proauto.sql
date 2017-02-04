@@ -100,23 +100,57 @@ CREATE TABLE employee_role
 
 insert into employee_role(employee_id,role_id) values(1,'ROLE_admin');
 
-CREATE TABLE files_upload (
- 	upload_id  int AUTO_INCREMENT NOT NULL,
-    file_name varchar(128) DEFAULT NULL,
+
+CREATE TABLE emp_file_data (
+ 	file_data_id  int AUTO_INCREMENT NOT NULL,
+ 	upload_id int NOT NULL,
     file_data longblob,
-	CONSTRAINT pk_files_upload primary key (upload_id)
+	CONSTRAINT pk_emp_file_data primary key (file_data_id),
+	CONSTRAINT fk_emp_file_data_upload_id FOREIGN KEY (upload_id) REFERENCES employee_files(upload_id)
 )
 
 CREATE TABLE employee_files
 (
+	upload_id int AUTO_INCREMENT NOT NULL,
+    file_name varchar(128) DEFAULT NULL,
 	employee_id int NOT NULL,
-	upload_id int NOT NULL,
-	constraint employee_files_pk primary key (employee_id , upload_id),
-	CONSTRAINT fk_ef_employee_id FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
-	CONSTRAINT fk_ef_upload_id FOREIGN KEY (upload_id) REFERENCES files_upload(upload_id)
-
+	CONSTRAINT pk_employee_files primary key (upload_id),
+	CONSTRAINT fk_ef_employee_id FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 );
 
+CREATE TABLE cus_file_data (
+ 	file_data_id  int AUTO_INCREMENT NOT NULL,
+ 	upload_id int NOT NULL,
+    file_data longblob,
+	CONSTRAINT pk_cus_file_data primary key (file_data_id),
+	CONSTRAINT fk_cus_file_data_upload_id FOREIGN KEY (upload_id) REFERENCES customer_files(upload_id)
+)
+
+CREATE TABLE customer_files
+(
+	upload_id int AUTO_INCREMENT NOT NULL,
+    file_name varchar(128) DEFAULT NULL,
+	customer_id int NOT NULL,
+	CONSTRAINT pk_customer_files primary key (upload_id),
+	CONSTRAINT fk_cf_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+);
+
+CREATE TABLE po_file_data (
+ 	file_data_id  int AUTO_INCREMENT NOT NULL,
+ 	upload_id int NOT NULL,
+    file_data longblob,
+	CONSTRAINT pk_po_file_data primary key (file_data_id),
+	CONSTRAINT fk_po_file_data_upload_id FOREIGN KEY (upload_id) REFERENCES po_files(upload_id)
+)
+
+CREATE TABLE po_files
+(
+	upload_id int AUTO_INCREMENT NOT NULL,
+    file_name varchar(128) DEFAULT NULL,
+	pid int NOT NULL,
+	CONSTRAINT pk_po_files primary key (upload_id),
+	CONSTRAINT fk_pf_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid)
+);
 
 /*drop table customer_raw_material;
 CREATE TABLE customer_raw_material
@@ -189,27 +223,6 @@ CREATE TABLE customer_contacts
 	constraint customer_contacts_pk primary key (customer_id , contact_id),
 	CONSTRAINT fk_cc_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
 	CONSTRAINT fk_cc_contact_id FOREIGN KEY (contact_id) REFERENCES contact(contact_id)
-);
-
-CREATE TABLE customer_files
-(
-	customer_id int NOT NULL,
-	upload_id int NOT NULL,
-	constraint customer_files_pk primary key (customer_id , upload_id),
-	CONSTRAINT fk_cf_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-	CONSTRAINT fk_cf_upload_id FOREIGN KEY (upload_id) REFERENCES files_upload(upload_id)
-
-);
-
-drop table po_files;
-CREATE TABLE po_files
-(
-	pid int NOT NULL,
-	upload_id int NOT NULL,
-	constraint po_files_pk primary key (pid , upload_id),
-	CONSTRAINT fk_pf_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid),
-	CONSTRAINT fk_pf_upload_id FOREIGN KEY (upload_id) REFERENCES files_upload(upload_id)
-
 );
 
 drop table purchase_order;

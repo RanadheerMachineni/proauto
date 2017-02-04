@@ -7,22 +7,25 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.esteeminfo.proauto.dto.CustomerDTO;
 import com.esteeminfo.proauto.entity.Customer;
-import com.esteeminfo.proauto.entity.FilesUpload;
 
 public interface CustomerService {
 
 	Customer findById(int id);
 	
+	CustomerDTO findDTOById(int id);
+
 	Customer findByName(String name);
 
 	List<Customer> retrieveAllCustomer(String customerSearched);
-
-	Customer registerCustomer(String create, String cid, String cName, String cAddress, Map<String, List<String>> contactsMap,MultipartFile[] files,  List<String> uploadedFilesTrimmed) throws Exception;
 	
-	CustomerDTO converCustomerToDto(Customer customer);
+	List<CustomerDTO> retrieveAllCustomerDTO(String employeeSearched);
 
-	FilesUpload findFile(Integer eid, String fname);
+	Customer registerCustomer(String create, String cid, String cName, String cAddress, Map<String, List<String>> contactsMap,MultipartFile[] files,  String removedFiles) throws Exception;
+	
+	CustomerDTO converCustomerToDto(Customer customer,List<String> fileNames);
 
 	Map<String, String> retreiveCustomerMap();
+
+	byte[] findFile(Integer valueOf, String fileNameFromUI);
 
 }

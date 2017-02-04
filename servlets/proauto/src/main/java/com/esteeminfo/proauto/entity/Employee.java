@@ -2,10 +2,6 @@ package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import java.util.Date;
 import java.util.Set;
 
@@ -19,7 +15,8 @@ import java.util.Set;
 public class Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="employee_id")
 	private int employeeId;
 
@@ -80,6 +77,16 @@ public class Employee implements Serializable {
 
 	private String qualification;
 
+	//bi-directional many-to-one association to Department
+	@ManyToOne
+	@JoinColumn(name="department_id")
+	private Department department;
+
+	//bi-directional many-to-one association to Section
+	@ManyToOne
+	@JoinColumn(name="section_id")
+	private Section section;
+
 	@Column(name="state_ca")
 	private String stateCa;
 
@@ -97,16 +104,6 @@ public class Employee implements Serializable {
 	@Column(name="zip_code_pa")
 	private String zipCodePa;
 
-	//bi-directional many-to-one association to Department
-	@ManyToOne
-	@JoinColumn(name="department_id")
-	private Department department;
-
-	//bi-directional many-to-one association to Section
-	@ManyToOne
-	@JoinColumn(name="section_id")
-	private Section section;
-
 	//bi-directional many-to-many association to Role
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
@@ -120,18 +117,9 @@ public class Employee implements Serializable {
 		)
 	private Set<Role> roles;
 	
-	//uni-directional many-to-many association to FilesUpload
-	@ManyToMany(fetch=FetchType.LAZY)
-	@JoinTable(
-		name="employee_files"
-		, joinColumns={
-			@JoinColumn(name="employee_id")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="upload_id")
-			}
-		)
-	private Set<FilesUpload> filesUploads;
+	//bi-directional many-to-one association to EmployeeFile
+	@OneToMany(mappedBy="employee",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<EmployeeFile> employeeFiles;
 
 	public Employee() {
 	}
@@ -359,7 +347,7 @@ public class Employee implements Serializable {
 	public void setZipCodePa(String zipCodePa) {
 		this.zipCodePa = zipCodePa;
 	}
-
+	
 	public Department getDepartment() {
 		return this.department;
 	}
@@ -391,12 +379,27 @@ public class Employee implements Serializable {
 	public void setEmployementType(String employementType) {
 		this.employementType = employementType;
 	}
-
-	public Set<FilesUpload> getFilesUploads() {
-		return this.filesUploads;
+	
+	public Set<EmployeeFile> getEmployeeFiles() {
+		return this.employeeFiles;
 	}
 
-	public void setFilesUploads(Set<FilesUpload> filesUploads) {
-		this.filesUploads = filesUploads;
+	public void setEmployeeFiles(Set<EmployeeFile> employeeFiles) {
+		this.employeeFiles = employeeFiles;
 	}
+
+	public EmployeeFile addEmployeeFile(EmployeeFile employeeFile) {
+		getEmployeeFiles().add(employeeFile);
+		employeeFile.setEmployee(this);
+
+		return employeeFile;
+	}
+
+	public EmployeeFile removeEmployeeFile(EmployeeFile employeeFile) {
+		getEmployeeFiles().remove(employeeFile);
+		employeeFile.setEmployee(null);
+
+		return employeeFile;
+	}
+
 }

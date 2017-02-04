@@ -1,27 +1,23 @@
 package com.esteeminfo.proauto.controllers;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.apache.taglibs.standard.tag.common.core.ForEachSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,7 +34,6 @@ import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.Employee;
-import com.esteeminfo.proauto.entity.FilesUpload;
 import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Jobcard;
 import com.esteeminfo.proauto.entity.Machine;
@@ -193,61 +188,21 @@ public class AppController {
 	    return view;*/
 	}
 	
-	@RequestMapping(value = { "/filedownload/{regType}/{id}/{fname}.{ext}"}, method = RequestMethod.GET)
-	public void downloadFile(Model model, @PathVariable("regType") String regType,
-			@PathVariable("id") String id,
-			@PathVariable("fname") String fname,@PathVariable("ext") String ext,
-			HttpServletRequest request, HttpServletResponse response) {
-		logger.info("in downloadFile "+ regType +" , "+id+" , "+fname);
-		String fileNameFromUI = fname+ "." + ext;
-		FilesUpload filesUpload = null;
-		if(regType.equalsIgnoreCase("customer")){
-			filesUpload = customerService.findFile(Integer.valueOf(id),fileNameFromUI);
-		}else if(regType.equalsIgnoreCase("employee")){
-			filesUpload = employeeService.findFile(Integer.valueOf(id),fileNameFromUI);
-		}
-		if(filesUpload!=null){
-			 byte[] data = filesUpload.getFileData();
-			 String fileName = filesUpload.getFileName();
-			 response.setContentType("application/pdf"); 
-			 response.setHeader("Content-disposition", "attachment; filename=\""+fileName+"\""); // The Save As popup magic is done here. You can give it any filename you want, this only won't work in MSIE, it will use current request URL as filename instead.
-
-			    // Write file to response.
-			    OutputStream output;
-				try {
-					output = response.getOutputStream();
-					output.write(data);
-					output.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			   
-		}
-
-	}
-
 	@RequestMapping(value = { "/creg"}, method = RequestMethod.GET)
 	public String showcregPage(Model model, @RequestParam(value="customerSelected", required=false) String customerSelected, HttpServletRequest request, HttpServletResponse response) {
 		
 		
-		CustomerDTO employeeDTO = new CustomerDTO();
+		CustomerDTO customerDTO = new CustomerDTO();
 		if(customerSelected!=null){
-			Customer employee = customerService.findById(Integer.valueOf(customerSelected));
-			employeeDTO = customerService.converCustomerToDto(employee);
+			customerDTO = customerService.findDTOById(Integer.valueOf(customerSelected));
 		}
-		String employeeSearched = request.getParameter("searchCustomerInput");
+		String customerSearched = request.getParameter("searchCustomerInput");
 
-		List<CustomerDTO> employeeDTOList = new ArrayList<CustomerDTO>();
-		List<Customer> employeeList = customerService.retrieveAllCustomer(employeeSearched);
+		List<CustomerDTO> custDTOList = customerService.retrieveAllCustomerDTO(customerSearched);
 
-		for(Customer eachEmployee : employeeList){
-			CustomerDTO eachEmployeeDTO = customerService.converCustomerToDto(eachEmployee);
-			employeeDTOList.add(eachEmployeeDTO);
-		}
-		model.addAttribute("customerSelected", employeeDTO);
+		model.addAttribute("customerSelected", customerDTO);
 
-		model.addAttribute("customerList", employeeDTOList);
+		model.addAttribute("customerList", custDTOList);
 		
 		return "creg";
 	}
@@ -263,8 +218,10 @@ public class AppController {
 		String[] email = request.getParameterValues("email");
 		String[] fax = request.getParameterValues("fax");
 		String[] notes = request.getParameterValues("notes");
-		String[] uploadedFilesArray = request.getParameterValues("uploadedFiles");
-		List<String> uploadedFiles = new ArrayList<String>();;
+		String removedFiles = request.getParameter("removedFiles");
+
+//		String[] uploadedFilesArray = request.getParameterValues("uploadedFiles");
+//		List<String> uploadedFiles = new ArrayList<String>();;
 
 		Map<String,List<String>> contactsMap =  new HashMap<String, List<String>>();
 		for(int i=0;i<contactname.length;i++){
@@ -278,21 +235,21 @@ public class AppController {
 			}
 		}
 		
-		if(uploadedFilesArray!=null && uploadedFilesArray.length>0){
-			for(String s: uploadedFilesArray){
-				if(s!=null && s.length()>0){
-					s = s.replaceAll("[\\[\\]]","");
-					uploadedFiles.addAll(Arrays.asList(s.split(",")));
-				}
-			}
-		}
-		List<String> uploadedFilesTrimmed = new ArrayList<String>();;
-		for(String s: uploadedFiles){
-			uploadedFilesTrimmed.add(s.trim());
-		}
+//		if(uploadedFilesArray!=null && uploadedFilesArray.length>0){
+//			for(String s: uploadedFilesArray){
+//				if(s!=null && s.length()>0){
+//					s = s.replaceAll("[\\[\\]]","");
+//					uploadedFiles.addAll(Arrays.asList(s.split(",")));
+//				}
+//			}
+//		}
+//		List<String> uploadedFilesTrimmed = new ArrayList<String>();;
+//		for(String s: uploadedFiles){
+//			uploadedFilesTrimmed.add(s.trim());
+//		}
 		Customer customerCreated = null;
 		try {
-			customerCreated = customerService.registerCustomer(create,cid, cName,cAddress,contactsMap,files,uploadedFilesTrimmed);
+			customerCreated = customerService.registerCustomer(create,cid, cName,cAddress,contactsMap,files,removedFiles);
 
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
@@ -304,20 +261,16 @@ public class AppController {
 			employeeDTO.setAddress(cAddress);
 			model.addAttribute("customerSelected", employeeDTO);
 		}
-		List<CustomerDTO> employeeDTOList = new ArrayList<CustomerDTO>();
-		List<Customer> employeeList = customerService.retrieveAllCustomer(null);
-
-		for(Customer eachEmployee : employeeList){
-			CustomerDTO eachEmployeeDTO = customerService.converCustomerToDto(eachEmployee);
-			employeeDTOList.add(eachEmployeeDTO);
-		}
+		
+		
 		if(customerCreated!=null && customerCreated.getCustomerId()>0){
 			model.addAttribute("result", "sucess");
 			model.addAttribute("cusCreated", customerCreated.getCustomerId());
 			model.addAttribute("cusCreatedName", customerCreated.getCustomerName());
 		}
 		
-		model.addAttribute("customerList", employeeDTOList);
+		List<CustomerDTO> custDTOList = customerService.retrieveAllCustomerDTO(null);
+		model.addAttribute("customerList", custDTOList);
 		return "creg";
 	}
 	
@@ -350,25 +303,27 @@ public class AppController {
 		String eNotes = request.getParameter("eNotes");
 		String eEmploymentType = request.getParameter("eEmploymentType");
 		String eSection = request.getParameter("eSection");
-		String[] uploadedFilesArray = request.getParameterValues("uploadedFiles");
-		List<String> uploadedFiles = new ArrayList<String>();;
+		String removedFiles = request.getParameter("removedFiles");
 
-		if(uploadedFilesArray!=null && uploadedFilesArray.length>0){
-			for(String s: uploadedFilesArray){
-				if(s!=null && s.length()>0){
-					s = s.replaceAll("[\\[\\]]","");
-					uploadedFiles.addAll(Arrays.asList(s.split(",")));
-				}
-			}
-		}
-		List<String> uploadedFilesTrimmed = new ArrayList<String>();;
-		for(String s: uploadedFiles){
-			uploadedFilesTrimmed.add(s.trim());
-		}
+//		String[] uploadedFilesArray = request.getParameterValues("uploadedFiles");
+//		List<String> uploadedFiles = new ArrayList<String>();;
+//
+//		if(uploadedFilesArray!=null && uploadedFilesArray.length>0){
+//			for(String s: uploadedFilesArray){
+//				if(s!=null && s.length()>0){
+//					s = s.replaceAll("[\\[\\]]","");
+//					uploadedFiles.addAll(Arrays.asList(s.split(",")));
+//				}
+//			}
+//		}
+//		List<String> uploadedFilesTrimmed = new ArrayList<String>();;
+//		for(String s: uploadedFiles){
+//			uploadedFilesTrimmed.add(s.trim());
+//		}
 		Employee employeeCreated = null;
 		try {
 			employeeCreated = employeeService.registerEmployee(create, eid, efirstName, eLastName, gender, eQualification, eExperience, married, eDesignation, eDob,eDoj, eRole, eUserId, password,
-					ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes, eEmploymentType, eSection,files, uploadedFilesTrimmed);
+					ePhone, eEmail, ePassport, eEmergencyContact, eCAddress, ePAddress, eNotes, eEmploymentType, eSection,files, removedFiles);
 			Map<String, String> roleMap = new HashMap<String, String>(); 
 			roleMap.put("ROLE_norole", "- Not user");
 			roleMap.put("ROLE_admin", "Administrator");
@@ -532,8 +487,7 @@ public class AppController {
 	public String showpo(Model model, @RequestParam(value="poSelected", required=false) String poSelected, HttpServletRequest request, HttpServletResponse response) {
 		PoDTO poDTO = new PoDTO();
 		if(poSelected!=null){
-			PurchaseOrder purchaseOrder = commonService.findPOById(poSelected);
-			poDTO = commonService.converPoToDto(purchaseOrder);
+			poDTO = commonService.findPoDTOById(Integer.valueOf(poSelected));
 		}
 		Map<String, String> customerMap = new HashMap<String, String>(); 
 		customerMap = customerService.retreiveCustomerMap();
@@ -549,13 +503,7 @@ public class AppController {
 	public String searchpo(Model model, HttpServletRequest request, HttpServletResponse response) {
 		String poSearched = request.getParameter("searchPoInput");
 
-		List<PoDTO> poDTOs = new ArrayList<PoDTO>();
-		List<PurchaseOrder> purchaseOrders = commonService.retrieveAllPos(poSearched);
-
-		for(PurchaseOrder eachPO : purchaseOrders){
-			PoDTO eachPODTO = commonService.converPoToDto(eachPO);
-			poDTOs.add(eachPODTO);
-		}
+		List<PoDTO> poDTOs = commonService.retrieveAllPoDTOs(poSearched);
 
 		model.addAttribute("poList", poDTOs);
 		
@@ -586,21 +534,8 @@ public class AppController {
 		String[] discount = request.getParameterValues("discount");
 		String[] value = request.getParameterValues("value");
 		
-		String[] uploadedFilesArray = request.getParameterValues("uploadedFiles");
-		List<String> uploadedFiles = new ArrayList<String>();;
+		String removedFiles = request.getParameter("removedFiles");
 
-		if(uploadedFilesArray!=null && uploadedFilesArray.length>0){
-			for(String s: uploadedFilesArray){
-				if(s!=null && s.length()>0){
-					s = s.replaceAll("[\\[\\]]","");
-					uploadedFiles.addAll(Arrays.asList(s.split(",")));
-				}
-			}
-		}
-		List<String> uploadedFilesTrimmed = new ArrayList<String>();;
-		for(String s: uploadedFiles){
-			uploadedFilesTrimmed.add(s.trim());
-		}
 		
 		Map<String,List<String>> matMap =  new HashMap<String, List<String>>();
 		for(int i=0;i<matNo.length;i++){
@@ -618,14 +553,14 @@ public class AppController {
 		PoDTO poDTO = null;
 		try {
 			poCreated = commonService.registerPO(create,pid,customer, poNumber, poVersion,poDate,vnoSender,poSender,poSenderDetails,senderEmail,senderPhone,senderFax,notes,
-					totalValue,matMap,files,uploadedFilesTrimmed);
+					totalValue,matMap,files,removedFiles);
 			
 
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 			int purchaseid = (pid == null || pid.length() == 0 ) ? 0:Integer.valueOf(pid); 
 			if (create.equalsIgnoreCase("false") && purchaseid > 0) {
-				poDTO = commonService.converPoToDto(commonService.findPOById(pid));
+				poDTO = commonService.findPoDTOById(purchaseid);
 			}else{
 				poDTO = new PoDTO();
 				if(poNumber!=null && poNumber.length()>0){
@@ -657,16 +592,10 @@ public class AppController {
 		
 		
 		if(poCreated!=null){
-			poDTO = commonService.converPoToDto(commonService.findPOById(String.valueOf(poCreated.getPid())));
+			poDTO = commonService.findPoDTOById(poCreated.getPid());
 			model.addAttribute("poSelected", poDTO);
 		}
-		List<PoDTO> poDTOList = new ArrayList<PoDTO>();
-		List<PurchaseOrder> pos = commonService.retrieveAllPos(null);
-
-		for(PurchaseOrder purchaseOrder : pos){
-			PoDTO eachPoDTO = commonService.converPoToDto(purchaseOrder);
-			poDTOList.add(eachPoDTO);
-		}
+		
 		
 		Map<String, String> customerMap = new HashMap<String, String>(); 
 		customerMap = customerService.retreiveCustomerMap();
@@ -674,7 +603,6 @@ public class AppController {
 		
 		model.addAttribute("customers", customerMap);
 
-		model.addAttribute("poList", poDTOList);
 		return "poreg";
 	}
 
@@ -877,4 +805,37 @@ public class AppController {
 		return "searchjobcard";
 	}
 
+	@RequestMapping(value = { "/filedownload/{regType}/{id}/{fname}.{ext}"}, method = RequestMethod.GET)
+	public void downloadFile(Model model, @PathVariable("regType") String regType,
+			@PathVariable("id") String id,
+			@PathVariable("fname") String fname,@PathVariable("ext") String ext,
+			HttpServletRequest request, HttpServletResponse response) {
+		logger.info("in downloadFile "+ regType +" , "+id+" , "+fname);
+		String fileNameFromUI = fname+ "." + ext;
+		byte[] data = null;
+		if(regType.equalsIgnoreCase("customer")){
+			data = customerService.findFile(Integer.valueOf(id),fileNameFromUI);
+		}else if(regType.equalsIgnoreCase("employee")){
+			data = employeeService.findFile(Integer.valueOf(id),fileNameFromUI);
+		}else if(regType.equalsIgnoreCase("po")){
+			data = commonService.findPOFile(Integer.valueOf(id),fileNameFromUI);
+		}
+		if(data!=null){
+			 response.setContentType("application/pdf"); 
+			 response.setHeader("Content-disposition", "attachment; filename=\""+fileNameFromUI+"\""); // The Save As popup magic is done here. You can give it any filename you want, this only won't work in MSIE, it will use current request URL as filename instead.
+
+			    // Write file to response.
+			    OutputStream output;
+				try {
+					output = response.getOutputStream();
+					output.write(data);
+					output.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			   
+		}
+
+	}
 }

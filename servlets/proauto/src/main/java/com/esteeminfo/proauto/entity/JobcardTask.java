@@ -44,7 +44,7 @@ public class JobcardTask implements Serializable {
 	@Column(name="time_taken")
 	private String timeTaken;
 
-	//bi-directional many-to-one association to Jobcard
+	//bi-directional many-to-one association to Jobcard,owner side, having ref of other table
 	@ManyToOne
 	@JoinColumn(name="jobcard_id")
 	private Jobcard jobcard;

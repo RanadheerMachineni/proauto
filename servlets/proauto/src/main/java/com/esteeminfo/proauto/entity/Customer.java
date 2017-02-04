@@ -2,10 +2,6 @@ package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import java.util.Date;
 import java.util.Set;
 
@@ -19,7 +15,8 @@ import java.util.Set;
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="customer_id")
 	private int customerId;
 
@@ -38,9 +35,9 @@ public class Customer implements Serializable {
 
 	@Column(name="zip_code")
 	private String zipCode;
-
+	
 	//bi-directional many-to-many association to Contact
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
 		name="customer_contacts"
 		, joinColumns={
@@ -50,40 +47,19 @@ public class Customer implements Serializable {
 			@JoinColumn(name="contact_id")
 			}
 		)
-	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<Contact> contacts;
-
-	//uni-directional many-to-many association to FilesUpload
-	@ManyToMany
-	@JoinTable(
-		name="customer_files"
-		, joinColumns={
-			@JoinColumn(name="customer_id")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="upload_id")
-			}
-		)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	private Set<FilesUpload> filesUploads;
 	
-	
-	public Set<FilesUpload> getFilesUploads() {
-		return filesUploads;
-	}
 
-	public void setFilesUploads(Set<FilesUpload> filesUploads) {
-		this.filesUploads = filesUploads;
-	}
+	//bi-directional many-to-one association to CustomerFile
+	@OneToMany(mappedBy="customer", fetch=FetchType.LAZY, cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<CustomerFile> customerFiles;
 
 	//bi-directional many-to-one association to PurchaseOrder
-	@OneToMany(mappedBy="customer")
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy="customer", fetch=FetchType.LAZY)
 	private Set<PurchaseOrder> purchaseOrders;
 	
 	
-	@OneToMany(mappedBy="customer")
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy="customer",fetch=FetchType.LAZY)
 	private Set<Jobcard> jobcards;
 	
 	public Customer() {
@@ -143,6 +119,28 @@ public class Customer implements Serializable {
 
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+
+	public Set<CustomerFile> getCustomerFiles() {
+		return this.customerFiles;
+	}
+
+	public void setCustomerFiles(Set<CustomerFile> customerFiles) {
+		this.customerFiles = customerFiles;
+	}
+
+	public CustomerFile addCustomerFile(CustomerFile customerFile) {
+		getCustomerFiles().add(customerFile);
+		customerFile.setCustomer(this);
+
+		return customerFile;
+	}
+
+	public CustomerFile removeCustomerFile(CustomerFile customerFile) {
+		getCustomerFiles().remove(customerFile);
+		customerFile.setCustomer(null);
+
+		return customerFile;
 	}
 
 	public Set<Contact> getContacts() {
