@@ -31,7 +31,7 @@ public class PoTool implements Serializable {
 	private String matNo;
 
 	@Column(name="mat_quantiy")
-	private int matQuantiy;
+	private String matQuantiy;
 
 	@Column(name="mat_unitprice")
 	private String matUnitprice;
@@ -79,11 +79,11 @@ public class PoTool implements Serializable {
 		this.matNo = matNo;
 	}
 
-	public int getMatQuantiy() {
+	public String getMatQuantiy() {
 		return this.matQuantiy;
 	}
 
-	public void setMatQuantiy(int matQuantiy) {
+	public void setMatQuantiy(String matQuantiy) {
 		this.matQuantiy = matQuantiy;
 	}
 

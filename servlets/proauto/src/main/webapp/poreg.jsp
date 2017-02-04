@@ -83,9 +83,6 @@
 										customer :{
 											required: true
 										},
-										quantity : {
-											number : true
-										},
 										poDate : {
 											required: true
 										},
@@ -385,7 +382,7 @@
 		    	
 		    	<div class="row rowspace">
   	  		   		<div class="col-sm-12 col-md-12">
-		      			<label>Material details (Mat No is mandatory. Without Mat No Material will not be saved)</label>
+		      			<label>Material details (Mat No is mandatory. Without Mat No Material will not be saved). Quantity should be numeric value</label>
 		    		</div>
   	  		   </div>
   	  		  

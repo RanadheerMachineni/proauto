@@ -264,14 +264,19 @@ public class CommonDAO extends AbstractDao{
 			poTool.setMatNo(eachEntry.getKey());
 			poTool.setMatDesc(eachEntry.getValue().get(0));
 			poTool.setMatUnitprice(eachEntry.getValue().get(1));
-			poTool.setMatQuantiy(Integer.valueOf(eachEntry.getValue().get(2)));
+			poTool.setMatQuantiy(eachEntry.getValue().get(2));
 			poTool.setDiscount(eachEntry.getValue().get(3));
 			poTool.setMatValue(eachEntry.getValue().get(4));
+			poTool.setPurchaseOrder(purchaseOrder);
 			entityManager.persist(poTool);
 			poList.add(poTool);
 		}
 		
-		purchaseOrder.setPoTools(poList);
+		if (purchaseOrder.getPoTools()!=null) {
+			purchaseOrder.getPoTools().addAll(poList);
+		}else{
+			purchaseOrder.setPoTools(poList);
+		}
 		entityManager.persist(purchaseOrder);
 		return purchaseOrder;
 	}

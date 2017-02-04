@@ -120,21 +120,23 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 			roleList.add(role);
 			existingEmployee.setRoles(roleList);
 			//entityManager.merge(role);
-			
-			List<String> removedFilesArray = new ArrayList<String>();
-			List<EmployeeFile> listTobeRemoved = new ArrayList<EmployeeFile>();
-			removedFilesArray.addAll(Arrays.asList(removedFiles.split(",")));
-			for(String file : removedFilesArray){
-				for(EmployeeFile eF : existingEmployee.getEmployeeFiles()){
-					if(eF.getFileName().equalsIgnoreCase(file)){
-						listTobeRemoved.add(eF);
+			if(removedFiles!=null && removedFiles.length()>0){
+				List<String> removedFilesArray = new ArrayList<String>();
+				List<EmployeeFile> listTobeRemoved = new ArrayList<EmployeeFile>();
+				removedFilesArray.addAll(Arrays.asList(removedFiles.split(",")));
+				for(String file : removedFilesArray){
+					for(EmployeeFile eF : existingEmployee.getEmployeeFiles()){
+						if(eF.getFileName().equalsIgnoreCase(file)){
+							listTobeRemoved.add(eF);
+						}
 					}
 				}
+				
+				for(EmployeeFile rf:listTobeRemoved){
+					existingEmployee.removeEmployeeFile(rf);
+				}
 			}
-			
-			for(EmployeeFile rf:listTobeRemoved){
-				existingEmployee.removeEmployeeFile(rf);
-			}
+		
 			
 			if(files!=null){
 				for (int i = 0; i < files.length; i++) {

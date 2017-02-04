@@ -224,16 +224,19 @@ public class AppController {
 //		List<String> uploadedFiles = new ArrayList<String>();;
 
 		Map<String,List<String>> contactsMap =  new HashMap<String, List<String>>();
-		for(int i=0;i<contactname.length;i++){
-			if(contactname[i]!=null && contactname[i].length()>0){
-				List<String> li = new ArrayList<String>();
-				li.add(phone[i]);
-				li.add(email[i]);
-				li.add(fax[i]);
-				li.add(notes[i]);
-				contactsMap.put(contactname[i], li);
-			}
+		if(contactname!=null && contactname.length>0){
+			for(int i=0;i<contactname.length;i++){
+				if(contactname[i]!=null && contactname[i].length()>0){
+					List<String> li = new ArrayList<String>();
+					li.add(phone[i]);
+					li.add(email[i]);
+					li.add(fax[i]);
+					li.add(notes[i]);
+					contactsMap.put(contactname[i], li);
+				}
+			}	
 		}
+		
 		
 //		if(uploadedFilesArray!=null && uploadedFilesArray.length>0){
 //			for(String s: uploadedFilesArray){
@@ -538,17 +541,20 @@ public class AppController {
 
 		
 		Map<String,List<String>> matMap =  new HashMap<String, List<String>>();
-		for(int i=0;i<matNo.length;i++){
-			if(matNo[i]!=null && matNo[i].length()>0){
-				List<String> li = new ArrayList<String>();
-				li.add(matDesc[i]);
-				li.add(unitPrice[i]);
-				li.add(quantity[i]);
-				li.add(discount[i]);
-				li.add(value[i]);
-				matMap.put(matNo[i], li);
-			}
-		}		
+		if(matNo!=null && matNo.length>0){
+			for(int i=0;i<matNo.length;i++){
+				if(matNo[i]!=null && matNo[i].length()>0){
+					List<String> li = new ArrayList<String>();
+					li.add(matDesc[i]);
+					li.add(unitPrice[i]);
+					li.add(quantity[i]);
+					li.add(discount[i]);
+					li.add(value[i]);
+					matMap.put(matNo[i], li);
+				}
+			}	
+		}
+		
 		PurchaseOrder poCreated =null;
 		PoDTO poDTO = null;
 		try {

@@ -189,7 +189,7 @@
 		      <div class="row rowspace">
 		    	 	<div class="control-group">
 			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="mAxle" class="control-label">Axle:</label>
+			      			<label for="mAxle" class="control-label">Axis:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<input type="text" class="form-control" id="mAxle"

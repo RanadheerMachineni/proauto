@@ -26,7 +26,7 @@ public class PurchaseOrder implements Serializable {
 	private Customer customer;
 
 	//bi-directional many-to-one association to PoTool
-	@OneToMany(mappedBy="purchaseOrder",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="purchaseOrder",fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<PoTool> poTools;
 	
 	private String notes;

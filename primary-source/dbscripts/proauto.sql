@@ -255,7 +255,7 @@ CREATE TABLE po_tool
 	mat_no char(50) NOT NULL,
 	mat_desc char(50),
 	mat_unitprice char(50),
-	mat_quantiy int,
+	mat_quantiy char(50),
 	discount char(50),
 	mat_value char(50),
     CONSTRAINT po_tool_pk PRIMARY KEY (pt_id),

@@ -84,19 +84,22 @@ public class CustomerDAOImpl extends AbstractDao implements CustomerDAO {
 		if (create.equalsIgnoreCase("false") && customerId > 0 ) {
 			customer = findById(customerId);
 			customer.getContacts().clear();
-			List<String> removedFilesArray = new ArrayList<String>();
-			removedFilesArray.addAll(Arrays.asList(removedFiles.split(",")));
-			List<CustomerFile> listTobeRemoved = new ArrayList<CustomerFile>();
-			for(String file : removedFilesArray){
-				for(CustomerFile eF : customer.getCustomerFiles()){
-					if(eF.getFileName().equalsIgnoreCase(file)){
-						listTobeRemoved.add(eF);
+			if(removedFiles!=null && removedFiles.length()>0){
+				List<String> removedFilesArray = new ArrayList<String>();
+				removedFilesArray.addAll(Arrays.asList(removedFiles.split(",")));
+				List<CustomerFile> listTobeRemoved = new ArrayList<CustomerFile>();
+				for(String file : removedFilesArray){
+					for(CustomerFile eF : customer.getCustomerFiles()){
+						if(eF.getFileName().equalsIgnoreCase(file)){
+							listTobeRemoved.add(eF);
+						}
 					}
 				}
+				for(CustomerFile rf:listTobeRemoved){
+					customer.removeCustomerFile(rf);
+				}
 			}
-			for(CustomerFile rf:listTobeRemoved){
-				customer.removeCustomerFile(rf);
-			}
+		
 		}else{
 			customer = new Customer();
 		}
