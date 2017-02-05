@@ -789,10 +789,15 @@ public class AppController {
 		model.addAttribute("customers", customerMap);
 
 		Map<String, String> poMap = new HashMap<String, String>(); 
-		List<PurchaseOrder> purchaseOrders = commonService.retrieveAllPos(null);
-		for(PurchaseOrder purchaseOrder2 : purchaseOrders){
-			poMap.put(String.valueOf(purchaseOrder2.getPid()), purchaseOrder2.getPoId());
+		if(jobcardCreated!=null){
+			poMap = commonService.findPOByCustId(jobcardDTO.getCustomer());
+		}else{
+			List<PurchaseOrder> purchaseOrders = commonService.retrieveAllPos(null);
+			for(PurchaseOrder purchaseOrder2 : purchaseOrders){
+				poMap.put(String.valueOf(purchaseOrder2.getPid()), purchaseOrder2.getPoId());
+			}
 		}
+		
 		model.addAttribute("poList", poMap);
 		
 		return "createjobcard";	

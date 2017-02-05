@@ -356,78 +356,76 @@
 			   		 	<div id="alreadySavedContacts" class="control-group">
 			   		 		<table id="customFieldsExisting">
 				   		 	<jstl:forEach var="eachTask" items="${jobCardSelected.tasks}">
-				   			 	<jstl:set var="splittedString"
-															value="${fn:split(eachTask, '[|]')}" />
 				                <tr>
 					               <td class="joboperationbox">
 					                 	  		<div>
 				  								<jstl:forEach items="${operations}" var="eachOp">
-															<jstl:if test="${eachOp.key == splittedString[0]}">
+															<jstl:if test="${eachOp.key == eachTask.joId}">
 											   		 			   <p id="jobop" class="form-control block show">${eachOp.value}</p>
 											   		 		</jstl:if>
 											   	</jstl:forEach>
 												<select class="form-control block hide" name="jobop" id="jobop">
 								 			 		<option value="">Select</option>
 							  						<jstl:forEach items="${operations}" var="eachOp">
-							  				  			<option value="${eachOp.key}" ${splittedString[0] == eachOp.key ? 'selected' : ''}>${eachOp.value}</option>
+							  				  			<option value="${eachOp.key}" ${eachTask.joId == eachOp.key ? 'selected' : ''}>${eachOp.value}</option>
 							  						</jstl:forEach>
 												</select>
 												</div>
 									</td><td class="joboperationbox">			
 												<div>
-												<p id="notes" class="form-control block show alwaysEditable">${splittedString[1]}</p>
-   		 										<input type="text" class="form-control block hide alwaysEditable" id="notes" placeholder="Notes" name="notes" value="${splittedString[1]}">
+												<p id="notes" class="form-control block show alwaysEditable">${eachTask.notes}</p>
+   		 										<input type="text" class="form-control block hide alwaysEditable" id="notes" placeholder="Notes" name="notes" value="${eachTask.notes}">
 												</div>
 									</td><td class="joboperationbox">			
 												<div>
-												<p id="assignee" class="form-control block show alwaysEditable">${splittedString[2]}</p>
-   		 										<input type="text" class="form-control block hide alwaysEditable" id="assignee" placeholder="Assignee" name="assignee" value="${splittedString[2]}">
+												<p id="assignee" class="form-control block show alwaysEditable">${eachTask.assignee}</p>
+   		 										<input type="text" class="form-control block hide alwaysEditable" id="assignee" placeholder="Assignee" name="assignee" value="${eachTask.assignee}">
 												</div>
 									</td><td class="joboperationbox">			
 												<div>
-												<p id="startTime" class="form-control block show alwaysEditable">${splittedString[3]}</p>
-   		 										<input type="text" class="form-control block hide alwaysEditable" id="startTime" placeholder="Start Time" name="startTime" value="${splittedString[3]}">
+												<p id="startTime" class="form-control block show alwaysEditable">${eachTask.startTime}</p>
+   		 										<input type="text" class="form-control block hide alwaysEditable" id="startTime" placeholder="Start Time" name="startTime" value="${eachTask.startTime}">
 												</div>
 									</td><td class="joboperationbox">			
 												<div >
-												<p id="endTime" class="form-control block show alwaysEditable">${splittedString[4]}</p>
-   		 										<input type="text" class="form-control block hide alwaysEditable" id="endTime" placeholder="End Time" name="endTime" value="${splittedString[4]}">
+												<p id="endTime" class="form-control block show alwaysEditable">${eachTask.endTime}</p>
+   		 										<input type="text" class="form-control block hide alwaysEditable" id="endTime" placeholder="End Time" name="endTime" value="${eachTask.endTime}">
 												</div>
 									</td><td class="joboperationbox">			
 												<div >
-												<p id="duration" class="form-control block show alwaysEditable">${splittedString[5]}</p>
-   		 										<input type="text" class="form-control block hide alwaysEditable" id="duration" placeholder="Duration(Mins)" name="duration" value="${splittedString[5]}">
+												<p id="duration" class="form-control block show alwaysEditable">${eachTask.timeTaken}</p>
+   		 										<input type="text" class="form-control block hide alwaysEditable" id="duration" placeholder="Duration(Mins)" name="duration" value="${eachTask.timeTaken}">
 												</div>
 									</td><td class="joboperationbox">			
 												<div >
 												<jstl:forEach items="${machines}" var="eachMachine">
-															<jstl:if test="${eachMachine.key == splittedString[6]}">
+															<jstl:if test="${eachMachine.key == eachTask.machineId}">
 											   		 			   <p id="machine" class="form-control block show alwaysEditable">${eachMachine.value}</p>
 											   		 		</jstl:if>
 											   	</jstl:forEach>
 												<select class="form-control block hide alwaysEditable" name="machine" id="machine">
 								 			 		<option value="">Machine</option>
 							  						<jstl:forEach items="${machines}" var="eachMachine">
-							  				  			<option value="${eachMachine.key}" ${splittedString[6] == eachMachine.key ? 'selected' : ''}>${eachMachine.value}</option>
+							  				  			<option value="${eachMachine.key}" ${eachTask.machineId == eachMachine.key ? 'selected' : ''}>${eachMachine.value}</option>
 							  						</jstl:forEach>
 												</select>
 												 </div>
 									</td><td class="joboperationbox">			
 												<div >
-												<p id="cost" class="form-control block show alwaysEditable">${splittedString[7]}</p>
-   		 										<input type="text" class="form-control block hide alwaysEditable" id="cost" placeholder="Cost" name="cost" value="${splittedString[7]}">
+												<p id="cost" class="form-control block show alwaysEditable">${eachTask.cost}</p>
+   		 										<input type="text" class="form-control block hide alwaysEditable" id="cost" placeholder="Cost" name="cost" value="${eachTask.cost}">
 												</div>
 									</td><td class="joboperationbox">			
 												<div >
 												<jstl:forEach items="${states}" var="eachState">
-															<jstl:if test="${eachState.key == splittedString[8]}">
+															<jstl:if test="${eachState.key == eachTask.status}">
 											   		 			   <p id="taskStatus" class="form-control block show alwaysEditable">${eachState.value}</p>
 											   		 		</jstl:if>
 											   	</jstl:forEach>
 												<select class="form-control block hide alwaysEditable" name="taskStatus" id="taskStatus">
 								 			 		<option value="">State</option>
 							  						<jstl:forEach items="${states}" var="eachState">
-							  				  			<option value="${eachState.key}" ${splittedString[8] == eachState.key ? 'selected' : ''}>${eachState.value}</option>
+							  				  			<option value="${eachState.key}" ${eachTask.status == eachState.key ? 'selected' : ''}>${eachState.value}</option>
 							  						</jstl:forEach>
 												</select>
 												 </div>

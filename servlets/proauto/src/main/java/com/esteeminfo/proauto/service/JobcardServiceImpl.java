@@ -17,6 +17,7 @@ import com.esteeminfo.proauto.dao.FileUploadDAO;
 import com.esteeminfo.proauto.dao.JobcardDao;
 import com.esteeminfo.proauto.dto.EmployeeDTO;
 import com.esteeminfo.proauto.dto.JobcardDTO;
+import com.esteeminfo.proauto.dto.JobcardTaskDTO;
 import com.esteeminfo.proauto.entity.Contact;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.Employee;
@@ -55,12 +56,20 @@ public class JobcardServiceImpl implements JobcardService {
 			jobcardDTO.setPo(String.valueOf(jobcard.getPurchaseOrder().getPid()));
 		}
 		if(jobcard.getJobcardTasks()!=null && jobcard.getJobcardTasks().size()>0){
-			List<String> tasks =  new ArrayList<String>();
+			List<JobcardTaskDTO> tasks =  new ArrayList<JobcardTaskDTO>();
 			for(JobcardTask jobcardTask : jobcard.getJobcardTasks()){
 				if(jobcardTask!=null && jobcardTask.getJoId()>0 ){
-					String taskStatus = jobcardTask.getStatusBean()!=null ? String.valueOf(jobcardTask.getStatusBean().getStatusId()) : "";
-					tasks.add(jobcardTask.getJoId()+"|"+jobcardTask.getNotes()+"|"+jobcardTask.getAssignee()+"|"+jobcardTask.getStartTime()+"|"+jobcardTask.getEndTime()
-					+"|"+jobcardTask.getTimeTaken()+"|"+jobcardTask.getMachineId()+"|"+jobcardTask.getCost()+"|"+taskStatus);
+					JobcardTaskDTO jobcardTaskDTO = new JobcardTaskDTO();
+					jobcardTaskDTO.setJoId(String.valueOf(jobcardTask.getJoId()));
+					jobcardTaskDTO.setNotes(jobcardTask.getNotes());
+					jobcardTaskDTO.setAssignee(jobcardTask.getAssignee());
+					jobcardTaskDTO.setStartTime(jobcardTask.getStartTime());
+					jobcardTaskDTO.setEndTime(jobcardTask.getEndTime());
+					jobcardTaskDTO.setTimeTaken(jobcardTask.getTimeTaken());
+					jobcardTaskDTO.setMachineId(String.valueOf(jobcardTask.getMachineId()));
+					jobcardTaskDTO.setCost(jobcardTask.getCost());
+					jobcardTaskDTO.setStatus(jobcardTask.getStatusBean()!=null ? String.valueOf(jobcardTask.getStatusBean().getStatusId()) : "");
+					tasks.add(jobcardTaskDTO);
 				}
 			}
 			jobcardDTO.setTasks(tasks);

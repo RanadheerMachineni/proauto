@@ -1,6 +1,5 @@
 package com.esteeminfo.proauto.dto;
 
-import java.util.Date;
 import java.util.List;
 
 public class JobcardDTO {
@@ -13,8 +12,7 @@ public class JobcardDTO {
 	private String createdBy;
 	private String jobStart;
 	private String jobEnd;
-	List<String> tasks;
-
+	List<JobcardTaskDTO> tasks;
 	public int getId() {
 		return id;
 	}
@@ -69,10 +67,10 @@ public class JobcardDTO {
 	public void setJobEnd(String jobEnd) {
 		this.jobEnd = jobEnd;
 	}
-	public List<String> getTasks() {
+	public List<JobcardTaskDTO> getTasks() {
 		return tasks;
 	}
-	public void setTasks(List<String> tasks) {
+	public void setTasks(List<JobcardTaskDTO> tasks) {
 		this.tasks = tasks;
 	}
 
