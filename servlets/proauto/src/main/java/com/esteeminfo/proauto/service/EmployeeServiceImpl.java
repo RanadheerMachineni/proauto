@@ -2,7 +2,9 @@ package com.esteeminfo.proauto.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import com.esteeminfo.proauto.dao.EmployeeDao;
 import com.esteeminfo.proauto.dto.EmployeeDTO;
 import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.EmployeeFile;
+import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.Role;
 
 @Service("employeeService")
@@ -132,6 +135,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public byte[] findFile(Integer eid, String fileName) {
 		byte[] fileData = employeeDao.findFileData(eid, fileName);
 		return fileData;
+	}
+
+	public Map<String, String> getEmployees() {
+		List<Employee> list= employeeDao.retrieveAllEmployees(null);
+		Map<String, String> emp = new HashMap<String, String>();
+		for(Employee employee : list){
+			emp.put(String.valueOf(employee.getEmployeeId()), employee.getFirstName());
+		}
+		return emp;
 	}
 
 

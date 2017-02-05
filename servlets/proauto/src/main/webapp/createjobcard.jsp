@@ -38,10 +38,10 @@
 		}
 	
 	}
-	
+
 	$(document).on("click", ".insertRow", function(event) {
 		 $('#customFields').append('<tr>'+
-				 '<td class="joboperationbox">  		  <div>    	 	 <select class="form-control" name="jobop" id="jobop">			 		<option value="">Select</option>						<jstl:forEach items="${operations}" var="eachOp">				  			<option value="${eachOp.key}">${eachOp.value}</option>						</jstl:forEach>				</select>			</div>	</td><td class="joboperationbox">						<div>				<input type="text" class="form-control" id="notes"				name="notes" value="" placeholder="Notes" />				</div>	</td><td class="joboperationbox">						<div>				<input type="text" class="form-control" id="assignee"				name="assignee" value="" placeholder="Assignee" />				</div>	</td><td class="joboperationbox">						<div>				<input type="text" class="form-control" id="startTime"				name="startTime" value="" placeholder="Start Time" />				</div>	</td><td class="joboperationbox">						<div >				<input type="text" class="form-control" id="endTime"				name="endTime" value="" placeholder="End Time" />				</div>	</td><td class="joboperationbox">						<div >				<input type="text" class="form-control" id="duration"				name="duration" value="" placeholder="Duration(Mins)" />				</div>	</td><td class="joboperationbox">						<div >				<select class="form-control" name="machine" id="machine">			 		<option value="">Machine</option>						<jstl:forEach items="${machines}" var="eachMachine">				  			<option value="${eachMachine.key}">${eachMachine.value}</option>						</jstl:forEach>				</select>				 </div>	</td><td class="joboperationbox">						<div >				 <input type="text" class="form-control" id="cost" name="cost"				value="" placeholder="Cost" />				</div>	</td><td class="joboperationbox">						<div >				<select class="form-control" name="taskStatus"						id="taskStatus"> 					<option value="">State</option>						<jstl:forEach items="${states}" var="eachState">				  			<option value="${eachState.key}">${eachState.value}</option>						</jstl:forEach>				</select>				 </div>	</td><td class="joboperationbox">						<div >				<input type="button" class="form-control deleteButton" value="Delete" />				</div>				 	</td>'
+				 '<td class="joboperationbox">  		  <div>    	 	 <select class="form-control" name="jobop" id="jobop">			 		<option value="">Select</option>						<jstl:forEach items="${operations}" var="eachOp">				  			<option value="${eachOp.key}">${eachOp.value}</option>						</jstl:forEach>				</select>			</div>	</td><td class="joboperationbox">						<div>				<input type="text" class="form-control" id="notes"				name="notes" value="" placeholder="Notes" />				</div>	</td> <td class="joboperationbox">				<div>	 <select class="form-control" name="assignee" id="assignee">	 		<option value="">Select</option>			<jstl:forEach items="${employees}" var="eachEmp">	  			<option value="${eachEmp.key}">${eachEmp.value}</option>			</jstl:forEach>	</select>	</div></td><td class="joboperationbox">		<div>	 <select class="form-control" name="programmer" id="programmer">	 		<option value="">Select</option>			<jstl:forEach items="${employees}" var="eachEmp">	  			<option value="${eachEmp.key}">${eachEmp.value}</option>			</jstl:forEach>	</select>	</div></td><td class="joboperationbox">						<div >				<input type="text" class="form-control" id="duration"				name="duration" value="" placeholder="Duration(Mins)" />				</div>	</td><td class="joboperationbox">						<div >				<select class="form-control" name="machine" id="machine">			 		<option value="">Machine</option>						<jstl:forEach items="${machines}" var="eachMachine">				  			<option value="${eachMachine.key}">${eachMachine.value}</option>						</jstl:forEach>				</select>				 </div>	</td><td class="joboperationbox">						<div >				 <input type="text" class="form-control" id="cost" readonly="readonly" name="cost"				value="" placeholder="Cost" />				</div>	</td><td class="joboperationbox">						<div >				<select class="form-control" name="taskStatus"						id="taskStatus"> 					<option value="">State</option>						<jstl:forEach items="${states}" var="eachState">				  			<option value="${eachState.key}">${eachState.value}</option>						</jstl:forEach>				</select>				 </div>	</td><td class="joboperationbox">						<div >				<input type="button" class="form-control deleteButton" value="Delete" />				</div>				 	</td>'
 				+'</tr>')
 		
 	});
@@ -376,20 +376,33 @@
 												<p id="notes" class="form-control block show alwaysEditable">${eachTask.notes}</p>
    		 										<input type="text" class="form-control block hide alwaysEditable" id="notes" placeholder="Notes" name="notes" value="${eachTask.notes}">
 												</div>
-									</td><td class="joboperationbox">			
+									</td><td class="joboperationbox">
 												<div>
-												<p id="assignee" class="form-control block show alwaysEditable">${eachTask.assignee}</p>
-   		 										<input type="text" class="form-control block hide alwaysEditable" id="assignee" placeholder="Assignee" name="assignee" value="${eachTask.assignee}">
+												<jstl:forEach items="${employees}" var="eachEmp">
+															<jstl:if test="${eachEmp.key == eachTask.assignee}">
+											   		 			   <p id="assignee" class="form-control block show">${eachEmp.value}</p>
+											   		 		</jstl:if>
+											   	</jstl:forEach>
+												<select class="form-control block hide" name="assignee" id="assignee">
+								 			 		<option value="">Select</option>
+							  						<jstl:forEach items="${employees}" var="eachEmp">
+							  				  			<option value="${eachEmp.key}" ${eachTask.assignee == eachEmp.key ? 'selected' : ''}>${eachEmp.value}</option>
+							  						</jstl:forEach>
+												</select>
 												</div>
 									</td><td class="joboperationbox">			
 												<div>
-												<p id="startTime" class="form-control block show alwaysEditable">${eachTask.startTime}</p>
-   		 										<input type="text" class="form-control block hide alwaysEditable" id="startTime" placeholder="Start Time" name="startTime" value="${eachTask.startTime}">
-												</div>
-									</td><td class="joboperationbox">			
-												<div >
-												<p id="endTime" class="form-control block show alwaysEditable">${eachTask.endTime}</p>
-   		 										<input type="text" class="form-control block hide alwaysEditable" id="endTime" placeholder="End Time" name="endTime" value="${eachTask.endTime}">
+												<jstl:forEach items="${employees}" var="eachEmp">
+															<jstl:if test="${eachEmp.key == eachTask.programmer}">
+											   		 			   <p id="programmer" class="form-control block show">${eachEmp.value}</p>
+											   		 		</jstl:if>
+											   	</jstl:forEach>
+												<select class="form-control block hide" name="programmer" id="programmer">
+								 			 		<option value="">Select</option>
+							  						<jstl:forEach items="${employees}" var="eachEmp">
+							  				  			<option value="${eachEmp.key}" ${eachTask.programmer == eachEmp.key ? 'selected' : ''}>${eachEmp.value}</option>
+							  						</jstl:forEach>
+												</select>
 												</div>
 									</td><td class="joboperationbox">			
 												<div >
@@ -412,8 +425,8 @@
 												 </div>
 									</td><td class="joboperationbox">			
 												<div >
-												<p id="cost" class="form-control block show alwaysEditable">${eachTask.cost}</p>
-   		 										<input type="text" class="form-control block hide alwaysEditable" id="cost" placeholder="Cost" name="cost" value="${eachTask.cost}">
+												<p id="cost" class="form-control block show">${eachTask.cost}</p>
+   		 										<input type="text" class="form-control block hide" id="cost" placeholder="Cost" readonly="readonly" name="cost" value="${eachTask.cost}">
 												</div>
 									</td><td class="joboperationbox">			
 												<div >
@@ -461,18 +474,21 @@
 												</div>
 									</td><td class="joboperationbox">			
 												<div>
-												<input type="text" class="form-control" id="assignee"
-												name="assignee" value="" placeholder="Assignee" />
+												 <select class="form-control" name="assignee" id="assignee">
+								 			 		<option value="">Select</option>
+							  						<jstl:forEach items="${employees}" var="eachEmp">
+							  				  			<option value="${eachEmp.key}">${eachEmp.value}</option>
+							  						</jstl:forEach>
+												</select>
 												</div>
 									</td><td class="joboperationbox">			
 												<div>
-												<input type="text" class="form-control" id="startTime"
-												name="startTime" value="" placeholder="Start Time" />
-												</div>
-									</td><td class="joboperationbox">			
-												<div >
-												<input type="text" class="form-control" id="endTime"
-												name="endTime" value="" placeholder="End Time" />
+												 <select class="form-control" name="programmer" id="programmer">
+								 			 		<option value="">Select</option>
+							  						<jstl:forEach items="${employees}" var="eachEmp">
+							  				  			<option value="${eachEmp.key}">${eachEmp.value}</option>
+							  						</jstl:forEach>
+												</select>
 												</div>
 									</td><td class="joboperationbox">			
 												<div >

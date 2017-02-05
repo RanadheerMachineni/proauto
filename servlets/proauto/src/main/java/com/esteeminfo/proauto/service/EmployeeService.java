@@ -1,6 +1,7 @@
 package com.esteeminfo.proauto.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +28,8 @@ public interface EmployeeService {
 	EmployeeDTO converEmployeeToDto(Employee employee,List<String> fileNames);
 
 	byte[] findFile(Integer valueOf, String fileNameFromUI);
+
+	Map<String, String> getEmployees();
 
 	//FilesUpload findFile(Integer eid, String fname);
 

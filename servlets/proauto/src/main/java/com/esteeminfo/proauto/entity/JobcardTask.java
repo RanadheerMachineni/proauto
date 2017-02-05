@@ -20,8 +20,6 @@ public class JobcardTask implements Serializable {
 	@Column(name="task_id")
 	private int taskId;
 
-	private String assignee;
-
 	private String cost;
 
 	@Column(name="end_time")
@@ -29,9 +27,6 @@ public class JobcardTask implements Serializable {
 
 	@Column(name="jo_id")
 	private int joId;
-
-	@Column(name="machine_id")
-	private int machineId;
 
 	private String notes;
 
@@ -53,6 +48,23 @@ public class JobcardTask implements Serializable {
 	@JoinColumn(name="status")
 	private Status statusBean;
 	
+	
+	//bi-directional many-to-one association to Employee
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="assignee")
+	private Employee assignee;
+
+	//bi-directional many-to-one association to Employee
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="programmer")
+	private Employee programmer;
+
+	//bi-directional many-to-one association to Machine
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="machine_id")
+	private Machine machine;
+
+	
 	public JobcardTask() {
 	}
 
@@ -64,13 +76,7 @@ public class JobcardTask implements Serializable {
 		this.taskId = taskId;
 	}
 
-	public String getAssignee() {
-		return this.assignee;
-	}
 
-	public void setAssignee(String assignee) {
-		this.assignee = assignee;
-	}
 
 	public String getCost() {
 		return this.cost;
@@ -86,14 +92,6 @@ public class JobcardTask implements Serializable {
 
 	public void setJoId(int joId) {
 		this.joId = joId;
-	}
-
-	public int getMachineId() {
-		return this.machineId;
-	}
-
-	public void setMachineId(int machineId) {
-		this.machineId = machineId;
 	}
 
 	public String getNotes() {
@@ -153,4 +151,27 @@ public class JobcardTask implements Serializable {
 		this.startTime = startTime;
 	}
 
+	public Machine getMachine() {
+		return this.machine;
+	}
+
+	public void setMachine(Machine machine) {
+		this.machine = machine;
+	}
+
+	public Employee getAssignee() {
+		return assignee;
+	}
+
+	public void setAssignee(Employee assignee) {
+		this.assignee = assignee;
+	}
+
+	public Employee getProgrammer() {
+		return programmer;
+	}
+
+	public void setProgrammer(Employee programmer) {
+		this.programmer = programmer;
+	}
 }

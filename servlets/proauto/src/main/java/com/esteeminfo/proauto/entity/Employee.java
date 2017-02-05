@@ -2,6 +2,7 @@ package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -103,6 +104,15 @@ public class Employee implements Serializable {
 
 	@Column(name="zip_code_pa")
 	private String zipCodePa;
+	
+	//bi-directional many-to-one association to JobcardTask
+	@OneToMany(mappedBy="assignee",fetch=FetchType.LAZY)
+	private Set<JobcardTask> assigneeTasks;
+
+	//bi-directional many-to-one association to JobcardTask
+	@OneToMany(mappedBy="programmer",fetch=FetchType.LAZY)
+	private Set<JobcardTask> programmerTasks;
+	
 
 	//bi-directional many-to-many association to Role
 	@ManyToMany(fetch=FetchType.LAZY)
@@ -400,6 +410,46 @@ public class Employee implements Serializable {
 		employeeFile.setEmployee(null);
 
 		return employeeFile;
+	}
+
+	public Set<JobcardTask> getAssigneeTasks() {
+		return assigneeTasks;
+	}
+
+	public void setAssigneeTasks(Set<JobcardTask> assigneeTasks) {
+		this.assigneeTasks = assigneeTasks;
+	}
+
+	public JobcardTask addAssigneeTasks(JobcardTask jobcardTasks) {
+		getAssigneeTasks().add(jobcardTasks);
+		jobcardTasks.setAssignee(this);
+		return jobcardTasks;
+	}
+
+	public JobcardTask removeAssigneeTasks(JobcardTask jobcardTasks) {
+		getAssigneeTasks().remove(jobcardTasks);
+		jobcardTasks.setAssignee(null);
+		return jobcardTasks;
+	}
+
+	public Set<JobcardTask> getProgrammerTasks() {
+		return programmerTasks;
+	}
+
+	public void setProgrammerTasks(Set<JobcardTask> programmerTasks) {
+		this.programmerTasks = programmerTasks;
+	}
+
+	public JobcardTask addProgrammerTasks(JobcardTask jobcardTasks) {
+		getProgrammerTasks().add(jobcardTasks);
+		jobcardTasks.setProgrammer(this);
+		return jobcardTasks;
+	}
+
+	public JobcardTask removeProgrammerTasks(JobcardTask jobcardTasks) {
+		getProgrammerTasks().remove(jobcardTasks);
+		jobcardTasks.setProgrammer(null);
+		return jobcardTasks;
 	}
 
 }

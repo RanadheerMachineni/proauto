@@ -704,6 +704,10 @@ public class AppController {
 		machineMap  = commonService.getMachines();
 		model.addAttribute("machines", machineMap);
 		
+		Map<String, String> empMap = new HashMap<String, String>(); 
+		empMap  = employeeService.getEmployees();
+		model.addAttribute("employees", empMap);
+		
 		model.addAttribute("jobCardSelected", jobcardDTO);
 
 		return "createjobcard";
@@ -734,8 +738,7 @@ public class AppController {
 		String[] jobop = request.getParameterValues("jobop");
 		String[] notes = request.getParameterValues("notes");
 		String[] assignee = request.getParameterValues("assignee");
-		String[] startTime = request.getParameterValues("startTime");
-		String[] endTime = request.getParameterValues("endTime");
+		String[] programmer = request.getParameterValues("programmer");
 		String[] duration = request.getParameterValues("duration");
 		String[] machine = request.getParameterValues("machine");
 		String[] cost = request.getParameterValues("cost");
@@ -745,7 +748,7 @@ public class AppController {
 
 		try {
 			jobcardCreated  = jobcardService.registerJobcard(create,jid, name,desc,customer,purchaseOrder,status,createdBy,jobStart,jobEnd,jobop,
-					notes,assignee,startTime,endTime,duration,machine,cost,taskStatus);
+					notes,assignee,programmer,duration,machine,cost,taskStatus);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -789,6 +792,10 @@ public class AppController {
 		Map<String, String> machineMap = new HashMap<String, String>(); 
 		machineMap  = commonService.getMachines();
 		model.addAttribute("machines", machineMap);
+		
+		Map<String, String> empMap = new HashMap<String, String>(); 
+		empMap  = employeeService.getEmployees();
+		model.addAttribute("employees", empMap);
 		
 		Map<String, String> customerMap = new HashMap<String, String>(); 
 		customerMap = customerService.retreiveCustomerMap();

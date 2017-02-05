@@ -28,7 +28,8 @@
 											required : true
 										},
 										mCost : {
-											required : true
+											required : true,
+											number   : true
 										}
 									},
 									highlight : function(element) {

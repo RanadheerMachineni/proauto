@@ -1,6 +1,5 @@
 package com.esteeminfo.proauto.dto;
 
-import com.esteeminfo.proauto.entity.Status;
 
 public class JobcardTaskDTO {
 	private String joId;
@@ -9,6 +8,8 @@ public class JobcardTaskDTO {
 
 	private String assignee;
 	
+	private String programmer;
+
 	private String startTime;
 
 	private String endTime;
@@ -91,6 +92,14 @@ public class JobcardTaskDTO {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getProgrammer() {
+		return programmer;
+	}
+
+	public void setProgrammer(String programmer) {
+		this.programmer = programmer;
 	}
 	
 }

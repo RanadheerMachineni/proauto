@@ -62,11 +62,14 @@ public class JobcardServiceImpl implements JobcardService {
 					JobcardTaskDTO jobcardTaskDTO = new JobcardTaskDTO();
 					jobcardTaskDTO.setJoId(String.valueOf(jobcardTask.getJoId()));
 					jobcardTaskDTO.setNotes(jobcardTask.getNotes());
-					jobcardTaskDTO.setAssignee(jobcardTask.getAssignee());
+					String ass = jobcardTask.getAssignee()==null?"":String.valueOf(jobcardTask.getAssignee().getEmployeeId());
+					String pro = jobcardTask.getProgrammer()==null?"":String.valueOf(jobcardTask.getProgrammer().getEmployeeId());
+					jobcardTaskDTO.setAssignee(ass);
+					jobcardTaskDTO.setProgrammer(pro);
 					jobcardTaskDTO.setStartTime(jobcardTask.getStartTime());
 					jobcardTaskDTO.setEndTime(jobcardTask.getEndTime());
 					jobcardTaskDTO.setTimeTaken(jobcardTask.getTimeTaken());
-					jobcardTaskDTO.setMachineId(String.valueOf(jobcardTask.getMachineId()));
+					jobcardTaskDTO.setMachineId(String.valueOf(jobcardTask.getMachine().getMachineId()));
 					jobcardTaskDTO.setCost(jobcardTask.getCost());
 					jobcardTaskDTO.setStatus(jobcardTask.getStatusBean()!=null ? String.valueOf(jobcardTask.getStatusBean().getStatusId()) : "");
 					tasks.add(jobcardTaskDTO);
@@ -84,11 +87,11 @@ public class JobcardServiceImpl implements JobcardService {
 
 	public Jobcard registerJobcard(String create, String jid, String name, String desc, Customer customer,
 			PurchaseOrder purchaseOrder, String status, String createdBy, String jobStart, String jobEnd,
-			String[] jobop, String[] notes, String[] assignee, String[] startTime, String[] endTime, String[] duration,
+			String[] jobop, String[] notes, String[] assignee, String[] programmer, String[] duration,
 			String[] machine, String[] cost, String[] taskStatus) throws Exception {
 		return jobcardDao.registerJobcard(create, jid, name, desc, customer,
 				purchaseOrder, status, createdBy,  jobStart,  jobEnd,
-				 jobop,  notes,  assignee,  startTime,  endTime, duration,
+				 jobop,  notes,  assignee,  programmer, duration,
 				 machine,  cost, taskStatus);
 	}
 

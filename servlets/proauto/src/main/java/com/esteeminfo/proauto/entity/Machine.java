@@ -1,6 +1,8 @@
 package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
+import java.util.Set;
+
 import javax.persistence.*;
 
 
@@ -30,6 +32,10 @@ public class Machine implements Serializable {
 	@Column(name="machine_desc")
 	private String machineDesc;
 
+	//bi-directional many-to-one association to JobcardTask
+	@OneToMany(mappedBy="machine",fetch=FetchType.LAZY)
+	private Set<JobcardTask> jobcardTasks;
+	
 	public Machine() {
 	}
 
@@ -72,5 +78,27 @@ public class Machine implements Serializable {
 	public void setMachineDesc(String machineDesc) {
 		this.machineDesc = machineDesc;
 	}
+	
+	public Set<JobcardTask> getJobcardTasks() {
+		return this.jobcardTasks;
+	}
+
+	public void setJobcardTasks(Set<JobcardTask> jobcardTasks) {
+		this.jobcardTasks = jobcardTasks;
+	}
+
+	public JobcardTask addJobcardTask(JobcardTask jobcardTask) {
+		getJobcardTasks().add(jobcardTask);
+		jobcardTask.setMachine(this);
+		return jobcardTask;
+	}
+
+	public JobcardTask removeJobcardTask(JobcardTask jobcardTask) {
+		getJobcardTasks().remove(jobcardTask);
+		jobcardTask.setMachine(null);
+
+		return jobcardTask;
+	}
+
 
 }

@@ -18,10 +18,12 @@ import com.esteeminfo.proauto.entity.Department;
 import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.Jobcard;
 import com.esteeminfo.proauto.entity.JobcardTask;
+import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.entity.Role;
 import com.esteeminfo.proauto.entity.Section;
 import com.esteeminfo.proauto.entity.Status;
+import com.esteeminfo.proauto.service.EmployeeService;
 
 @Repository("jobcardDao")
 public class JobcardDaoImpl extends AbstractDao implements JobcardDao {
@@ -46,7 +48,7 @@ public class JobcardDaoImpl extends AbstractDao implements JobcardDao {
 
 	public Jobcard registerJobcard(String create, String jobcardId, String name, String desc, Customer customer,
 			PurchaseOrder purchaseOrder, String status, String createdBy, String jobStart, String jobEnd,
-			String[] jobop, String[] notes, String[] assignee, String[] startTime, String[] endTime, String[] duration,
+			String[] jobop, String[] notes, String[] assignee, String[] programmer,  String[] duration,
 			String[] machine, String[] cost, String[] taskStatus) throws Exception {
 		int jid = (jobcardId == null || jobcardId.length() == 0 ) ? 0:Integer.valueOf(jobcardId); 
 		java.util.Date javaStartdate = null;
@@ -85,14 +87,36 @@ public class JobcardDaoImpl extends AbstractDao implements JobcardDao {
 				JobcardTask jobcardTask = new JobcardTask();
 				jobcardTask.setJoId(Integer.valueOf(jobop[i]));
 				jobcardTask.setNotes(notes[i]);
-				jobcardTask.setAssignee(assignee[i]);
-				jobcardTask.setStartTime(startTime[i]);
-				jobcardTask.setEndTime(endTime[i]);
-				jobcardTask.setTimeTaken(duration[i]);
-				if(machine[i]!=null && machine[i].length()>0){
-					jobcardTask.setMachineId(Integer.valueOf(machine[i]));
+				String assigneeId = assignee[i];
+				if(assigneeId!=null && assigneeId.length()>0){
+					Employee assigneeOb = entityManager.find(Employee.class, Integer.valueOf(assigneeId));	
+					jobcardTask.setAssignee(assigneeOb);
 				}
-				jobcardTask.setCost(cost[i]);
+				
+				String programmerId = programmer[i];
+				if(programmerId!=null && programmerId.length()>0){
+					Employee programmerObj = entityManager.find(Employee.class, Integer.valueOf(programmerId));	
+					jobcardTask.setProgrammer(programmerObj);
+				}
+				String tt = duration[i];
+				jobcardTask.setTimeTaken(tt);
+				if(machine[i]!=null && machine[i].length()>0){
+					int mid = Integer.valueOf(machine[i]);
+					Machine m = entityManager.find(Machine.class, Integer.valueOf(mid));
+					jobcardTask.setMachine(m);
+					int durInt=0;
+					 try {
+						 durInt =  Integer.parseInt(tt);
+					 } catch (NumberFormatException nfe) {
+					}
+					 
+					if(durInt > 0){
+						jobcardTask.setCost(String.valueOf(Integer.valueOf(m.getMachineCost())*durInt));	
+					}else{
+						jobcardTask.setCost("0");	
+					}
+				}
+				
 				if(taskStatus[i]!=null && taskStatus[i].length()>0){
 					jobcardTask.setStatusBean(entityManager.find(Status.class, Integer.valueOf(taskStatus[i])));
 				}

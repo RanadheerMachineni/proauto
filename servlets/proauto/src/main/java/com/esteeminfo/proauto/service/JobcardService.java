@@ -13,7 +13,7 @@ public interface JobcardService {
 	
 	List<Jobcard> retrieveAllJobcards(String jobcardSearched);
 
-	Jobcard registerJobcard(String create, String jid, String name, String desc, Customer customer, PurchaseOrder purchaseOrder, String status, String createdBy, String jobStart, String jobEnd, String[] jobop, String[] notes, String[] assignee, String[] startTime, String[] endTime, String[] duration, String[] machine, String[] cost, String[] taskStatus) throws Exception;
+	Jobcard registerJobcard(String create, String jid, String name, String desc, Customer customer, PurchaseOrder purchaseOrder, String status, String createdBy, String jobStart, String jobEnd, String[] jobop, String[] notes, String[] assignee, String[] programmer, String[] duration, String[] machine, String[] cost, String[] taskStatus) throws Exception;
 	
 	JobcardDTO converJobcardToDto(Jobcard jobcard);
 

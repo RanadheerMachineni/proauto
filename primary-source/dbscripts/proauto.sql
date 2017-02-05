@@ -291,7 +291,8 @@ CREATE TABLE jobcard_task
 	jobcard_id int not null,
 	jo_id int not null,
 	status int,
-	assignee char(50),
+	assignee int,
+	programmer int,
 	notes char(100),
 	cost char(20),
 	machine_id int,
@@ -300,8 +301,11 @@ CREATE TABLE jobcard_task
 	end_time char(20),
 	task_order int,
 	constraint task_id_pk primary key (task_id),
+   	CONSTRAINT fk_jobcard_task_assignee FOREIGN KEY (assignee) REFERENCES employee(employee_id),
+   	CONSTRAINT fk_jobcard_task_programmer FOREIGN KEY (programmer) REFERENCES employee(employee_id),
    	CONSTRAINT fk_jobcard_task_jobcard_id FOREIGN KEY (jobcard_id) REFERENCES jobcard(jobcard_id),
    	CONSTRAINT fk_jobcard_task_jo_id FOREIGN KEY (jo_id) REFERENCES job_operation(jo_id),
+	CONSTRAINT fk_jobcard_task_machine_id FOREIGN KEY (machine_id) REFERENCES machines(machine_id),
    	CONSTRAINT fk_jobcard_task_status FOREIGN KEY (status) REFERENCES status(status_id)
 );
 
