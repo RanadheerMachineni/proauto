@@ -271,10 +271,10 @@
 			   		 		<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
 			   		 			<jstl:forEach items="${states}" var="eachState">
 					   		 		<jstl:if test="${jobCardSelected.state == eachState.key}">
-					   		 			   <p id="status" class="block show">${eachState.value}</p>
+					   		 			   <p id="status" class="block show alwaysEditable">${eachState.value}</p>
 					   		 		</jstl:if>
 		  						</jstl:forEach>
-		  						<select class="form-control block hide" name="status" id="status">
+		  						<select class="form-control block hide alwaysEditable" name="status" id="status">
 				 			 		<option value="">State</option>
 			  						<jstl:forEach items="${states}" var="eachState">
 			  				  			<option value="${eachState.key}"
@@ -284,7 +284,7 @@
 							</jstl:if>
 							
 							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
-								<select class="form-control block show" name="status" id="status">
+								<select class="form-control block show alwaysEditable" name="status" id="status">
 				 			 		<option value="">State</option>
 			  						<jstl:forEach items="${states}" var="eachState">
 			  				  			<option value="${eachState.key}"

@@ -57,6 +57,10 @@ public class JobcardDaoImpl extends AbstractDao implements JobcardDao {
 		Jobcard jobcard = null;
 		if (create.equalsIgnoreCase("false") && jid > 0 ) {
 			jobcard = findById(jid);
+			int oldStatus = jobcard.getStatusBean().getStatusId();
+			if(oldStatus!=1 && Integer.valueOf(status)==1){
+				throw new Exception("Can not move the status of Jobcard from "+jobcard.getStatusBean().getStatus()+" to New");
+			}
 			System.out.println("updating existing jc ******** "+jobcard.getJobcardId());
 			jobcard.getJobcardTasks().clear();
 		}else{

@@ -750,18 +750,25 @@ public class AppController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("error", e.getMessage());
-			jobcardDTO = new JobcardDTO();
-			if(jid!=null && jid.length()>0){
-				jobcardDTO.setId(Integer.valueOf(jid));
+			
+			int jobcardId = (jid == null || jid.length() == 0 ) ? 0:Integer.valueOf(jid); 
+			if (create.equalsIgnoreCase("false") && jobcardId > 0) {
+				jobcardDTO = jobcardService.findDTOById(jobcardId);
+			}else{
+				jobcardDTO = new JobcardDTO();
+				if(jid!=null && jid.length()>0){
+					jobcardDTO.setId(Integer.valueOf(jid));
+				}
+				jobcardDTO.setName(name);
+				jobcardDTO.setDesc(desc);
+				jobcardDTO.setCustomer(customerId);
+				jobcardDTO.setPo(po);
+				jobcardDTO.setState(status);
+				jobcardDTO.setCreatedBy(createdBy);
+				jobcardDTO.setJobStart(jobStart);
+				jobcardDTO.setJobEnd(jobEnd);
 			}
-			jobcardDTO.setName(name);
-			jobcardDTO.setDesc(desc);
-			jobcardDTO.setCustomer(customerId);
-			jobcardDTO.setPo(po);
-			jobcardDTO.setState(status);
-			jobcardDTO.setCreatedBy(createdBy);
-			jobcardDTO.setJobStart(jobStart);
-			jobcardDTO.setJobEnd(jobEnd);
+			
 			model.addAttribute("jobCardSelected", jobcardDTO);
 
 		}
@@ -769,7 +776,6 @@ public class AppController {
 		if(jobcardCreated!=null){
 			jobcardDTO = jobcardService.converJobcardToDto(jobcardCreated);
 			model.addAttribute("jobCardSelected", jobcardDTO);
-
 		}
 		
 		Map<String, String> operations = new HashMap<String, String>(); 
