@@ -69,6 +69,10 @@ public class PurchaseOrder implements Serializable {
 	@OneToMany(mappedBy="purchaseOrder",fetch=FetchType.LAZY)
 	private List<Jobcard> jobcards;
 	
+	//bi-directional many-to-one association to MachineUsage
+	@OneToMany(mappedBy="purchaseOrder",fetch=FetchType.LAZY)
+	private List<MachineUsage> machineUsages;
+	
 	public PurchaseOrder() {
 	}
 
@@ -236,5 +240,27 @@ public class PurchaseOrder implements Serializable {
 		jobcard.setPurchaseOrder(null);
 
 		return jobcard;
+	}
+	
+	public List<MachineUsage> getMachineUsages() {
+		return this.machineUsages;
+	}
+
+	public void setMachineUsages(List<MachineUsage> machineUsages) {
+		this.machineUsages = machineUsages;
+	}
+
+	public MachineUsage addMachineUsage(MachineUsage machineUsage) {
+		getMachineUsages().add(machineUsage);
+		machineUsage.setPurchaseOrder(this);
+
+		return machineUsage;
+	}
+
+	public MachineUsage removeMachineUsage(MachineUsage machineUsage) {
+		getMachineUsages().remove(machineUsage);
+		machineUsage.setPurchaseOrder(null);
+
+		return machineUsage;
 	}
 }

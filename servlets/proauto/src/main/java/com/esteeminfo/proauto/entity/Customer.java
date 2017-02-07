@@ -36,6 +36,10 @@ public class Customer implements Serializable {
 	@Column(name="zip_code")
 	private String zipCode;
 	
+	//bi-directional many-to-one association to MachineUsage
+	@OneToMany(mappedBy="customer",fetch=FetchType.LAZY)
+	private Set<MachineUsage> machineUsages;
+	
 	//bi-directional many-to-many association to Contact
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
@@ -189,6 +193,28 @@ public class Customer implements Serializable {
 		getJobcards().remove(jobcard);
 		jobcard.setCustomer(null);
 		return jobcard;
+	}
+
+	public Set<MachineUsage> getMachineUsages() {
+		return this.machineUsages;
+	}
+
+	public void setMachineUsages(Set<MachineUsage> machineUsages) {
+		this.machineUsages = machineUsages;
+	}
+
+	public MachineUsage addMachineUsage(MachineUsage machineUsage) {
+		getMachineUsages().add(machineUsage);
+		machineUsage.setCustomer(this);
+
+		return machineUsage;
+	}
+
+	public MachineUsage removeMachineUsage(MachineUsage machineUsage) {
+		getMachineUsages().remove(machineUsage);
+		machineUsage.setCustomer(null);
+
+		return machineUsage;
 	}
 
 }

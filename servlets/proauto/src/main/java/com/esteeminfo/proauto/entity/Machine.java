@@ -36,6 +36,10 @@ public class Machine implements Serializable {
 	@OneToMany(mappedBy="machine",fetch=FetchType.LAZY)
 	private Set<JobcardTask> jobcardTasks;
 	
+	//bi-directional many-to-one association to MachineUsage
+	@OneToMany(mappedBy="machine",fetch=FetchType.LAZY)
+	private Set<MachineUsage> machineUsages;
+	
 	public Machine() {
 	}
 
@@ -100,5 +104,25 @@ public class Machine implements Serializable {
 		return jobcardTask;
 	}
 
+	public Set<MachineUsage> getMachineUsages() {
+		return this.machineUsages;
+	}
 
+	public void setMachineUsages(Set<MachineUsage> machineUsages) {
+		this.machineUsages = machineUsages;
+	}
+
+	public MachineUsage addMachineUsage(MachineUsage machineUsage) {
+		getMachineUsages().add(machineUsage);
+		machineUsage.setMachine(this);
+
+		return machineUsage;
+	}
+
+	public MachineUsage removeMachineUsage(MachineUsage machineUsage) {
+		getMachineUsages().remove(machineUsage);
+		machineUsage.setMachine(null);
+
+		return machineUsage;
+	}
 }

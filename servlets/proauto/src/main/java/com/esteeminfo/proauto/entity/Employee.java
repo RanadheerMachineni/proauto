@@ -114,6 +114,15 @@ public class Employee implements Serializable {
 	private Set<JobcardTask> programmerTasks;
 	
 
+
+	//bi-directional many-to-one association to MachineUsage
+	@OneToMany(mappedBy="assignee",fetch=FetchType.LAZY)
+	private Set<MachineUsage> assigneeMachineUsage;
+
+	//bi-directional many-to-one association to MachineUsage
+	@OneToMany(mappedBy="programmer",fetch=FetchType.LAZY)
+	private Set<MachineUsage> programmerMachineUsage;
+	
 	//bi-directional many-to-many association to Role
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
@@ -452,4 +461,43 @@ public class Employee implements Serializable {
 		return jobcardTasks;
 	}
 
+	public Set<MachineUsage> getAssigneeMachineUsage() {
+		return assigneeMachineUsage;
+	}
+
+	public void setAssigneeMachineUsage(Set<MachineUsage> assigneeMachineUsage) {
+		this.assigneeMachineUsage = assigneeMachineUsage;
+	}
+	
+	public MachineUsage addAssigneeMachineUsage(MachineUsage assigneeMachineUsage) {
+		getAssigneeMachineUsage().add(assigneeMachineUsage);
+		assigneeMachineUsage.setAssignee(this);
+		return assigneeMachineUsage;
+	}
+
+	public MachineUsage removeAssigneeMachineUsage(MachineUsage assigneeMachineUsage) {
+		getAssigneeMachineUsage().remove(assigneeMachineUsage);
+		assigneeMachineUsage.setAssignee(null);
+		return assigneeMachineUsage;
+	}
+
+	public Set<MachineUsage> getProgrammerMachineUsage() {
+		return programmerMachineUsage;
+	}
+
+	public void setProgrammerMachineUsage(Set<MachineUsage> programmerMachineUsage) {
+		this.programmerMachineUsage = programmerMachineUsage;
+	}
+	
+	public MachineUsage addProgrammerMachineUsage(MachineUsage programmerMachineUsage) {
+		getProgrammerMachineUsage().add(programmerMachineUsage);
+		programmerMachineUsage.setProgrammer(this);
+		return programmerMachineUsage;
+	}
+
+	public MachineUsage removeProgrammerMachineUsage(MachineUsage programmerMachineUsage) {
+		getProgrammerMachineUsage().remove(programmerMachineUsage);
+		programmerMachineUsage.setProgrammer(null);
+		return programmerMachineUsage;
+	}
 }

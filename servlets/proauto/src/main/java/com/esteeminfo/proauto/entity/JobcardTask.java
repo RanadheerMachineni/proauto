@@ -3,6 +3,7 @@ package com.esteeminfo.proauto.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 
 /**
@@ -38,6 +39,10 @@ public class JobcardTask implements Serializable {
 	
 	@Column(name="time_taken")
 	private String timeTaken;
+	
+	//bi-directional many-to-one association to MachineUsage
+	@OneToMany(mappedBy="jobcardTask",fetch=FetchType.LAZY)
+	private Set<MachineUsage> machineUsages;
 
 	//bi-directional many-to-one association to Jobcard,owner side, having ref of other table
 	@ManyToOne
@@ -174,4 +179,27 @@ public class JobcardTask implements Serializable {
 	public void setProgrammer(Employee programmer) {
 		this.programmer = programmer;
 	}
+	
+	public Set<MachineUsage> getMachineUsages() {
+		return this.machineUsages;
+	}
+
+	public void setMachineUsages(Set<MachineUsage> machineUsages) {
+		this.machineUsages = machineUsages;
+	}
+
+	public MachineUsage addMachineUsage(MachineUsage machineUsage) {
+		getMachineUsages().add(machineUsage);
+		machineUsage.setJobcardTask(this);
+
+		return machineUsage;
+	}
+
+	public MachineUsage removeMachineUsage(MachineUsage machineUsage) {
+		getMachineUsages().remove(machineUsage);
+		machineUsage.setJobcardTask(null);
+
+		return machineUsage;
+	}
+
 }

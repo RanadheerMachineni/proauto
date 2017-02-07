@@ -341,4 +341,64 @@ insert into status(status_id,status) values(4, 'Aborted');
 insert into status(status_id,status) values(5, 'Completed');
 
 
+create table tooltype(
+	tooltype_id int AUTO_INCREMENT NOT NULL,
+	name char(50),
+	description char(200),
+    CONSTRAINT tooltype_pk PRIMARY KEY (tooltype_id)
+);
 
+create table purchase_history(
+	purchase_history_id int AUTO_INCREMENT NOT NULL,
+	particular_id int,
+	adddate date,
+	authouredby char(50),
+	quantity int,
+    CONSTRAINT purchase_history_pk PRIMARY KEY (purchase_history_id)
+);
+
+create table purchase
+(
+	particular_id int AUTO_INCREMENT NOT NULL,
+	particular char(255) NOT NULL,
+	code char(100) NOT NULL,
+	make char(50),
+	quantity int NOT NULL,
+	unit char(20),
+	doc DATE,
+	dou date,
+	authouredby char(50),
+	desciption char(255),
+	tooltype_id int,
+	repository int,
+	constraint purchase_pk primary key (particular_id),
+   	CONSTRAINT fk_purchase_tooltype_id FOREIGN KEY (tooltype_id) REFERENCES tooltype(tooltype_id),
+   	CONSTRAINT uk_purchase_code_make UNIQUE (code,make)
+);
+
+create table machine_usage
+(
+	machine_usage_id int AUTO_INCREMENT NOT NULL,
+	machine_id int not null,
+	customer_id int,
+	pid int,
+	jobcard_id int,
+	task_id int,
+	assignee int,
+	programmer int,
+	use_date DATE,
+	shift char(50),
+	actual_time char(20),
+	particular_id int,
+	quantity int NOT NULL,
+	authouredby char(50),
+	constraint machine_usage_pk primary key (machine_usage_id),
+	CONSTRAINT fk_mu_machine_id FOREIGN KEY (machine_id) REFERENCES machines(machine_id),
+	CONSTRAINT fk_mu_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+   	CONSTRAINT fk_mu_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid),
+   	CONSTRAINT fk_mu_jobcard FOREIGN KEY (jobcard_id) REFERENCES jobcard(jobcard_id),
+   	CONSTRAINT fk_mu_task FOREIGN KEY (task_id) REFERENCES jobcard_task(task_id),
+   	CONSTRAINT fk_machine_usage_task_assignee FOREIGN KEY (assignee) REFERENCES employee(employee_id),
+   	CONSTRAINT fk_machine_usage_programmer FOREIGN KEY (programmer) REFERENCES employee(employee_id),
+	CONSTRAINT fk_mu_particular_id FOREIGN KEY (particular_id) REFERENCES purchase(particular_id)
+)

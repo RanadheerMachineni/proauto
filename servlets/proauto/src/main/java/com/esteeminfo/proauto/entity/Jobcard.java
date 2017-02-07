@@ -1,13 +1,22 @@
 package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -56,6 +65,9 @@ public class Jobcard implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="status")
 	private Status statusBean;
+	
+	@OneToMany(mappedBy="jobcard",fetch=FetchType.LAZY)
+	private List<MachineUsage> machineUsages;
 	
 	public Jobcard() {
 	}
@@ -152,5 +164,27 @@ public class Jobcard implements Serializable {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+	
+	public List<MachineUsage> getMachineUsages() {
+		return this.machineUsages;
+	}
+
+	public void setMachineUsages(List<MachineUsage> machineUsages) {
+		this.machineUsages = machineUsages;
+	}
+
+	public MachineUsage addMachineUsage(MachineUsage machineUsage) {
+		getMachineUsages().add(machineUsage);
+		machineUsage.setJobcard(this);
+
+		return machineUsage;
+	}
+
+	public MachineUsage removeMachineUsage(MachineUsage machineUsage) {
+		getMachineUsages().remove(machineUsage);
+		machineUsage.setJobcard(null);
+
+		return machineUsage;
 	}
 }
