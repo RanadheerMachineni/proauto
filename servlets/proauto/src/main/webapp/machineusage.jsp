@@ -25,7 +25,7 @@
 	 	  		</div>
 			</jstl:if>
 			<jstl:if test="${pageContext.request.userPrincipal.name != null}">
-					Inventory comes here....
+					Machine usage.....
 			</jstl:if>	
 </div>
 </jsp:body>
