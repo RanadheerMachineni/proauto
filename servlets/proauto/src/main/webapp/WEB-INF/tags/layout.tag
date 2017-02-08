@@ -117,7 +117,14 @@
 
 					<li id="inventoryli"><a
 						href="${pageContext.request.contextPath}/inventory">Inventory</a></li>
-						
+
+					<li id="inventoryli" class="dropdownmenu"><a class="dropbtn">Inventory</a>
+						<div class="dropdown-content">
+							<a href="${pageContext.request.contextPath}/addtoinv">Add to Inventory</a>
+							<a href="${pageContext.request.contextPath}/searchinv">Search Inventory</a>
+						</div>
+					</li>
+											
 					<li id="machineusageli"><a
 						href="${pageContext.request.contextPath}/machineusage">Machine Usage</a></li>
 						
@@ -128,17 +135,7 @@
 								 <a
 								href="${pageContext.request.contextPath}/creg">Customer
 								Master</a>
-								
-								<!-- <a
-								href="${pageContext.request.contextPath}/poreg">Purchase Orders
-								</a>
-								
-								 
-								<a
-								href="${pageContext.request.contextPath}/vreg">Vendor
-								Master</a> <a
-								href="${pageContext.request.contextPath}/rmat">Raw Material
-								</a> -->
+							
 								<a
 								href="${pageContext.request.contextPath}/mreg">Machines
 								</a>
