@@ -111,10 +111,17 @@ public class AppController {
 		return model;
 	}
 	
-	@RequestMapping(value = { "/costing"}, method = RequestMethod.GET)
-	public ModelAndView costingPage() {
+	@RequestMapping(value = { "/inventory"}, method = RequestMethod.GET)
+	public ModelAndView getInventory() {
 		ModelAndView model = new ModelAndView();
-		model.setViewName("costing");
+		model.setViewName("inventory");
+		return model;
+	}
+	
+	@RequestMapping(value = { "/machineusage"}, method = RequestMethod.GET)
+	public ModelAndView getMachineUsage() {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("machineusage");
 		return model;
 	}
 

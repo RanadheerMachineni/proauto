@@ -115,9 +115,12 @@
 						</div>
 					</li>
 
-					<li id="costingli"><a
-						href="${pageContext.request.contextPath}/costing">Costing</a></li>
-
+					<li id="inventoryli"><a
+						href="${pageContext.request.contextPath}/inventory">Inventory</a></li>
+						
+					<li id="machineusageli"><a
+						href="${pageContext.request.contextPath}/machineusage">Machine Usage</a></li>
+						
 					<li id="regli" class="dropdownmenu"><a class="dropbtn">Masters</a>
 						<div class="dropdown-content">
 							<a href="${pageContext.request.contextPath}/ereg">Employee
