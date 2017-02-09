@@ -61,7 +61,7 @@
     </div>
     
 	<div class="container">
-			<!-- <div class="col-md-12 col-sm-12 col-xs-12">
+			 <div class="col-md-12 col-sm-12 col-xs-12">
 	 	 		<div class="row">
  	  		   		<div class="col-sm-2 col-md-2">
 	      			<img class="logo-customer" alt="" src="../../../${pageContext.request.contextPath}/images/customerlogo.png">
@@ -74,7 +74,7 @@
 	   		 	<div class="col-sm-2 col-md-2">
 	      			<img class="logo-proauto" alt="" src="../../../${pageContext.request.contextPath}/images/proautologo.png">
 	    	 	</div>
- 	  		</div> -->
+ 	  		</div> 
 			<jstl:if test="${pageContext.request.userPrincipal.name == null}">
 						<div class="straightLine"></div>
 						<!-- <div class="col-md-12 col-sm-12 col-xs-12">
@@ -114,9 +114,6 @@
 							<a href="${pageContext.request.contextPath}/showpo">Create PO</a>
 						</div>
 					</li>
-
-					<li id="inventoryli"><a
-						href="${pageContext.request.contextPath}/inventory">Inventory</a></li>
 
 					<li id="inventoryli" class="dropdownmenu"><a class="dropbtn">Inventory</a>
 						<div class="dropdown-content">
