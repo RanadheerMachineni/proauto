@@ -2,6 +2,7 @@ package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.Date;
 
 
@@ -25,8 +26,10 @@ public class PurchaseHistory implements Serializable {
 
 	private String authouredby;
 
-	@Column(name="particular_id")
-	private int particularId;
+	//bi-directional many-to-one association to Purchase
+	@ManyToOne
+	@JoinColumn(name="particular_id")
+	private Purchase purchase;
 
 	private int quantity;
 
@@ -57,12 +60,12 @@ public class PurchaseHistory implements Serializable {
 		this.authouredby = authouredby;
 	}
 
-	public int getParticularId() {
-		return this.particularId;
+	public Purchase getPurchase() {
+		return this.purchase;
 	}
 
-	public void setParticularId(int particularId) {
-		this.particularId = particularId;
+	public void setPurchase(Purchase purchase) {
+		this.purchase = purchase;
 	}
 
 	public int getQuantity() {

@@ -2,6 +2,7 @@ package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +50,10 @@ public class Purchase implements Serializable {
 	@OneToMany(mappedBy="purchase",fetch=FetchType.LAZY)
 	private List<MachineUsage> machineUsages;
 
+	//bi-directional many-to-one association to PurchaseHistory
+	@OneToMany(mappedBy="purchase",fetch=FetchType.LAZY)
+	private List<PurchaseHistory> purchaseHistories;
+	
 	public Purchase() {
 	}
 
@@ -170,4 +175,25 @@ public class Purchase implements Serializable {
 		return machineUsage;
 	}
 
+	public List<PurchaseHistory> getPurchaseHistories() {
+		return this.purchaseHistories;
+	}
+
+	public void setPurchaseHistories(List<PurchaseHistory> purchaseHistories) {
+		this.purchaseHistories = purchaseHistories;
+	}
+
+	public PurchaseHistory addPurchaseHistory(PurchaseHistory purchaseHistory) {
+		getPurchaseHistories().add(purchaseHistory);
+		purchaseHistory.setPurchase(this);
+
+		return purchaseHistory;
+	}
+
+	public PurchaseHistory removePurchaseHistory(PurchaseHistory purchaseHistory) {
+		getPurchaseHistories().remove(purchaseHistory);
+		purchaseHistory.setPurchase(null);
+
+		return purchaseHistory;
+	}
 }
