@@ -20,8 +20,6 @@ public class Purchase implements Serializable {
 	@Column(name="particular_id")
 	private int particularId;
 
-	private String authouredby;
-
 	private String code;
 
 	private String desciption;
@@ -35,10 +33,6 @@ public class Purchase implements Serializable {
 	private String make;
 
 	private String particular;
-
-	private int quantity;
-
-	private int repository;
 
 	@Column(name="tooltype_id")
 	private int tooltypeId;
@@ -58,14 +52,6 @@ public class Purchase implements Serializable {
 
 	public void setParticularId(int particularId) {
 		this.particularId = particularId;
-	}
-
-	public String getAuthouredby() {
-		return this.authouredby;
-	}
-
-	public void setAuthouredby(String authouredby) {
-		this.authouredby = authouredby;
 	}
 
 	public String getCode() {
@@ -114,22 +100,6 @@ public class Purchase implements Serializable {
 
 	public void setParticular(String particular) {
 		this.particular = particular;
-	}
-
-	public int getQuantity() {
-		return this.quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
-	public int getRepository() {
-		return this.repository;
-	}
-
-	public void setRepository(int repository) {
-		this.repository = repository;
 	}
 
 	public int getTooltypeId() {

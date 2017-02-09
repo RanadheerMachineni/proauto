@@ -111,11 +111,14 @@ public class AppController {
 		return model;
 	}
 	
-	@RequestMapping(value = { "/inventory"}, method = RequestMethod.GET)
-	public ModelAndView getInventory() {
-		ModelAndView model = new ModelAndView();
-		model.setViewName("inventory");
-		return model;
+	@RequestMapping(value = { "/addtoinv"}, method = RequestMethod.GET)
+	public String addToInv(Model model, HttpServletRequest request, HttpServletResponse response) {
+		Map<String, String> typeMap = new HashMap<String, String>(); 
+		typeMap.put("1", "type1");
+		typeMap.put("2", "type2");
+		typeMap.put("3", "type3");
+		model.addAttribute("types", typeMap);
+		return "addtoinv";
 	}
 	
 	@RequestMapping(value = { "/machineusage"}, method = RequestMethod.GET)

@@ -41,7 +41,12 @@
 					<div class="pageHeadings">Inventory</div>
 					<br>
 					<div class="formDiv">
-					<label>Add item to inventory</label>
+					<jstl:if test="${purchase.id == null || purchase.id<=0}">
+						      			<label>Create Item</label>
+					</jstl:if>
+					<jstl:if test="${purchase.id != null && purchase.id>0}">
+						      			<label>${purchase.name}</label>
+					</jstl:if>
 				   	<div class="row">
 	   					<div class="col-sm-10 col-md-10">
 					   	<jstl:if test="${not empty error}">
@@ -61,96 +66,87 @@
   	  		   <div class="row rowspace">
   	  		   
   	  		       	 <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
+	  	  		   		<div class="col-sm-1 col-md-1">
 			      			<label class="control-label" for="particular">Particular:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<input type="text" class="form-control" id="particular"
-											name="particular" value="">
+											name="particular" value="${purchase.particular}">
 			    	 	</div>
 		    	 	 </div>
 		    	 	 <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
+	  	  		   		<div class="col-sm-1 col-md-1">
 			      			<label class="control-label" for="code">Code:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<input type="text" class="form-control" id="code"
-											name="code" value="">
+											name="code" value="${purchase.code}">
 			    	 	</div>
 		    	 	 </div>
 		    	 	 <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
+	  	  		   		<div class="col-sm-1 col-md-1">
 			      			<label class="control-label" for="make">Make:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<input type="text" class="form-control" id="make"
-											name="make" value="">
+											name="make" value="${purchase.make}">
 			    	 	</div>
 		    	 	 </div>
-  	  		       	 <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
-			      			<label class="control-label" for="quantity">Quantity:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="quantity"
-											name="quantity" value="">
-			    	 	</div>
-		    	 	 </div>
-		    	 	 <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
+		       </div>
+  	  		  	
+  	  		   <div class="row rowspace">
+  	  		    	<div class="control-group">
+	  	  		   		<div class="col-sm-1 col-md-1">
 			      			<label class="control-label" for="unit">Unit:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<input type="text" class="form-control" id="unit"
-											name="unit" value="">
+											name="unit" value="${purchase.unit}">
 			    	 	</div>
 		    	 	 </div>
 		    	 	 <div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="date" class="control-label">Date:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="date"
-											name="date" readonly="true" value="">
-			    	 	</div>
-			    	</div>
-			    	<div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
-			      			<label class="control-label" for="authoured">Authoured:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="authoured"
-											name="authoured" value="">
-			    	 	</div>
-		    	 	 </div>
-		    	 	 <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
+	  	  		   		<div class="col-sm-1 col-md-1">
 			      			<label class="control-label" for="desc">Desc:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<input type="text" class="form-control" id="desc"
-											name="desc" value="">
+											name="desc" value="${purchase.desc}">
 			    	 	</div>
 		    	 	 </div>
   	  		       	 <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
+	  	  		   		<div class="col-sm-1 col-md-1">
 			      			<label class="control-label" for="type">Type:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="type"
-											name="type" value="">
-			    	 	</div>
-		    	 	 </div>
-		    	 	 <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
-			      			<label class="control-label" for="repo">Repository:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" readonly="readonly" id="repo"
-											name="repo" value="">
+			      				<select class="form-control" name="type" id="type">
+				 			 		<option value="">Select Type</option>
+			  						<jstl:forEach items="${types}" var="eachType">
+			  				  			<option value="${eachType.key}"
+													${purchase.type == eachType.key ? 'selected' : ''}>${eachType.value}</option>
+			  						</jstl:forEach>
+								</select>
 			    	 	</div>
 		    	 	 </div>
 		    	</div>
+		    	<br>
+		    	<div class="row">
+		   		 	<div class="col-sm-1 col-md-1">
+		   		 		<jstl:if test="${purchase.id == null || purchase.id<=0}">
+	   		 				  <input type="hidden" name="create" value="true">
+						      <button id="createPurchaseSubmit" type="submit"
+											class="btn btn-primary">Create</button>
+						</jstl:if>
+						<jstl:if test="${purchase.id != null && purchase.id > 0}">
+							  <input type="hidden" name="create" value="false">
+						      <button id="createPurchaseSubmit" type="submit"
+											class="btn btn-primary">Update</button>
+						       <a class="btn btn-default"
+											href="${pageContext.request.contextPath}/ereg" role="button">Cancel</a>
+						</jstl:if>
+		   		 	</div>
+				</div>
+				<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" />
 		    </form>
 		    </div>
 		    </div>
