@@ -128,6 +128,39 @@
 			    	 	</div>
 		    	 	 </div>
 		    	</div>
+		    	
+		    	 <div class="row rowspace">
+  	  		    	<div class="control-group">
+	  	  		   		<div class="col-sm-1 col-md-1">
+			      			<label class="control-label" for="authouredby">Authoured By:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="authouredby"
+											name="authouredby" value="${purchase.authouredby}">
+			    	 	</div>
+		    	 	 </div>
+		    	 	 <div class="control-group">
+	  	  		   		<div class="col-sm-1 col-md-1">
+			      			<label class="control-label" for="repository">Repository:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="repository"
+										readonly="readonly"	 name="repository" value="${purchase.repository}">
+			    	 	</div>
+		    	 	 </div>
+		    	</div>
+		    	<br>
+		    	 <div class="row rowspace">
+  	  		    	<div class="control-group">
+	  	  		   		<div class="col-sm-1 col-md-1">
+			      			<label class="control-label" for="additems">Add Items:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="additems"
+											name="additems" value="">
+			    	 	</div>
+		    	 	 </div>
+		    	</div>
 		    	<br>
 		    	<div class="row">
 		   		 	<div class="col-sm-1 col-md-1">
@@ -145,11 +178,34 @@
 						</jstl:if>
 		   		 	</div>
 				</div>
+				<br>
+					<div class="informativeText">Item History</div>
+  	  		   					<br>
+				   		 		<table class="table table-bordered">
+								    <thead>
+								      <tr>
+								        <th>Time</th>
+										<th>Authored By</th>
+										<th>Quantity</th>
+								      </tr>
+								    </thead>
+								    <tbody>
+								      <jstl:forEach var="history" items="${historyList}">
+							                <tr>
+							                   
+							                    <td><jstl:out value="${history.date}" /></td>
+							                    <td><jstl:out value="${employee.authouredby}" /></td>
+							                    <td><jstl:out value="${employee.quantity}" /></td>
+							                </tr>
+							            </jstl:forEach>
+								    </tbody>
+					</table>
 				<input type="hidden" name="${_csrf.parameterName}"
 								value="${_csrf.token}" />
 		    </form>
 		    </div>
 		    </div>
+
 		    </jstl:if>
 </div>
 </jsp:body>
