@@ -13,7 +13,7 @@ import java.util.Date;
 @Entity
 @Table(name="purchase_history")
 @NamedQuery(name="PurchaseHistory.findAll", query="SELECT p FROM PurchaseHistory p")
-public class PurchaseHistory implements Serializable {
+public class PurchaseHistory implements Serializable, Comparable<PurchaseHistory> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -74,6 +74,10 @@ public class PurchaseHistory implements Serializable {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public int compareTo(PurchaseHistory o) {
+		return this.getAdddate().compareTo(o.getAdddate());
 	}
 
 }
