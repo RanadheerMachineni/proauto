@@ -3,6 +3,7 @@ package com.esteeminfo.proauto.dao;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +17,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.esteeminfo.proauto.entity.Customer;
+import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.EmployeeFile;
 import com.esteeminfo.proauto.entity.JobOperation;
+import com.esteeminfo.proauto.entity.Jobcard;
 import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.PoFile;
 import com.esteeminfo.proauto.entity.PoFileData;
 import com.esteeminfo.proauto.entity.PoTool;
+import com.esteeminfo.proauto.entity.Purchase;
+import com.esteeminfo.proauto.entity.PurchaseHistory;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.entity.Status;
 
@@ -315,5 +320,77 @@ public class CommonDAO extends AbstractDao{
 		Query query= entityManager.createNativeQuery("select pfd.* from po_files pof,po_file_data pfd where pof.upload_id=pfd.upload_id and pof.file_name='"+fileName+"' and pof.pid="+pid,PoFileData.class);
 		PoFileData poFileData = (PoFileData) query.getSingleResult();
 		return poFileData.getFileData();
+	}
+
+	public Purchase findPurchaseById(Integer valueOf) {
+		EntityManager entityManager = getEntityManager();
+		Purchase purchase = entityManager.find(Purchase.class, valueOf);
+		return purchase;
+	}
+
+	public List<Purchase> retrieveAllPurchase(String purchaseSearched) {
+		EntityManager entityManager = getEntityManager();
+		String query = "SELECT p FROM Purchase p";
+		if (purchaseSearched != null && purchaseSearched.length() > 0) {
+			query += " where p.code LIKE '" + purchaseSearched + "%'";
+		}
+		Query q = entityManager.createQuery(query);
+		List<Purchase> result = q.getResultList();
+		return result;
+	}
+
+	public Purchase registerPurchase(String create, String parid, String particular, String code, String make,
+			String unit, String desc, String type, String authouredby, String additems) throws Exception {
+		int purchaseId = (parid == null || parid.length() == 0 ) ? 0:Integer.valueOf(parid); 
+		Purchase purchase = null;
+		if(code.length()>0 && make.length()>0){
+			purchase=findPurchaseByCodeAndMake(code,make);
+			if (purchase!=null && (purchaseId==0 || (purchase.getParticularId() != purchaseId))) {
+				throw new Exception("Item exist with Code '"+code+"'. Please update existing item");
+			}
+		}
+		if (create.equalsIgnoreCase("false") && purchaseId > 0 ) {
+			purchase = findPurchaseById(purchaseId);
+			purchase.setRepository(purchase.getRepository() + Integer.valueOf(additems));
+		}else{
+			purchase = new Purchase();
+			purchase.setDoc(new Date());
+			purchase.setRepository(Integer.valueOf(additems));
+		}
+		purchase.setDou(new Date());
+		purchase.setParticular(particular);
+		purchase.setCode(code);
+		purchase.setMake(make);
+		purchase.setUnit(unit);
+		purchase.setDesciption(desc);
+		purchase.setAuthouredby(authouredby);
+		purchase.setTooltypeId(Integer.valueOf(type));
+		entityManager.persist(purchase);
+		Set<PurchaseHistory> history  =  new HashSet<PurchaseHistory>();
+		PurchaseHistory purchaseHistory =  new PurchaseHistory();
+		purchaseHistory.setPurchase(purchase);
+		purchaseHistory.setAuthouredby(authouredby);
+		purchaseHistory.setQuantity(Integer.valueOf(additems));
+		purchaseHistory.setAdddate(new Date());
+		history.add(purchaseHistory);
+		if(purchase.getPurchaseHistories()==null){
+			purchase.setPurchaseHistories(history);
+		}else{
+			purchase.getPurchaseHistories().addAll(history);
+		}
+		entityManager.persist(purchase);
+		return purchase;
+	}
+
+	private Purchase findPurchaseByCodeAndMake(String code, String make) {
+		EntityManager entityManager = getEntityManager();
+		Query q = entityManager.createQuery( "SELECT p FROM Purchase p where p.code=:code and p.make=:make" );
+		q.setParameter("code", code);
+		q.setParameter("make", make);
+		List<Purchase> result = q.getResultList();
+		if(result == null || result.size() ==0){
+			return null;
+		}
+		return result.get(0);
 	}
 }

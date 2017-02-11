@@ -1,6 +1,9 @@
 package com.esteeminfo.proauto.dto;
 
+import java.util.ArrayList;
+import java.util.List;
 public class PurchaseDTO {
+	
 	private int id;
 	private String particular;
 	private String make;
@@ -13,6 +16,7 @@ public class PurchaseDTO {
 	private String repository;
 	private String tooltypeId;
 	private String unit;
+	List<PurchaseHistoryDTO> purchaseHistory = new ArrayList<PurchaseHistoryDTO>();
 	public int getId() {
 		return id;
 	}
@@ -85,7 +89,11 @@ public class PurchaseDTO {
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
-
-	
+	public List<PurchaseHistoryDTO> getPurchaseHistory() {
+		return purchaseHistory;
+	}
+	public void setPurchaseHistory(List<PurchaseHistoryDTO> purchaseHistory) {
+		this.purchaseHistory = purchaseHistory;
+	}
 
 }

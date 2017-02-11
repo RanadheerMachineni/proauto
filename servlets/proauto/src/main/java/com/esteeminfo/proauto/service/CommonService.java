@@ -11,9 +11,11 @@ import com.esteeminfo.proauto.dto.EmployeeDTO;
 import com.esteeminfo.proauto.dto.JobOpDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
+import com.esteeminfo.proauto.dto.PurchaseDTO;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Machine;
+import com.esteeminfo.proauto.entity.Purchase;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 
 public interface CommonService {
@@ -55,5 +57,12 @@ public interface CommonService {
 	Map<String, String> getMachines();
 
 	byte[] findPOFile(Integer valueOf, String fileNameFromUI);
+
+	PurchaseDTO findPurchaseDTOById(Integer valueOf);
+
+	List<PurchaseDTO> retrieveAllPurchaseDTO(String purchaseSearched);
+
+	Purchase registerPurchase(String create, String parid, String particular, String code, String make, String unit,
+			String desc, String type, String authouredby, String additems) throws Exception;
 
 }

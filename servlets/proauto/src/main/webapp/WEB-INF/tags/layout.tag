@@ -61,20 +61,7 @@
     </div>
     
 	<div class="container">
-			 <div class="col-md-12 col-sm-12 col-xs-12">
-	 	 		<div class="row">
- 	  		   		<div class="col-sm-2 col-md-2">
-	      			<img class="logo-customer" alt="" src="../../../${pageContext.request.contextPath}/images/customerlogo.png">
-	    		</div>
-	    		<div class="col-sm-8 col-md-8">
-	      				<div class="customerHeaderContent">
-							<h3>Ennem Excel Engineering(P) Limited</h3>
-						</div>
-	    		</div>
-	   		 	<div class="col-sm-2 col-md-2">
-	      			<img class="logo-proauto" alt="" src="../../../${pageContext.request.contextPath}/images/proautologo.png">
-	    	 	</div>
- 	  		</div> 
+		
 			<jstl:if test="${pageContext.request.userPrincipal.name == null}">
 						<div class="straightLine"></div>
 						<!-- <div class="col-md-12 col-sm-12 col-xs-12">
@@ -117,7 +104,7 @@
 
 					<li id="inventoryli" class="dropdownmenu"><a class="dropbtn">Inventory</a>
 						<div class="dropdown-content">
-							<a href="${pageContext.request.contextPath}/addtoinv">Add to Inventory</a>
+							<a href="${pageContext.request.contextPath}/showinv">Add to Inventory</a>
 							<a href="${pageContext.request.contextPath}/searchinv">Search Inventory</a>
 						</div>
 					</li>

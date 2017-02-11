@@ -41,11 +41,27 @@
 					<div class="pageHeadings">Inventory</div>
 					<br>
 					<div class="formDiv">
+					
+					<div class="row">
+	   					<div class="col-sm-10 col-md-10">
+						   	<jstl:if test="${not empty result && result=='sucess'}">
+								<div id="sucessDiv" class="successresponse">
+								Successfully created/updated Item. Please click to view/update
+								<a
+								href="${pageContext.request.contextPath}/showinv?purchaseSelected=${purCreatedId}">
+								                    	<jstl:out
+										value="${purCreatedCode}" />
+								                    </a>
+								</div>
+							</jstl:if>
+						</div>
+					</div>
+					
 					<jstl:if test="${purchase.id == null || purchase.id<=0}">
 						      			<label>Create Item</label>
 					</jstl:if>
 					<jstl:if test="${purchase.id != null && purchase.id>0}">
-						      			<label>${purchase.name}</label>
+						      			<label>${purchase.code}</label>
 					</jstl:if>
 				   	<div class="row">
 	   					<div class="col-sm-10 col-md-10">
@@ -110,7 +126,7 @@
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<input type="text" class="form-control" id="desc"
-											name="desc" value="${purchase.desc}">
+											name="desc" value="${purchase.desciption}">
 			    	 	</div>
 		    	 	 </div>
   	  		       	 <div class="control-group">
@@ -122,7 +138,7 @@
 				 			 		<option value="">Select Type</option>
 			  						<jstl:forEach items="${types}" var="eachType">
 			  				  			<option value="${eachType.key}"
-													${purchase.type == eachType.key ? 'selected' : ''}>${eachType.value}</option>
+													${purchase.tooltypeId == eachType.key ? 'selected' : ''}>${eachType.value}</option>
 			  						</jstl:forEach>
 								</select>
 			    	 	</div>
@@ -163,7 +179,7 @@
 		    	</div>
 		    	<br>
 		    	<div class="row">
-		   		 	<div class="col-sm-1 col-md-1">
+		   		 	<div class="col-sm-2 col-md-2">
 		   		 		<jstl:if test="${purchase.id == null || purchase.id<=0}">
 	   		 				  <input type="hidden" name="create" value="true">
 						      <button id="createPurchaseSubmit" type="submit"
@@ -174,7 +190,7 @@
 						      <button id="createPurchaseSubmit" type="submit"
 											class="btn btn-primary">Update</button>
 						       <a class="btn btn-default"
-											href="${pageContext.request.contextPath}/ereg" role="button">Cancel</a>
+											href="${pageContext.request.contextPath}/showinv" role="button">Cancel</a>
 						</jstl:if>
 		   		 	</div>
 				</div>
@@ -190,12 +206,12 @@
 								      </tr>
 								    </thead>
 								    <tbody>
-								      <jstl:forEach var="history" items="${historyList}">
+								      <jstl:forEach var="history" items="${purchase.purchaseHistory}">
 							                <tr>
 							                   
 							                    <td><jstl:out value="${history.date}" /></td>
-							                    <td><jstl:out value="${employee.authouredby}" /></td>
-							                    <td><jstl:out value="${employee.quantity}" /></td>
+							                    <td><jstl:out value="${history.authouredby}" /></td>
+							                    <td><jstl:out value="${history.quantity}" /></td>
 							                </tr>
 							            </jstl:forEach>
 								    </tbody>

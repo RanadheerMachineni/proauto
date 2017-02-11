@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -48,11 +49,11 @@ public class Purchase implements Serializable {
 
 	//bi-directional many-to-one association to MachineUsage
 	@OneToMany(mappedBy="purchase",fetch=FetchType.LAZY)
-	private List<MachineUsage> machineUsages;
+	private Set<MachineUsage> machineUsages;
 
 	//bi-directional many-to-one association to PurchaseHistory
-	@OneToMany(mappedBy="purchase",fetch=FetchType.LAZY)
-	private List<PurchaseHistory> purchaseHistories;
+	@OneToMany(mappedBy="purchase",fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
+	private Set<PurchaseHistory> purchaseHistories;
 	
 	public Purchase() {
 	}
@@ -153,11 +154,11 @@ public class Purchase implements Serializable {
 		this.unit = unit;
 	}
 
-	public List<MachineUsage> getMachineUsages() {
+	public Set<MachineUsage> getMachineUsages() {
 		return this.machineUsages;
 	}
 
-	public void setMachineUsages(List<MachineUsage> machineUsages) {
+	public void setMachineUsages(Set<MachineUsage> machineUsages) {
 		this.machineUsages = machineUsages;
 	}
 
@@ -175,11 +176,11 @@ public class Purchase implements Serializable {
 		return machineUsage;
 	}
 
-	public List<PurchaseHistory> getPurchaseHistories() {
+	public Set<PurchaseHistory> getPurchaseHistories() {
 		return this.purchaseHistories;
 	}
 
-	public void setPurchaseHistories(List<PurchaseHistory> purchaseHistories) {
+	public void setPurchaseHistories(Set<PurchaseHistory> purchaseHistories) {
 		this.purchaseHistories = purchaseHistories;
 	}
 

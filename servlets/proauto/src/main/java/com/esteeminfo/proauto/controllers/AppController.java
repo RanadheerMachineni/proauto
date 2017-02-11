@@ -32,11 +32,13 @@ import com.esteeminfo.proauto.dto.JobOpDTO;
 import com.esteeminfo.proauto.dto.JobcardDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
+import com.esteeminfo.proauto.dto.PurchaseDTO;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Jobcard;
 import com.esteeminfo.proauto.entity.Machine;
+import com.esteeminfo.proauto.entity.Purchase;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.service.CommonService;
 import com.esteeminfo.proauto.service.CustomerService;
@@ -111,16 +113,82 @@ public class AppController {
 		return model;
 	}
 	
-	@RequestMapping(value = { "/addtoinv"}, method = RequestMethod.GET)
-	public String addToInv(Model model, HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = { "/showinv"}, method = RequestMethod.GET)
+	public String showinv(Model model,@RequestParam(value="purchaseSelected", required=false) String purchaseSelected, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String> typeMap = new HashMap<String, String>(); 
 		typeMap.put("1", "type1");
 		typeMap.put("2", "type2");
 		typeMap.put("3", "type3");
 		model.addAttribute("types", typeMap);
+		
+		PurchaseDTO purchaseDTO = new PurchaseDTO();
+		if(purchaseSelected!=null && purchaseSelected.length()>0){
+			purchaseDTO = commonService.findPurchaseDTOById(Integer.valueOf(purchaseSelected));
+		}
+		model.addAttribute("purchase", purchaseDTO);
 		return "addtoinv";
 	}
 	
+	@RequestMapping(value = { "/searchinv"}, method = RequestMethod.GET)
+	public String searchinv(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String purchaseSearched = request.getParameter("searchCodeInput");
+			List<PurchaseDTO> purchaseDTOList = commonService.retrieveAllPurchaseDTO(purchaseSearched);
+			model.addAttribute("purchaseList", purchaseDTOList);
+		return "searchinv";
+	}
+	
+	@RequestMapping(value = { "/addtoinv"}, method = RequestMethod.POST)
+	public String addtoinv(Model model, HttpServletRequest request, HttpServletResponse response) {
+		Map<String, String> typeMap = new HashMap<String, String>(); 
+		typeMap.put("1", "type1");
+		typeMap.put("2", "type2");
+		typeMap.put("3", "type3");
+		model.addAttribute("types", typeMap);
+		
+
+		String create = request.getParameter("create");
+		String parid = request.getParameter("parid");
+		String particular = request.getParameter("particular");
+		String code = request.getParameter("code");
+		String make = request.getParameter("make");
+		String unit = request.getParameter("unit");	
+		String desc = request.getParameter("desc");
+		String type = request.getParameter("type");	
+		String authouredby = request.getParameter("authouredby");	
+		String additems = request.getParameter("additems");	
+
+		PurchaseDTO purchaseDTO = new PurchaseDTO();
+		Purchase purchaseCreated = null;
+		try {
+			purchaseCreated = commonService.registerPurchase(create,parid, particular,code,make,unit,desc,type,authouredby,additems);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("error", e.getMessage());
+			if(parid!=null && parid.length()>0){
+				purchaseDTO.setId(Integer.valueOf(parid));
+			}
+			purchaseDTO.setParticular(particular);
+			purchaseDTO.setCode(code);
+			purchaseDTO.setMake(make);
+			purchaseDTO.setUnit(unit);
+			purchaseDTO.setDesciption(desc);
+			purchaseDTO.setTooltypeId(type);
+			purchaseDTO.setAuthouredby(authouredby);
+			purchaseDTO.setQuantity(additems);
+			
+			model.addAttribute("purchaseSelected", purchaseDTO);
+		}
+		
+		if(purchaseCreated!=null && purchaseCreated.getParticularId()>0){
+			model.addAttribute("result", "sucess");
+			model.addAttribute("purCreatedId", purchaseCreated.getParticularId());
+			model.addAttribute("purCreatedCode", purchaseCreated.getCode());
+		}
+		
+		
+		return "addtoinv";
+	}
 	@RequestMapping(value = { "/machineusage"}, method = RequestMethod.GET)
 	public ModelAndView getMachineUsage() {
 		ModelAndView model = new ModelAndView();

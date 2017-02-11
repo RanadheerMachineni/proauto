@@ -17,6 +17,7 @@ import com.esteeminfo.proauto.dto.CustomerDTO;
 import com.esteeminfo.proauto.entity.Contact;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.CustomerFile;
+import com.esteeminfo.proauto.entity.Purchase;
 
 @Service("customerService")
 @Transactional
@@ -110,5 +111,6 @@ public class CustomerServiceImpl implements CustomerService {
 		byte[] fileData = customerDAO.findFileData(valueOf, fileName);
 		return fileData;
 	}
+
 	
 }

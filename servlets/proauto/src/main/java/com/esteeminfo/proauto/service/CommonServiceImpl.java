@@ -14,16 +14,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.esteeminfo.proauto.dao.CommonDAO;
 import com.esteeminfo.proauto.dao.FileUploadDAO;
-import com.esteeminfo.proauto.dto.EmployeeDTO;
 import com.esteeminfo.proauto.dto.JobOpDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
+import com.esteeminfo.proauto.dto.PurchaseDTO;
+import com.esteeminfo.proauto.dto.PurchaseHistoryDTO;
 import com.esteeminfo.proauto.entity.Customer;
-import com.esteeminfo.proauto.entity.Employee;
 import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Machine;
-import com.esteeminfo.proauto.entity.PoFile;
 import com.esteeminfo.proauto.entity.PoTool;
+import com.esteeminfo.proauto.entity.Purchase;
+import com.esteeminfo.proauto.entity.PurchaseHistory;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.entity.Status;
 
@@ -203,6 +204,72 @@ public class CommonServiceImpl implements CommonService {
 	public byte[] findPOFile(Integer pid, String fileName) {
 		byte[] fileData = commonDAO.findPoFileData(pid, fileName);
 		return fileData;
+	}
+
+	public PurchaseDTO findPurchaseDTOById(Integer valueOf) {
+		Purchase purchase = findPurchaseById(String.valueOf(valueOf));
+		if(purchase!=null) return converPurchaseToDto(purchase);
+		return null;
+	}
+	
+	private PurchaseDTO converPurchaseToDto(Purchase purchase) {
+		PurchaseDTO purchaseDTO = new PurchaseDTO();
+		purchaseDTO.setId(purchase.getParticularId());
+		purchaseDTO.setParticular(purchase.getParticular());
+		purchaseDTO.setCode(purchase.getCode());
+		purchaseDTO.setDesciption(purchase.getDesciption());
+		purchaseDTO.setMake(purchase.getMake());
+		purchaseDTO.setAuthouredby(purchase.getAuthouredby());
+		purchaseDTO.setQuantity(String.valueOf(purchase.getQuantity()));
+		purchaseDTO.setRepository(String.valueOf(purchase.getRepository()));
+		purchaseDTO.setTooltypeId(String.valueOf(purchase.getTooltypeId()));
+		purchaseDTO.setUnit(purchase.getUnit());
+		purchaseDTO.setDoc(ui_date_format.format(purchase.getDoc()));
+		purchaseDTO.setDou(ui_date_format.format(purchase.getDou()));
+		List<PurchaseHistoryDTO> historyDTOs = new ArrayList<PurchaseHistoryDTO>();
+		if(purchase.getPurchaseHistories()!=null && purchase.getPurchaseHistories().size()>0){
+			for(PurchaseHistory purchaseHistory : purchase.getPurchaseHistories()){
+				PurchaseHistoryDTO purchaseHistoryDTO = new PurchaseHistoryDTO();
+				purchaseHistoryDTO.setAuthouredby(purchaseHistory.getAuthouredby());
+				purchaseHistoryDTO.setDate(ui_date_format.format(purchaseHistory.getAdddate()));
+				purchaseHistoryDTO.setQuantity(String.valueOf(purchaseHistory.getQuantity()));
+				historyDTOs.add(purchaseHistoryDTO);
+			}
+		}
+		purchaseDTO.setPurchaseHistory(historyDTOs);
+		return purchaseDTO;
+	}
+
+	public Purchase findPurchaseById(String valueOf) {
+		return commonDAO.findPurchaseById(Integer.valueOf(valueOf));
+	}
+
+	public List<PurchaseDTO> retrieveAllPurchaseDTO(String purchaseSearched) {
+		List<PurchaseDTO> purchaseDTOList = new ArrayList<PurchaseDTO>();
+		List<Purchase> purchaseList = commonDAO.retrieveAllPurchase(purchaseSearched);
+		for(Purchase purchase : purchaseList){
+			PurchaseDTO eachPurchaseDTO = convertPurchaseToMiniDto(purchase);
+			purchaseDTOList.add(eachPurchaseDTO);
+		}
+		return purchaseDTOList;
+	}
+
+	private PurchaseDTO convertPurchaseToMiniDto(Purchase purchase) {
+		PurchaseDTO purchaseDTO = new PurchaseDTO();
+		purchaseDTO.setId(purchase.getParticularId());
+		purchaseDTO.setParticular(purchase.getParticular());
+		purchaseDTO.setCode(purchase.getCode());
+		purchaseDTO.setMake(purchase.getMake());
+		purchaseDTO.setRepository(String.valueOf(purchase.getRepository()));
+		return purchaseDTO;
+	}
+
+	public Purchase registerPurchase(String create, String parid, String particular, String code, String make,
+			String unit, String desc, String type, String authouredby, String additems) throws Exception {
+		Purchase purchase = commonDAO.registerPurchase(create, parid, particular, code, make,
+				unit, desc, type, authouredby,  additems);
+		return purchase;
+				
 	}
 
 }

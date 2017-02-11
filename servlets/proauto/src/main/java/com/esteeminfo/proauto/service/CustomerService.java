@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.esteeminfo.proauto.dto.CustomerDTO;
 import com.esteeminfo.proauto.entity.Customer;
+import com.esteeminfo.proauto.entity.Purchase;
 
 public interface CustomerService {
 
