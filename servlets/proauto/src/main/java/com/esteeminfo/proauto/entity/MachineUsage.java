@@ -24,6 +24,8 @@ public class MachineUsage implements Serializable {
 	@Column(name="actual_time")
 	private String actualTime;
 
+	private String desciption;
+	
 	private String shift;
 
 	@Temporal(TemporalType.DATE)
@@ -179,6 +181,14 @@ public class MachineUsage implements Serializable {
 		purchaseHistory.setMachineUsage(null);
 
 		return purchaseHistory;
+	}
+
+	public String getDesciption() {
+		return desciption;
+	}
+
+	public void setDesciption(String desciption) {
+		this.desciption = desciption;
 	}
 	
 	

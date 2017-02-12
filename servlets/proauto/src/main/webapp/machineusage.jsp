@@ -192,6 +192,18 @@ $(document).on("click", ".deleteButton", function(event) {
 			    	</div>
   	  		  </div>
   	  		  
+  	  		    <div class="row rowspace">
+  	  		        <div class="control-group">
+	  	  		   		<div class="col-sm-1 col-md-1">
+			      			<label for="description" class="control-label">Description:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<input type="text" class="form-control" id="description"
+											name="description" value="${machineUsage.description}">
+			    	 	</div>
+		    	 	</div>
+  	  		  </div>
+  	  		  
   	  		  <div class="row rowspace">
   	  		   		<div class="col-sm-12 col-md-12">
 		      			<label>Tool Usage</label>

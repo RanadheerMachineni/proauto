@@ -393,6 +393,7 @@ create table machine_usage
 	use_date DATE,
 	shift char(50),
 	actual_time char(20),
+	desciption char(255),
 	constraint machine_usage_pk primary key (machine_usage_id),
 	CONSTRAINT fk_mu_machine_id FOREIGN KEY (machine_id) REFERENCES machines(machine_id),
 	CONSTRAINT fk_mu_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
