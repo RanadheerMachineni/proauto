@@ -3,9 +3,14 @@ package com.esteeminfo.proauto.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.hibernate.annotations.SortNatural;
+
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 
 /**
@@ -53,7 +58,9 @@ public class Purchase implements Serializable {
 
 	//bi-directional many-to-one association to PurchaseHistory
 	@OneToMany(mappedBy="purchase",fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private Set<PurchaseHistory> purchaseHistories;
+	@SortNatural
+	@OrderBy("adddate ASC")
+	private Set<PurchaseHistory> purchaseHistories =  new HashSet<PurchaseHistory>();
 	
 	public Purchase() {
 	}

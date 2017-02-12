@@ -77,7 +77,22 @@ public class PurchaseHistory implements Serializable, Comparable<PurchaseHistory
 	}
 
 	public int compareTo(PurchaseHistory o) {
-		return this.getAdddate().compareTo(o.getAdddate());
+		return o.getAdddate().compareTo(this.getAdddate());
+	}
+	
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + this.getPurchaseHistoryId();
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) return false;
+        if (!(o instanceof PurchaseHistory)) return false;
+	    PurchaseHistory other = (PurchaseHistory) o;
+	    return this.getPurchaseHistoryId() == other.getPurchaseHistoryId();
 	}
 
 }

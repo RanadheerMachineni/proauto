@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -366,7 +368,7 @@ public class CommonDAO extends AbstractDao{
 		purchase.setAuthouredby(authouredby);
 		purchase.setTooltypeId(Integer.valueOf(type));
 		entityManager.persist(purchase);
-		Set<PurchaseHistory> history  =  new HashSet<PurchaseHistory>();
+		Set<PurchaseHistory> history  =  purchase.getPurchaseHistories();
 		PurchaseHistory purchaseHistory =  new PurchaseHistory();
 		purchaseHistory.setPurchase(purchase);
 		purchaseHistory.setAuthouredby(authouredby);

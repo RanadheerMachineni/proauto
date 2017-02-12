@@ -228,6 +228,7 @@ public class CommonServiceImpl implements CommonService {
 		purchaseDTO.setDou(ui_date_format.format(purchase.getDou()));
 		List<PurchaseHistoryDTO> historyDTOs = new ArrayList<PurchaseHistoryDTO>();
 		if(purchase.getPurchaseHistories()!=null && purchase.getPurchaseHistories().size()>0){
+			System.out.println("Size of histories = "+purchase.getPurchaseHistories().size());
 			for(PurchaseHistory purchaseHistory : purchase.getPurchaseHistories()){
 				PurchaseHistoryDTO purchaseHistoryDTO = new PurchaseHistoryDTO();
 				purchaseHistoryDTO.setAuthouredby(purchaseHistory.getAuthouredby());
