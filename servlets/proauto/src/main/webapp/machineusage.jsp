@@ -19,7 +19,20 @@ $(document).on("click", ".deleteButton", function(event) {
 $(document).ready(
 		function() {
 			  $('#muDate').datepicker();	
-			
+			  $('select[name=customer]').change(function(){
+				    var customer = $(this).val();
+				    $.get("${pageContext.request.contextPath}/getPos",
+				    	    {"customer" : customer},
+				    	    function(resultJSON) {
+				    	    	var result = $.parseJSON(resultJSON);
+				    	    	$('#po').empty();
+				    	    	$.each(result, function(k, v) {
+				    	    	      $('#po').append('<option value="'+k+'">'+v+'</option>');
+
+				    	    	});
+				    	    }
+				    );
+				})
 			
 });		
 </script>
@@ -284,7 +297,7 @@ $(document).ready(
 												value="" placeholder="approver" />
 							</td>
 							<td class="joboperationbox">															
-									<input type="button" class="deleteButton" value="Delete" />
+									<input type="button" class="form-control deleteButton" value="Delete" />
 							</td>
 						</tr>
 					</table>

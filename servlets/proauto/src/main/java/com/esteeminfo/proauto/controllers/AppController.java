@@ -133,6 +133,11 @@ public class AppController {
 		Map<String, String> customerMap = new HashMap<String, String>(); 
 		customerMap = customerService.retreiveCustomerMap();
 		model.addAttribute("customers", customerMap);
+		
+		Map<String, String> empMap = new HashMap<String, String>(); 
+		empMap  = employeeService.getEmployees();
+		model.addAttribute("employees", empMap);
+		
 		return "machineusage";
 	}
 	
