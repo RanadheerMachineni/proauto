@@ -3,6 +3,20 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl"%>
 <t:layout>
+<jsp:attribute name="header">
+<script>
+$(document).on("click", ".insertRow", function(event) {
+	 $('#customFields').append('<tr>'+
+			 '<td class="joboperationbox">	 <div>     	 	 <select class="form-control" name="tool"							id="tool"> 			 		<option value="">Select</option>						<jstl:forEach items="${tools}" var="eachTool">				  			<option value="${eachTool.key}">${eachTool.value}</option>						</jstl:forEach>			 </select>	 </div>			 </td>				<td class="joboperationbox">	<input type="text" class="form-control" id="make" name="make"					value="" placeholder="make" /></td>				<td class="joboperationbox">			 	<input type="text" class="form-control" id="quantity"					name="quantity" value="" placeholder="quantity" /></td>				<td class="joboperationbox">												<input type="text" class="form-control" id="approver" name="approver"			 						value="" placeholder="approver" /></td>			 <td class="joboperationbox"><input type="button" class="form-control deleteButton" value="Delete" /></td>'
+			+'</tr>')
+	
+});
+$(document).on("click", ".deleteButton", function(event) {
+   $(this).closest('tr').remove();
+	
+});
+</script>
+</jsp:attribute>
 	<jsp:body>
 <div class="container">
 	
@@ -55,8 +69,8 @@
 			   
   			 <div class="row rowspace">
   	  		        <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
-			      			<label class="control-label" for="mid">Machine : </label>
+	  	  		   		<div class="col-sm-1 col-md-1">
+			      			<label class="control-label" for="mid">Machine: </label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<select class="form-control" name="machine" id="machine">
@@ -69,7 +83,7 @@
 			    	 	</div>
 		    	 	</div>
 		    	 	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
+			    	 	<div class="col-sm-1 col-md-1">
 			      			<label for="muDate" class="control-label">Date:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
@@ -78,11 +92,11 @@
 			    	 	</div>
 			    	</div>
 			    	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
+			    	 	<div class="col-sm-1 col-md-1">
 			      			<label for="shift" class="control-label">Shift:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<select class="form-control" name="machine" id="shift">
+			      			<select class="form-control" name="shift" id="shift">
 			 			 		<option value="">Select Shift</option>
 		  						<jstl:forEach items="${shifts}" var="eachShift">
 		  				  			<option value="${eachShift.key}"
@@ -94,8 +108,8 @@
   	  		  </div>
   	  		  <div class="row rowspace">
   	  		        <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
-			      			<label class="control-label" for="mid">Customer : </label>
+	  	  		   		<div class="col-sm-1 col-md-1">
+			      			<label class="control-label" for="mid">Customer: </label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<select class="form-control" name="customer" id="customer">
@@ -108,7 +122,7 @@
 			    	 	</div>
 		    	 	</div>
 		    	 	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
+			    	 	<div class="col-sm-1 col-md-1">
 			      			<label for="po" class="control-label">PO:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
@@ -122,7 +136,7 @@
 			    	 	</div>
 			    	</div>
 			    	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
+			    	 	<div class="col-sm-1 col-md-1">
 			      			<label for="task" class="control-label">Task:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
@@ -139,8 +153,8 @@
   	  		  
   	  		  <div class="row rowspace">
   	  		        <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
-			      			<label class="control-label" for="programmer">Programmer : </label>
+	  	  		   		<div class="col-sm-1 col-md-1">
+			      			<label class="control-label" for="programmer">Programmer: </label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<select class="form-control" name="programmer"
@@ -154,8 +168,8 @@
 			    	 	</div>
 		    	 	</div>
 		    	 	<div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
-			      			<label class="control-label" for="operator">Operator : </label>
+	  	  		   		<div class="col-sm-1 col-md-1">
+			      			<label class="control-label" for="operator">Operator: </label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<select class="form-control" name="operator" id="operator">
@@ -168,7 +182,7 @@
 			    	 	</div>
 		    	 	</div>
 			    	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
+			    	 	<div class="col-sm-1 col-md-1">
 			      			<label for="actualTime" class="control-label">Actual Time:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
@@ -183,45 +197,6 @@
 		      			<label>Tool Usage</label>
 		    		</div>
   	  		   </div>
-  	  		  <div class="row rowspace">
-  	  		        <div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
-			      			<label class="control-label" for="item">Item : </label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<select class="form-control" name="item" id="item">
-								 			 		<option value="">Select Item</option>
-							  						<jstl:forEach items="${items}" var="eachItem">
-							  				  			<option value="${eachItem.key}"
-													${machineUsage.programmer == eachEmp.key ? 'selected' : ''}>${eachEmp.value}</option>
-							  						</jstl:forEach>
-							</select>
-			    	 	</div>
-		    	 	</div>
-		    	 	<div class="control-group">
-	  	  		   		<div class="col-sm-2 col-md-2">
-			      			<label class="control-label" for="operator">Operator : </label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<select class="form-control" name="operator" id="operator">
-								 			 		<option value="">Select</option>
-							  						<jstl:forEach items="${employees}" var="eachEmp">
-							  				  			<option value="${eachEmp.key}"
-													${machineUsage.operator == eachEmp.key ? 'selected' : ''}>${eachEmp.value}</option>
-							  						</jstl:forEach>
-							</select>
-			    	 	</div>
-		    	 	</div>
-			    	<div class="control-group">
-			    	 	<div class="col-sm-2 col-md-2">
-			      			<label for="actualTime" class="control-label">Actual Time:</label>
-			    		</div>
-			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="actualTime"
-											name="actualTime" value="${machineUsage.actualTime}">
-			    	 	</div>
-			    	</div>
-  	  		  </div>
   	  		  
   	  		   <br>
   	  		      <jstl:if
@@ -252,7 +227,7 @@
 														placeholder="approver" /> 
 								</td>
 													<td class="joboperationbox">															
-									<input type="button" class="deleteButton" value="Delete" />
+									<input type="button" class="form-control deleteButton" value="Delete" />
 								</td>
 				                </tr>
 			           		 </jstl:forEach>
@@ -285,9 +260,12 @@
 								<input type="text" class="form-control" id="quantity"
 												name="quantity" value="" placeholder="quantity" /> 
 							</td>
-											<td class="joboperationbox">												
-								<input type="text" class="v" id="approver" name="approver"
+							<td class="joboperationbox">												
+								<input type="text" class="form-control" id="approver" name="approver"
 												value="" placeholder="approver" />
+							</td>
+							<td class="joboperationbox">															
+									<input type="button" class="deleteButton" value="Delete" />
 							</td>
 						</tr>
 					</table>
@@ -295,9 +273,9 @@
 		    		</div>
   	  		   </div>
   	  		   <div class="row rowspace">
-  	  		   		<div class="col-sm-12 col-md-12">
+  	  		   		<div class="col-sm-2 col-md-2">
 		      			    <p id="insertRowParent">
-    							<input class="insertRow" type="button" value="Add Tool">
+    							<input class="insertRow form-control" type="button" value="Add Tool">
 							</p>
 		    		</div>
   	  		   </div>
