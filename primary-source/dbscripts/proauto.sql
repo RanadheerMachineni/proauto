@@ -354,7 +354,11 @@ create table purchase_history(
 	adddate date,
 	authouredby char(50),
 	quantity int,
-    CONSTRAINT purchase_history_pk PRIMARY KEY (purchase_history_id)
+	machine_usage_id int,
+	status CHAR(1),
+    CONSTRAINT purchase_history_pk PRIMARY KEY (purchase_history_id),
+   	CONSTRAINT fk_ph_particular_id FOREIGN KEY (particular_id) REFERENCES purchase(particular_id),
+	CONSTRAINT fk_ph_machine_usage_id FOREIGN KEY (machine_usage_id) REFERENCES machine_usage(machine_usage_id)
 );
 
 create table purchase
@@ -389,9 +393,6 @@ create table machine_usage
 	use_date DATE,
 	shift char(50),
 	actual_time char(20),
-	particular_id int,
-	quantity int NOT NULL,
-	authouredby char(50),
 	constraint machine_usage_pk primary key (machine_usage_id),
 	CONSTRAINT fk_mu_machine_id FOREIGN KEY (machine_id) REFERENCES machines(machine_id),
 	CONSTRAINT fk_mu_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
@@ -399,6 +400,5 @@ create table machine_usage
    	CONSTRAINT fk_mu_jobcard FOREIGN KEY (jobcard_id) REFERENCES jobcard(jobcard_id),
    	CONSTRAINT fk_mu_task FOREIGN KEY (task_id) REFERENCES jobcard_task(task_id),
    	CONSTRAINT fk_machine_usage_task_assignee FOREIGN KEY (assignee) REFERENCES employee(employee_id),
-   	CONSTRAINT fk_machine_usage_programmer FOREIGN KEY (programmer) REFERENCES employee(employee_id),
-	CONSTRAINT fk_mu_particular_id FOREIGN KEY (particular_id) REFERENCES purchase(particular_id)
-)
+   	CONSTRAINT fk_machine_usage_programmer FOREIGN KEY (programmer) REFERENCES employee(employee_id)
+);

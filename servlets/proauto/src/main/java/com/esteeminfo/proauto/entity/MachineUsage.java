@@ -3,6 +3,7 @@ package com.esteeminfo.proauto.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 
 /**
@@ -23,16 +24,16 @@ public class MachineUsage implements Serializable {
 	@Column(name="actual_time")
 	private String actualTime;
 
-	private String authouredby;
-
-	private int quantity;
-
 	private String shift;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="use_date")
 	private Date useDate;
 
+	//bi-directional many-to-one association to PurchaseHistory
+	@OneToMany(mappedBy="machineUsage",fetch=FetchType.LAZY)
+	private Set<PurchaseHistory> purchaseHistories;
+	
 	//bi-directional many-to-one association to Machine
 	@ManyToOne
 	@JoinColumn(name="machine_id")
@@ -68,11 +69,6 @@ public class MachineUsage implements Serializable {
 	@JoinColumn(name="programmer")
 	private Employee programmer;
 
-	//bi-directional many-to-one association to Purchase
-	@ManyToOne
-	@JoinColumn(name="particular_id")
-	private Purchase purchase;
-
 	public MachineUsage() {
 	}
 
@@ -90,22 +86,6 @@ public class MachineUsage implements Serializable {
 
 	public void setActualTime(String actualTime) {
 		this.actualTime = actualTime;
-	}
-
-	public String getAuthouredby() {
-		return this.authouredby;
-	}
-
-	public void setAuthouredby(String authouredby) {
-		this.authouredby = authouredby;
-	}
-
-	public int getQuantity() {
-		return this.quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
 	}
 
 	public String getShift() {
@@ -164,14 +144,6 @@ public class MachineUsage implements Serializable {
 		this.jobcardTask = jobcardTask;
 	}
 
-	public Purchase getPurchase() {
-		return this.purchase;
-	}
-
-	public void setPurchase(Purchase purchase) {
-		this.purchase = purchase;
-	}
-
 	public Employee getAssignee() {
 		return assignee;
 	}
@@ -187,5 +159,27 @@ public class MachineUsage implements Serializable {
 	public void setProgrammer(Employee programmer) {
 		this.programmer = programmer;
 	}
+	public Set<PurchaseHistory> getPurchaseHistories() {
+		return this.purchaseHistories;
+	}
 
+	public void setPurchaseHistories(Set<PurchaseHistory> purchaseHistories) {
+		this.purchaseHistories = purchaseHistories;
+	}
+
+	public PurchaseHistory addPurchaseHistory(PurchaseHistory purchaseHistory) {
+		getPurchaseHistories().add(purchaseHistory);
+		purchaseHistory.setMachineUsage(this);
+
+		return purchaseHistory;
+	}
+
+	public PurchaseHistory removePurchaseHistory(PurchaseHistory purchaseHistory) {
+		getPurchaseHistories().remove(purchaseHistory);
+		purchaseHistory.setMachineUsage(null);
+
+		return purchaseHistory;
+	}
+	
+	
 }

@@ -18,20 +18,20 @@ public class MachineUsageDTO {
 
 	private Date useDate;
 
-	private Machine machine;
-
-	private Customer customer;
-
-	private PurchaseOrder purchaseOrder;
-
-	private Jobcard jobcard;
-
-	private JobcardTask jobcardTask;
-
-	private Employee assignee;
-
-	private Employee programmer;
-
-	private Purchase purchase;
+//	private Machine machine;
+//
+//	private Customer customer;
+//
+//	private PurchaseOrder purchaseOrder;
+//
+//	private Jobcard jobcard;
+//
+//	private JobcardTask jobcardTask;
+//
+//	private Employee assignee;
+//
+//	private Employee programmer;
+//
+//	private Purchase purchase;
 
 }

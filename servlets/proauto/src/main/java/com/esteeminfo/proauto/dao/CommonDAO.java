@@ -353,11 +353,15 @@ public class CommonDAO extends AbstractDao{
 		}
 		if (create.equalsIgnoreCase("false") && purchaseId > 0 ) {
 			purchase = findPurchaseById(purchaseId);
-			purchase.setRepository(purchase.getRepository() + Integer.valueOf(additems));
+			if(additems!=null && additems.length()>0){
+				purchase.setRepository(purchase.getRepository() + Integer.valueOf(additems));
+			}
 		}else{
 			purchase = new Purchase();
 			purchase.setDoc(new Date());
-			purchase.setRepository(Integer.valueOf(additems));
+			if(additems!=null && additems.length()>0){
+				purchase.setRepository(Integer.valueOf(additems));
+			}
 		}
 		purchase.setDou(new Date());
 		purchase.setParticular(particular);
@@ -368,19 +372,24 @@ public class CommonDAO extends AbstractDao{
 		purchase.setAuthouredby(authouredby);
 		purchase.setTooltypeId(Integer.valueOf(type));
 		entityManager.persist(purchase);
-		Set<PurchaseHistory> history  =  purchase.getPurchaseHistories();
-		PurchaseHistory purchaseHistory =  new PurchaseHistory();
-		purchaseHistory.setPurchase(purchase);
-		purchaseHistory.setAuthouredby(authouredby);
-		purchaseHistory.setQuantity(Integer.valueOf(additems));
-		purchaseHistory.setAdddate(new Date());
-		history.add(purchaseHistory);
-		if(purchase.getPurchaseHistories()==null){
-			purchase.setPurchaseHistories(history);
-		}else{
-			purchase.getPurchaseHistories().addAll(history);
+		
+		if(additems!=null && additems.length()>0){
+			Set<PurchaseHistory> history  =  purchase.getPurchaseHistories();
+			PurchaseHistory purchaseHistory =  new PurchaseHistory();
+			purchaseHistory.setPurchase(purchase);
+			purchaseHistory.setAuthouredby(authouredby);
+			purchaseHistory.setQuantity(Integer.valueOf(additems));
+			purchaseHistory.setAdddate(new Date());
+			purchaseHistory.setStatus("a");
+			history.add(purchaseHistory);
+			if(purchase.getPurchaseHistories()==null){
+				purchase.setPurchaseHistories(history);
+			}else{
+				purchase.getPurchaseHistories().addAll(history);
+			}
+			entityManager.persist(purchase);
 		}
-		entityManager.persist(purchase);
+		
 		return purchase;
 	}
 

@@ -26,6 +26,14 @@ public class PurchaseHistory implements Serializable, Comparable<PurchaseHistory
 
 	private String authouredby;
 
+	private String status;
+	
+	//bi-directional many-to-one association to MachineUsage
+	@ManyToOne
+	@JoinColumn(name="machine_usage_id")
+	private MachineUsage machineUsage;
+	
+	
 	//bi-directional many-to-one association to Purchase
 	@ManyToOne
 	@JoinColumn(name="particular_id")
@@ -60,6 +68,15 @@ public class PurchaseHistory implements Serializable, Comparable<PurchaseHistory
 		this.authouredby = authouredby;
 	}
 
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	
 	public Purchase getPurchase() {
 		return this.purchase;
 	}
@@ -75,6 +92,15 @@ public class PurchaseHistory implements Serializable, Comparable<PurchaseHistory
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+	
+	public MachineUsage getMachineUsage() {
+		return this.machineUsage;
+	}
+
+	public void setMachineUsage(MachineUsage machineUsage) {
+		this.machineUsage = machineUsage;
+	}
+	
 
 	public int compareTo(PurchaseHistory o) {
 		return o.getAdddate().compareTo(this.getAdddate());

@@ -116,9 +116,9 @@ public class AppController {
 	
 	@RequestMapping(value = { "/machineusage"}, method = RequestMethod.GET)
 	public String showMachineUse(Model model, @RequestParam(value="muSelected", required=false) String muSelected, HttpServletRequest request, HttpServletResponse response) {
-		String purchaseSearched = request.getParameter("searchCodeInput");
-		List<PurchaseDTO> purchaseDTOList = commonService.retrieveAllMMUDTO(muSelected);
-		model.addAttribute("muList", purchaseDTOList);
+//		String purchaseSearched = request.getParameter("searchCodeInput");
+//		List<PurchaseDTO> purchaseDTOList = commonService.retrieveAllMMUDTO(muSelected);
+//		model.addAttribute("muList", purchaseDTOList);
 		return "machineusage";
 	}
 	

@@ -52,10 +52,6 @@ public class Purchase implements Serializable {
 
 	private String unit;
 
-	//bi-directional many-to-one association to MachineUsage
-	@OneToMany(mappedBy="purchase",fetch=FetchType.LAZY)
-	private Set<MachineUsage> machineUsages;
-
 	//bi-directional many-to-one association to PurchaseHistory
 	@OneToMany(mappedBy="purchase",fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@SortNatural
@@ -159,28 +155,6 @@ public class Purchase implements Serializable {
 
 	public void setUnit(String unit) {
 		this.unit = unit;
-	}
-
-	public Set<MachineUsage> getMachineUsages() {
-		return this.machineUsages;
-	}
-
-	public void setMachineUsages(Set<MachineUsage> machineUsages) {
-		this.machineUsages = machineUsages;
-	}
-
-	public MachineUsage addMachineUsage(MachineUsage machineUsage) {
-		getMachineUsages().add(machineUsage);
-		machineUsage.setPurchase(this);
-
-		return machineUsage;
-	}
-
-	public MachineUsage removeMachineUsage(MachineUsage machineUsage) {
-		getMachineUsages().remove(machineUsage);
-		machineUsage.setPurchase(null);
-
-		return machineUsage;
 	}
 
 	public Set<PurchaseHistory> getPurchaseHistories() {
