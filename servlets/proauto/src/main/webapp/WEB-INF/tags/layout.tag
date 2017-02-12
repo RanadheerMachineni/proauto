@@ -108,10 +108,13 @@
 							<a href="${pageContext.request.contextPath}/searchinv">Search Inventory</a>
 						</div>
 					</li>
-											
-					<li id="machineusageli"><a
-						href="${pageContext.request.contextPath}/machineusage">Machine Usage</a></li>
-						
+					
+					<li id="machineusageli" class="dropdownmenu"><a class="dropbtn">Machine Usage</a>
+						<div class="dropdown-content">
+							<a href="${pageContext.request.contextPath}/machineusage">Add Machine Usage</a>
+						</div>
+					</li>
+					
 					<li id="regli" class="dropdownmenu"><a class="dropbtn">Masters</a>
 						<div class="dropdown-content">
 							<a href="${pageContext.request.contextPath}/ereg">Employee

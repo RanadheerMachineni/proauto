@@ -113,6 +113,23 @@ public class AppController {
 		return model;
 	}
 	
+	
+	@RequestMapping(value = { "/machineusage"}, method = RequestMethod.GET)
+	public String showMachineUse(Model model, @RequestParam(value="muSelected", required=false) String muSelected, HttpServletRequest request, HttpServletResponse response) {
+		String purchaseSearched = request.getParameter("searchCodeInput");
+		List<PurchaseDTO> purchaseDTOList = commonService.retrieveAllMMUDTO(muSelected);
+		model.addAttribute("muList", purchaseDTOList);
+		return "machineusage";
+	}
+	
+	@RequestMapping(value = { "/machineusage"}, method = RequestMethod.POST)
+	public String postMachineUse(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String purchaseSearched = request.getParameter("searchCodeInput");
+		List<PurchaseDTO> purchaseDTOList = commonService.retrieveAllPurchaseDTO(purchaseSearched);
+		model.addAttribute("purchaseList", purchaseDTOList);
+		return "machineusage";
+	}
+	
 	@RequestMapping(value = { "/showinv"}, method = RequestMethod.GET)
 	public String showinv(Model model,@RequestParam(value="purchaseSelected", required=false) String purchaseSelected, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String> typeMap = new HashMap<String, String>(); 
@@ -189,12 +206,7 @@ public class AppController {
 		
 		return "addtoinv";
 	}
-	@RequestMapping(value = { "/machineusage"}, method = RequestMethod.GET)
-	public ModelAndView getMachineUsage() {
-		ModelAndView model = new ModelAndView();
-		model.setViewName("machineusage");
-		return model;
-	}
+
 
 	@RequestMapping(value = { "/rmat"}, method = RequestMethod.GET)
 	public String rmatPage(Model model, HttpServletRequest request, HttpServletResponse response) {
