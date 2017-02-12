@@ -119,6 +119,20 @@ public class AppController {
 //		String purchaseSearched = request.getParameter("searchCodeInput");
 //		List<PurchaseDTO> purchaseDTOList = commonService.retrieveAllMMUDTO(muSelected);
 //		model.addAttribute("muList", purchaseDTOList);
+		
+		Map<String, String> shiftMap = new HashMap<String, String>(); 
+		shiftMap.put("1", "First shift");
+		shiftMap.put("2", "Second shift");
+		shiftMap.put("3", "Third shift");
+		model.addAttribute("shifts", shiftMap);
+		
+		Map<String, String> machineMap = new HashMap<String, String>(); 
+		machineMap  = commonService.getMachines();
+		model.addAttribute("machines", machineMap);
+		
+		Map<String, String> customerMap = new HashMap<String, String>(); 
+		customerMap = customerService.retreiveCustomerMap();
+		model.addAttribute("customers", customerMap);
 		return "machineusage";
 	}
 	
