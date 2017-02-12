@@ -15,6 +15,13 @@ $(document).on("click", ".deleteButton", function(event) {
    $(this).closest('tr').remove();
 	
 });
+
+$(document).ready(
+		function() {
+			  $('#muDate').datepicker();	
+			
+			
+});		
 </script>
 </jsp:attribute>
 	<jsp:body>
