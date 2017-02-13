@@ -21,6 +21,7 @@ import com.esteeminfo.proauto.dto.PurchaseDTO;
 import com.esteeminfo.proauto.dto.PurchaseHistoryDTO;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.JobOperation;
+import com.esteeminfo.proauto.entity.Jobcard;
 import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.PoTool;
 import com.esteeminfo.proauto.entity.Purchase;
@@ -271,6 +272,35 @@ public class CommonServiceImpl implements CommonService {
 				unit, desc, type, authouredby,  additems);
 		return purchase;
 				
+	}
+
+	public Map<String, String> findJobsByPO(String po) {
+		Map<String,String> jobsMap =  new HashMap<String, String>();
+		PurchaseOrder purchaseOrder = findPOById(po);
+		List<Jobcard> jobcards = purchaseOrder.getJobcards();
+		for (Jobcard jobcard : jobcards) {
+			jobsMap.put(String.valueOf(jobcard.getJobcardId()), jobcard.getJobcardName());
+		}
+		return jobsMap;
+	}
+
+	public Map<String, String> getInventoryItems() {
+		Map<String,String> invMap =  new HashMap<String, String>();
+		List<Purchase> purchases = commonDAO.retrieveAllPurchase(null);
+		for (Purchase purchase : purchases) {
+			invMap.put(String.valueOf(purchase.getParticularId()), purchase.getCode());
+		}
+		return invMap;
+	}
+
+	public Map<String, String> findMakesOfTool(String tool) {
+		Map<String,String> makeMap =  new HashMap<String, String>();
+		List<Purchase> purchases = commonDAO.retrieveAllPurchase(tool);
+		for (Purchase purchase : purchases) {
+			makeMap.put(String.valueOf(purchase.getParticularId()), purchase.getCode());
+		}
+		return makeMap;
+
 	}
 
 }

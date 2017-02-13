@@ -65,4 +65,10 @@ public interface CommonService {
 	Purchase registerPurchase(String create, String parid, String particular, String code, String make, String unit,
 			String desc, String type, String authouredby, String additems) throws Exception;
 
+	Map<String, String> findJobsByPO(String po);
+
+	Map<String, String> getInventoryItems();
+
+	Map<String, String> findMakesOfTool(String tool);
+
 }

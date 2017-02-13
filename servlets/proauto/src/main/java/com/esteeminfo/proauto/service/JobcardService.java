@@ -1,6 +1,7 @@
 package com.esteeminfo.proauto.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.esteeminfo.proauto.dto.JobcardDTO;
 import com.esteeminfo.proauto.entity.Customer;
@@ -20,5 +21,7 @@ public interface JobcardService {
 	List<JobcardDTO> retrieveAllJobcardDTOs(String jobcardSearched);
 
 	JobcardDTO findDTOById(Integer valueOf);
+
+	Map<String, String> findTasksByJob(String jobcard);
 
 }

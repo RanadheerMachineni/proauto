@@ -2,8 +2,10 @@ package com.esteeminfo.proauto.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -21,6 +23,7 @@ import com.esteeminfo.proauto.dto.JobcardTaskDTO;
 import com.esteeminfo.proauto.entity.Contact;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.Employee;
+import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Jobcard;
 import com.esteeminfo.proauto.entity.JobcardTask;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
@@ -124,6 +127,15 @@ public class JobcardServiceImpl implements JobcardService {
 		if(jobcard!=null) return converJobcardToDto(jobcard);
 		return null;
 	}
-	
-	
+
+	public Map<String, String> findTasksByJob(String jobcardId) {
+		Map<String,String> taskMap =  new HashMap<String, String>();
+		Jobcard jobcard  = jobcardDao.findById(Integer.valueOf(jobcardId));
+		for (JobcardTask jobcardTask : jobcard.getJobcardTasks()) {
+			JobOperation jobOperation = jobcardDao.getOperationByJobOpId(jobcardTask.getJoId());
+			taskMap.put(String.valueOf(jobcardTask.getTaskId()), jobOperation.getJobName());
+		}
+		return taskMap;
+	}
+
 }

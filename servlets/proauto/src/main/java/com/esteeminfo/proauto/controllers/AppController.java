@@ -91,6 +91,27 @@ public class AppController {
 		return json;
 	}
 	
+	@RequestMapping(value = {"/getJobList"}, method = RequestMethod.GET)
+	public @ResponseBody String getJobList(@RequestParam("po") String po) throws JsonProcessingException {
+		Map<String,String> jobs = commonService.findJobsByPO(po);
+		String json = new ObjectMapper().writeValueAsString(jobs);
+		return json;
+	}
+	
+	@RequestMapping(value = {"/getTaskList"}, method = RequestMethod.GET)
+	public @ResponseBody String getTaskList(@RequestParam("jobcard") String jobcard) throws JsonProcessingException {
+		Map<String,String> tasks = jobcardService.findTasksByJob(jobcard);
+		String json = new ObjectMapper().writeValueAsString(tasks);
+		return json;
+	}
+	
+	@RequestMapping(value = {"/getMakes"}, method = RequestMethod.GET)
+	public @ResponseBody String getMakes(@RequestParam("tool") String tool) throws JsonProcessingException {
+		Map<String,String> makeMap = commonService.findMakesOfTool(tool);
+		String json = new ObjectMapper().writeValueAsString(makeMap);
+		return json;
+	}
+	
 	
 	@RequestMapping(value = { "/dashboard"}, method = RequestMethod.GET)
 	public ModelAndView homePage() {
@@ -137,6 +158,11 @@ public class AppController {
 		Map<String, String> empMap = new HashMap<String, String>(); 
 		empMap  = employeeService.getEmployees();
 		model.addAttribute("employees", empMap);
+		
+		
+		Map<String, String> inventoryMap = new HashMap<String, String>(); 
+		inventoryMap  = commonService.getInventoryItems();
+		model.addAttribute("tools", inventoryMap);
 		
 		return "machineusage";
 	}

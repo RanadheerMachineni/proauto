@@ -7,7 +7,7 @@
 <script>
 $(document).on("click", ".insertRow", function(event) {
 	 $('#customFields').append('<tr>'+
-			 '<td class="joboperationbox">	 <div>     	 	 <select class="form-control" name="tool"							id="tool"> 			 		<option value="">Select</option>						<jstl:forEach items="${tools}" var="eachTool">				  			<option value="${eachTool.key}">${eachTool.value}</option>						</jstl:forEach>			 </select>	 </div>			 </td>				<td class="joboperationbox">	<input type="text" class="form-control" id="make" name="make"					value="" placeholder="make" /></td>				<td class="joboperationbox">			 	<input type="text" class="form-control" id="quantity"					name="quantity" value="" placeholder="quantity" /></td>				<td class="joboperationbox">												<input type="text" class="form-control" id="approver" name="approver"			 						value="" placeholder="approver" /></td>			 <td class="joboperationbox"><input type="button" class="form-control deleteButton" value="Delete" /></td>'
+			 '<td class="joboperationbox">	 <div>     	 	 <select class="form-control" name="tool"							id="tool"> 			 		<option value="">Select</option>						<jstl:forEach items="${tools}" var="eachTool">				  			<option value="${eachTool.key}">${eachTool.value}</option>						</jstl:forEach>			 </select>	 </div>			 </td>				<td class="joboperationbox">	<select class="form-control" name="make"		id="make">	<option value="">Select</option>	<jstl:forEach items="${makes}" var="eachMake">		<option value="${eachMake.key}">${eachMake.value}</option>	</jstl:forEach>	</select></td>				<td class="joboperationbox">			 	<input type="text" class="form-control" id="quantity"					name="quantity" value="" placeholder="quantity" /></td>				<td class="joboperationbox">												<input type="text" class="form-control" id="approver" name="approver"			 						value="" placeholder="approver" /></td>			 <td class="joboperationbox"><input type="button" class="form-control deleteButton" value="Delete" /></td>'
 			+'</tr>')
 	
 });
@@ -26,13 +26,60 @@ $(document).ready(
 				    	    function(resultJSON) {
 				    	    	var result = $.parseJSON(resultJSON);
 				    	    	$('#po').empty();
+			    	    	      $('#po').append('<option value="-1">Select PO</option>');
+
 				    	    	$.each(result, function(k, v) {
 				    	    	      $('#po').append('<option value="'+k+'">'+v+'</option>');
 
 				    	    	});
 				    	    }
 				    );
-				})
+				});
+				$('select[name=po]').change(function(){
+				    var po = $(this).val();
+				    $.get("${pageContext.request.contextPath}/getJobList",
+				    	    {"po" : po},
+				    	    function(resultJSON) {
+				    	    	var result = $.parseJSON(resultJSON);
+				    	    	$('#jobcard').empty();
+			    	    	    $('#jobcard').append('<option value="-1">Select Jobcard</option>');
+				    	    	$.each(result, function(k, v) {
+				    	    	      $('#jobcard').append('<option value="'+k+'">'+v+'</option>');
+
+				    	    	});
+				    	    }
+				    );
+				});
+				$('select[name=jobcard]').change(function(){
+				    var jobcard = $(this).val();
+				    $.get("${pageContext.request.contextPath}/getTaskList",
+				    	    {"jobcard" : jobcard},
+				    	    function(resultJSON) {
+				    	    	var result = $.parseJSON(resultJSON);
+				    	    	$('#task').empty();
+			    	    	    $('#task').append('<option value="-1">Select Task</option>');
+				    	    	$.each(result, function(k, v) {
+				    	    	      $('#task').append('<option value="'+k+'">'+v+'</option>');
+
+				    	    	});
+				    	    }
+				    );
+				});
+				$('select[name=tool]').change(function(){
+				    var tool = $(this).val();
+				    $.get("${pageContext.request.contextPath}/getMakes",
+				    	    {"tool" : tool},
+				    	    function(resultJSON) {
+				    	    	var result = $.parseJSON(resultJSON);
+				    	    	$('#make').empty();
+			    	    	    $('#make').append('<option value="-1">Select Make</option>');
+				    	    	$.each(result, function(k, v) {
+				    	    	      $('#make').append('<option value="'+k+'">'+v+'</option>');
+
+				    	    	});
+				    	    }
+				    );
+				});
 			
 });		
 </script>
@@ -157,6 +204,20 @@ $(document).ready(
 			    	</div>
 			    	<div class="control-group">
 			    	 	<div class="col-sm-1 col-md-1">
+			      			<label for="jobcard" class="control-label">Job:</label>
+			    		</div>
+			   		 	<div class="col-sm-2 col-md-2 controls">
+			      			<select class="form-control" name="jobcard" id="jobcard">
+				 			 		<option value="">Select Job</option>
+			  						<jstl:forEach items="${jobList}" var="eachJob">
+			  				  			<option value="${eachJob.key}"
+													${machineUsage.jobid == eachJob.key ? 'selected' : ''}>${eachJob.value}</option>
+			  						</jstl:forEach>
+								</select>
+			    	 	</div>
+			    	</div>
+			    	<div class="control-group">
+			    	 	<div class="col-sm-1 col-md-1">
 			      			<label for="task" class="control-label">Task:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
@@ -210,10 +271,7 @@ $(document).ready(
 											name="actualTime" value="${machineUsage.actualTime}">
 			    	 	</div>
 			    	</div>
-  	  		  </div>
-  	  		  
-  	  		    <div class="row rowspace">
-  	  		        <div class="control-group">
+			    	<div class="control-group">
 	  	  		   		<div class="col-sm-1 col-md-1">
 			      			<label for="description" class="control-label">Description:</label>
 			    		</div>
@@ -284,9 +342,14 @@ $(document).ready(
 										 </select>
 								 </div> 
 							</td>
-											<td class="joboperationbox">												
-								<input type="text" class="form-control" id="make" name="make"
-												value="" placeholder="make" />
+							<td class="joboperationbox">												
+								 <select class="form-control" name="make"
+														id="make">
+							 			 		<option value="">Select</option>
+						  						<jstl:forEach items="${makes}" var="eachMake">
+						  				  			<option value="${eachMake.key}">${eachMake.value}</option>
+						  						</jstl:forEach>
+								</select>
 							</td>
 											<td class="joboperationbox">												
 								<input type="text" class="form-control" id="quantity"

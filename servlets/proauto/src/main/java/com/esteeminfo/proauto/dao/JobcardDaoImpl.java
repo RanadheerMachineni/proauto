@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.Department;
 import com.esteeminfo.proauto.entity.Employee;
+import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Jobcard;
 import com.esteeminfo.proauto.entity.JobcardTask;
 import com.esteeminfo.proauto.entity.Machine;
@@ -133,5 +134,10 @@ public class JobcardDaoImpl extends AbstractDao implements JobcardDao {
 		entityManager.persist(jobcard);
 		return jobcard;
 	}
+
+	public JobOperation getOperationByJobOpId(int joId) {
+		return entityManager.find(JobOperation.class, joId);
+	}
+
 	
 }
