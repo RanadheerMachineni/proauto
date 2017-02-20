@@ -3,6 +3,8 @@ package com.esteeminfo.proauto.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.hibernate.type.descriptor.sql.LobTypeMappings;
+
 
 /**
  * The persistent class for the cus_file_data database table.

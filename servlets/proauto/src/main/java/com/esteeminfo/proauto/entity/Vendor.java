@@ -3,6 +3,7 @@ package com.esteeminfo.proauto.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 
 /**
@@ -15,6 +16,7 @@ public class Vendor implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="vendor_id")
 	private int vendorId;
 
@@ -34,6 +36,11 @@ public class Vendor implements Serializable {
 	@Column(name="zip_code")
 	private String zipCode;
 
+
+	//bi-directional many-to-one association to Purchase
+	@OneToMany(mappedBy="vendor", fetch = FetchType.LAZY)
+	private Set<Purchase> purchases;
+	
 	public Vendor() {
 	}
 
@@ -91,6 +98,28 @@ public class Vendor implements Serializable {
 
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+	
+	public Set<Purchase> getPurchases() {
+		return this.purchases;
+	}
+
+	public void setPurchases(Set<Purchase> purchases) {
+		this.purchases = purchases;
+	}
+
+	public Purchase addPurchas(Purchase purchas) {
+		getPurchases().add(purchas);
+		purchas.setVendor(this);
+
+		return purchas;
+	}
+
+	public Purchase removePurchas(Purchase purchas) {
+		getPurchases().remove(purchas);
+		purchas.setVendor(null);
+
+		return purchas;
 	}
 
 }

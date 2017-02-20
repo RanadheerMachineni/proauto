@@ -105,7 +105,7 @@
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
 			      			<input type="text" class="form-control" id="make"
-											name="make" value="${purchase.make}">
+											name="make" value="">
 			    	 	</div>
 		    	 	 </div>
 		       </div>

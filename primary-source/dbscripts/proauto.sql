@@ -366,7 +366,7 @@ create table purchase
 	particular_id int AUTO_INCREMENT NOT NULL,
 	particular char(255) NOT NULL,
 	code char(100) NOT NULL,
-	make char(50),
+	vendor_id int NOT NULL,
 	quantity int NOT NULL,
 	unit char(20),
 	doc DATE,
@@ -377,7 +377,8 @@ create table purchase
 	repository int,
 	constraint purchase_pk primary key (particular_id),
    	CONSTRAINT fk_purchase_tooltype_id FOREIGN KEY (tooltype_id) REFERENCES tooltype(tooltype_id),
-   	CONSTRAINT uk_purchase_code_make UNIQUE (code,make)
+   	CONSTRAINT fk_rm_vendor FOREIGN KEY (vendor_id) REFERENCES vendor(vendor_id),
+   	CONSTRAINT uk_purchase_vendor UNIQUE (code,vendor_id)
 );
 
 create table machine_usage

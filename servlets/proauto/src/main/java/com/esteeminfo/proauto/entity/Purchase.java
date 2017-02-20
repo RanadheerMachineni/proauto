@@ -1,16 +1,26 @@
 package com.esteeminfo.proauto.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
-import org.hibernate.annotations.SortNatural;
-
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.SortNatural;
 
 
 /**
@@ -39,8 +49,6 @@ public class Purchase implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date dou;
 
-	private String make;
-
 	private String particular;
 
 	private int quantity;
@@ -57,6 +65,11 @@ public class Purchase implements Serializable {
 	@SortNatural
 	@OrderBy("adddate ASC")
 	private Set<PurchaseHistory> purchaseHistories =  new HashSet<PurchaseHistory>();
+	
+	//bi-directional many-to-one association to Vendor
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="vendor_id")
+	private Vendor vendor;
 	
 	public Purchase() {
 	}
@@ -107,14 +120,6 @@ public class Purchase implements Serializable {
 
 	public void setDou(Date dou) {
 		this.dou = dou;
-	}
-
-	public String getMake() {
-		return this.make;
-	}
-
-	public void setMake(String make) {
-		this.make = make;
 	}
 
 	public String getParticular() {
@@ -178,4 +183,13 @@ public class Purchase implements Serializable {
 
 		return purchaseHistory;
 	}
+	
+	public Vendor getVendor() {
+		return this.vendor;
+	}
+
+	public void setVendor(Vendor vendor) {
+		this.vendor = vendor;
+	}
+
 }

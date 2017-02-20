@@ -7,7 +7,7 @@
 <script>
 $(document).on("click", ".insertRow", function(event) {
 	 $('#customFields').append('<tr>'+
-			 '<td class="joboperationbox">	 <div>     	 	 <select class="form-control" name="tool"							id="tool"> 			 		<option value="">Select</option>						<jstl:forEach items="${tools}" var="eachTool">				  			<option value="${eachTool.key}">${eachTool.value}</option>						</jstl:forEach>			 </select>	 </div>			 </td>				<td class="joboperationbox">	<select class="form-control" name="make"		id="make">	<option value="">Select</option>	<jstl:forEach items="${makes}" var="eachMake">		<option value="${eachMake.key}">${eachMake.value}</option>	</jstl:forEach>	</select></td>				<td class="joboperationbox">			 	<input type="text" class="form-control" id="quantity"					name="quantity" value="" placeholder="quantity" /></td>				<td class="joboperationbox">												<input type="text" class="form-control" id="approver" name="approver"			 						value="" placeholder="approver" /></td>			 <td class="joboperationbox"><input type="button" class="form-control deleteButton" value="Delete" /></td>'
+			 '<td class="joboperationbox">	 <div>     	 	 <select class="form-control" name="tool"							id="tool"> 			 		<option value="">Select</option>						<jstl:forEach items="${tools}" var="eachTool">				  			<option value="${eachTool.key}">${eachTool.value}</option>						</jstl:forEach>			 </select>	 </div>			 </td>				<td class="joboperationbox">	<select class="form-control" name="vendor"		id="vendor">	<option value="">Select</option>	<jstl:forEach items="${makes}" var="eachMake">		<option value="${eachMake.key}">${eachMake.value}</option>	</jstl:forEach>	</select></td>				<td class="joboperationbox">			 	<input type="text" class="form-control" id="quantity"					name="quantity" value="" placeholder="quantity" /></td>				<td class="joboperationbox">												<input type="text" class="form-control" id="approver" name="approver"			 						value="" placeholder="approver" /></td>			 <td class="joboperationbox"><input type="button" class="form-control deleteButton" value="Delete" /></td>'
 			+'</tr>')
 	
 });
@@ -71,10 +71,10 @@ $(document).ready(
 				    	    {"tool" : tool},
 				    	    function(resultJSON) {
 				    	    	var result = $.parseJSON(resultJSON);
-				    	    	$('#make').empty();
-			    	    	    $('#make').append('<option value="-1">Select Make</option>');
+				    	    	$('#vendor').empty();
+			    	    	    $('#vendor').append('<option value="-1">Select vendor</option>');
 				    	    	$.each(result, function(k, v) {
-				    	    	      $('#make').append('<option value="'+k+'">'+v+'</option>');
+				    	    	      $('#vendor').append('<option value="'+k+'">'+v+'</option>');
 
 				    	    	});
 				    	    }
@@ -303,8 +303,8 @@ $(document).ready(
 														
 								</td>
 													<td class="joboperationbox">							
-										<input type="text" class="form-control" id="make" name="make"
-														value="${eachTool.make}" placeholder="make" />
+										<input type="text" class="form-control" id="vendor" name="vendor"
+														value="${eachTool.vendor}" placeholder="vendor" />
 								</td>
 													<td class="joboperationbox">															
 									<input type="text" class="form-control" id="quantity"
@@ -343,8 +343,8 @@ $(document).ready(
 								 </div> 
 							</td>
 							<td class="joboperationbox">												
-								 <select class="form-control" name="make"
-														id="make">
+								 <select class="form-control" name="vendor"
+														id="vendor">
 							 			 		<option value="">Select</option>
 						  						<jstl:forEach items="${makes}" var="eachMake">
 						  				  			<option value="${eachMake.key}">${eachMake.value}</option>

@@ -219,7 +219,7 @@ public class CommonServiceImpl implements CommonService {
 		purchaseDTO.setParticular(purchase.getParticular());
 		purchaseDTO.setCode(purchase.getCode());
 		purchaseDTO.setDesciption(purchase.getDesciption());
-		purchaseDTO.setMake(purchase.getMake());
+	//	purchaseDTO.setMake(purchase.getMake());
 		purchaseDTO.setAuthouredby(purchase.getAuthouredby());
 		purchaseDTO.setQuantity(String.valueOf(purchase.getQuantity()));
 		purchaseDTO.setRepository(String.valueOf(purchase.getRepository()));
@@ -261,7 +261,7 @@ public class CommonServiceImpl implements CommonService {
 		purchaseDTO.setId(purchase.getParticularId());
 		purchaseDTO.setParticular(purchase.getParticular());
 		purchaseDTO.setCode(purchase.getCode());
-		purchaseDTO.setMake(purchase.getMake());
+		//purchaseDTO.setMake(purchase.getMake());
 		purchaseDTO.setRepository(String.valueOf(purchase.getRepository()));
 		return purchaseDTO;
 	}

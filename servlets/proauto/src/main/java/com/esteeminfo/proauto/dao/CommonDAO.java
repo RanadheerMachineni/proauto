@@ -31,6 +31,7 @@ import com.esteeminfo.proauto.entity.Purchase;
 import com.esteeminfo.proauto.entity.PurchaseHistory;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.entity.Status;
+import com.esteeminfo.proauto.entity.Vendor;
 
 @Repository("commonDAO")
 public class CommonDAO extends AbstractDao{
@@ -331,14 +332,15 @@ public class CommonDAO extends AbstractDao{
 	}
 
 	public List<Purchase> retrieveAllPurchase(String purchaseSearched) {
-		EntityManager entityManager = getEntityManager();
-		String query = "SELECT p FROM Purchase p";
-		if (purchaseSearched != null && purchaseSearched.length() > 0) {
-			query += " where p.code LIKE '" + purchaseSearched + "%'";
-		}
-		Query q = entityManager.createQuery(query);
-		List<Purchase> result = q.getResultList();
-		return result;
+//		EntityManager entityManager = getEntityManager();
+//		String query = "SELECT p FROM Purchase p";
+//		if (purchaseSearched != null && purchaseSearched.length() > 0) {
+//			query += " where p.code LIKE '" + purchaseSearched + "%'";
+//		}
+//		Query q = entityManager.createQuery(query);
+//		List<Purchase> result = q.getResultList();
+//		return result;
+		return null;
 	}
 
 	public Purchase registerPurchase(String create, String parid, String particular, String code, String make,
@@ -346,10 +348,10 @@ public class CommonDAO extends AbstractDao{
 		int purchaseId = (parid == null || parid.length() == 0 ) ? 0:Integer.valueOf(parid); 
 		Purchase purchase = null;
 		if(code.length()>0 && make.length()>0){
-			purchase=findPurchaseByCodeAndMake(code,make);
-			if (purchase!=null && (purchaseId==0 || (purchase.getParticularId() != purchaseId))) {
-				throw new Exception("Item exist with Code '"+code+"'. Please update existing item");
-			}
+//			purchase=findPurchaseByCodeAndMake(code,make);
+//			if (purchase!=null && (purchaseId==0 || (purchase.getParticularId() != purchaseId))) {
+//				throw new Exception("Item exist with Code '"+code+"'. Please update existing item");
+//			}
 		}
 		if (create.equalsIgnoreCase("false") && purchaseId > 0 ) {
 			purchase = findPurchaseById(purchaseId);
@@ -366,7 +368,7 @@ public class CommonDAO extends AbstractDao{
 		purchase.setDou(new Date());
 		purchase.setParticular(particular);
 		purchase.setCode(code);
-		purchase.setMake(make);
+		purchase.setVendor(getEntityManager().find(Vendor.class, Integer.valueOf(make)));
 		purchase.setUnit(unit);
 		purchase.setDesciption(desc);
 		purchase.setAuthouredby(authouredby);
@@ -394,14 +396,15 @@ public class CommonDAO extends AbstractDao{
 	}
 
 	private Purchase findPurchaseByCodeAndMake(String code, String make) {
-		EntityManager entityManager = getEntityManager();
-		Query q = entityManager.createQuery( "SELECT p FROM Purchase p where p.code=:code and p.make=:make" );
-		q.setParameter("code", code);
-		q.setParameter("make", make);
-		List<Purchase> result = q.getResultList();
-		if(result == null || result.size() ==0){
-			return null;
-		}
-		return result.get(0);
+//		EntityManager entityManager = getEntityManager();
+//		Query q = entityManager.createQuery( "SELECT p FROM Purchase p where p.code=:code and p.vendor.id=:make" );
+//		q.setParameter("code", code);
+//		q.setParameter("make", make);
+//		List<Purchase> result = q.getResultList();
+//		if(result == null || result.size() ==0){
+//			return null;
+//		}
+//		return result.get(0);
+		return null;
 	}
 }

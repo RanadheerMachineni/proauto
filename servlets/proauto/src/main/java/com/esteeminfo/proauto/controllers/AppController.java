@@ -160,9 +160,9 @@ public class AppController {
 		model.addAttribute("employees", empMap);
 		
 		
-		Map<String, String> inventoryMap = new HashMap<String, String>(); 
-		inventoryMap  = commonService.getInventoryItems();
-		model.addAttribute("tools", inventoryMap);
+		//Map<String, String> inventoryMap = new HashMap<String, String>(); 
+		//inventoryMap  = commonService.getInventoryItems();
+		model.addAttribute("tools", null);
 		
 		return "machineusage";
 	}
@@ -212,7 +212,7 @@ public class AppController {
 		String parid = request.getParameter("parid");
 		String particular = request.getParameter("particular");
 		String code = request.getParameter("code");
-		String make = request.getParameter("make");
+		String make = request.getParameter("vendor");
 		String unit = request.getParameter("unit");	
 		String desc = request.getParameter("desc");
 		String type = request.getParameter("type");	
@@ -232,7 +232,7 @@ public class AppController {
 			}
 			purchaseDTO.setParticular(particular);
 			purchaseDTO.setCode(code);
-			purchaseDTO.setMake(make);
+			purchaseDTO.setVendor(make);
 			purchaseDTO.setUnit(unit);
 			purchaseDTO.setDesciption(desc);
 			purchaseDTO.setTooltypeId(type);
