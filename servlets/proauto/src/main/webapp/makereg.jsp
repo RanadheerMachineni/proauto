@@ -32,7 +32,7 @@
 	 	  		</div>
 			</jstl:if>
 			<jstl:if test="${pageContext.request.userPrincipal.name != null}">
-		<div class="pageHeadings"> Vendor Registration</div>
+		<div class="pageHeadings"> Make Registration</div>
 		<br>
 					<div class="col-md-4 col-sm-4 col-xs-4">
 		
@@ -40,21 +40,21 @@
 	   					<div class="col-sm-10 col-md-10">
 						   	<jstl:if test="${not empty result && result=='sucess'}">
 								<div id="sucessDiv" class="successresponse">
-								Successfully created/updated employee. Please click to view/update
+								Successfully created/updated make. Please click to view/update
 								<a
-										href="${pageContext.request.contextPath}/vreg?vendorSelected=${venCreated}">
-								                    	<jstl:out value="${venCreatedName}" />
+										href="${pageContext.request.contextPath}/makereg?makeSelected=${makeCreated}">
+								                    	<jstl:out value="${makeCreatedName}" />
 								                    </a>
 								</div>
 							</jstl:if>
 						</div>
 					</div>
 					
-					<jstl:if test="${vendorSelected.vendorName == null}">
-						      			<label>Create Vendor</label>
+					<jstl:if test="${makeSelected.name == null}">
+						      			<label>Create Make</label>
 					</jstl:if>
-					<jstl:if test="${vendorSelected.vendorName != null}">
-						      			<label>Update Vendor</label>
+					<jstl:if test="${makeSelected.name != null}">
+						      			<label>Update Make</label>
 					</jstl:if>
 					
 				   	<div class="row">
@@ -66,42 +66,33 @@
 					</div>
 			</div>
 		
-		<form id="vendorRegForm" role="form" action="vreg" method="post">  
-		    <input type="hidden" name="regType" value="vendor">
+		<form id="makeRegForm" role="form" action="makereg" method="post">  
+		    <input type="hidden" name="regType" value="make">
 			   <br>
-			   		    <input type="hidden" name="vid" id="vid"
-							value="${vendorSelected.vendorId}">
+			   		    <input type="hidden" name="makeid" id="makeid"
+							value="${makeSelected.id}">
 			   
   	  		   <div class="row">
   	  		   		<div class="col-sm-4 col-md-4">
-		      			<label for="vName">Vendor Name:</label>
+		      			<label for="makeName">Make :</label>
 		    		</div>
 		   		 	<div class="col-sm-6 col-md-6">
-		      			<input type="text" class="form-control" id="vName"
-									name="vName" value="${vendorSelected.vendorName}">
+		      			<input type="text" class="form-control" id="makeName"
+									name="makeName" value="${makeSelected.name}">
 		    	 	</div>
   	  		   </div>
   	  		  <br>
-  	  		  <div class="row">
-  	  		   		<div class="col-sm-4 col-md-4">
-		      			<label for="vAddress">Address:</label>
-		    		</div>
-		   		 	<div class="col-sm-6 col-md-6">
-		      			<textarea class="form-control" id="vAddress" name="vAddress">${vendorSelected.address}</textarea>
-		    	 	</div>
-  	  		   </div>
-  	  		   <br>
-			   <div class="row">
+   		      <div class="row">
 	   		 		<div class="col-sm-8 col-md-8">
-	   		 			<jstl:if test="${vendorSelected.vendorName == null}">
+	   		 			<jstl:if test="${makeSelected.name == null}">
 	   		 				  <input type="hidden" name="create" value="true">
-						      <input id="createVendorSubmit" type=submit value="Create">
+						      <input id="createMakeSubmit" type=submit value="Create">
 						</jstl:if>
-						<jstl:if test="${vendorSelected.vendorName != null}">
+						<jstl:if test="${makeSelected.name != null}">
 							  <input type="hidden" name="create" value="false">
-						      <input id="createVendorSubmit" type=submit value="Update">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						      <input id="createMakeSubmit" type=submit value="Update">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						      <a class="btn btn-default"
-										href="${pageContext.request.contextPath}/vreg" role="button">Cancel</a>
+										href="${pageContext.request.contextPath}/makereg" role="button">Cancel</a>
 						</jstl:if>
 	    	 		</div>
 	  			</div>
@@ -111,44 +102,42 @@
 		</form>	
   	  		</div>
   	  		
-  	  						<div class="col-md-10 col-sm-10 col-xs-10">
+  	  						<div class="col-md-5 col-sm-5 col-xs-5">
 	   		 					<br>
 	   		 					
-	   		 					<form id="vendorSearchForm" role="form" action="vreg"
+	   		 					<form id="makeSearchForm" role="form" action="makereg"
 						method="GET">  
 	   		 					<div class="row">
-				  	  		   		<div class="col-sm-1 col-md-1">
-						      			<label for="searchVendorInput">Search Vendor</label>
+				  	  		   		<div class="col-sm-2 col-md-2">
+						      			<label for="searchMakeInput">Search Make</label>
 						    		</div>
-						   		 	<div class="col-sm-2 col-md-2">
+						   		 	<div class="col-sm-4 col-md-4">
 						      			<input type="text" class="form-control"
-									id="searchVendorInput" name="searchVendorInput">
+									id="searchMakeInput" name="searchMakeInput">
 						    	 	</div>
-						    	 	<div class="col-sm-1 col-md-1">
+						    	 	<div class="col-sm-2 col-md-2">
 						      			<input type=submit value="Search">
 						    	 	</div>
   	  		  					</div>
   	  		  					</form>
   	  		   					<br>
-  	  		   					<div class="informativeText">List of existing Vendors</div>
+  	  		   					<div class="informativeText">List of Makes</div>
   	  		   					<br>
 				   		 		<table class="table table-bordered">
 								    <thead>
 								      <tr>
-								        <th>Vendor Name</th>
-								        <th>Address</th>
+								        <th>Make</th>
 								      </tr>
 								    </thead>
 								    <tbody>
-								      <jstl:forEach var="vendor" items="${vendorList}">
+								      <jstl:forEach var="make" items="${makeList}">
 							                <tr>
 							                    <td>
 							                    	<a
-										href="${pageContext.request.contextPath}/vreg?vendorSelected=${vendor.vendorName}">
-								                    	<jstl:out value="${vendor.vendorName}" />
+										href="${pageContext.request.contextPath}/makereg?makeSelected=${make.id}">
+								                    	<jstl:out value="${make.name}" />
 								                    </a>
 												</td>
-							                    <td><jstl:out value="${vendor.address}" /></td>
 							                </tr>
 							            </jstl:forEach>
 								    </tbody>

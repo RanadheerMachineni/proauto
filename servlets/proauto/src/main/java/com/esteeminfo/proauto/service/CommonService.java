@@ -10,13 +10,17 @@ import com.esteeminfo.proauto.dto.CustomerDTO;
 import com.esteeminfo.proauto.dto.EmployeeDTO;
 import com.esteeminfo.proauto.dto.JobOpDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
+import com.esteeminfo.proauto.dto.MakeDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
 import com.esteeminfo.proauto.dto.PurchaseDTO;
+import com.esteeminfo.proauto.dto.VendorDTO;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Machine;
+import com.esteeminfo.proauto.entity.Make;
 import com.esteeminfo.proauto.entity.Purchase;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
+import com.esteeminfo.proauto.entity.Vendor;
 
 public interface CommonService {
 
@@ -70,5 +74,17 @@ public interface CommonService {
 	Map<String, String> getInventoryItems();
 
 	Map<String, String> findMakesOfTool(String tool);
+
+	VendorDTO findVendorDTOById(Integer valueOf);
+
+	List<VendorDTO> retrieveAllVendorDTO(String vendorSearched);
+
+	Vendor registerVendor(String create, String vid, String vName, String vAddress);
+
+	MakeDTO findMakeDTOById(Integer valueOf);
+
+	List<MakeDTO> retrieveAllMakeDTO(String makeSearched);
+
+	Make registerMake(String create, String makeid, String makeName);
 
 }

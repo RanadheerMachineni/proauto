@@ -119,13 +119,18 @@ CREATE TABLE employee_files
 	CONSTRAINT fk_ef_employee_id FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 );
 
-CREATE TABLE cus_file_data (
- 	file_data_id  int AUTO_INCREMENT NOT NULL,
- 	upload_id int NOT NULL,
-    file_data longblob,
-	CONSTRAINT pk_cus_file_data primary key (file_data_id),
-	CONSTRAINT fk_cus_file_data_upload_id FOREIGN KEY (upload_id) REFERENCES customer_files(upload_id)
-)
+drop table customer;
+CREATE TABLE customer
+( 
+	customer_id int AUTO_INCREMENT NOT NULL,
+	customer_name char(50) NOT NULL,
+	address char(255),
+	city char(50),
+	state char(25),
+	zip_code char(10),
+	create_date DATE,
+	CONSTRAINT customer_pk PRIMARY KEY (customer_id)
+);
 
 CREATE TABLE customer_files
 (
@@ -136,13 +141,35 @@ CREATE TABLE customer_files
 	CONSTRAINT fk_cf_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
 );
 
-CREATE TABLE po_file_data (
+CREATE TABLE cus_file_data (
  	file_data_id  int AUTO_INCREMENT NOT NULL,
  	upload_id int NOT NULL,
     file_data longblob,
-	CONSTRAINT pk_po_file_data primary key (file_data_id),
-	CONSTRAINT fk_po_file_data_upload_id FOREIGN KEY (upload_id) REFERENCES po_files(upload_id)
+	CONSTRAINT pk_cus_file_data primary key (file_data_id),
+	CONSTRAINT fk_cus_file_data_upload_id FOREIGN KEY (upload_id) REFERENCES customer_files(upload_id)
 )
+
+drop table purchase_order;
+CREATE TABLE purchase_order
+(
+	pid int AUTO_INCREMENT NOT NULL,
+	customer_id int NOT NULL,
+	po_id char(100) NOT NULL,
+	po_version char(10),
+	pdate DATE,
+	vno_sender char(50),
+	sender_contact char(50),
+	sender_details char(50),
+	sender_email char(50),
+	sender_phone char(50),
+	sender_fax char(50),
+	notes char(200),
+	total_value char(50),
+    CONSTRAINT po_pk PRIMARY KEY (pid),
+   	CONSTRAINT uk_po_id UNIQUE (po_id),
+   	CONSTRAINT fk_po_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+);
+
 
 CREATE TABLE po_files
 (
@@ -152,6 +179,15 @@ CREATE TABLE po_files
 	CONSTRAINT pk_po_files primary key (upload_id),
 	CONSTRAINT fk_pf_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid)
 );
+
+CREATE TABLE po_file_data (
+ 	file_data_id  int AUTO_INCREMENT NOT NULL,
+ 	upload_id int NOT NULL,
+    file_data longblob,
+	CONSTRAINT pk_po_file_data primary key (file_data_id),
+	CONSTRAINT fk_po_file_data_upload_id FOREIGN KEY (upload_id) REFERENCES po_files(upload_id)
+)
+
 
 /*drop table customer_raw_material;
 CREATE TABLE customer_raw_material
@@ -178,18 +214,6 @@ CREATE TABLE raw_material
 	CONSTRAINT fk_rm_vendor FOREIGN KEY (vendor_id) REFERENCES vendor(vendor_id)
 )*/
 
-drop table customer;
-CREATE TABLE customer
-( 
-	customer_id int AUTO_INCREMENT NOT NULL,
-	customer_name char(50) NOT NULL,
-	address char(255),
-	city char(50),
-	state char(25),
-	zip_code char(10),
-	create_date DATE,
-	CONSTRAINT customer_pk PRIMARY KEY (customer_id)
-);
 
 drop table vendor;
 CREATE TABLE vendor
@@ -226,26 +250,7 @@ CREATE TABLE customer_contacts
 	CONSTRAINT fk_cc_contact_id FOREIGN KEY (contact_id) REFERENCES contact(contact_id)
 );
 
-drop table purchase_order;
-CREATE TABLE purchase_order
-(
-	pid int AUTO_INCREMENT NOT NULL,
-	customer_id int NOT NULL,
-	po_id char(100) NOT NULL,
-	po_version char(10),
-	pdate DATE,
-	vno_sender char(50),
-	sender_contact char(50),
-	sender_details char(50),
-	sender_email char(50),
-	sender_phone char(50),
-	sender_fax char(50),
-	notes char(200),
-	total_value char(50),
-    CONSTRAINT po_pk PRIMARY KEY (pid),
-   	CONSTRAINT uk_po_id UNIQUE (po_id),
-   	CONSTRAINT fk_po_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
-);
+
 
 drop table po_tool;
 CREATE TABLE po_tool
@@ -283,6 +288,36 @@ CREATE TABLE job_operation
     CONSTRAINT job_operation_pk PRIMARY KEY (jo_id)
 )
 
+drop table status;
+CREATE TABLE status
+(
+	status_id int NOT NULL,
+	status char(50) NOT NULL,
+	constraint status_pk primary key (status_id)
+);
+insert into status(status_id,status) values(1, 'New');
+insert into status(status_id,status) values(2, 'In Progress');
+insert into status(status_id,status) values(3, 'Pending');
+insert into status(status_id,status) values(4, 'Aborted');
+insert into status(status_id,status) values(5, 'Completed');
+
+drop table jobcard;
+CREATE TABLE jobcard
+(
+	jobcard_id int AUTO_INCREMENT NOT NULL,
+	jobcard_name char(50) NOT NULL,
+	jobcard_desc char(100),
+	customer_id int NOT NULL,
+	pid int NOT NULL,
+	created_by char(50),
+	create_date DATE,
+	end_date DATE,
+	status int,
+	constraint jobcard_pk primary key (jobcard_id),
+   	CONSTRAINT fk_jobcard_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+   	CONSTRAINT fk_jobcard_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid),
+   	CONSTRAINT fk_jobcard_status FOREIGN KEY (status) REFERENCES status(status_id)
+);
 
 drop table jobcard_task;
 CREATE TABLE jobcard_task
@@ -309,38 +344,6 @@ CREATE TABLE jobcard_task
    	CONSTRAINT fk_jobcard_task_status FOREIGN KEY (status) REFERENCES status(status_id)
 );
 
-drop table jobcard;
-CREATE TABLE jobcard
-(
-	jobcard_id int AUTO_INCREMENT NOT NULL,
-	jobcard_name char(50) NOT NULL,
-	jobcard_desc char(100),
-	customer_id int NOT NULL,
-	pid int NOT NULL,
-	created_by char(50),
-	create_date DATE,
-	end_date DATE,
-	status int,
-	constraint jobcard_pk primary key (jobcard_id),
-   	CONSTRAINT fk_jobcard_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-   	CONSTRAINT fk_jobcard_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid),
-   	CONSTRAINT fk_jobcard_status FOREIGN KEY (status) REFERENCES status(status_id)
-);
-
-drop table status;
-CREATE TABLE status
-(
-	status_id int NOT NULL,
-	status char(50) NOT NULL,
-	constraint status_pk primary key (status_id)
-);
-insert into status(status_id,status) values(1, 'New');
-insert into status(status_id,status) values(2, 'In Progress');
-insert into status(status_id,status) values(3, 'Pending');
-insert into status(status_id,status) values(4, 'Aborted');
-insert into status(status_id,status) values(5, 'Completed');
-
-
 create table tooltype(
 	tooltype_id int AUTO_INCREMENT NOT NULL,
 	name char(50),
@@ -348,17 +351,10 @@ create table tooltype(
     CONSTRAINT tooltype_pk PRIMARY KEY (tooltype_id)
 );
 
-create table purchase_history(
-	purchase_history_id int AUTO_INCREMENT NOT NULL,
-	particular_id int,
-	adddate date,
-	authouredby char(50),
-	quantity int,
-	machine_usage_id int,
-	status CHAR(1),
-    CONSTRAINT purchase_history_pk PRIMARY KEY (purchase_history_id),
-   	CONSTRAINT fk_ph_particular_id FOREIGN KEY (particular_id) REFERENCES purchase(particular_id),
-	CONSTRAINT fk_ph_machine_usage_id FOREIGN KEY (machine_usage_id) REFERENCES machine_usage(machine_usage_id)
+create table make(
+	make_id int AUTO_INCREMENT NOT NULL,
+	make_name char(50) NOT NULL,
+    CONSTRAINT make_pk PRIMARY KEY (make_id)
 );
 
 create table purchase
@@ -366,7 +362,7 @@ create table purchase
 	particular_id int AUTO_INCREMENT NOT NULL,
 	particular char(255) NOT NULL,
 	code char(100) NOT NULL,
-	vendor_id int NOT NULL,
+	make_id int NOT NULL,
 	quantity int NOT NULL,
 	unit char(20),
 	doc DATE,
@@ -377,8 +373,8 @@ create table purchase
 	repository int,
 	constraint purchase_pk primary key (particular_id),
    	CONSTRAINT fk_purchase_tooltype_id FOREIGN KEY (tooltype_id) REFERENCES tooltype(tooltype_id),
-   	CONSTRAINT fk_rm_vendor FOREIGN KEY (vendor_id) REFERENCES vendor(vendor_id),
-   	CONSTRAINT uk_purchase_vendor UNIQUE (code,vendor_id)
+   	CONSTRAINT fk_purchase_make FOREIGN KEY (make_id) REFERENCES make(make_id),
+   	CONSTRAINT uk_purchase_code_make UNIQUE (code,make_id)
 );
 
 create table machine_usage
@@ -404,3 +400,19 @@ create table machine_usage
    	CONSTRAINT fk_machine_usage_task_assignee FOREIGN KEY (assignee) REFERENCES employee(employee_id),
    	CONSTRAINT fk_machine_usage_programmer FOREIGN KEY (programmer) REFERENCES employee(employee_id)
 );
+
+create table purchase_history(
+	purchase_history_id int AUTO_INCREMENT NOT NULL,
+	particular_id int,
+	adddate date,
+	authouredby char(50),
+	quantity int,
+	machine_usage_id int,
+	status CHAR(1),
+    CONSTRAINT purchase_history_pk PRIMARY KEY (purchase_history_id),
+   	CONSTRAINT fk_ph_particular_id FOREIGN KEY (particular_id) REFERENCES purchase(particular_id),
+	CONSTRAINT fk_ph_machine_usage_id FOREIGN KEY (machine_usage_id) REFERENCES machine_usage(machine_usage_id)
+);
+
+
+

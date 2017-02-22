@@ -16,18 +16,22 @@ import com.esteeminfo.proauto.dao.CommonDAO;
 import com.esteeminfo.proauto.dao.FileUploadDAO;
 import com.esteeminfo.proauto.dto.JobOpDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
+import com.esteeminfo.proauto.dto.MakeDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
 import com.esteeminfo.proauto.dto.PurchaseDTO;
 import com.esteeminfo.proauto.dto.PurchaseHistoryDTO;
+import com.esteeminfo.proauto.dto.VendorDTO;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Jobcard;
 import com.esteeminfo.proauto.entity.Machine;
+import com.esteeminfo.proauto.entity.Make;
 import com.esteeminfo.proauto.entity.PoTool;
 import com.esteeminfo.proauto.entity.Purchase;
 import com.esteeminfo.proauto.entity.PurchaseHistory;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.entity.Status;
+import com.esteeminfo.proauto.entity.Vendor;
 
 @Service("commonService")
 @Transactional
@@ -300,6 +304,80 @@ public class CommonServiceImpl implements CommonService {
 			makeMap.put(String.valueOf(purchase.getParticularId()), purchase.getCode());
 		}
 		return makeMap;
+
+	}
+
+	public VendorDTO findVendorDTOById(Integer valueOf) {
+		Vendor vendor = findVendorById(String.valueOf(valueOf));
+		if(vendor!=null) return converVendorToDto(vendor);
+		return null;
+	}
+
+	private Vendor findVendorById(String valueOf) {
+		return commonDAO.findVendorById(valueOf);
+	}
+
+	private VendorDTO converVendorToDto(Vendor vendor) {
+		VendorDTO vendorDTO =  new VendorDTO();
+		vendorDTO.setVendorId(vendor.getVendorId());
+		vendorDTO.setVendorName(vendor.getVendorName());
+		vendorDTO.setAddress(vendor.getAddress());
+		return vendorDTO;
+	}
+
+	public List<VendorDTO> retrieveAllVendorDTO(String vendorSearched) {
+		List<VendorDTO> vendorDTOList = new ArrayList<VendorDTO>();
+		List<Vendor> vendors = retrieveAllVendors(vendorSearched);
+		for(Vendor eachVendor : vendors){
+			VendorDTO eachVendorDTO = converVendorToDto(eachVendor);
+			vendorDTOList.add(eachVendorDTO);
+		}
+		return vendorDTOList;
+	}
+
+	private List<Vendor> retrieveAllVendors(String vendorSearched) {
+		return commonDAO.retrieveAllVendors(vendorSearched);
+	}
+
+	public Vendor registerVendor(String create, String vid, String vName, String vAddress) {
+		return commonDAO.registerVendor(create, vid, vName,vAddress);
+	}
+
+	public MakeDTO findMakeDTOById(Integer valueOf) {
+		Make make = findMakeById(String.valueOf(valueOf));
+		if(make!=null) return converMakeToDto(make);
+		return null;
+	}
+
+	private MakeDTO converMakeToDto(Make make) {
+		MakeDTO makeDTO =  new MakeDTO();
+		makeDTO.setId(make.getMakeId());
+		makeDTO.setName(make.getMakeName());
+		return makeDTO;
+	}
+
+	private Make findMakeById(String valueOf) {
+		return commonDAO.findMakeById(valueOf);
+
+	}
+
+	public List<MakeDTO> retrieveAllMakeDTO(String makeSearched) {
+		List<MakeDTO> makeDTOs = new ArrayList<MakeDTO>();
+		List<Make> makes = retrieveAllMakes(makeSearched);
+		for(Make eachMake : makes){
+			MakeDTO eachMakeDTO = converMakeToDto(eachMake);
+			makeDTOs.add(eachMakeDTO);
+		}
+		return makeDTOs;
+	}
+
+	private List<Make> retrieveAllMakes(String makeSearched) {
+		return commonDAO.retrieveAllMakes(makeSearched);
+
+	}
+
+	public Make registerMake(String create, String makeid, String makeName) {
+		return commonDAO.registerMake(create, makeid, makeName);
 
 	}
 

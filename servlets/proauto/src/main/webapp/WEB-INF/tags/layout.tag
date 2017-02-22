@@ -123,6 +123,14 @@
 								href="${pageContext.request.contextPath}/creg">Customer
 								Master</a>
 							
+								 <a
+								href="${pageContext.request.contextPath}/vreg">Vendor
+								Master</a>
+								
+								 <a
+								href="${pageContext.request.contextPath}/makereg">Make
+								Master</a>
+								
 								<a
 								href="${pageContext.request.contextPath}/mreg">Machines
 								</a>

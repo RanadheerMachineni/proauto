@@ -37,10 +37,6 @@ public class Vendor implements Serializable {
 	private String zipCode;
 
 
-	//bi-directional many-to-one association to Purchase
-	@OneToMany(mappedBy="vendor", fetch = FetchType.LAZY)
-	private Set<Purchase> purchases;
-	
 	public Vendor() {
 	}
 
@@ -99,27 +95,6 @@ public class Vendor implements Serializable {
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
-	
-	public Set<Purchase> getPurchases() {
-		return this.purchases;
-	}
 
-	public void setPurchases(Set<Purchase> purchases) {
-		this.purchases = purchases;
-	}
-
-	public Purchase addPurchas(Purchase purchas) {
-		getPurchases().add(purchas);
-		purchas.setVendor(this);
-
-		return purchas;
-	}
-
-	public Purchase removePurchas(Purchase purchas) {
-		getPurchases().remove(purchas);
-		purchas.setVendor(null);
-
-		return purchas;
-	}
 
 }

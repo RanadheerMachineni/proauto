@@ -66,10 +66,10 @@ public class Purchase implements Serializable {
 	@OrderBy("adddate ASC")
 	private Set<PurchaseHistory> purchaseHistories =  new HashSet<PurchaseHistory>();
 	
-	//bi-directional many-to-one association to Vendor
+	//bi-directional many-to-one association to Make
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="vendor_id")
-	private Vendor vendor;
+	@JoinColumn(name="make_id")
+	private Make make;
 	
 	public Purchase() {
 	}
@@ -183,13 +183,12 @@ public class Purchase implements Serializable {
 
 		return purchaseHistory;
 	}
-	
-	public Vendor getVendor() {
-		return this.vendor;
+
+	public Make getMake() {
+		return this.make;
 	}
 
-	public void setVendor(Vendor vendor) {
-		this.vendor = vendor;
+	public void setMake(Make make) {
+		this.make = make;
 	}
-
 }
