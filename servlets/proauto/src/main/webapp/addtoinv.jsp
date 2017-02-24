@@ -104,8 +104,13 @@
 			      			<label class="control-label" for="make">Make:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="make"
-											name="make" value="">
+			      			<select class="form-control" name="make" id="make">
+			 			 		<option value="">Select Make</option>
+		  						<jstl:forEach items="${makes}" var="make">
+		  				  			<option value="${make.key}"
+													${purchase.make == make.key ? 'selected' : ''}>${make.value}</option>
+		  						</jstl:forEach>
+							</select>
 			    	 	</div>
 		    	 	 </div>
 		       </div>
@@ -116,8 +121,13 @@
 			      			<label class="control-label" for="unit">Unit:</label>
 			    		</div>
 			   		 	<div class="col-sm-2 col-md-2 controls">
-			      			<input type="text" class="form-control" id="unit"
-											name="unit" value="${purchase.unit}">
+			      			<select class="form-control" name="unit" id="unit">
+				 			 		<option value="">Select Unit</option>
+			  						<jstl:forEach items="${units}" var="eachUnit">
+			  				  			<option value="${eachUnit.key}"
+													${purchase.unit == eachUnit.key ? 'selected' : ''}>${eachUnit.value}</option>
+			  						</jstl:forEach>
+								</select>
 			    	 	</div>
 		    	 	 </div>
 		    	 	 <div class="control-group">

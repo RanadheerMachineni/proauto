@@ -58,7 +58,12 @@ public class Purchase implements Serializable {
 	@Column(name="tooltype_id")
 	private int tooltypeId;
 
-	private String unit;
+
+	//bi-directional many-to-one association to Unit
+	@ManyToOne
+	@JoinColumn(name="unit_id")
+	private Unit unit;
+
 
 	//bi-directional many-to-one association to PurchaseHistory
 	@OneToMany(mappedBy="purchase",fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
@@ -154,14 +159,6 @@ public class Purchase implements Serializable {
 		this.tooltypeId = tooltypeId;
 	}
 
-	public String getUnit() {
-		return this.unit;
-	}
-
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
-
 	public Set<PurchaseHistory> getPurchaseHistories() {
 		return this.purchaseHistories;
 	}
@@ -190,5 +187,13 @@ public class Purchase implements Serializable {
 
 	public void setMake(Make make) {
 		this.make = make;
+	}
+	
+	public Unit getUnit() {
+		return this.unit;
+	}
+
+	public void setUnit(Unit unit) {
+		this.unit = unit;
 	}
 }

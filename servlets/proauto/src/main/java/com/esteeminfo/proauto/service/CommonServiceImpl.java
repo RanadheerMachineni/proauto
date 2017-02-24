@@ -31,6 +31,8 @@ import com.esteeminfo.proauto.entity.Purchase;
 import com.esteeminfo.proauto.entity.PurchaseHistory;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.entity.Status;
+import com.esteeminfo.proauto.entity.Tooltype;
+import com.esteeminfo.proauto.entity.Unit;
 import com.esteeminfo.proauto.entity.Vendor;
 
 @Service("commonService")
@@ -223,12 +225,12 @@ public class CommonServiceImpl implements CommonService {
 		purchaseDTO.setParticular(purchase.getParticular());
 		purchaseDTO.setCode(purchase.getCode());
 		purchaseDTO.setDesciption(purchase.getDesciption());
-	//	purchaseDTO.setMake(purchase.getMake());
+		purchaseDTO.setMake(String.valueOf(purchase.getMake().getMakeId()));
 		purchaseDTO.setAuthouredby(purchase.getAuthouredby());
 		purchaseDTO.setQuantity(String.valueOf(purchase.getQuantity()));
 		purchaseDTO.setRepository(String.valueOf(purchase.getRepository()));
 		purchaseDTO.setTooltypeId(String.valueOf(purchase.getTooltypeId()));
-		purchaseDTO.setUnit(purchase.getUnit());
+		purchaseDTO.setUnit(String.valueOf(purchase.getUnit().getUnitId()));
 		purchaseDTO.setDoc(ui_date_format.format(purchase.getDoc()));
 		purchaseDTO.setDou(ui_date_format.format(purchase.getDou()));
 		List<PurchaseHistoryDTO> historyDTOs = new ArrayList<PurchaseHistoryDTO>();
@@ -379,6 +381,34 @@ public class CommonServiceImpl implements CommonService {
 	public Make registerMake(String create, String makeid, String makeName) {
 		return commonDAO.registerMake(create, makeid, makeName);
 
+	}
+
+	public Map<String, String> retreiveMakeMap() {
+		Map<String, String> map = new HashMap<String, String>();
+		List<Make> list = commonDAO.retrieveAllMakes(null);
+		for(Make eachMake : list){
+			map.put(String.valueOf(eachMake.getMakeId()), eachMake.getMakeName());
+		}
+		
+		return map;
+	}
+
+	public Map<String, String> retreiveTypeMap() {
+		Map<String, String> map = new HashMap<String, String>();
+		List<Tooltype> list = commonDAO.retrieveAllToolType();
+		for(Tooltype eachTooltype : list){
+			map.put(String.valueOf(eachTooltype.getTooltypeId()), eachTooltype.getName());
+		}
+		return map;
+	}
+
+	public Map<String, String> retreiveUnitMap() {
+		Map<String, String> map = new HashMap<String, String>();
+		List<Unit> list = commonDAO.retrieveAllUnits();
+		for(Unit eachUnit : list){
+			map.put(String.valueOf(eachUnit.getUnitId()), eachUnit.getName());
+		}
+		return map;
 	}
 
 }

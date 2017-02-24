@@ -6,7 +6,7 @@ public class PurchaseDTO {
 	
 	private int id;
 	private String particular;
-	private String vendor;
+	private String make;
 	private String authouredby;
 	private String code;
 	private String desciption;
@@ -90,11 +90,11 @@ public class PurchaseDTO {
 	public void setPurchaseHistory(List<PurchaseHistoryDTO> purchaseHistory) {
 		this.purchaseHistory = purchaseHistory;
 	}
-	public String getVendor() {
-		return vendor;
+	public String getMake() {
+		return make;
 	}
-	public void setVendor(String vendor) {
-		this.vendor = vendor;
+	public void setMake(String make) {
+		this.make = make;
 	}
 
 }

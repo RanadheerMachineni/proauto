@@ -181,16 +181,22 @@ public class AppController {
 			@RequestParam(value = "purchaseSelected", required = false) String purchaseSelected,
 			HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String> typeMap = new HashMap<String, String>();
-		typeMap.put("1", "type1");
-		typeMap.put("2", "type2");
-		typeMap.put("3", "type3");
+		typeMap = commonService.retreiveTypeMap();
 		model.addAttribute("types", typeMap);
 
+		Map<String, String> unitMap = new HashMap<String, String>();
+		unitMap = commonService.retreiveUnitMap();
+		model.addAttribute("units", unitMap);
+		
 		PurchaseDTO purchaseDTO = new PurchaseDTO();
 		if (purchaseSelected != null && purchaseSelected.length() > 0) {
 			purchaseDTO = commonService.findPurchaseDTOById(Integer.valueOf(purchaseSelected));
 		}
 		model.addAttribute("purchase", purchaseDTO);
+
+		Map<String, String> makeMap = new HashMap<String, String>();
+		makeMap = commonService.retreiveMakeMap();
+		model.addAttribute("makes", makeMap);
 		return "addtoinv";
 	}
 
@@ -205,16 +211,18 @@ public class AppController {
 	@RequestMapping(value = { "/addtoinv" }, method = RequestMethod.POST)
 	public String addtoinv(Model model, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String> typeMap = new HashMap<String, String>();
-		typeMap.put("1", "type1");
-		typeMap.put("2", "type2");
-		typeMap.put("3", "type3");
+		typeMap = commonService.retreiveTypeMap();
 		model.addAttribute("types", typeMap);
 
+		Map<String, String> unitMap = new HashMap<String, String>();
+		unitMap = commonService.retreiveUnitMap();
+		model.addAttribute("units", unitMap);
+		
 		String create = request.getParameter("create");
 		String parid = request.getParameter("parid");
 		String particular = request.getParameter("particular");
 		String code = request.getParameter("code");
-		String make = request.getParameter("vendor");
+		String make = request.getParameter("make");
 		String unit = request.getParameter("unit");
 		String desc = request.getParameter("desc");
 		String type = request.getParameter("type");
@@ -235,7 +243,7 @@ public class AppController {
 			}
 			purchaseDTO.setParticular(particular);
 			purchaseDTO.setCode(code);
-			purchaseDTO.setVendor(make);
+			purchaseDTO.setMake(make);
 			purchaseDTO.setUnit(unit);
 			purchaseDTO.setDesciption(desc);
 			purchaseDTO.setTooltypeId(type);
@@ -250,7 +258,10 @@ public class AppController {
 			model.addAttribute("purCreatedId", purchaseCreated.getParticularId());
 			model.addAttribute("purCreatedCode", purchaseCreated.getCode());
 		}
-
+		Map<String, String> makeMap = new HashMap<String, String>();
+		makeMap = commonService.retreiveMakeMap();
+		model.addAttribute("makes", makeMap);
+		
 		return "addtoinv";
 	}
 

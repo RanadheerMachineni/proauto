@@ -87,4 +87,10 @@ public interface CommonService {
 
 	Make registerMake(String create, String makeid, String makeName);
 
+	Map<String, String> retreiveMakeMap();
+
+	Map<String, String> retreiveTypeMap();
+
+	Map<String, String> retreiveUnitMap();
+
 }

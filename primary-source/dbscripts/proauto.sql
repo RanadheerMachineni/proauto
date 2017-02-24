@@ -351,6 +351,20 @@ create table tooltype(
     CONSTRAINT tooltype_pk PRIMARY KEY (tooltype_id)
 );
 
+insert into tooltype(tooltype_id,name,description) values(1,'Tools','Tools');
+insert into tooltype(tooltype_id,name,description) values(2,'Consumables','Consumables');
+
+create table units(
+	unit_id int AUTO_INCREMENT NOT NULL,
+	name char(50),
+	description char(200),
+    CONSTRAINT units_pk PRIMARY KEY (unit_id)
+);
+
+insert into units(unit_id,name,description) values(1,'Weight','Weight');
+insert into units(unit_id,name,description) values(2,'No','Numbers');
+insert into units(unit_id,name,description) values(3,'Litres','Litres');
+
 create table make(
 	make_id int AUTO_INCREMENT NOT NULL,
 	make_name char(50) NOT NULL,
@@ -364,7 +378,7 @@ create table purchase
 	code char(100) NOT NULL,
 	make_id int NOT NULL,
 	quantity int NOT NULL,
-	unit char(20),
+	unit_id int,
 	doc DATE,
 	dou date,
 	authouredby char(50),
@@ -375,6 +389,19 @@ create table purchase
    	CONSTRAINT fk_purchase_tooltype_id FOREIGN KEY (tooltype_id) REFERENCES tooltype(tooltype_id),
    	CONSTRAINT fk_purchase_make FOREIGN KEY (make_id) REFERENCES make(make_id),
    	CONSTRAINT uk_purchase_code_make UNIQUE (code,make_id)
+);
+
+create table purchase_history(
+	purchase_history_id int AUTO_INCREMENT NOT NULL,
+	particular_id int,
+	adddate date,
+	authouredby char(50),
+	quantity int,
+	machine_usage_id int,
+	status CHAR(1),
+    CONSTRAINT purchase_history_pk PRIMARY KEY (purchase_history_id),
+   	CONSTRAINT fk_ph_particular_id FOREIGN KEY (particular_id) REFERENCES purchase(particular_id),
+	CONSTRAINT fk_ph_machine_usage_id FOREIGN KEY (machine_usage_id) REFERENCES machine_usage(machine_usage_id)
 );
 
 create table machine_usage
@@ -401,18 +428,7 @@ create table machine_usage
    	CONSTRAINT fk_machine_usage_programmer FOREIGN KEY (programmer) REFERENCES employee(employee_id)
 );
 
-create table purchase_history(
-	purchase_history_id int AUTO_INCREMENT NOT NULL,
-	particular_id int,
-	adddate date,
-	authouredby char(50),
-	quantity int,
-	machine_usage_id int,
-	status CHAR(1),
-    CONSTRAINT purchase_history_pk PRIMARY KEY (purchase_history_id),
-   	CONSTRAINT fk_ph_particular_id FOREIGN KEY (particular_id) REFERENCES purchase(particular_id),
-	CONSTRAINT fk_ph_machine_usage_id FOREIGN KEY (machine_usage_id) REFERENCES machine_usage(machine_usage_id)
-);
+
 
 
 
