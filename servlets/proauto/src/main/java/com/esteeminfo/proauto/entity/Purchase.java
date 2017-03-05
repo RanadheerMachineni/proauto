@@ -60,7 +60,7 @@ public class Purchase implements Serializable {
 
 
 	//bi-directional many-to-one association to Unit
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="unit_id")
 	private Unit unit;
 

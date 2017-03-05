@@ -33,7 +33,6 @@ public class PurchaseHistory implements Serializable, Comparable<PurchaseHistory
 	@JoinColumn(name="machine_usage_id")
 	private MachineUsage machineUsage;
 	
-	
 	//bi-directional many-to-one association to Purchase
 	@ManyToOne
 	@JoinColumn(name="particular_id")

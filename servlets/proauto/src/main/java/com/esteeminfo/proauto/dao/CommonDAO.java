@@ -31,6 +31,8 @@ import com.esteeminfo.proauto.entity.PoTool;
 import com.esteeminfo.proauto.entity.Purchase;
 import com.esteeminfo.proauto.entity.PurchaseHistory;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
+import com.esteeminfo.proauto.entity.RawMaterial;
+import com.esteeminfo.proauto.entity.RawMaterialHistory;
 import com.esteeminfo.proauto.entity.Status;
 import com.esteeminfo.proauto.entity.Tooltype;
 import com.esteeminfo.proauto.entity.Unit;
@@ -487,6 +489,77 @@ public class CommonDAO extends AbstractDao {
 		EntityManager entityManager = getEntityManager();
 		Query q = entityManager.createNamedQuery("Unit.findAll");
 		List<Unit> result = q.getResultList();
+		return result;
+	}
+
+	public RawMaterial registerRawMaterial(String create, String rmid, String rawmname, String vendor, String length,
+			String width, String thickness, String authouredby, String quantity) {
+
+		int rid = (rmid == null || rmid.length() == 0) ? 0 : Integer.valueOf(rmid);
+		RawMaterial rawMaterial = null;
+		if (create.equalsIgnoreCase("false") && rid > 0) {
+			rawMaterial = findRawMaterialById(rmid);
+			if (quantity != null && quantity.length() > 0) {
+				rawMaterial.setNumberOfbars(rawMaterial.getNumberOfbars() + Integer.valueOf(quantity));
+			}
+		} else {
+			rawMaterial = new RawMaterial();
+			rawMaterial.setDoc(new Date());
+			if (quantity != null && quantity.length() > 0) {
+				rawMaterial.setNumberOfbars(Integer.valueOf(quantity));
+			}
+		}
+		rawMaterial.setDou(new Date());
+		rawMaterial.setDesciption(rawmname);
+		rawMaterial.setHeight(Integer.valueOf(thickness));
+		rawMaterial.setWidth(Integer.valueOf(width));
+		rawMaterial.setLength(Integer.valueOf(length));
+		rawMaterial.setVendorId(Integer.valueOf(vendor));
+
+		entityManager.persist(rawMaterial);
+
+		if (quantity != null && quantity.length() > 0) {
+			Set<RawMaterialHistory> history = rawMaterial.getRawMaterialHistory();
+			RawMaterialHistory rawMaterialHistory = new RawMaterialHistory();
+			rawMaterialHistory.setRawMaterial(rawMaterial);
+			rawMaterialHistory.setAuthouredby(authouredby);
+			rawMaterialHistory.setQuantity(Integer.valueOf(quantity));
+			rawMaterialHistory.setAdddate(new Date());
+			rawMaterialHistory.setStatus("a");
+			history.add(rawMaterialHistory);
+			if (rawMaterial.getRawMaterialHistory() == null) {
+				rawMaterial.setRawMaterialHistory(history);
+			} else {
+				rawMaterial.getRawMaterialHistory().addAll(history);
+			}
+			entityManager.persist(rawMaterial);
+		}
+		return rawMaterial;
+	}
+
+	public List<RawMaterial> retrieveAllRms(String rmSearched) {
+
+		EntityManager entityManager = getEntityManager();
+		String query = "SELECT rm FROM RawMaterial rm";
+		if (rmSearched != null && rmSearched.length() > 0) {
+			query += " where rm.desciption LIKE '" + rmSearched + "%'";
+		}
+		Query q = entityManager.createQuery(query);
+		List<RawMaterial> result = q.getResultList();
+		return result;
+	
+	}
+
+	public RawMaterial findRawMaterialById(String valueOf) {
+		EntityManager entityManager = getEntityManager();
+		RawMaterial rawMaterial = entityManager.find(RawMaterial.class, Integer.valueOf(valueOf));
+		return rawMaterial;
+	}
+
+	public List<Vendor> getVendors() {
+		EntityManager entityManager = getEntityManager();
+		Query q = entityManager.createNamedQuery("Vendor.findAll");
+		List<Vendor> result = q.getResultList();
 		return result;
 	}
 

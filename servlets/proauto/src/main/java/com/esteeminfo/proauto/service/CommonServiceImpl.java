@@ -20,6 +20,8 @@ import com.esteeminfo.proauto.dto.MakeDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
 import com.esteeminfo.proauto.dto.PurchaseDTO;
 import com.esteeminfo.proauto.dto.PurchaseHistoryDTO;
+import com.esteeminfo.proauto.dto.RawMaterialDTO;
+import com.esteeminfo.proauto.dto.RawMaterialHistoryDTO;
 import com.esteeminfo.proauto.dto.VendorDTO;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.JobOperation;
@@ -30,6 +32,8 @@ import com.esteeminfo.proauto.entity.PoTool;
 import com.esteeminfo.proauto.entity.Purchase;
 import com.esteeminfo.proauto.entity.PurchaseHistory;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
+import com.esteeminfo.proauto.entity.RawMaterial;
+import com.esteeminfo.proauto.entity.RawMaterialHistory;
 import com.esteeminfo.proauto.entity.Status;
 import com.esteeminfo.proauto.entity.Tooltype;
 import com.esteeminfo.proauto.entity.Unit;
@@ -411,4 +415,67 @@ public class CommonServiceImpl implements CommonService {
 		return map;
 	}
 
+	public RawMaterial registerRawMaterial(String create, String rmid, String rawmname, String vendor, String length,
+			String width, String thickness, String authouredby, String quantity) {
+		return commonDAO.registerRawMaterial(create, rmid,  rawmname, vendor,  length,
+				 width,  thickness,  authouredby,  quantity);
+
+	}
+
+	public List<RawMaterialDTO> retrieveAllRmDTO(String rmSearched) {
+		List<RawMaterialDTO> rawMaterialDTOs = new ArrayList<RawMaterialDTO>();
+		List<RawMaterial> rawMaterials = commonDAO.retrieveAllRms(rmSearched);
+		for(RawMaterial EachRawMaterial : rawMaterials){
+			RawMaterialDTO eachRawMaterialDTO = converRmToDto(EachRawMaterial);
+			rawMaterialDTOs.add(eachRawMaterialDTO);
+		}
+		return rawMaterialDTOs;
+	}
+
+	private RawMaterialDTO converRmToDto(RawMaterial rawMaterial) {
+		RawMaterialDTO rawMaterialDTO =  new RawMaterialDTO();
+		rawMaterialDTO.setId(rawMaterial.getRawMaterialId());
+		rawMaterialDTO.setRawmname(rawMaterial.getDesciption());
+		//rawMaterialDTO.setAuthouredby(rawMaterial.get);
+		rawMaterialDTO.setLength(String.valueOf(rawMaterial.getLength()));
+		rawMaterialDTO.setWidth(String.valueOf(rawMaterial.getWidth()));
+		rawMaterialDTO.setThickness(String.valueOf(rawMaterial.getHeight()));
+		rawMaterialDTO.setRepository(String.valueOf(rawMaterial.getNumberOfbars()));
+		rawMaterialDTO.setVendor(String.valueOf(rawMaterial.getVendorId()));
+		
+		rawMaterialDTO.setDoc(ui_date_format.format(rawMaterial.getDoc()));
+		rawMaterialDTO.setDou(ui_date_format.format(rawMaterial.getDou()));
+		List<RawMaterialHistoryDTO> historyDTOs = new ArrayList<RawMaterialHistoryDTO>();
+		if(rawMaterial.getRawMaterialHistory()!=null && rawMaterial.getRawMaterialHistory().size()>0){
+			System.out.println("Size of histories = "+rawMaterial.getRawMaterialHistory().size());
+			for(RawMaterialHistory rawMaterialHistory : rawMaterial.getRawMaterialHistory()){
+				RawMaterialHistoryDTO rawMaterialHistoryDTO = new RawMaterialHistoryDTO();
+				rawMaterialHistoryDTO.setDate(ui_date_format.format(rawMaterialHistory.getAdddate()));
+				rawMaterialHistoryDTO.setQuantity(String.valueOf(rawMaterialHistory.getQuantity()));
+				rawMaterialHistoryDTO.setAuthouredby(rawMaterialHistory.getAuthouredby());
+				historyDTOs.add(rawMaterialHistoryDTO);
+			}
+		}
+		rawMaterialDTO.setRmHistory(historyDTOs);
+		return rawMaterialDTO;
+	}
+
+
+
+	public RawMaterialDTO findRmDTOById(Integer valueOf) {
+		RawMaterial rawMaterial = commonDAO.findRawMaterialById(String.valueOf(valueOf));
+		if(rawMaterial!=null) return converRmToDto(rawMaterial);
+		return null;
+	}
+
+	public Map<String, String> getVendors() {
+		List<Vendor> list= commonDAO.getVendors();
+		Map<String, String> vendors = new HashMap<String, String>();
+		for(Vendor vendor : list){
+			vendors.put(String.valueOf(vendor.getVendorId()), vendor.getVendorName());
+		}
+		return vendors;
+	}
+
+	
 }

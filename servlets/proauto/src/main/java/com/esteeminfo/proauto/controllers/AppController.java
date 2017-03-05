@@ -33,6 +33,7 @@ import com.esteeminfo.proauto.dto.JobcardDTO;
 import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
 import com.esteeminfo.proauto.dto.PurchaseDTO;
+import com.esteeminfo.proauto.dto.RawMaterialDTO;
 import com.esteeminfo.proauto.dto.VendorDTO;
 import com.esteeminfo.proauto.dto.MakeDTO;
 import com.esteeminfo.proauto.entity.Customer;
@@ -43,6 +44,7 @@ import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.Make;
 import com.esteeminfo.proauto.entity.Purchase;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
+import com.esteeminfo.proauto.entity.RawMaterial;
 import com.esteeminfo.proauto.entity.Vendor;
 import com.esteeminfo.proauto.service.CommonService;
 import com.esteeminfo.proauto.service.CustomerService;
@@ -1150,5 +1152,80 @@ public class AppController {
 
 		model.addAttribute("makeList", makeDTOs);
 		return "makereg";
+	}
+	
+	
+	@RequestMapping(value = { "/showrawm" }, method = RequestMethod.GET)
+	public String showrm(Model model,
+			@RequestParam(value = "rmSelected", required = false) String rmSelected,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		RawMaterialDTO rawMaterialDTO =  new RawMaterialDTO();
+		if (rmSelected != null && rmSelected.length() > 0) {
+			rawMaterialDTO = commonService.findRmDTOById(Integer.valueOf(rmSelected));
+		}
+		model.addAttribute("rm", rawMaterialDTO);
+		
+		Map<String, String> vendorMap = new HashMap<String, String>();
+		vendorMap = commonService.getVendors();
+		model.addAttribute("vendors", vendorMap);
+
+		return "addtorawm";
+	}
+
+	@RequestMapping(value = { "/searchrawm" }, method = RequestMethod.GET)
+	public String searchrm(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String rmSearched = request.getParameter("searchRmInput");
+		List<RawMaterialDTO> rawMaterialDTOs = commonService.retrieveAllRmDTO(rmSearched);
+		model.addAttribute("rmList", rawMaterialDTOs);
+		return "searchrawm";
+	}
+
+	@RequestMapping(value = { "/addtorawm" }, method = RequestMethod.POST)
+	public String addtorm(Model model, HttpServletRequest request, HttpServletResponse response) {
+	
+		String create = request.getParameter("create");
+		String rmid = request.getParameter("rmid");
+		String rawmname = request.getParameter("rawmname");
+		String vendor = request.getParameter("vendor");
+		String length = request.getParameter("length");
+		String width = request.getParameter("width");
+		String thickness = request.getParameter("thickness");
+		String authouredby = request.getParameter("authouredby");
+		String quantity = request.getParameter("quantity");
+
+		RawMaterialDTO rawMaterialDTO = new RawMaterialDTO();
+		RawMaterial rawMaterialCreated = null;
+		try {
+			rawMaterialCreated = commonService.registerRawMaterial(create, rmid, rawmname, vendor, length, width, thickness, 
+					authouredby, quantity);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("error", e.getMessage());
+			if (rmid != null && rmid.length() > 0) {
+				rawMaterialDTO.setId(Integer.valueOf(rmid));
+			}
+			rawMaterialDTO.setRawmname(rawmname);
+			rawMaterialDTO.setVendor(vendor);
+			rawMaterialDTO.setLength(length);
+			rawMaterialDTO.setWidth(width);
+			rawMaterialDTO.setThickness(thickness);
+			rawMaterialDTO.setAuthouredby(authouredby);
+			rawMaterialDTO.setQuantity(quantity);
+			model.addAttribute("rmSelected", rawMaterialDTO);
+		}
+
+		if (rawMaterialCreated != null && rawMaterialCreated.getRawMaterialId() > 0) {
+			model.addAttribute("result", "sucess");
+			model.addAttribute("rmCreatedId", rawMaterialCreated.getRawMaterialId());
+			model.addAttribute("rmCreatedCode", rawMaterialCreated.getDesciption());
+		}
+		
+		Map<String, String> vendorMap = new HashMap<String, String>();
+		vendorMap = commonService.getVendors();
+		model.addAttribute("vendors", vendorMap);
+		
+		return "addtorawm";
 	}
 }

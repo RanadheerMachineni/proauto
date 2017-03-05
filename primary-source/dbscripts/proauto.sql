@@ -188,33 +188,6 @@ CREATE TABLE po_file_data (
 	CONSTRAINT fk_po_file_data_upload_id FOREIGN KEY (upload_id) REFERENCES po_files(upload_id)
 )
 
-
-/*drop table customer_raw_material;
-CREATE TABLE customer_raw_material
-(
-	number_ofbars int NOT NUll,
-	height int NOT NUll,
-	width int NOT NUll,
-	length int NOT NUll,
-    create_date DATE NOT NUll,
-	customer_id int NOT NULL,
-	CONSTRAINT fk_rm_customer FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
-)
-
-drop table raw_material;
-CREATE TABLE raw_material
-(
-	number_ofbars int NOT NUll,
-	height int NOT NUll,
-	width int NOT NUll,
-	length int NOT NUll,
-    create_date DATE NOT NUll,
-	vendor_id int NOT NULL,
-	customer_id int NULL,
-	CONSTRAINT fk_rm_vendor FOREIGN KEY (vendor_id) REFERENCES vendor(vendor_id)
-)*/
-
-
 drop table vendor;
 CREATE TABLE vendor
 ( 
@@ -371,6 +344,31 @@ create table make(
     CONSTRAINT make_pk PRIMARY KEY (make_id)
 );
 
+
+create table machine_usage
+(
+	machine_usage_id int AUTO_INCREMENT NOT NULL,
+	machine_id int not null,
+	customer_id int,
+	pid int,
+	jobcard_id int,
+	task_id int,
+	assignee int,
+	programmer int,
+	use_date DATE,
+	shift char(50),
+	actual_time char(20),
+	desciption char(255),
+	constraint machine_usage_pk primary key (machine_usage_id),
+	CONSTRAINT fk_mu_machine_id FOREIGN KEY (machine_id) REFERENCES machines(machine_id),
+	CONSTRAINT fk_mu_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+   	CONSTRAINT fk_mu_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid),
+   	CONSTRAINT fk_mu_jobcard FOREIGN KEY (jobcard_id) REFERENCES jobcard(jobcard_id),
+   	CONSTRAINT fk_mu_task FOREIGN KEY (task_id) REFERENCES jobcard_task(task_id),
+   	CONSTRAINT fk_machine_usage_task_assignee FOREIGN KEY (assignee) REFERENCES employee(employee_id),
+   	CONSTRAINT fk_machine_usage_programmer FOREIGN KEY (programmer) REFERENCES employee(employee_id)
+);
+
 create table purchase
 (
 	particular_id int AUTO_INCREMENT NOT NULL,
@@ -404,31 +402,33 @@ create table purchase_history(
 	CONSTRAINT fk_ph_machine_usage_id FOREIGN KEY (machine_usage_id) REFERENCES machine_usage(machine_usage_id)
 );
 
-create table machine_usage
+
+
+drop table raw_material;
+CREATE TABLE raw_material
 (
-	machine_usage_id int AUTO_INCREMENT NOT NULL,
-	machine_id int not null,
-	customer_id int,
-	pid int,
-	jobcard_id int,
-	task_id int,
-	assignee int,
-	programmer int,
-	use_date DATE,
-	shift char(50),
-	actual_time char(20),
+	raw_material_id int AUTO_INCREMENT NOT NULL,
 	desciption char(255),
-	constraint machine_usage_pk primary key (machine_usage_id),
-	CONSTRAINT fk_mu_machine_id FOREIGN KEY (machine_id) REFERENCES machines(machine_id),
-	CONSTRAINT fk_mu_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-   	CONSTRAINT fk_mu_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid),
-   	CONSTRAINT fk_mu_jobcard FOREIGN KEY (jobcard_id) REFERENCES jobcard(jobcard_id),
-   	CONSTRAINT fk_mu_task FOREIGN KEY (task_id) REFERENCES jobcard_task(task_id),
-   	CONSTRAINT fk_machine_usage_task_assignee FOREIGN KEY (assignee) REFERENCES employee(employee_id),
-   	CONSTRAINT fk_machine_usage_programmer FOREIGN KEY (programmer) REFERENCES employee(employee_id)
+	number_ofbars int NOT NUll,
+	height int NOT NUll,
+	width int NOT NUll,
+	length int NOT NUll,
+    doc DATE,
+	dou date,
+	vendor_id int,
+	constraint raw_material_pk primary key (raw_material_id)
 );
 
 
-
-
-
+create table raw_material_history(
+	raw_material_history_id int AUTO_INCREMENT NOT NULL,
+	raw_material_id int,
+	adddate date,
+	authouredby char(50),
+	quantity int,
+	machine_usage_id int,
+	status CHAR(1),
+    CONSTRAINT raw_material_history_pk PRIMARY KEY (raw_material_history_id),
+   	CONSTRAINT fk_rmh_raw_material_id FOREIGN KEY (raw_material_id) REFERENCES raw_material(raw_material_id),
+	CONSTRAINT fk_rm_machine_usage_id FOREIGN KEY (machine_usage_id) REFERENCES machine_usage(machine_usage_id)
+);

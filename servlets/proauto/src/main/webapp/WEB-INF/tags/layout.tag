@@ -106,8 +106,11 @@
 						<div class="dropdown-content">
 							<a href="${pageContext.request.contextPath}/showinv">Add to Inventory</a>
 							<a href="${pageContext.request.contextPath}/searchinv">Search Inventory</a>
+							<a href="${pageContext.request.contextPath}/showrawm">Add Raw Material</a>
+							<a href="${pageContext.request.contextPath}/searchrawm">Search Raw Material</a>
 						</div>
 					</li>
+					
 					
 					<li id="machineusageli" class="dropdownmenu"><a class="dropbtn">Machine Usage</a>
 						<div class="dropdown-content">

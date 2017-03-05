@@ -13,6 +13,7 @@ import com.esteeminfo.proauto.dto.MachineDTO;
 import com.esteeminfo.proauto.dto.MakeDTO;
 import com.esteeminfo.proauto.dto.PoDTO;
 import com.esteeminfo.proauto.dto.PurchaseDTO;
+import com.esteeminfo.proauto.dto.RawMaterialDTO;
 import com.esteeminfo.proauto.dto.VendorDTO;
 import com.esteeminfo.proauto.entity.Customer;
 import com.esteeminfo.proauto.entity.JobOperation;
@@ -20,6 +21,7 @@ import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.Make;
 import com.esteeminfo.proauto.entity.Purchase;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
+import com.esteeminfo.proauto.entity.RawMaterial;
 import com.esteeminfo.proauto.entity.Vendor;
 
 public interface CommonService {
@@ -92,5 +94,14 @@ public interface CommonService {
 	Map<String, String> retreiveTypeMap();
 
 	Map<String, String> retreiveUnitMap();
+
+	RawMaterial registerRawMaterial(String create, String rmid, String rawmname, String vendor, String length,
+			String width, String thickness, String authouredby, String quantity);
+
+	List<RawMaterialDTO> retrieveAllRmDTO(String rmSearched);
+
+	RawMaterialDTO findRmDTOById(Integer valueOf);
+
+	Map<String, String> getVendors();
 
 }
