@@ -89,11 +89,11 @@ public class JobcardServiceImpl implements JobcardService {
 	}
 
 	public Jobcard registerJobcard(String create, String jid, String name, String desc, Customer customer,
-			PurchaseOrder purchaseOrder, String status, String createdBy, String jobStart, String jobEnd,
+			PurchaseOrder purchaseOrder, String poItem, String status, String createdBy, String jobStart, String jobEnd,
 			String[] jobop, String[] notes, String[] assignee, String[] programmer, String[] duration,
 			String[] machine, String[] cost, String[] taskStatus) throws Exception {
 		return jobcardDao.registerJobcard(create, jid, name, desc, customer,
-				purchaseOrder, status, createdBy,  jobStart,  jobEnd,
+				purchaseOrder, poItem, status, createdBy,  jobStart,  jobEnd,
 				 jobop,  notes,  assignee,  programmer, duration,
 				 machine,  cost, taskStatus);
 	}

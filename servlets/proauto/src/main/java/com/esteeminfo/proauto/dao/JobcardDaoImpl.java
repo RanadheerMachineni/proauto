@@ -20,6 +20,7 @@ import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Jobcard;
 import com.esteeminfo.proauto.entity.JobcardTask;
 import com.esteeminfo.proauto.entity.Machine;
+import com.esteeminfo.proauto.entity.PoTool;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.entity.Role;
 import com.esteeminfo.proauto.entity.Section;
@@ -48,7 +49,7 @@ public class JobcardDaoImpl extends AbstractDao implements JobcardDao {
 	}
 
 	public Jobcard registerJobcard(String create, String jobcardId, String name, String desc, Customer customer,
-			PurchaseOrder purchaseOrder, String status, String createdBy, String jobStart, String jobEnd,
+			PurchaseOrder purchaseOrder,String poItem, String status, String createdBy, String jobStart, String jobEnd,
 			String[] jobop, String[] notes, String[] assignee, String[] programmer,  String[] duration,
 			String[] machine, String[] cost, String[] taskStatus) throws Exception {
 		int jid = (jobcardId == null || jobcardId.length() == 0 ) ? 0:Integer.valueOf(jobcardId); 
@@ -73,6 +74,7 @@ public class JobcardDaoImpl extends AbstractDao implements JobcardDao {
 		jobcard.setJobcardDesc(desc);
 		jobcard.setCustomer(customer);
 		jobcard.setPurchaseOrder(purchaseOrder);
+		jobcard.setPoTool(entityManager.find(PoTool.class, Integer.valueOf(poItem)));
 		jobcard.setStatusBean(entityManager.find(Status.class, Integer.valueOf(status)));
 		jobcard.setCreatedBy(createdBy);
 		if(javaStartdate!=null){

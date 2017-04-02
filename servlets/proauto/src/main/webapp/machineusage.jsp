@@ -11,6 +11,12 @@ $(document).on("click", ".insertRow", function(event) {
 			+'</tr>')
 	
 });
+$(document).on("click", ".insertRMRow", function(event) {
+	 $('#customRMFields').append('<tr>'+
+			 '<td class="joboperationbox">								 <div>				                 	 	 <select class="form-control" name="rm"														id="rm">							 			 		<option value="">Select</option>						  						<jstl:forEach items="${rmList}" var="eachRm">						  				  			<option value="${eachRm.key}">${eachRm.value}</option>						  						</jstl:forEach>										 </select>								 </div> 							</td>							<td class="joboperationbox">																			 <select class="form-control" name="vendor"														id="vendor">							 			 		<option value="">Select</option>						  						<jstl:forEach items="${vendors}" var="eachVendor">						  				  			<option value="${eachVendor.key}">${eachVendor.value}</option>						  						</jstl:forEach>								</select>							</td>							<td class="joboperationbox">																			<input type="text" class="form-control" id="quantity"												name="quantity" value="" placeholder="quantity" /> 							</td>							<td class="joboperationbox">																			<input type="text" class="form-control" id="approver" name="approver"												value="" placeholder="approver" />							</td>							<td class="joboperationbox">																							<input type="button" class="form-control deleteButton" value="Delete" />							</td>'
+			+'</tr>')
+	
+});
 $(document).on("click", ".deleteButton", function(event) {
    $(this).closest('tr').remove();
 	
@@ -281,10 +287,13 @@ $(document).ready(
 			    	 	</div>
 		    	 	</div>
   	  		  </div>
-  	  		  
+  	  		  <br>
   	  		  <div class="row rowspace">
-  	  		   		<div class="col-sm-12 col-md-12">
+  	  		   		<div class="col-sm-6 col-md-6">
 		      			<label>Tool Usage</label>
+		    		</div>
+		    		<div class="col-sm-6 col-md-6">
+		      			<label>Raw Material Usage</label>
 		    		</div>
   	  		   </div>
   	  		  
@@ -292,7 +301,7 @@ $(document).ready(
   	  		      <jstl:if
 								test="${machineUsage.id != null && machineUsage.id > 0 && machineUsage.tools!=null}">
 	  	  		   <div class="row rowspace">
-			   		 	<div id="alreadySavedTools" class="col-sm-12 col-md-12">
+			   		 	<div id="alreadySavedTools" class="col-sm-6 col-md-6">
 			   		 		<table class="form-table" id="customFieldsExisting">
 				   		 	<jstl:forEach var="eachTool" items="${machineUsage.tools}">
 				   			 	
@@ -326,8 +335,45 @@ $(document).ready(
 				   </div>
 				</jstl:if>
 				
+				 <jstl:if test="${machineUsage.id != null && machineUsage.id > 0 && machineUsage.rm!=null}">
+	  	  		   <div class="row rowspace">
+			   		 	<div id="alreadySavedRm" class="col-sm-6 col-md-6">
+			   		 		<table class="form-table" id="customRmFieldsExisting">
+				   		 	<jstl:forEach var="eachRm" items="${machineUsage.rm}">
+				   			 	
+				                <tr>
+				                <td class="joboperationbox">
+									<input type="text" class="form-control" id="rmname" name="rmname"
+														value="${eachRm.code}" placeholder="Meterial" />
+														
+								</td>
+													<td class="joboperationbox">							
+										<input type="text" class="form-control" id="vendor" name="vendor"
+														value="${eachRm.vendor}" placeholder="vendor" />
+								</td>
+													<td class="joboperationbox">															
+									<input type="text" class="form-control" id="quantity"
+														name="quantity" value="${eachRm.quantity}"
+														placeholder="quantity" /> 
+								</td>
+													<td class="joboperationbox">															
+									<input type="text" class="form-control" id="approver"
+														name="approver" value="${eachRm.approver}"
+														placeholder="approver" /> 
+								</td>
+													<td class="joboperationbox">															
+									<input type="button" class="form-control deleteButton" value="Delete" />
+								</td>
+				                </tr>
+			           		 </jstl:forEach>
+			           		 </table>
+			    	 	</div>
+				   </div>
+				</jstl:if>
+				
+				
 			   <div class="row rowspace">
-  	  		   		<div class="col-sm-12 col-md-12">
+  	  		   		<div class="col-sm-6 col-md-6">
 	  	  		   	
 	  	  		   	<table class="form-table" id="customFields">
 						<tr valign="top">
@@ -366,6 +412,45 @@ $(document).ready(
 					</table>
 
 		    		</div>
+		    		
+		    		<div class="col-sm-6 col-md-6">
+	  	  		   	<table class="form-table" id="customRMFields">
+						<tr valign="top">
+							<td class="joboperationbox">
+								 <div>
+				                 	 	 <select class="form-control" name="rm"
+														id="rm">
+							 			 		<option value="">Select</option>
+						  						<jstl:forEach items="${rmList}" var="eachRm">
+						  				  			<option value="${eachRm.key}">${eachRm.value}</option>
+						  						</jstl:forEach>
+										 </select>
+								 </div> 
+							</td>
+							<td class="joboperationbox">												
+								 <select class="form-control" name="vendor"
+														id="vendor">
+							 			 		<option value="">Select</option>
+						  						<jstl:forEach items="${vendors}" var="eachVendor">
+						  				  			<option value="${eachVendor.key}">${eachVendor.value}</option>
+						  						</jstl:forEach>
+								</select>
+							</td>
+							<td class="joboperationbox">												
+								<input type="text" class="form-control" id="quantity"
+												name="quantity" value="" placeholder="quantity" /> 
+							</td>
+							<td class="joboperationbox">												
+								<input type="text" class="form-control" id="approver" name="approver"
+												value="" placeholder="approver" />
+							</td>
+							<td class="joboperationbox">															
+									<input type="button" class="form-control deleteButton" value="Delete" />
+							</td>
+						</tr>
+					</table>
+
+		    		</div>
   	  		   </div>
   	  		   <div class="row rowspace">
   	  		   		<div class="col-sm-2 col-md-2">
@@ -373,9 +458,17 @@ $(document).ready(
     							<input class="insertRow form-control" type="button" value="Add Tool">
 							</p>
 		    		</div>
+		    		<div class="col-sm-4 col-md-4">
+		      			    
+		    		</div>
+		    		<div class="col-sm-2 col-md-2">
+		      			    <p id="insertRowRMParent">
+    							<input class="insertRMRow form-control" type="button" value="Add Raw Material">
+							</p>
+		    		</div>
   	  		   </div>
 			   <div class="row">
-	   		 		<div class="col-sm-8 col-md-8">
+	   		 		<div class="col-sm-4 col-md-4">
 						<jstl:if test="${machineUsage.id == null || machineUsage.id<=0}">
 	   		 				  <input type="hidden" name="create" value="true">
 						      <!--  <input id="createEmployeeSubmit" type=submit value="Create">-->

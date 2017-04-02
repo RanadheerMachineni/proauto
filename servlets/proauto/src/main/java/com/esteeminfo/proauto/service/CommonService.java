@@ -104,4 +104,10 @@ public interface CommonService {
 
 	Map<String, String> getVendors();
 
+	Map<String, String> getTools();
+
+	Map<String, String> getRawMaterials();
+
+	Map<String, String> findPOItemsByPO(String po);
+
 }

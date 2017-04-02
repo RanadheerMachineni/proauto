@@ -282,6 +282,7 @@ CREATE TABLE jobcard
 	jobcard_desc char(100),
 	customer_id int NOT NULL,
 	pid int NOT NULL,
+	pt_id int NOT NULL,
 	created_by char(50),
 	create_date DATE,
 	end_date DATE,
@@ -289,6 +290,7 @@ CREATE TABLE jobcard
 	constraint jobcard_pk primary key (jobcard_id),
    	CONSTRAINT fk_jobcard_customer_id FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
    	CONSTRAINT fk_jobcard_pid FOREIGN KEY (pid) REFERENCES purchase_order(pid),
+   	CONSTRAINT fk_jobcard_pt_id FOREIGN KEY (pid) REFERENCES po_tool(pt_id),
    	CONSTRAINT fk_jobcard_status FOREIGN KEY (status) REFERENCES status(status_id)
 );
 

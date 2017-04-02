@@ -7,6 +7,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 
+
 /**
  * The persistent class for the po_tool database table.
  * 
@@ -44,6 +45,10 @@ public class PoTool implements Serializable {
 	@JoinColumn(name="pid")
 	private PurchaseOrder purchaseOrder;
 
+	//bi-directional one-to-one association to Jobcard
+	@OneToOne(mappedBy="poTool")
+	private Jobcard jobcard;
+	
 	public PoTool() {
 	}
 
@@ -111,4 +116,11 @@ public class PoTool implements Serializable {
 		this.purchaseOrder = purchaseOrder;
 	}
 
+	public Jobcard getJobcard() {
+		return this.jobcard;
+	}
+
+	public void setJobcard(Jobcard jobcard) {
+		this.jobcard = jobcard;
+	}
 }

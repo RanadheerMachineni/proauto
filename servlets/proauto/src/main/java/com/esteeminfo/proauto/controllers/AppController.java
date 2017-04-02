@@ -42,6 +42,7 @@ import com.esteeminfo.proauto.entity.JobOperation;
 import com.esteeminfo.proauto.entity.Jobcard;
 import com.esteeminfo.proauto.entity.Machine;
 import com.esteeminfo.proauto.entity.Make;
+import com.esteeminfo.proauto.entity.PoTool;
 import com.esteeminfo.proauto.entity.Purchase;
 import com.esteeminfo.proauto.entity.PurchaseOrder;
 import com.esteeminfo.proauto.entity.RawMaterial;
@@ -94,6 +95,15 @@ public class AppController {
 		String json = new ObjectMapper().writeValueAsString(pos);
 		return json;
 	}
+	
+	@RequestMapping(value = { "/getPoItems" }, method = RequestMethod.GET)
+	public @ResponseBody String getPoItems(@RequestParam("po") String po) throws JsonProcessingException {
+		Map<String, String> poItems = commonService.findPOItemsByPO(po);
+		String json = new ObjectMapper().writeValueAsString(poItems);
+		return json;
+	}
+
+	
 
 	@RequestMapping(value = { "/getJobList" }, method = RequestMethod.GET)
 	public @ResponseBody String getJobList(@RequestParam("po") String po) throws JsonProcessingException {
@@ -163,6 +173,16 @@ public class AppController {
 		empMap = employeeService.getEmployees();
 		model.addAttribute("employees", empMap);
 
+		//tools/vendors/make/rm
+		/*Map<String,String> toolMap  = new HashMap<String, String>();
+		toolMap = commonService.getTools();
+		model.addAttribute("tools", toolMap);
+		
+		Map<String,String> rmMap  = new HashMap<String, String>();
+		rmMap = commonService.getRawMaterials();
+		model.addAttribute("tools", rmMap);*/
+		
+		
 		// Map<String, String> inventoryMap = new HashMap<String, String>();
 		// inventoryMap = commonService.getInventoryItems();
 		model.addAttribute("tools", null);
@@ -884,6 +904,8 @@ public class AppController {
 		Customer customer = customerService.findById(Integer.valueOf(customerId));
 		String po = request.getParameter("po");
 		PurchaseOrder purchaseOrder = commonService.findPOById(po);
+		String poItem = request.getParameter("poItem");
+		
 		String status = request.getParameter("status");
 		String createdBy = request.getParameter("createdBy");
 		String jobStart = request.getParameter("jobStart");
@@ -907,7 +929,7 @@ public class AppController {
 		JobcardDTO jobcardDTO = null;
 
 		try {
-			jobcardCreated = jobcardService.registerJobcard(create, jid, name, desc, customer, purchaseOrder, status,
+			jobcardCreated = jobcardService.registerJobcard(create, jid, name, desc, customer, purchaseOrder, poItem,status,
 					createdBy, jobStart, jobEnd, jobop, notes, assignee, programmer, duration, machine, cost,
 					taskStatus);
 

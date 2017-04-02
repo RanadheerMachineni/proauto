@@ -65,8 +65,25 @@
 				    	    function(resultJSON) {
 				    	    	var result = $.parseJSON(resultJSON);
 				    	    	$('#po').empty();
+				    	    	$('#po').append('<option>Select Customer</option>');
 				    	    	$.each(result, function(k, v) {
 				    	    	      $('#po').append('<option value="'+k+'">'+v+'</option>');
+
+				    	    	});
+				    	    }
+				    );
+				})
+
+				$('select[name=po]').change(function(){
+				    var po = $(this).val();
+				    $.get("${pageContext.request.contextPath}/getPoItems",
+				    	    {"po" : po},
+				    	    function(resultJSON) {
+				    	    	var result = $.parseJSON(resultJSON);
+				    	    	$('#poItem').empty();
+				    	    	$('#poItem').append('<option>Select PO Item</option>');
+				    	    	$.each(result, function(k, v) {
+				    	    	      $('#poItem').append('<option value="'+k+'">'+v+'</option>');
 
 				    	    	});
 				    	    }
@@ -86,6 +103,9 @@
 									required : true
 								},
 								po : {
+									required : true
+								},
+								poItem : {
 									required : true
 								},
 								status : {
@@ -262,6 +282,39 @@
 							</jstl:if>
 			    	 	</div>
 			    	 </div>
+			    	 
+			    	 <div class="control-group">
+			    	 	<div class="col-sm-1 col-md-1">
+		      				<label for="poItem">PO Item:</label>
+		    			</div>
+		    			 	<div class="col-sm-2 col-md-2">
+			   		 		<jstl:if test="${jobCardSelected.id != null && jobCardSelected.id>0}">
+			   		 			<jstl:forEach items="${jobCardSelected.poItems}" var="eachPoItem">
+					   		 		<jstl:if test="${jobCardSelected.SelectedPoItem == eachPoItem.key}">
+					   		 			   <p id="poItem" class="block show">${eachPoItem.value}</p>
+					   		 		</jstl:if>
+		  						</jstl:forEach>
+		  						<select class="form-control block hide" name="poItem" id="poItem">
+				 			 		<option value="">Select PO Item</option>
+			  						<jstl:forEach items="${jobCardSelected.poItems}" var="eachPoItem">
+			  				  			<option value="${eachPoItem.key}"
+														${jobCardSelected.SelectedPoItem == eachPoItem.key ? 'selected' : ''}>${eachPoItem.value}</option>
+			  						</jstl:forEach>
+								</select>
+							</jstl:if>
+							
+							<jstl:if test="${jobCardSelected.id == null || jobCardSelected.id<=0}">
+								<select class="form-control block show" name="poItem" id="poItem">
+				 			 		<option value="">Select PO Item</option>
+			  						<jstl:forEach items="${jobCardSelected.poItems}" var="eachPoItem">
+			  				  			<option value="${eachPoItem.key}"
+														${jobCardSelected.SelectedPoItem == eachPoItem.key ? 'selected' : ''}>${eachPoItem.value}</option>
+			  						</jstl:forEach>
+								</select>
+							</jstl:if>
+			    	 	</div>
+			    	 </div>
+			    	 
 			    	 
 			    	  <div class="control-group">
 			    	 	<div class="col-sm-1 col-md-1">

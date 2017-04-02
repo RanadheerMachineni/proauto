@@ -15,8 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 
 
 /**
@@ -58,6 +60,7 @@ public class Jobcard implements Serializable {
 	@OneToMany(mappedBy="jobcard",fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)
 	private List<JobcardTask> jobcardTasks;
 
+	
 	@ManyToOne
 	@JoinColumn(name="customer_id")
 	private Customer customer;
@@ -68,6 +71,11 @@ public class Jobcard implements Serializable {
 	
 	@OneToMany(mappedBy="jobcard",fetch=FetchType.LAZY)
 	private List<MachineUsage> machineUsages;
+	
+	//bi-directional one-to-one association to PoTool
+	@OneToOne
+	@JoinColumn(name="pt_id")
+	private PoTool poTool;
 	
 	public Jobcard() {
 	}
@@ -186,5 +194,13 @@ public class Jobcard implements Serializable {
 		machineUsage.setJobcard(null);
 
 		return machineUsage;
+	}
+	
+	public PoTool getPoTool() {
+		return this.poTool;
+	}
+
+	public void setPoTool(PoTool poTool) {
+		this.poTool = poTool;
 	}
 }

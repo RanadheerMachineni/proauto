@@ -12,6 +12,7 @@ public class JobcardDTO {
 	private String createdBy;
 	private String jobStart;
 	private String jobEnd;
+	List<PoItemDTO> poItems;
 	List<JobcardTaskDTO> tasks;
 	public int getId() {
 		return id;
@@ -72,6 +73,12 @@ public class JobcardDTO {
 	}
 	public void setTasks(List<JobcardTaskDTO> tasks) {
 		this.tasks = tasks;
+	}
+	public List<PoItemDTO> getPoItems() {
+		return poItems;
+	}
+	public void setPoItems(List<PoItemDTO> poItems) {
+		this.poItems = poItems;
 	}
 
 }

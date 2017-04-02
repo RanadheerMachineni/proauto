@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -477,5 +478,29 @@ public class CommonServiceImpl implements CommonService {
 		return vendors;
 	}
 
+	public Map<String, String> getTools() {
+		//return
+		return null;
+	}
+
+	public Map<String, String> getRawMaterials() {
+		List<Vendor> list= commonDAO.getVendors();
+		Map<String, String> vendors = new HashMap<String, String>();
+		for(Vendor vendor : list){
+			vendors.put(String.valueOf(vendor.getVendorId()), vendor.getVendorName());
+		}
+		return vendors;
+	}
+
+	public Map<String, String> findPOItemsByPO(String po) {
+
+		Map<String,String> poToolMap =  new HashMap<String, String>();
+		PurchaseOrder purchaseOrder = findPOById(po);
+		Set<PoTool> poTools  = purchaseOrder.getPoTools();
+		for (PoTool poTool : poTools) {
+			poToolMap.put(String.valueOf(poTool.getPtId()), poTool.getMatDesc());
+		}
+		return poToolMap;
+	}
 	
 }
